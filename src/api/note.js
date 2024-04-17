@@ -32,8 +32,27 @@ export const receiverBox = async (name) => {
 
 // 검색
 // http://localhost:8080/compagno/note/search?noteRegiDate=2024-04-11&page=2
-export const searchNote = async () => {
-  return await instance.get("/search?");
+export const searchNote = async (option, content) => {
+  let url="/search?";
+  if(option=="page"){
+    url+="";
+  }
+  if(option=="sender"){
+    url+="";
+  }
+  if(option=="receiver"){
+    url+="";
+  }
+  if(option=="noteTitle"){
+    url+="";
+  }
+  if(option=="noteRegiDate"){
+    url+="";
+  }
+  if(option==""){
+    url+="";
+  }
+  return await instance.get(url);
 };
 
 // 보내는 이 삭제
