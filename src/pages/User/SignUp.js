@@ -188,8 +188,44 @@ const SignUp = () => {
   /* --------------------------- 회원가입 작동 함수 --------------------------- */
   // 조건을 만족하면 회원가입 버튼 작동
   const register = async () => {
-    if (!idRegexp.test(user.userId)) {
-      alert("조건 불만족!");
+    if (!idRegexp.test(user.userId) || user.userId === "") {
+      alert("조건 불만족! 아이디 입력 확인");
+    } else if (
+      !pwdRegexp.test(user.userPwd) ||
+      user.userPwd === "" ||
+      user.userPwd === undefined
+    ) {
+      alert("조건 불만족! 비밀번호 입력 확인");
+    } else if (
+      user.userPwd !== user.userPwdCheck ||
+      user.userPwdCheck === "" ||
+      user.userPwdCheck === undefined
+    ) {
+      alert("조건 불만족! 동일 비밀번호 입력 확인");
+    } else if (
+      !nameRegexp.test(user.userPersonName) ||
+      user.userPersonName === "" ||
+      user.userPersonName === undefined
+    ) {
+      alert("조건 불만족! 이름 입력 확인");
+    } else if (
+      !nickRegexp.test(user.userNickname) ||
+      user.userNickname === "" ||
+      user.userNickname === undefined
+    ) {
+      alert("조건 불만족! 닉네임 입력 확인");
+    } else if (
+      !emailRegexp.test(user.userEmail) ||
+      user.userEmail === "" ||
+      user.userEmail === undefined
+    ) {
+      alert("조건 불만족! 이메일 입력 확인");
+    } else if (
+      !phoneRegexp.test(user.userPhone) ||
+      user.userPhone === "" ||
+      user.userPhone === undefined
+    ) {
+      alert("조건 불만족! 전화번호 입력 확인");
     } else {
       await registerUser(user);
       navigate("/");
