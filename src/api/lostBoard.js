@@ -41,25 +41,25 @@ export const searchLostBoard=async(option, content)=>{
     url += "page="+content;
   } 
   if(option=="lostAnimalKind") {
-    url += "";
+    url += "lostAnimalKind="+content;
   }
-  if(optional=="lostAnimalGender"){
-    url +="";
+  if(option=="lostAnimalGender"){
+    url +="lostAnimalGender="+content;
   }
-  if(optional=="userNickname"){
-    url+="";
+  if(option=="userNickname"){
+    url+="userNickname="+content;
   }
-  if(optional=="lostDate"){
-    url+="";
+  if(option=="lostDate"){
+    url+="lostDate="+content;
   }
-  if(optional=="lostLocation"){
-    url+="";
+  if(option=="lostLocation"){
+    url+="losstLocation="+content;
   }
-  if(optional=="lostAnimalName"){
-    url+="";
+  if(option=="lostAnimalName"){
+    url+="lostAnimalName="+content;
   }
-  if(optional=="sort"){
-    url+="";
+  if(option=="sort"){
+    url+="sort="+content;
   }
   return await instance.get(url);
 }

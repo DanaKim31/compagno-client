@@ -35,22 +35,19 @@ export const receiverBox = async (name) => {
 export const searchNote = async (option, content) => {
   let url="/search?";
   if(option=="page"){
-    url+="";
+    url+="page="+content;
   }
   if(option=="sender"){
-    url+="";
+    url+="sender=" + content;
   }
   if(option=="receiver"){
-    url+="";
+    url+="receiver="+content;
   }
   if(option=="noteTitle"){
-    url+="";
+    url+="noteTitle="+content;
   }
   if(option=="noteRegiDate"){
-    url+="";
-  }
-  if(option==""){
-    url+="";
+    url+="noteRegiDate="+content;
   }
   return await instance.get(url);
 };
