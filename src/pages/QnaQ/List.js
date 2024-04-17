@@ -30,7 +30,7 @@ const List = () => {
       console.log(secretPwd == pwd);
       console.log(code);
       if (secretPwd == pwd) {
-        navigate("/detail/" + code);
+        navigate("/question/detail/" + code);
       } else {
         alert("비밀번호가 일치하지 않습니다!");
         document.querySelector("#password").focus();
@@ -93,7 +93,7 @@ const List = () => {
             <th>제목</th>
             <th>작성자</th>
             <th>답변 여부</th>
-            <th>비밀글 비밀번호</th>
+            <th>비밀글</th>
           </tr>
         </thead>
         <tbody>
@@ -103,13 +103,13 @@ const List = () => {
               <td>
                 {question.secret == "" || question.secret == null ? (
                   // 비밀번호가 걸려있지 않을 때
-                  <a href={`/detail/${question.qnaQCode}`}>
+                  <a href={`/question/detail/${question.qnaQCode}`}>
                     {question.qnaQTitle}
                   </a>
                 ) : (
                   // 비밀번호가 걸려있을 때
                   <a
-                    href={`/detail/${question.qnaQCode}`}
+                    href={`/question/detail/${question.qnaQCode}`}
                     onClick={(e) => {
                       e.preventDefault();
                       setModalShow(true);

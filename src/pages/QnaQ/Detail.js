@@ -24,7 +24,14 @@ const Detail = () => {
 
   return (
     <>
-      <div>{qnaQCode}</div>
+      <div>
+        <p>{qnaQCode}</p>
+        <p>{question.qnaQTitle}</p>
+        <p>{question.qnaQDate}</p>
+        <p>{question.userId}</p>
+        <p>{question.userNickname}</p>
+        <p>{question.qnaQContent}</p>
+      </div>
     </>
   );
 };
