@@ -24,7 +24,7 @@ const Detail = () => {
 
   return (
     <>
-      <div>내용을 어떻게 넣어야 할까용용이?</div>
+      <div>{qnaQCode}</div>
     </>
   );
 };
