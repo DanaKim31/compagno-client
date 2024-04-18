@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { asyncLogin } from "../../store/user";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
   display: flex;
@@ -17,18 +20,44 @@ const Div = styled.div`
 `;
 
 const Login = () => {
+  const [user, setUser] = useState({ userId: "", userPwd: "" });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // 로그인 버튼 눌렀을때
+  const submit = () => {
+    console.log(user);
+    if (user.userId === "" || user.userId === undefined) {
+      alert("아이디를 입력하세요!");
+    } else if (user.userPwd === "" || user.userPwd === undefined) {
+      alert("비밀번호를 입력하세요!");
+    } else {
+      dispatch(asyncLogin(user));
+      // 로그인 후 홈으로 이동 (새로고침과 같다)
+      navigate("/");
+    }
+  };
+
   return (
     <>
       <Div>
-        <label>
-          아이디
-          <input type="text" />
-        </label>
-        <label>
-          비밀번호
-          <input type="text" />
-        </label>
-        <button>로그잉~</button>
+        <input
+          type="text"
+          placeholder="아이디"
+          value={user.userId}
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, userId: e.target.value }))
+          }
+        />
+        <input
+          type="password"
+          placeholder="비밀번호"
+          value={user.userPwd}
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, userPwd: e.target.value }))
+          }
+        />
+        <button onClick={submit}>로긴로긴로긴</button>
       </Div>
     </>
   );

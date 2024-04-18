@@ -6,8 +6,8 @@ const Header = styled.header`
   justify-content: space-between;
   padding-left: 10px;
   border-bottom: 1px dashed black;
-  height: 100px;
-  line-height: 100px;
+  height: 107px;
+  line-height: 107px;
   box-sizing: border-box;
 
   h1 {
