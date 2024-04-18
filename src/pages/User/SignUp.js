@@ -8,7 +8,18 @@ const Div = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 107px);
+
+  #bigHeader {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    width: 600px;
+  }
+
+  #register {
+    width: 600px;
+  }
 
   .input-content {
     display: flex;
@@ -235,6 +246,7 @@ const SignUp = () => {
 
   return (
     <Div>
+      <div id="bigHeader">compagno.</div>
       <div id="register">
         <div className="input-content">
           <label htmlFor="userId">아이디</label>
