@@ -1,4 +1,4 @@
-import { getQuestions } from "../../api/QnaQ/Question";
+import { getQuestions } from "../../api/Question";
 import { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -27,9 +27,9 @@ const List = () => {
     const [pwd, setPwd] = useState("");
 
     const pwdCheck = () => {
-      console.log(secretPwd == pwd);
+      console.log(secretPwd === pwd);
       console.log(code);
-      if (secretPwd == pwd) {
+      if (secretPwd === pwd) {
         navigate("/question/detail/" + code);
       } else {
         alert("비밀번호가 일치하지 않습니다!");
@@ -101,7 +101,7 @@ const List = () => {
             <tr key={question.qnaQCode}>
               <td>{question.qnaQCode}</td>
               <td>
-                {question.secret == "" || question.secret == null ? (
+                {question.secret === "" || question.secret == null ? (
                   // 비밀번호가 걸려있지 않을 때
                   <a href={`/question/detail/${question.qnaQCode}`}>
                     {question.qnaQTitle}
@@ -124,7 +124,9 @@ const List = () => {
               </td>
               <td>{question.userId}</td>
               <td>{question.qnaQStatus}</td>
-              <td>{question.secret == null ? "N" : "Y"}</td>
+              <td>
+                {question.secret === "" || question.secret == null ? "N" : "Y"}
+              </td>
             </tr>
           ))}
         </tbody>
