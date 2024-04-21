@@ -38,8 +38,8 @@ const Home = () => {
       ) : (
         <>
           <p>안녕난로그인안했을때만보여</p>
-          <a href="/signUp">회 원 가 입</a> <br />
-          <a href="/login">로 그 인</a>
+          <a href="compagno/signUp">회 원 가 입</a> <br />
+          <a href="compagno/login">로 그 인</a>
         </>
       )}
     </>

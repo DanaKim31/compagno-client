@@ -259,6 +259,7 @@ const SignUp = () => {
                 setUser((prev) => ({ ...prev, userId: e.target.value }));
               }}
             />
+
             <span className="regExpMessage">{userIdSpan}</span>
           </div>
         </div>
