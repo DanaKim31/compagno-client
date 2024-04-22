@@ -3,7 +3,8 @@ import SignUp from "./pages/User/SignUp";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/User/Login";
-import MyPage from "./pages/User/MyPage";
+import MyPageMyInfo from "./pages/User/MyPageMyInfo";
+import MyPageMyActivity from "./pages/User/MyPageMyActivity";
 
 const router = createBrowserRouter([
   {
@@ -20,8 +21,12 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "compagno/mypage",
-        element: <MyPage />,
+        path: "compagno/mypage/myinfo",
+        element: <MyPageMyInfo />,
+      },
+      {
+        path: "compagno/mypage/myactivity",
+        element: <MyPageMyActivity />,
       },
     ],
   },

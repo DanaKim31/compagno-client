@@ -10,7 +10,7 @@ const Header = styled.header`
   line-height: 107px;
   box-sizing: border-box;
 
-  h1 {
+  a {
     font-size: 1.7rem;
   }
 `;
@@ -19,7 +19,7 @@ const Layout = () => {
   return (
     <>
       <Header>
-        <h1>compagno</h1>
+        <a href="/">compagno</a>
       </Header>
       <Outlet />
     </>

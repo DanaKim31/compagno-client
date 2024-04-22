@@ -9,3 +9,7 @@ export const registerUser = async (user) => {
 export const loginUser = async (user) => {
   return await instance.post("login", user);
 };
+
+export const myPageInfo = async (id) => {
+  return await instance.get("myinfo/" + id);
+};
