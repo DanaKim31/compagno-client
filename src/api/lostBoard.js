@@ -1,7 +1,23 @@
 import axios from "axios";
 
+const getToken = () => {
+  return localStorage.getItem("token");
+};
+
+// 인증 필요한 RESTful API 가져올 때 기본 루트
+const authorize = axios.create({ baseURL: "http://localhost:8080/compagno/" });
+
+authorize.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// 인증 필요 없는 RESTful API 가져올 때 기본 루트
 const instance = axios.create({
-  baseURL: "http://localhost:8080/compagno/",
+  baseURL: "http://localhost:8080/compagno/public/",
 });
 
 const instanceComment = axios.create({
@@ -9,8 +25,10 @@ const instanceComment = axios.create({
 });
 
 // 분실 신청
+// http://localhost:8080/compagno/lostBoard
 export const createlostBoard = async (data) => {
-  return await instance.post(data);
+  // return await authorize.post("lostBoard", data);
+  return await instance.post("lostBoard", data);
 };
 
 // 전체 보기\
@@ -26,12 +44,12 @@ export const viewOneLosstBoard = async (code) => {
 
 // 게시글 수정
 export const updateLostBoard = async (data) => {
-  return await instance.put(data);
+  return await authorize.put(data);
 };
 
 // 게시글 삭제
 export const deleteLostBoard = async (code) => {
-  return await instance.delete("/" + code);
+  return await authorize.delete("/" + code);
 };
 
 // 검색 및 정렬

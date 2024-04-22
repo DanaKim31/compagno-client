@@ -1,6 +1,7 @@
 import { viewAllLostBoard } from "../../api/lostBoard";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
   display: flex;
@@ -8,22 +9,26 @@ const Div = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 50px;
-  width: 100vw;
+
+  .contentHeader {
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+  }
+
   h2 {
-    font-size: 2rem;
+    font-size: 3rem;
     margin-bottom: 50px;
   }
+  .addBtn {
+    width: 90px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
   .contents {
-    /* display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr; */
-    /* grid-template-rows: 200px 200px 200px; */
-    /* grid-column-gap: 100px; */
-    /* grid-row-gap: 70px; */
-    /* width: 70%; */
-    /* height: 70%; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 
-    display: flex;
-    flex-wrap: wrap;
     width: 80%;
 
     .content {
@@ -62,10 +67,20 @@ const ViewAllLostBoard = () => {
     lostAPI();
   }, []);
 
+  const navigate = useNavigate();
+  const onCreate = async () => {
+    navigate("/createLostBoard");
+  };
+
   return (
     <>
       <Div>
-        <h2>동물 신고 게시판</h2>
+        <div className="contentHeader">
+          <h2>동물 신고 게시판</h2>
+          <button className="addBtn" onClick={onCreate}>
+            게시글 작성
+          </button>
+        </div>
         <div className="contents">
           {losts.map((lost) => (
             <div key={lost.lostBoardCode}>
