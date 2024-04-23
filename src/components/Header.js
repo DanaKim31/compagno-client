@@ -11,7 +11,7 @@ const Header = () => {
           <div className="dropdown">
             <span className="dropbtn">동물 등록</span>
             <div className="dropdown-content">
-              <a href="#">대행기관</a>
+              <a href="/register-pet/insts">대행기관</a>
               <a href="#">FAQ</a>
             </div>
           </div>

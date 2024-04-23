@@ -9,9 +9,7 @@ header {
   width: 100%;
   height: 112px;
   z-index: 7000;
-  /* color: white; */
   font-size: 20px;
-  /* ==== */
   background-color: rgba(0, 0, 0, 0.2);
   -webkit-transition-duration: 0.4s;
   -webkit-transition-timing-function: ease;
@@ -19,11 +17,14 @@ header {
   transition-timing-function: ease;
 }
 
-header {
+.head {
   display: flex;
-  align-items: center;
-  font-size: 2rem;
   justify-content: space-between;
+  align-items: center;
+}
+
+header {
+  font-size: 2rem;
 }
 
 .down {
@@ -45,9 +46,8 @@ header a {
 .dropdown {
   display: inline-block;
   width: 146px;
-  height: 111px;
+  position: relative;
   right: 23px;
-  top: -1px;
 }
 
 .dropbtn {
@@ -56,7 +56,9 @@ header a {
   padding: 6px;
   color: rgb(33, 55, 70);
   cursor: pointer;
-  top: 41px;
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 
 #p {
@@ -67,20 +69,25 @@ header a {
   display: none;
   position: absolute;
   z-index: 1;
-  height: 112px;
-  top: 112px;
+  height: 75px;
+  top: 74px;
   width: 148px;
   right: -4px;
   background: rgb(175, 175, 175);
+  font-size: 1.2rem;
+  font-size: 0.9rem;
 }
 
 .dropdown-content a {
-  display: block;
+  display: grid;
   position: relative;
   align-items: center;
-  height: 56px;
-  top: 0px;
+  height: 76px;
+  top: -1px;
   background: rgb(175, 175, 175);
+  font-size: 1rem;
+
+  text-align: center;
 }
 
 .dropdown:hover .dropdown-content {
@@ -94,12 +101,9 @@ header a {
 
 .menu {
   display: flex;
-  width: 82%;
   height: 113px;
-  font-size: 1.2rem;
-  text-align: center;
   align-items: center;
-  justify-content: space-around;
+  width: 54%;
 }
 /* =========================================== */
 
@@ -107,7 +111,7 @@ header a {
 
 #toggle {
   position: absolute;
-  top: 30px;
+  top: 45px;
   right: 30px;
   width: 30px;
   height: 21px;
