@@ -3,8 +3,6 @@ import section1 from "../assets/images/Section1- 1.jpg";
 const Home = () => {
   return (
     <>
-      {/* <h2>나는야김현수</h2> */}
-      <Header />
       <section id="section1">
         <p className="fadeup">Compagno .</p>
         <h1 className="fadeup">우린 동물를 지키고 사랑합니다</h1>
