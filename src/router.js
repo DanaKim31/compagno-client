@@ -13,6 +13,11 @@ import ViewAllLostBoard from "./pages/lostBoard/ViewAllLostBoard";
 import CreateLostBoard from "./pages/lostBoard/CreateLostBoard";
 import Error from "./pages/Error";
 import Layout from "./components/Layout";
+import Add from "./pages/animalBoard/Add";
+import Home from "./pages/animalBoard/Home";
+import Edit from "./pages/animalBoard/Edit";
+import Detail from "./pages/animalBoard/Detail";
+import Error from "./pages/animalBoard/Error";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +71,26 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Layout />,
     children: [{ index: true, element: <Login /> }],
+  },
+  {
+    path: "/compagno/animal-board",
+    element: <Home />,
+  },
+  {
+    path: "/compagno/write-board",
+    element: <Add />,
+  },
+  {
+    path: "/compagno/edit-board/:animalBoardCode",
+    element: <Edit />,
+  },
+  {
+    path: "/compagno/animal-board/:animalBoardCode",
+    element: <Detail />,
+  },
+  {
+    path: "/compagno/error",
+    element: <Error />,
   },
 ]);
 
