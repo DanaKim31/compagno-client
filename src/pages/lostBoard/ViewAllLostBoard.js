@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
+import moment from "moment";
+
 const Div = styled.div`
   display: flex;
   flex-direction: column;
@@ -75,9 +77,20 @@ const ViewAllLostBoard = () => {
 
   const lostAPI = async () => {
     const response = await viewAllLostBoard();
-    console.log("response:" + response.data);
+    // console.log("response:" + response.data);
     setLosts(response.data);
   };
+
+  // const lostAll = Array.from(losts);
+  // const [formatDates, setFormatDates] = useState([]);
+  // // const formattedDate = new Date();
+  // for (let i = 0; i < lostAll.length; i++) {
+  //   console.log(lostAll[i].lostRegiDate);
+  //   const date = lostAll[i].lostRegiDate;
+  //   const formattedDate = moment(date).format("YY-MM-DD");
+  //   console.log(formattedDate);
+  //   setFormatDates(formattedDate);
+  // }
 
   useEffect(() => {
     lostAPI();
@@ -100,10 +113,14 @@ const ViewAllLostBoard = () => {
         <div className="contents">
           {losts.map((lost) => (
             <div key={lost.lostBoardCode}>
-              작성일 : {lost.lostRegiDate}
+              {lost.lostRegiDate}
+              {/* <div>{formattedDate}</div> */}
+
+              {/* {formatDates} */}
               <div className="content">
                 <h4>{lost.lostAnimalName}</h4>
                 이미지 : {lost.lostAnimalImage}
+                {/* <img src={lost.lostAnimalImage} /> */}
                 <div className="text">
                   신고자 닉네임 : {lost.userNickname}
                   <br />

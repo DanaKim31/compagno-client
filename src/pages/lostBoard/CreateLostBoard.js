@@ -143,7 +143,6 @@ const CreateLostBoard = () => {
   const [lostAnimalFeature, setLostAnimalFeater] = useState("");
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
   const [images, setImages] = useState([]);
-  // const [lostAnimalImage, setLostAnimalImage] = useState("");
 
   const rfidReges = (e) => {
     const regex = /^[0-9]{15}$/g;
@@ -160,6 +159,23 @@ const CreateLostBoard = () => {
   useEffect(() => {
     console.log(images);
   }, [images]);
+
+  const [imgSrc, setImgSrc] = useState([]);
+  const imageCreate = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+
+    let file;
+    for (let i = 0; i < files.length; i++) {
+      file = files[i];
+      const reader = new FileReader();
+      reader.onload = () => {
+        images[i] = reader.result;
+        setImgSrc([...images]);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const navigate = useNavigate();
   const okCreate = async () => {
@@ -179,7 +195,7 @@ const CreateLostBoard = () => {
     formData.append("lostAnimalFeature", lostAnimalFeature);
     formData.append("lostAnimalRFID", lostAnimalRFID);
     images.forEach((image, index) => {
-      formData.append(`files[${index}]`, image);
+      formData.append(`images[${index}]`, image);
       console.log(image);
     });
 
@@ -194,27 +210,23 @@ const CreateLostBoard = () => {
     console.log(images);
   };
 
-  const [imgSrc, setImgSrc] = useState([]);
-  const imageCreate = (e) => {
-    const files = Array.from(e.target.files);
-    setImages(files);
-    // setLostAnimalImage(files[0]);
+  // const [imgSrc, setImgSrc] = useState([]);
+  // const imageCreate = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   setImages(files);
+  //   // setLostAnimalImage(files[0]);
 
-    let file;
-    for (let i = 0; i < files.length; i++) {
-      file = files[i];
-      const reader = new FileReader();
-      reader.onload = () => {
-        images[i] = reader.result;
-        setImgSrc([...images]);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // useEffect(() => {
-  //   console.log("lostAnimalImage : " + lostAnimalImage.src);
-  // }, [lostAnimalImage]);
+  //   let file;
+  //   for (let i = 0; i < files.length; i++) {
+  //     file = files[i];
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       images[i] = reader.result;
+  //       setImgSrc([...images]);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const delCreate = async () => {
     await navigate("/compagno/lostBoard/viewAll");
