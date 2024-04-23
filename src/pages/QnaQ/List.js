@@ -30,7 +30,7 @@ const List = () => {
       console.log(secretPwd === pwd);
       console.log(code);
       if (secretPwd === pwd) {
-        navigate("/question/detail/" + code);
+        navigate("/compagno/question/detail/" + code);
       } else {
         alert("비밀번호가 일치하지 않습니다!");
         document.querySelector("#password").focus();
