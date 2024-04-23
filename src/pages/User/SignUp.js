@@ -8,7 +8,6 @@ const Div = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 107px);
 
   #bigHeader {
     font-size: 3rem;
@@ -312,7 +311,7 @@ const SignUp = () => {
       alert("조건 불만족! 전화번호 입력 확인");
     } else {
       await registerUser(user);
-      navigate("/");
+      navigate("/compagno");
       alert("회원가입 완료! 로그인하세요");
     }
   };

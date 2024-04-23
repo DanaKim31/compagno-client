@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { asyncLogin } from "../../store/user";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,15 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // 로그인 상태면 홈으로 되돌리기
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      navigate("/compagno");
+      alert("로그인 상태입니다. 메인페이지로 이동합니다.");
+    }
+  }, []);
+
   // 로그인 버튼 눌렀을때
   const submit = () => {
     console.log(user);
@@ -34,7 +43,7 @@ const Login = () => {
     } else {
       dispatch(asyncLogin(user));
       // 로그인 후 홈으로 이동 (새로고침과 같다)
-      navigate("/");
+      navigate("/compagno");
     }
   };
 

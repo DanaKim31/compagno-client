@@ -3,6 +3,7 @@ import styled from "styled-components";
 const Div = styled.div`
   height: calc(100vh - 107px);
   display: flex;
+  flex-direction: column;
   width: 20%;
 
   .mypage-menu {
@@ -28,6 +29,9 @@ const MyPageSidebar = () => {
   // 마이페이지에서 공통적으로 사용할 사이드바 메뉴
   return (
     <Div>
+      <div className="mypage-head">
+        <h1>마 이 페 이 지</h1>
+      </div>
       <div className="mypage-menu">
         <a href="/compagno/mypage/myinfo">내 정보</a>
         <a href="/compagno/mypage/myactivity">내 활동내역</a>

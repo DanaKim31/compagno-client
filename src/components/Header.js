@@ -1,10 +1,33 @@
 import "../assets/style.css";
+import { userSave, userLogout } from "../store/user";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
+
+  const logout = (e) => {
+    e.preventDefault(); // 원래 기능을 막는다, 여기서는 a 태그의 리다이렉트 기능을 막음
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    dispatch(userLogout());
+  };
+
   return (
     <>
       <header className="head">
-        <a href="logo" className="logo">
+        <a href="/compagno" className="logo">
           Compagno
         </a>
         <div className="menu">
@@ -52,11 +75,11 @@ const Header = () => {
           <div className="dropdown">
             <span className="dropbtn">마이페이지</span>
             <div className="dropdown-content">
-              <a href="#">계정정보 수정</a>
-              <a href="#">활동 내역</a>
+              <a href="/compagno/mypage/myinfo">계정정보 수정</a>
+              <a href="/compagno/mypage/myactivity">활동 내역</a>
             </div>
           </div>
-          <a href="/login">login</a>
+          <a href="/compagno/login">login</a>
           <div id="page">
             <div id="toggle">
               <div className="bar"></div>

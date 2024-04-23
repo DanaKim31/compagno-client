@@ -4,17 +4,21 @@ import { userSave } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
 
 const Div = styled.div`
   display: flex;
 
   .mypage-content {
-    background-color: skyblue;
     width: 100%;
 
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  Tabs {
   }
 `;
 
@@ -43,14 +47,22 @@ const MyPageMyInfo = () => {
     <Div>
       <MyPageSidebar />
       <div className="mypage-content">
-        <p>마이페이지 - 내 개인정보 페이지</p>
-        {Object.keys(user).length !== 0 ? (
-          <>
-            <h1>{user.userId}</h1>
-          </>
-        ) : (
-          <></>
-        )}
+        <Tabs
+          defaultActiveKey="profile"
+          id="justify-tab-example"
+          className="mb-3"
+          justify
+        >
+          <Tab eventKey="home" title="Home">
+            Tab content for Home
+          </Tab>
+          <Tab eventKey="profile" title="Profile">
+            Tab content for Profile
+          </Tab>
+          <Tab eventKey="contact" title="Contact">
+            Tab content for Contact
+          </Tab>
+        </Tabs>
       </div>
     </Div>
   );
