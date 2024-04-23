@@ -36,10 +36,34 @@ const QnaDetail = () => {
   // return state.user;
   // });
 
+  // 파일을 파일 길이만큼 돌려서 FileReader()를 통해 onload로 반복문 돌려서 reader.result;
+  // [...images]
+  // reader.readAsDataURL(file)
+  const [preview, setPreview] = useState([]);
+
+  const prevSet = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+
+    let file;
+    for (let i = 0; i < files.length; i++) {
+      file = files[i];
+      let reader = new FileReader();
+
+      reader.onload = () => {
+        images[i] = reader.result;
+        setPreview([...images]);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   // Q 세팅
   const questionAPI = async () => {
     const response = await getQuestion(qnaQCode);
-    setQuestion(response.data);
+    let question = response.data;
+    setQuestion(question);
+    console.log(question);
   };
 
   // 수정할 질문 세팅
@@ -52,8 +76,6 @@ const QnaDetail = () => {
 
     // 새로 추가된 이미지
     images.forEach((image, index) => {
-      console.log("image");
-      console.log(`files[${index}]`);
       formData.append(`files[${index}]`, image);
     });
 
@@ -88,6 +110,7 @@ const QnaDetail = () => {
     questionAPI();
     console.log(editQ?.qnaQCode === question.qnaQCode);
     answerAPI();
+
     // if (Object.keys(info).legnth === 0) {
     // setUser(JSON.parse(localStorage.getItem("user")));
     // } else {
@@ -156,6 +179,14 @@ const QnaDetail = () => {
       <div key={question.qnaQCode} className="question">
         {editQ !== null && editQ?.qnaQCode === question.qnaQCode ? (
           <>
+            <div>
+              {preview.map((imgSrc, i) => (
+                <div key={i}>
+                  <button type="button">업로드 이미지 제거</button>
+                  <img src={imgSrc} />
+                </div>
+              ))}
+            </div>
             <h1>수정중..</h1>
             <Form.Control
               type="text"
@@ -177,7 +208,7 @@ const QnaDetail = () => {
               type="file"
               multiple
               accept="image/*"
-              onChange={imageChange}
+              onChange={prevSet}
             />
             <Button variant="warning" onClick={questionUpdate}>
               수정
@@ -195,8 +226,25 @@ const QnaDetail = () => {
             <Button onClick={() => onUpdateQuestion(question)}>수정</Button>
             <Button>삭제</Button>
 
+            {/* <div>
+              {preview.map((preview, i) => (
+                <div key={i}>
+                  <img
+                    // src={"http://192.168.10.37:8081/upload/QnaQ" + question.images}
+                    src={preview}
+                    alt={preview}
+                  />
+                </div>
+              ))}
+            </div> */}
+
             <div>
-              <img src={question.image?.replace("")} />
+              {question.images?.map((image) => (
+                <img
+                  key={image.qnaQImgCode}
+                  src={"/upload/QnaQ/" + image.qnaQUrl}
+                />
+              ))}
             </div>
             <div>
               <p>{question.qnaQTitle}</p>

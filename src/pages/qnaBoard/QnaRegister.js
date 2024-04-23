@@ -36,6 +36,7 @@ const QnaRegister = () => {
     formData.append("qnaQContent", content);
     images.forEach((image, index) => {
       formData.append(`files[${index}]`, image);
+      console.log(image);
     });
     formData.append("secret", secret);
 
