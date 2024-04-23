@@ -8,13 +8,7 @@ const Div = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  #bigHeader {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 40px;
-    width: 600px;
-  }
+  height: calc(100vh - 112px);
 
   #register {
     width: 600px;
@@ -318,7 +312,6 @@ const SignUp = () => {
 
   return (
     <Div>
-      <div id="bigHeader">compagno.</div>
       <div id="register">
         <div className="input-content">
           <label htmlFor="userId">아이디</label>

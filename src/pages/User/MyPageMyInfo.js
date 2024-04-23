@@ -11,14 +11,13 @@ const Div = styled.div`
   display: flex;
 
   .mypage-content {
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
-  Tabs {
+  .mb-3 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: pink;
   }
 `;
 
@@ -46,24 +45,19 @@ const MyPageMyInfo = () => {
   return (
     <Div>
       <MyPageSidebar />
-      <div className="mypage-content">
-        <Tabs
-          defaultActiveKey="profile"
-          id="justify-tab-example"
-          className="mb-3"
-          justify
-        >
-          <Tab eventKey="home" title="Home">
-            Tab content for Home
-          </Tab>
-          <Tab eventKey="profile" title="Profile">
-            Tab content for Profile
-          </Tab>
-          <Tab eventKey="contact" title="Contact">
-            Tab content for Contact
-          </Tab>
-        </Tabs>
-      </div>
+      <Tabs
+        defaultActiveKey="profile"
+        id="fill-tab-example"
+        className="mb-3"
+        fill
+      >
+        <Tab eventKey="home" title="Home">
+          Tab content for Home
+        </Tab>
+        <Tab eventKey="profile" title="Profile">
+          Tab content for Profile
+        </Tab>
+      </Tabs>
     </Div>
   );
 };
