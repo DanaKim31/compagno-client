@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { asyncLogin } from "../../store/user";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
@@ -24,28 +24,29 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // 로그인 상태면 홈으로 되돌리기
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token !== null) {
-      navigate("/compagno");
-      alert("로그인 상태입니다. 메인페이지로 이동합니다.");
-    }
-  }, []);
+  const info = useSelector((state) => {
+    return state.user;
+  });
 
   // 로그인 버튼 눌렀을때
   const submit = () => {
-    console.log(user);
-    if (user.userId === "" || user.userId === undefined) {
-      alert("아이디를 입력하세요!");
-    } else if (user.userPwd === "" || user.userPwd === undefined) {
-      alert("비밀번호를 입력하세요!");
-    } else {
-      dispatch(asyncLogin(user));
-      // 로그인 후 홈으로 이동 (새로고침과 같다)
+    dispatch(asyncLogin(user));
+  };
+
+  useEffect(() => {
+    if (Object.keys(info).length !== 0) {
+      localStorage.setItem("token", info.token);
+      localStorage.setItem("user", JSON.stringify(info));
       navigate("/compagno");
     }
-  };
+  }, [info]);
+
+  useEffect(() => {
+    if (localStorage.length !== 0) {
+      alert("로그인 중입니다. 메인페이지로 이동합니다.");
+      navigate("/compagno");
+    }
+  }, []);
 
   return (
     <>
@@ -66,7 +67,7 @@ const Login = () => {
             setUser((prev) => ({ ...prev, userPwd: e.target.value }))
           }
         />
-        <button onClick={submit}>로긴로긴로긴</button>
+        <button onClick={submit}>login</button>
       </Div>
     </>
   );

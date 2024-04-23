@@ -2,8 +2,10 @@ import "../assets/style.css";
 import { userSave, userLogout } from "../store/user";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const user = useSelector((state) => {
@@ -22,6 +24,8 @@ const Header = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     dispatch(userLogout());
+    alert("로그아웃하여 메인페이지로 이동합니다.");
+    navigate("/compagno");
   };
 
   return (
@@ -72,14 +76,28 @@ const Header = () => {
               <a href="#">QnA</a>
             </div>
           </div>
-          <div className="dropdown">
-            <span className="dropbtn">마이페이지</span>
-            <div className="dropdown-content">
-              <a href="/compagno/mypage/myinfo">계정정보 수정</a>
-              <a href="/compagno/mypage/myactivity">활동 내역</a>
-            </div>
-          </div>
-          <a href="/compagno/login">login</a>
+
+          {Object.keys(user).length !== 0 ? (
+            <>
+              {" "}
+              <div className="dropdown">
+                <span className="dropbtn">마이페이지</span>
+                <div className="dropdown-content">
+                  <a href="/compagno/mypage/myinfo">계정정보 수정</a>
+                  <a href="/compagno/mypage/myactivity">활동 내역</a>
+                </div>
+              </div>
+              <a href="" onClick={logout}>
+                logout
+              </a>
+            </>
+          ) : (
+            <>
+              <a href="/compagno/signup">sigup</a>
+              <a href="/compagno/login">login</a>
+            </>
+          )}
+
           <div id="page">
             <div id="toggle">
               <div className="bar"></div>
