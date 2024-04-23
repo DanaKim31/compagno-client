@@ -2,13 +2,13 @@ import axios from "axios";
 
 // 인증이 필요 x
 const instance = axios.create({
-  baseURL: "http://localhost:8080/compagno/",
+  baseURL: "http://localhost:8080/compagno/public/",
 });
 
-// 인증 필요 o
-// const authorize = axios.create({
-//   baseURL: "http://localhost:8080/compagno/",
-// });
+//인증 필요 o
+const authorize = axios.create({
+  baseURL: "http://localhost:8080/compagno/",
+});
 
 // 목록 보기
 export const getQuestions = async () => {
@@ -21,8 +21,8 @@ export const getQuestion = async (no) => {
 };
 
 // 수정하기
-export const updateQuestion = async (data) => {
-  return await instance.put("question", data);
+export const updateQuestion = (data) => {
+  return instance.put("question", data);
 };
 
 // 추가하기

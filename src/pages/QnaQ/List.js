@@ -131,6 +131,13 @@ const List = () => {
           ))}
         </tbody>
       </Table>
+      <Button
+        onClick={() => {
+          navigate("/question/register");
+        }}
+      >
+        등록
+      </Button>
     </>
   );
 };

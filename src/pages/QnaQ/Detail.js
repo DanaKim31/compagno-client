@@ -8,6 +8,7 @@ import {
 } from "../../api/Answer";
 import { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
+// import { useSelector } from "react-redux";
 
 const Detail = () => {
   // 해당 페이지 qnaQCode
@@ -24,10 +25,50 @@ const Detail = () => {
 
   const navigate = useNavigate();
 
+  // user 세팅
+  // const info = useSelector((state) => {
+  // return state.user;
+  // });
+
   // Q 세팅
   const questionAPI = async () => {
     const response = await getQuestion(qnaQCode);
     setQuestion(response.data);
+  };
+
+  // 수정할 질문 세팅
+  const questionUpdate = async () => {
+    const formData = new FormData();
+
+    formData.append("qnaQCode", editQ.qnaQCode);
+    formData.append("qnaQTitle", editQ.qnaQTitle);
+    formData.append("qnaQContent", editQ.qnaQContent);
+
+    // 새로 추가된 이미지
+    images.forEach((image, index) => {
+      console.log("image");
+      console.log(`files[${index}]`);
+      formData.append(`files[${index}]`, image);
+    });
+
+    formData.append("qnaQCode", editQ.qnaQCode);
+
+    formData.append("images", []);
+
+    // editQ.images.forEach((image, index) => {
+    //   formData.append(`images[${index}]`, image.qnaQUrl);
+    // });
+
+    await updateQuestion(formData);
+    setImages([]);
+    setEditQ(null);
+
+    questionAPI();
+  };
+
+  // 질문 수정 폼으로 질문 정보 전달
+  const onUpdateQuestion = async (data) => {
+    await setEditQ(data);
   };
 
   // A 세팅
@@ -38,17 +79,20 @@ const Detail = () => {
 
   // 첫 로딩 시 세팅
   useEffect(() => {
-    answerAPI();
     questionAPI();
-    console.log(answer === "");
-    console.log(answer);
+    console.log(editQ?.qnaQCode === question.qnaQCode);
+    answerAPI();
+    // if (Object.keys(info).legnth === 0) {
+    // setUser(JSON.parse(localStorage.getItem("user")));
+    // } else {
+    // setUser(info);
+    // }
   }, []);
 
   // 답변 등록
   const answerSubmit = async () => {
     const formData = new FormData();
 
-    formData.append("id", user.id);
     formData.append("qnaQCode", qnaQCode);
     formData.append("qnaATitle", title);
     formData.append("qnaAContent", content);
@@ -60,8 +104,8 @@ const Detail = () => {
   };
 
   const imageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImages(files);
+    const images = Array.from(e.target.files);
+    setImages(images);
   };
 
   // 답변 삭제
@@ -78,10 +122,12 @@ const Detail = () => {
 
   const deleteImage = () => {};
 
+  // 답변 취소
   const cancelAnswer = () => {
     setEditA(null);
   };
 
+  // 답변 수정
   const answerUpdate = async () => {
     const formData = new FormData();
     formData.append("id", user.id);
@@ -100,13 +146,56 @@ const Detail = () => {
 
   return (
     <>
-      <div className="question">
-        <h1>Question</h1>
-        <p>{question.qnaQTitle}</p>
-        <p>{question.qnaQDate}</p>
-        <p>{question.userId}</p>
-        <p>{question.userNickname}</p>
-        <p>{question.qnaQContent}</p>
+      <h1>Question</h1>
+      <div key={question.qnaQCode} className="question">
+        {editQ !== null && editQ?.qnaQCode === question.qnaQCode ? (
+          <>
+            <h1>수정중..</h1>
+            <Form.Control
+              type="text"
+              placeholder="제목"
+              value={editQ.qnaQTitle}
+              onChange={(e) =>
+                setEditQ((prev) => ({ ...prev, qnaQTitle: e.target.value }))
+              }
+            />
+            <Form.Control
+              type="textarea"
+              placeholder="내용"
+              value={editQ.qnaQContent}
+              onChange={(e) => {
+                setEditQ((prev) => ({ ...prev, qnaQContent: e.target.value }));
+              }}
+            />
+            <Form.Control
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={imageChange}
+            />
+            <Button variant="warning" onClick={questionUpdate}>
+              수정
+            </Button>
+            <Button
+              onClick={() => {
+                navigate("/question");
+              }}
+            >
+              취소
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={() => onUpdateQuestion(question)}>수정</Button>
+            <Button>삭제</Button>
+            <p>{question.qnaQCode}</p>
+            <p>{question.qnaQTitle}</p>
+            <p>{question.qnaQDate}</p>
+            <p>{question.userId}</p>
+            <p>{question.userNickname}</p>
+            <p>{question.qnaQContent}</p>
+          </>
+        )}
       </div>
 
       {/* {answer.map((answer) => ( */}
@@ -146,7 +235,7 @@ const Detail = () => {
           <div>
             <h1>Answer</h1>
             {/* 관리자 && (작성자 id = 로그인 유저 id) */}
-            <button onClick={onUpdateAnswer}>수정</button>
+            <button>수정</button>
             <button>삭제</button>
           </div>
           <p>{answer.qnaATitle}</p>
