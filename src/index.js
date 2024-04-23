@@ -1,14 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
-import "./asset/reset.css";
 import router from "./router";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./assets/reset.css";
 import store from "./store";
 import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  //   <Provider store={store}>
-  <RouterProvider router={router} />
-  //   </Provider>
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );
