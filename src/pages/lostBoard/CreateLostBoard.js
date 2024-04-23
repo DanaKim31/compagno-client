@@ -157,6 +157,10 @@ const CreateLostBoard = () => {
     console.log(lostAnimalRFID);
   }, [lostAnimalRFID]);
 
+  useEffect(() => {
+    console.log(images);
+  }, [images]);
+
   const navigate = useNavigate();
   const okCreate = async () => {
     const formData = new FormData();
@@ -174,10 +178,9 @@ const CreateLostBoard = () => {
     formData.append("lostAnimalAge", lostAnimalAge);
     formData.append("lostAnimalFeature", lostAnimalFeature);
     formData.append("lostAnimalRFID", lostAnimalRFID);
-    // formData.append("lostAnimalImage", lostAnimalImage);
-
     images.forEach((image, index) => {
       formData.append(`files[${index}]`, image);
+      console.log(image);
     });
 
     if (lostAnimalRFID !== "") {
@@ -187,6 +190,8 @@ const CreateLostBoard = () => {
       alert("마이크로칩(RFID) 번호가 잘못 입력되었습니다. 다시 입력해주세요.");
       navigate("/compagno/lostBoard/create");
     }
+
+    console.log(images);
   };
 
   const [imgSrc, setImgSrc] = useState([]);
