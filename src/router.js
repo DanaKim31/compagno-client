@@ -18,10 +18,6 @@ import AnimalDetail from "./pages/animalBoard/Detail";
 
 const router = createBrowserRouter([
   {
-    path: "/compagno/animal-board/:animalBoardCode",
-    element: <AnimalDetail />,
-  },
-  {
     path: "/compagno",
     element: <Layout />,
     errorElement: <Error />,
@@ -44,7 +40,13 @@ const router = createBrowserRouter([
       },
       {
         path: "animal-board",
-        element: <AnimalHome />,
+        children: [
+          { index: true, element: <AnimalHome /> },
+          {
+            path: ":animalBoardCode",
+            element: <AnimalDetail />,
+          },
+        ],
       },
       {
         path: "write-board",

@@ -1,5 +1,5 @@
-import Header from "../components/Header";
-import section1 from "../assets/images/Section1- 1.jpg";
+import { useState, useEffect } from "react";
+
 const Home = () => {
   return (
     <>
@@ -8,9 +8,9 @@ const Home = () => {
         <h1 className="fadeup">우린 동물를 지키고 사랑합니다</h1>
         <div className="reveal">
           <div className="image-wrap">
-            <img src={section1} alt="" />
-            <img src="../Compagno/resource/Section1- 2.jpg" alt="" />
-            <img src="../Compagno/resource/Section1- 3.jpg" alt="" />
+            <img src="../assets/images/Section1-1.jpg" alt="" />
+            <img src="../assets/images/Section1-2.jpg" alt="" />
+            <img src="../assets/images/Section1-3.jpg" alt="" />
           </div>
         </div>
       </section>
