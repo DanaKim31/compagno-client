@@ -4,7 +4,13 @@ import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+const Div = styled.div`
+  position: relative;
+  top: 200px;
+`;
+
 const Table = styled.table`
+  padding-top: 200px;
   margin-left: 400px;
   width: 50%;
   tbody {
@@ -12,7 +18,7 @@ const Table = styled.table`
   }
 `;
 
-const List = () => {
+const QnaList = () => {
   const [questions, setQuestions] = useState([]);
   const navigate = useNavigate();
 
@@ -30,7 +36,7 @@ const List = () => {
       console.log(secretPwd === pwd);
       console.log(code);
       if (secretPwd === pwd) {
-        navigate("/question/detail/" + code);
+        navigate("/compagno/question/detail/" + code);
       } else {
         alert("비밀번호가 일치하지 않습니다!");
         document.querySelector("#password").focus();
@@ -84,7 +90,7 @@ const List = () => {
   }, []);
 
   return (
-    <>
+    <Div>
       <CenterModal show={modalShow} onHide={() => setModalShow(false)} />
       <Table>
         <thead>
@@ -138,7 +144,7 @@ const List = () => {
       >
         등록
       </Button>
-    </>
+    </Div>
   );
 };
-export default List;
+export default QnaList;

@@ -9,8 +9,14 @@ import {
 import { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 // import { useSelector } from "react-redux";
+import styled from "styled-components";
 
-const Detail = () => {
+const Div = styled.div`
+  position: relative;
+  top: 200px;
+`;
+
+const QnaDetail = () => {
   // 해당 페이지 qnaQCode
   const { qnaQCode } = useParams();
 
@@ -55,7 +61,7 @@ const Detail = () => {
 
     // formData.append("images", []);
 
-    editQ.images.forEach((image, index) => {
+    editQ.images?.forEach((image, index) => {
       formData.append(`images[${index}]`, image.qnaQUrl);
     });
 
@@ -145,7 +151,7 @@ const Detail = () => {
   };
 
   return (
-    <>
+    <Div>
       <h1>Question</h1>
       <div key={question.qnaQCode} className="question">
         {editQ !== null && editQ?.qnaQCode === question.qnaQCode ? (
@@ -178,7 +184,7 @@ const Detail = () => {
             </Button>
             <Button
               onClick={() => {
-                navigate("/question");
+                navigate("/compagno/question");
               }}
             >
               취소
@@ -188,12 +194,17 @@ const Detail = () => {
           <>
             <Button onClick={() => onUpdateQuestion(question)}>수정</Button>
             <Button>삭제</Button>
-            <p>{question.qnaQCode}</p>
-            <p>{question.qnaQTitle}</p>
-            <p>{question.qnaQDate}</p>
-            <p>{question.userId}</p>
-            <p>{question.userNickname}</p>
-            <p>{question.qnaQContent}</p>
+
+            <div>
+              <img src={question.image?.replace("")} />
+            </div>
+            <div>
+              <p>{question.qnaQTitle}</p>
+              <p>{question.qnaQDate}</p>
+              <p>{question.userId}</p>
+              <p>{question.userNickname}</p>
+              <p>{question.qnaQContent}</p>
+            </div>
           </>
         )}
       </div>
@@ -243,9 +254,9 @@ const Detail = () => {
         </div>
       )}
 
-      <button onClick={() => navigate("/question")}>목록</button>
-    </>
+      <button onClick={() => navigate("/compagno/question")}>목록</button>
+    </Div>
   );
 };
 
-export default Detail;
+export default QnaDetail;

@@ -2,8 +2,14 @@ import { useState } from "react";
 import { addQuestion } from "../../api/Question";
 import { useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
+import styled from "styled-components";
 
-const Register = () => {
+const Div = styled.div`
+  position: relative;
+  top: 200px;
+`;
+
+const QnaRegister = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
@@ -41,7 +47,7 @@ const Register = () => {
   };
 
   return (
-    <>
+    <Div>
       <h1>Question?</h1>
 
       <div>
@@ -76,8 +82,8 @@ const Register = () => {
         </Button>
         <Button onClick={cancel}>취소</Button>
       </div>
-    </>
+    </Div>
   );
 };
 
-export default Register;
+export default QnaRegister;
