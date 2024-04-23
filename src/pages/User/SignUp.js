@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { registerUser } from "../../api/user";
+import { registerUser, checkDupId, checkDupNick } from "../../api/user";
 import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
@@ -19,6 +19,20 @@ const Div = styled.div`
 
   #register {
     width: 600px;
+  }
+
+  .idChkZone {
+    width: 100%;
+    display: flex;
+  }
+
+  .nickChkBtn,
+  .idChkBtn {
+    width: 30%;
+    background-color: gray;
+    border: none;
+    color: white;
+    box-sizing: border-box;
   }
 
   .input-content {
@@ -45,7 +59,7 @@ const Div = styled.div`
     height: 25px;
     color: coral;
   }
-  button {
+  .registerBtn {
     width: 100%;
     cursor: pointer;
     background: black;
@@ -61,7 +75,7 @@ const SignUp = () => {
   // 정규표현식
   const idRegexp = /^[a-zA-Z][a-zA-Z0-9]{7,14}$/; // 아이디
   const pwdRegexp = /^[a-zA-Z0-9!-~]{8,14}$/; // 비밀번호
-  const nameRegexp = /^[a-zA-Z0-9가-힣]{2,20}$/; // 이름
+  const nameRegexp = /^[a-zA-Z가-힣]{2,20}$/; // 이름
   const nickRegexp = /^[a-zA-Z0-9가-힣]{3,20}$/; // 닉네임
   const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 이메일
   const phoneRegexp = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/; // 전화번호
@@ -80,6 +94,10 @@ const SignUp = () => {
 
   const [user, setUser] = useState({ userId: "" });
 
+  // id 및 닉네임 중복검사를 위한 초기값 설정
+  const [checkId, setCheckId] = useState(8);
+  const [checkNick, setCheckNick] = useState(8);
+
   // 경고문구 초기화
   const [userIdSpan, setUserIdSpan] = useState("");
   const [userPwdSpan, setUserPwdSpan] = useState("");
@@ -88,6 +106,8 @@ const SignUp = () => {
   const [userNicknameSpan, setUserNicknameSpan] = useState("");
   const [userEmailSpan, setUserEmailSpan] = useState("");
   const [userPhoneSpan, setUserPhoneSpan] = useState("");
+  const [checkIdSpan, setCheckIdSpan] = useState("");
+  const [checkNickSpan, setCheckNickSpan] = useState("");
 
   /* --------------------------- 정규표현식 체크하는 함수 모음 --------------------------- */
   // 입력한 아이디 정규표현식으로 체크하는 함수
@@ -196,11 +216,60 @@ const SignUp = () => {
     onChangePhone();
   }, [user.userPhone]);
 
+  /* --------------------------- 아이디 입력값 중복확인  --------------------------- */
+  const idCheck = async () => {
+    try {
+      const checkIdResult = await checkDupId(user.userId);
+      setCheckId(checkIdResult.data);
+    } catch (err) {
+      alert("아이디를 입력해주세요");
+    }
+  };
+
+  const onChangeIdChkSpan = () => {
+    if (checkId === 8 || checkId === 0) {
+      setCheckIdSpan("");
+    } else {
+      setCheckIdSpan("사용 불가능한 아이디입니다.");
+    }
+  };
+
+  useEffect(() => {
+    onChangeIdChkSpan();
+  }, [idCheck]);
+
+  /* --------------------------- 닉네임 입력값 중복확인  --------------------------- */
+  const nickCheck = async () => {
+    try {
+      const checkNickResult = await checkDupNick(user.userNickname);
+      setCheckNick(checkNickResult.data);
+      console.log("닉네임 검사 결과 : " + checkNick);
+    } catch (err) {
+      alert("닉네임을 입력해주세요");
+    }
+  };
+
+  const onChangeNickChkSpan = () => {
+    if (checkNick === 8 || checkNick === 0) {
+      setCheckNickSpan("");
+    } else {
+      setCheckNickSpan("사용 불가능한 닉네임입니다.");
+    }
+  };
+
+  useEffect(() => {
+    onChangeNickChkSpan();
+  }, [nickCheck]);
+
   /* --------------------------- 회원가입 작동 함수 --------------------------- */
   // 조건을 만족하면 회원가입 버튼 작동
   const register = async () => {
     if (!idRegexp.test(user.userId) || user.userId === "") {
       alert("조건 불만족! 아이디 입력 확인");
+    } else if (checkId == 8) {
+      alert("아이디 중복확인을 해주세요");
+    } else if (checkId != 0) {
+      alert("사용 불가한 아이디입니다.");
     } else if (
       !pwdRegexp.test(user.userPwd) ||
       user.userPwd === "" ||
@@ -225,6 +294,10 @@ const SignUp = () => {
       user.userNickname === undefined
     ) {
       alert("조건 불만족! 닉네임 입력 확인");
+    } else if (checkNick == 8) {
+      alert("닉네임 중복확인을 해주세요");
+    } else if (checkNick != 0) {
+      alert("사용 불가한 닉네임입니다.");
     } else if (
       !emailRegexp.test(user.userEmail) ||
       user.userEmail === "" ||
@@ -259,7 +332,12 @@ const SignUp = () => {
                 setUser((prev) => ({ ...prev, userId: e.target.value }));
               }}
             />
-
+            <div className="idChkZone">
+              <button className="idChkBtn" onClick={idCheck}>
+                중복확인
+              </button>
+              <span className="idChkSpan">{checkIdSpan}</span>
+            </div>
             <span className="regExpMessage">{userIdSpan}</span>
           </div>
         </div>
@@ -323,6 +401,12 @@ const SignUp = () => {
                 }));
               }}
             />
+            <div className="nickChkZone">
+              <button className="nickChkBtn" onClick={nickCheck}>
+                중복확인
+              </button>
+              <span className="nickChkSpan">{checkNickSpan}</span>
+            </div>
             <span className="regExpMessage">{userNicknameSpan}</span>
           </div>
         </div>
@@ -360,7 +444,9 @@ const SignUp = () => {
             <span className="regExpMessage">{userPhoneSpan}</span>
           </div>
         </div>
-        <button onClick={register}>회원가입</button>
+        <button onClick={register} className="registerBtn">
+          회원가입
+        </button>
       </div>
     </Div>
   );

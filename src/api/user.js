@@ -13,3 +13,11 @@ export const loginUser = async (user) => {
 export const myPageInfo = async (id) => {
   return await instance.get("myinfo/" + id);
 };
+
+export const checkDupId = async (id) => {
+  return await instance.get("signUp/checkid/" + id);
+};
+
+export const checkDupNick = async (nickname) => {
+  return await instance.get("signUp/checknick/" + nickname);
+};
