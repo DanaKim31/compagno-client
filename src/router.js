@@ -9,6 +9,10 @@ import Home from "./pages/Home";
 import Login from "./pages/User/Login";
 import MyPageMyInfo from "./pages/User/MyPageMyInfo";
 import MyPageMyActivity from "./pages/User/MyPageMyActivity";
+import ViewAllLostBoard from "./pages/lostBoard/ViewAllLostBoard";
+import CreateLostBoard from "./pages/lostBoard/CreateLostBoard";
+import Error from "./pages/Error";
+import Layout from "./components/Layout";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +49,23 @@ const router = createBrowserRouter([
         element: <Detail />,
       },
     ],
+  },
+  {
+    path: "/viewAllLostBoard",
+    element: <Layout />,
+    errorElement: <Error />,
+    children: [{ index: true, element: <ViewAllLostBoard /> }],
+    // element: <ViewAllLostBoard />,
+  },
+  {
+    path: "/createLostBoard",
+    element: <Layout />,
+    children: [{ index: true, element: <CreateLostBoard /> }],
+  },
+  {
+    path: "/login",
+    element: <Layout />,
+    children: [{ index: true, element: <Login /> }],
   },
 ]);
 
