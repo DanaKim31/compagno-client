@@ -170,7 +170,7 @@ const CreateLostBoard = () => {
     console.log("fromData : " + formData.userNickname);
     await createlostBoard(formData);
 
-    navigate("/viewAllLostBoard");
+    navigate("/compagno/lostBoard/viewAll");
   };
 
   const [imgSrc, setImgSrc] = useState([]);
@@ -191,7 +191,7 @@ const CreateLostBoard = () => {
   };
 
   const delCreate = async () => {
-    await navigate("/viewAllLostBoard");
+    await navigate("/compagno/lostBoard/viewAll");
   };
 
   return (

@@ -84,7 +84,7 @@ const ViewAllLostBoard = () => {
 
   const navigate = useNavigate();
   const onCreate = async () => {
-    navigate("/createLostBoard");
+    navigate("/compagno/lostBoard/create");
   };
 
   return (

@@ -21,7 +21,7 @@ const Register = () => {
   };
 
   const cancel = () => {
-    navigate("/question");
+    navigate("/compagno/question");
   };
 
   const add = async () => {
@@ -37,7 +37,7 @@ const Register = () => {
     console.log(images);
 
     await addQuestion(formData);
-    navigate("/question");
+    navigate("/compagno/question");
   };
 
   return (

@@ -1,4 +1,4 @@
-import { getProductBoard, searchProductBoard } from "../api/productBoard";
+import { getProductBoard, searchProductBoard } from "../../api/productBoard";
 import { useState, useEffect } from "react";
 
 const ProductBoard = () => {

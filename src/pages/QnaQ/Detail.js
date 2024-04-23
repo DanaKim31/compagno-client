@@ -178,7 +178,7 @@ const Detail = () => {
             </Button>
             <Button
               onClick={() => {
-                navigate("/question");
+                navigate("/compagno/question");
               }}
             >
               취소
@@ -243,7 +243,7 @@ const Detail = () => {
         </div>
       )}
 
-      <button onClick={() => navigate("/question")}>목록</button>
+      <button onClick={() => navigate("/compagno/question")}>목록</button>
     </>
   );
 };

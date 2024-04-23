@@ -30,7 +30,7 @@ const List = () => {
       console.log(secretPwd === pwd);
       console.log(code);
       if (secretPwd === pwd) {
-        navigate("/question/detail/" + code);
+        navigate("/compagno/question/detail/" + code);
       } else {
         alert("비밀번호가 일치하지 않습니다!");
         document.querySelector("#password").focus();
@@ -103,13 +103,13 @@ const List = () => {
               <td>
                 {question.secret === "" || question.secret == null ? (
                   // 비밀번호가 걸려있지 않을 때
-                  <a href={`/question/detail/${question.qnaQCode}`}>
+                  <a href={`/compagno/question/detail/${question.qnaQCode}`}>
                     {question.qnaQTitle}
                   </a>
                 ) : (
                   // 비밀번호가 걸려있을 때
                   <a
-                    href={`/question/detail/${question.qnaQCode}`}
+                    href={`/compagno/question/detail/${question.qnaQCode}`}
                     onClick={(e) => {
                       e.preventDefault();
                       setModalShow(true);
@@ -133,7 +133,7 @@ const List = () => {
       </Table>
       <Button
         onClick={() => {
-          navigate("/question/register");
+          navigate("/compagno/question/register");
         }}
       >
         등록
