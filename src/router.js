@@ -1,12 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "./components/Layout";
-import RegisterInstitution from "./pages/register pet/RegisterInstitution";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <RegisterInstitution />,
-    // children: [{ index: true, element: <RegisterInstitution />}],
+    path: "/", //  경로
+    element: <Home />,
   },
 ]);
 
