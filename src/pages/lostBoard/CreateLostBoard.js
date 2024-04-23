@@ -1,13 +1,13 @@
 import { createlostBoard } from "../../api/lostBoard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-
+import { useSelector, useDispatch } from "react-redux";
 import { FaShieldDog } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
-// import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { userSave } from "../../store/user";
 
 const Div = styled.div`
   display: flex;
@@ -18,7 +18,8 @@ const Div = styled.div`
 
   input {
     margin: 5px 10px;
-    width: 30%;
+    width: 80%;
+    height: 30px;
   }
 
   h1 {
@@ -50,7 +51,47 @@ const Div = styled.div`
         display: flex;
         flex-direction: column;
         table {
-          margin-top: 20px;
+          margin-top: 10px;
+          tr {
+            height: 60px;
+            /* background-color: pink; */
+            display: flex;
+            align-items: center;
+            th {
+              border-right: 1px solid black;
+              padding-right: 50px;
+            }
+            td {
+              padding-left: 20px;
+              width: 100%;
+            }
+          }
+          td {
+            label {
+              cursor: pointer;
+              display: inline-block;
+              color: gray;
+
+              input[type="file"] {
+                display: none;
+              }
+              .images {
+                display: flex;
+
+                div {
+                  margin: 0px 20px;
+                  img {
+                    width: 200px;
+                    height: 200px;
+                  }
+                }
+              }
+            }
+            label:hover {
+              color: green;
+              font-weight: bold;
+            }
+          }
         }
       }
     }
@@ -68,7 +109,19 @@ const Div = styled.div`
 `;
 
 const CreateLostBoard = () => {
-  // const [user, setUser] = useState({});
+  const dispatch = useDispatch();
+
+  // 유저정보 가지고온다
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
 
   const [userNickname, setUserNickname] = useState("");
   const [userPhone, setUserPhone] = useState("");
@@ -84,23 +137,22 @@ const CreateLostBoard = () => {
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
   const [images, setImages] = useState([]);
 
-  // const info = useSelector((state) => {
-  //   return state.user;
-  // });
-
-  // useEffect(() => {
-  //   if (Object.keys(info).length === 0) {
-  //     setUser(JSON.parse(localStorage.getItem("user")));
-  //   } else {
-  //     setUser(info);
-  //   }
-  // }, []);
+  const rfidReges = async (e) => {
+    const regex = /^[0-9]{10}$/g;
+    if (regex.test(e.target.value)) {
+      await setLostAnimalRFID(e.target.value);
+      console.log("rfid type : ", typeof e.target.value);
+      console.log("lostAnimalRFID : " + lostAnimalRFID);
+    }
+  };
 
   const navigate = useNavigate();
   const okCreate = async () => {
     const formData = new FormData();
-    formData.append("userNickname", userNickname);
-    formData.append("userPhone", userPhone);
+    formData.append("userId", user.userId);
+    formData.append("userImg", user.userImg);
+    formData.append("userNickname", user.userNickname);
+    formData.append("userPhone", user.userPhone);
     formData.append("lostDate", lostDate);
     formData.append("lostLocation", lostLocation);
     formData.append("lostLocationDetail", lostLocationDetail);
@@ -114,18 +166,34 @@ const CreateLostBoard = () => {
     images.forEach((image, index) => {
       formData.append(`files[${index}]`, image);
     });
+
+    console.log("fromData : " + formData.userNickname);
     await createlostBoard(formData);
+
     navigate("/viewAllLostBoard");
   };
 
+  const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
+
+    let file;
+    for (let i = 0; i < files.length; i++) {
+      file = files[i];
+      const reader = new FileReader();
+      reader.onload = () => {
+        images[i] = reader.result;
+        setImgSrc([...images]);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const delCreate = async () => {
     await navigate("/viewAllLostBoard");
   };
+
   return (
     <Div>
       <h1>동물 분실 등록</h1>
@@ -140,21 +208,13 @@ const CreateLostBoard = () => {
               <tr>
                 <th>신고자 닉네임</th>
                 <td>
-                  <input
-                    type="text"
-                    value={userNickname}
-                    onChange={(e) => setUserNickname(e.target.value)}
-                  />
+                  <input type="text" value={user.userNickname} readOnly />
                 </td>
               </tr>
               <tr>
                 <th>신고자 연락처</th>
                 <td>
-                  <input
-                    type="text"
-                    value={userPhone}
-                    onChange={(e) => setUserPhone(e.target.value)}
-                  />
+                  <input type="text" value={user.userPhone} readOnly />
                 </td>
               </tr>
             </table>
@@ -253,6 +313,7 @@ const CreateLostBoard = () => {
                   <input
                     type="text"
                     value={lostAnimalAge}
+                    placeholder="숫자로 입력해주세요"
                     onChange={(e) => setLostAnimalAge(e.target.value)}
                   />
                 </td>
@@ -272,20 +333,34 @@ const CreateLostBoard = () => {
                 <td>
                   <input
                     type="text"
-                    value={lostAnimalRFID}
-                    onChange={(e) => setLostAnimalRFID(e.target.value)}
+                    placeholder="15자리숫자입력해주세요"
+                    // value={lostAnimalRFID}
+                    maxLength="15"
+                    onChange={rfidReges}
+                    // onChange={(e) => rfidReges(e.target.value)}
+                    // onChange={(e) => setLostAnimalRFID(e.target.value)}
                   />
                 </td>
               </tr>
               <tr>
                 <th>사진첨부</th>
                 <td>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={imageCreate}
-                  />
+                  <label>
+                    사진 업로드 추가
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={imageCreate}
+                    />
+                    <div className="images">
+                      {imgSrc.map((img, i) => (
+                        <div key={i}>
+                          <img src={img} />
+                        </div>
+                      ))}
+                    </div>
+                  </label>
                 </td>
               </tr>
             </table>
@@ -297,7 +372,6 @@ const CreateLostBoard = () => {
             설정 및 기타
           </h3>
           <div className="pContent">
-            <label>분실신고 게시판 노출 여부</label>
             <label>자동입력 방지 문자입력</label>
           </div>
         </div>

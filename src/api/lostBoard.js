@@ -27,8 +27,8 @@ const instanceComment = axios.create({
 // 분실 신청
 // http://localhost:8080/compagno/lostBoard
 export const createlostBoard = async (data) => {
-  // return await authorize.post("lostBoard", data);
-  return await instance.post("lostBoard", data);
+  return await authorize.post("lostBoard", data);
+  // return await instance.post("lostBoard", data);
 };
 
 // 전체 보기\

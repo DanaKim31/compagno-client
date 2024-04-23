@@ -1,62 +1,65 @@
-import { Container, Form, Button } from "react-bootstrap";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-// import { asyncLogin } from "../store/user";
+import { useState } from "react";
 import { asyncLogin } from "../../store/user";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const H1 = styled.h1`
-  font-size: 3rem;
-  margin-top: 30px;
+const Div = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 100px);
+
+  #register {
+    text-align: center;
+    width: 800px;
+    height: 800px;
+    border: 1px solid black;
+    background-color: skyblue;
+  }
 `;
 
 const Login = () => {
-  const [user, setUser] = useState({ id: "", password: "" });
-
+  const [user, setUser] = useState({ userId: "", userPwd: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const info = useSelector((state) => {
-    return state.user;
-  });
-
-  useEffect(() => {
-    console.log(info);
-  }, [info]);
-
+  // 로그인 버튼 눌렀을때
   const submit = () => {
-    dispatch(asyncLogin(user));
     console.log(user);
-    navigate("/"); // 새로고침과 같음
+    if (user.userId === "" || user.userId === undefined) {
+      alert("아이디를 입력하세요!");
+    } else if (user.userPwd === "" || user.userPwd === undefined) {
+      alert("비밀번호를 입력하세요!");
+    } else {
+      dispatch(asyncLogin(user));
+      // 로그인 후 홈으로 이동 (새로고침과 같다)
+      navigate("/viewAllLostBoard");
+    }
   };
 
   return (
-    <Container>
-      <H1>로그인</H1>
-      <Form.Control
-        type="text"
-        placeholder="아이디"
-        style={{ marginBottom: "10px" }}
-        value={user.id}
-        onChange={(e) => setUser((prev) => ({ ...prev, id: e.target.value }))}
-      />
-      <Form.Control
-        type="password"
-        placeholder="비밀번호"
-        value={user.password}
-        onChange={(e) =>
-          setUser((prev) => ({ ...prev, password: e.target.value }))
-        }
-      />
-      <Button
-        variant="dark"
-        style={{ width: "100%", marginTop: "10px" }}
-        onClick={submit}
-      >
-        로그인
-      </Button>
-    </Container>
+    <>
+      <Div>
+        <input
+          type="text"
+          placeholder="아이디"
+          value={user.userId}
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, userId: e.target.value }))
+          }
+        />
+        <input
+          type="password"
+          placeholder="비밀번호"
+          value={user.userPwd}
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, userPwd: e.target.value }))
+          }
+        />
+        <button onClick={submit}>로긴로긴로긴</button>
+      </Div>
+    </>
   );
 };
 export default Login;

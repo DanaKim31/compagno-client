@@ -2,7 +2,8 @@ import { viewAllLostBoard } from "../../api/lostBoard";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { userSave } from "../../store/user";
 const Div = styled.div`
   display: flex;
   flex-direction: column;
@@ -55,6 +56,20 @@ const Div = styled.div`
 `;
 
 const ViewAllLostBoard = () => {
+  const dispatch = useDispatch();
+
+  // 유저정보 가지고온다
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
+
   const [losts, setLosts] = useState([]);
 
   const lostAPI = async () => {
