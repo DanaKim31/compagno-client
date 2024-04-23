@@ -1,13 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout";
-import Register from "./pages/QnaQ/Register";
-import List from "./pages/QnaQ/List";
-import QnaDetail from "./pages/QnaQ/Detail";
-import SignUp from "./pages/User/SignUp";
+import Register from "./pages/qna/Register";
+import List from "./pages/qna/List";
+import QnaDetail from "./pages/qna/Detail";
+import SignUp from "./pages/user/SignUp";
 import Home from "./pages/Home";
-import Login from "./pages/User/Login";
-import MyPageMyInfo from "./pages/User/MyPageMyInfo";
-import MyPageMyActivity from "./pages/User/MyPageMyActivity";
+import Login from "./pages/user/Login";
+import MyPageMyInfo from "./pages/user/MyPageMyInfo";
+import MyPageMyActivity from "./pages/user/MyPageMyActivity";
 import ViewAllLostBoard from "./pages/lostBoard/ViewAllLostBoard";
 import CreateLostBoard from "./pages/lostBoard/CreateLostBoard";
 import Error from "./pages/Error";
@@ -18,67 +18,63 @@ import AnimalDetail from "./pages/animalBoard/Detail";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/compagno",
     element: <Layout />,
+    errorElement: <Error />,
     children: [
       { index: true, element: <Home /> },
       {
-        path: "compagno/signUp",
+        path: "signUp",
         element: <SignUp />,
       },
       {
-        path: "compagno/login",
+        path: "login",
         element: <Login />,
       },
       {
-        path: "compagno/mypage/myinfo",
-        element: <MyPageMyInfo />,
+        path: "mypage",
+        children: [
+          { path: "myinfo", element: <MyPageMyInfo /> },
+          { path: "myactivity", element: <MyPageMyActivity /> },
+        ],
       },
       {
-        path: "compagno/mypage/myactivity",
-        element: <MyPageMyActivity />,
+        path: "animal-board",
+        children: [
+          { index: true, element: <AnimalHome /> },
+          {
+            path: ":animalBoardCode",
+            element: <AnimalDetail />,
+          },
+        ],
       },
       {
-        path: "compagno/animal-board",
-        element: <AnimalHome />,
-      },
-      {
-        path: "compagno/write-board",
+        path: "write-board",
         element: <Add />,
       },
       {
-        path: "compagno/edit-board/:animalBoardCode",
+        path: "edit-board/:animalBoardCode",
         element: <Edit />,
       },
       {
-        path: "compagno/animal-board/:animalBoardCode",
-        element: <AnimalDetail />,
+        path: "question",
+        children: [
+          { index: true, element: <List /> },
+          { path: "register", element: <Register /> },
+          {
+            path: "detail/:qnaQCode",
+            element: <QnaDetail />,
+          },
+        ],
       },
-    ],
-  },
-  {
-    path: "/compagno/question",
-    element: <Layout />,
-    children: [
-      { index: true, element: <List /> },
-      { path: "register", element: <Register /> },
       {
-        path: "detail/:qnaQCode",
-        element: <QnaDetail />,
+        path: "lostBoard",
+        children: [
+          { path: "viewAll", element: <ViewAllLostBoard /> },
+          { path: "create", element: <CreateLostBoard /> },
+        ],
       },
     ],
-  },
-  {
-    path: "/compagno/lostBoard/viewAll",
-    element: <Layout />,
-    errorElement: <Error />,
-    children: [{ index: true, element: <ViewAllLostBoard /> }],
-    // element: <ViewAllLostBoard />,
-  },
-  {
-    path: "/compagno/lostBoard/create",
-    element: <Layout />,
-    children: [{ index: true, element: <CreateLostBoard /> }],
   },
 ]);
 
