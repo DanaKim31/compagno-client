@@ -53,11 +53,11 @@ const Detail = () => {
 
     formData.append("qnaQCode", editQ.qnaQCode);
 
-    formData.append("images", []);
+    // formData.append("images", []);
 
-    // editQ.images.forEach((image, index) => {
-    //   formData.append(`images[${index}]`, image.qnaQUrl);
-    // });
+    editQ.images.forEach((image, index) => {
+      formData.append(`images[${index}]`, image.qnaQUrl);
+    });
 
     await updateQuestion(formData);
     setImages([]);

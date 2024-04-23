@@ -6,13 +6,13 @@ import Detail from "./pages/QnaQ/Detail";
 
 const router = createBrowserRouter([
   {
-    path: "/question",
+    path: "/compagno/question",
     element: <Layout />,
     children: [
       { index: true, element: <List /> },
-      { path: "/question/register", element: <Register /> },
+      { path: "register", element: <Register /> },
       {
-        path: "/question/detail/:qnaQCode",
+        path: "detail/:qnaQCode",
         element: <Detail />,
       },
     ],
