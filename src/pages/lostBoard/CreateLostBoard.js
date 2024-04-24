@@ -8,6 +8,8 @@ import { FaUser } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { userSave } from "../../store/user";
+import moment from "moment";
+import "moment/locale/ko";
 
 const Div = styled.div`
   display: flex;
@@ -125,7 +127,6 @@ const CreateLostBoard = () => {
   const user = useSelector((state) => {
     return state.user;
   });
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null) {
@@ -133,8 +134,8 @@ const CreateLostBoard = () => {
     }
   }, []);
 
-  // const [userNickname, setUserNickname] = useState("");
-  // const [userPhone, setUserPhone] = useState("");
+  const [userNickname, setUserNickname] = useState("");
+  const [userPhone, setUserPhone] = useState("");
   const [lostDate, setLostDate] = useState("");
   const [lostLocation, setLostLocatioin] = useState("");
   const [lostLocationDetail, setLostLocationDetail] = useState("");
@@ -142,24 +143,34 @@ const CreateLostBoard = () => {
   const [lostAnimalKind, setLostAnimalKind] = useState("");
   const [lostAnimalColor, setLostAnimalColor] = useState("");
   const [lostAnimalGender, setLostAnimalGender] = useState("");
-  const [lostAnimalAge, setLostAnimalAge] = useState(0);
+  const [lostAnimalAge, setLostAnimalAge] = useState("");
   const [lostAnimalFeature, setLostAnimalFeater] = useState("");
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
   const [images, setImages] = useState([]);
+  const [lostRegiDate, setLostRegiDate] = useState("");
 
+  // lostRegiDate 오늘 날짜 입력
+  const lostRegiDateAPI = async () => {
+    const nowTime = moment().format("YYYY-MM-DD");
+    await setLostRegiDate(nowTime);
+  };
+  useEffect(() => {
+    lostRegiDateAPI();
+  }, []);
+
+  // RFID 정규표현식
   const rfidReges = (e) => {
     const regex = /^[0-9]{15}$/g;
-
     if (regex.test(e.target.value)) {
       setLostAnimalRFID(Number(e.target.value));
     }
   };
 
+  // 이미지 미리보기
   const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
-
     let file;
     for (let i = 0; i < files.length; i++) {
       file = files[i];
@@ -175,13 +186,11 @@ const CreateLostBoard = () => {
   // 축종이 기타일 경우
   const selectList = ["-------", "개", "고양이", "기타"];
   // const [Selected, setSelected] = useState("");
-
   // const [lostAnimalKind, setLostAnimalKind] = useState("");
   // const [state, setState] = useState(true);
   // const [states, setStates] = useState(true);
   const handleSelect = (e) => {
     setLostAnimalKind(e.target.value);
-
     // if (e.target.value == "기타") {
     //   setState(false);
     //   setStates(false);
@@ -191,7 +200,6 @@ const CreateLostBoard = () => {
     //   setStates(true);
     // }
   };
-
   useEffect(() => {
     console.log("dsf : " + lostAnimalKind);
   }, [lostAnimalKind]);
@@ -213,6 +221,7 @@ const CreateLostBoard = () => {
     formData.append("lostAnimalAge", lostAnimalAge);
     formData.append("lostAnimalFeature", lostAnimalFeature);
     formData.append("lostAnimalRFID", lostAnimalRFID);
+    formData.append("lostRegiDate", lostRegiDate);
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
       console.log(image);
@@ -226,9 +235,43 @@ const CreateLostBoard = () => {
       navigate("/compagno/lostBoard/create");
     }
 
-    console.log(images);
+    // if (
+    //   (lostAnimalRFID ||
+    //     lostAnimalName ||
+    //     lostDate ||
+    //     lostLocation ||
+    //     lostAnimalKind ||
+    //     lostAnimalGender) == ""
+    // ) {
+    //   alert("잘못 입력되거나 미입력란이 있습니다. 다시 입력해주세요.");
+    //   navigate("/compagno/lostBoard/create");
+    // } else {
+    //   console.log("아래까지 내려옴");
+    //   await createlostBoard(formData);
+    // }
+
+    // navigate("/compagno/lostBoard/create");
+
+    // if (lostAnimalName == "") {
+    //   alert("분실 동물 입력을 작성해주세요.");
+    // }
+    // if (lostDate == "") {
+    //   alert("분실 날짜를 지정해주세요.");
+    // }
+    // if (lostLocation == "") {
+    //   alert("분실 지역을 작성해주세요.");
+    // }
+    // if (lostAnimalKind == "") {
+    //   alert("분실 동물 축종을 선택해주세요.");
+    // }
+    // if (lostAnimalGender == "") {
+    //   alert("분실 동물 성별을 선택해주세요.");
+    // }
+    // console.log("아래까지 내려옴");
+    // await createlostBoard(formData);
   };
 
+  // 게시글 작성 취소
   const delCreate = () => {
     navigate("/compagno/lostBoard/viewAll");
   };
@@ -246,6 +289,12 @@ const CreateLostBoard = () => {
                     <h3>
                       <FaUser />
                       분실 신고자 정보
+                      <input
+                        type="text"
+                        value={lostRegiDate}
+                        onChange={lostRegiDateAPI}
+                        hidden
+                      />
                     </h3>
                   </td>
                 </tr>
@@ -254,13 +303,23 @@ const CreateLostBoard = () => {
                 <tr>
                   <th>신고자 닉네임</th>
                   <td>
-                    <input type="text" value={user.userNickname} readOnly />
+                    <input
+                      type="text"
+                      value={user.userNickname}
+                      onChange={(e) => setUserNickname(e.target.value)}
+                      readOnly
+                    />
                   </td>
                 </tr>
                 <tr>
                   <th>신고자 연락처</th>
                   <td>
-                    <input type="text" value={user.userPhone} readOnly />
+                    <input
+                      type="text"
+                      value={user.userPhone}
+                      onChange={(e) => setUserPhone(e.target.value)}
+                      readOnly
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -282,7 +341,7 @@ const CreateLostBoard = () => {
               </thead>
               <tbody>
                 <tr>
-                  <th>분실 날짜</th>
+                  <th>분실 날짜*</th>
                   <td>
                     <input
                       type="Date"
@@ -293,7 +352,7 @@ const CreateLostBoard = () => {
                 </tr>
 
                 <tr>
-                  <th>분실 장소</th>
+                  <th>분실 장소*</th>
                   <td>
                     <input
                       type="text"
@@ -331,7 +390,7 @@ const CreateLostBoard = () => {
               </thead>
               <tbody>
                 <tr>
-                  <th>분실 동물 이름</th>
+                  <th>분실 동물 이름*</th>
                   <td>
                     <input
                       type="text"
@@ -341,7 +400,7 @@ const CreateLostBoard = () => {
                   </td>
                 </tr>
                 <tr>
-                  <th>축종</th>
+                  <th>축종*</th>
                   <td>
                     <select onChange={handleSelect} value={lostAnimalKind}>
                       {selectList.map((item) => {
@@ -374,7 +433,7 @@ const CreateLostBoard = () => {
                   </td>
                 </tr>
                 <tr>
-                  <th>성별</th>
+                  <th>성별*</th>
                   <td>
                     <label>
                       <input
@@ -410,6 +469,7 @@ const CreateLostBoard = () => {
                   <td>
                     <input
                       type="number"
+                      min={0}
                       value={lostAnimalAge}
                       placeholder="숫자로 입력해주세요"
                       onChange={(e) => setLostAnimalAge(e.target.value)}
@@ -462,7 +522,7 @@ const CreateLostBoard = () => {
             </table>
           </div>
         </div>
-        <div className="option">
+        {/* <div className="option">
           <h3>
             <IoSettingsOutline />
             설정 및 기타
@@ -470,7 +530,7 @@ const CreateLostBoard = () => {
           <div className="pContent">
             <label>자동입력 방지 문자입력</label>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="btn">
         <button className="okBtn" onClick={okCreate}>

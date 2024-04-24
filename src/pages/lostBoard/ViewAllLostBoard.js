@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import moment from "moment";
-
+import "moment/locale/ko";
 const Div = styled.div`
   display: flex;
   flex-direction: column;
