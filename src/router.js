@@ -15,6 +15,7 @@ import Add from "./pages/animalBoard/Add";
 import AnimalHome from "./pages/animalBoard/Home";
 import Edit from "./pages/animalBoard/Edit";
 import AnimalDetail from "./pages/animalBoard/Detail";
+import ViewLostBoard from "./pages/lostBoard/ViewLostBoard";
 
 const router = createBrowserRouter([
   {
@@ -70,8 +71,12 @@ const router = createBrowserRouter([
       {
         path: "lostBoard",
         children: [
-          { path: "viewAll", element: <ViewAllLostBoard /> },
+          {
+            path: "viewAll",
+            element: <ViewAllLostBoard />,
+          },
           { path: "create", element: <CreateLostBoard /> },
+          { path: "view/:lostBoardCode", element: <ViewLostBoard /> },
         ],
       },
     ],

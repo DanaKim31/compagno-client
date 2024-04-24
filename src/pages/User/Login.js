@@ -34,7 +34,7 @@ const Login = () => {
     } else {
       dispatch(asyncLogin(user));
       // 로그인 후 홈으로 이동 (새로고침과 같다)
-      navigate("/");
+      navigate("/compagno");
     }
   };
 

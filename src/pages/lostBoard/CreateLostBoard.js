@@ -99,6 +99,9 @@ const Div = styled.div`
               width: 16px;
             }
           }
+          #kindInputBox {
+            width: 40%;
+          }
         }
       }
     }
@@ -130,8 +133,8 @@ const CreateLostBoard = () => {
     }
   }, []);
 
-  const [userNickname, setUserNickname] = useState("");
-  const [userPhone, setUserPhone] = useState("");
+  // const [userNickname, setUserNickname] = useState("");
+  // const [userPhone, setUserPhone] = useState("");
   const [lostDate, setLostDate] = useState("");
   const [lostLocation, setLostLocatioin] = useState("");
   const [lostLocationDetail, setLostLocationDetail] = useState("");
@@ -152,14 +155,6 @@ const CreateLostBoard = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(lostAnimalRFID);
-  }, [lostAnimalRFID]);
-
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
-
   const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
     const files = Array.from(e.target.files);
@@ -176,6 +171,30 @@ const CreateLostBoard = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  // 축종이 기타일 경우
+  const selectList = ["-------", "개", "고양이", "기타"];
+  // const [Selected, setSelected] = useState("");
+
+  // const [lostAnimalKind, setLostAnimalKind] = useState("");
+  // const [state, setState] = useState(true);
+  // const [states, setStates] = useState(true);
+  const handleSelect = (e) => {
+    setLostAnimalKind(e.target.value);
+
+    // if (e.target.value == "기타") {
+    //   setState(false);
+    //   setStates(false);
+    // } else {
+    //   // setLostAnimalKind("");
+    //   setState(true);
+    //   setStates(true);
+    // }
+  };
+
+  useEffect(() => {
+    console.log("dsf : " + lostAnimalKind);
+  }, [lostAnimalKind]);
 
   const navigate = useNavigate();
   const okCreate = async () => {
@@ -210,26 +229,8 @@ const CreateLostBoard = () => {
     console.log(images);
   };
 
-  // const [imgSrc, setImgSrc] = useState([]);
-  // const imageCreate = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   setImages(files);
-  //   // setLostAnimalImage(files[0]);
-
-  //   let file;
-  //   for (let i = 0; i < files.length; i++) {
-  //     file = files[i];
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       images[i] = reader.result;
-  //       setImgSrc([...images]);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  const delCreate = async () => {
-    await navigate("/compagno/lostBoard/viewAll");
+  const delCreate = () => {
+    navigate("/compagno/lostBoard/viewAll");
   };
 
   return (
@@ -340,13 +341,26 @@ const CreateLostBoard = () => {
                   </td>
                 </tr>
                 <tr>
-                  <th>축종/품종</th>
+                  <th>축종</th>
                   <td>
-                    <input
+                    <select onChange={handleSelect} value={lostAnimalKind}>
+                      {selectList.map((item) => {
+                        return (
+                          <option value={item} key={item}>
+                            {item}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {/* <input
+                      id="kindInputBox"
                       type="text"
                       value={lostAnimalKind}
                       onChange={(e) => setLostAnimalKind(e.target.value)}
-                    />
+                      placeholder="축종 기타 선택 시 입력 "
+                      readOnly={state}
+                      disabled={states}
+                    /> */}
                   </td>
                 </tr>
                 <tr>

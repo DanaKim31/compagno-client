@@ -32,10 +32,15 @@ const Div = styled.div`
   .contents {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-
+    grid-row-gap: 20px;
     width: 80%;
 
-    .content {
+    .regiDate {
+      display: flex;
+      justify-content: right;
+      margin-right: 30px;
+    }
+    .contentDetail {
       border: 1px solid gray;
       height: 250px;
       margin: 20px;
@@ -51,21 +56,22 @@ const Div = styled.div`
         height: 77%;
         border-top: 1px dashed green;
         display: flex;
-
         align-items: center;
       }
+    }
+    .contentDetail:hover {
+      background-color: yellow;
+      cursor: pointer;
     }
   }
 `;
 
 const ViewAllLostBoard = () => {
-  const dispatch = useDispatch();
-
   // 유저정보 가지고온다
+  const dispatch = useDispatch();
   const user = useSelector((state) => {
     return state.user;
   });
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null) {
@@ -73,32 +79,52 @@ const ViewAllLostBoard = () => {
     }
   }, []);
 
+  // 전체 정보 불러오기
   const [losts, setLosts] = useState([]);
-
   const lostAPI = async () => {
     const response = await viewAllLostBoard();
-    // console.log("response:" + response.data);
     setLosts(response.data);
   };
-
-  // const lostAll = Array.from(losts);
-  // const [formatDates, setFormatDates] = useState([]);
-  // // const formattedDate = new Date();
-  // for (let i = 0; i < lostAll.length; i++) {
-  //   console.log(lostAll[i].lostRegiDate);
-  //   const date = lostAll[i].lostRegiDate;
-  //   const formattedDate = moment(date).format("YY-MM-DD");
-  //   console.log(formattedDate);
-  //   setFormatDates(formattedDate);
-  // }
 
   useEffect(() => {
     lostAPI();
   }, []);
 
+  // 입력 날짜 형식 변경
+  const lostAll = Array.from(losts);
+  const [formatRegiDates, setFormatRegiDates] = useState([]);
+  const regiDateRender = () => {
+    for (let i = 0; i < lostAll.length; i++) {
+      // console.log(lostAll[i].lostRegiDate);
+      const regiDate = lostAll[i].lostRegiDate;
+
+      const formattedRegiDate = moment(regiDate).format("YY-MM-DD");
+
+      setFormatRegiDates(formattedRegiDate);
+    }
+  };
+
+  // 분실 날짜 형식 변경
+  const [formatLostDates, setFormatLostDates] = useState([]);
+  const lostDateRender = () => {
+    for (let i = 0; i < lostAll.length; i++) {
+      const date = lostAll[i].lostDate;
+      const formattedDate = moment(date).format("YY-MM-DD");
+      setFormatLostDates(formattedDate);
+    }
+  };
+  useEffect(() => {
+    regiDateRender();
+    lostDateRender();
+  });
+
   const navigate = useNavigate();
   const onCreate = async () => {
     navigate("/compagno/lostBoard/create");
+  };
+
+  const view = (code) => {
+    navigate("/compagno/lostBoard/view/" + code);
   };
 
   return (
@@ -113,14 +139,17 @@ const ViewAllLostBoard = () => {
         <div className="contents">
           {losts.map((lost) => (
             <div key={lost.lostBoardCode}>
-              {lost.lostRegiDate}
-              {/* <div>{formattedDate}</div> */}
-
-              {/* {formatDates} */}
-              <div className="content">
+              {/* <div className="regiDate">{formatRegiDates}</div> */}
+              <div className="regiDate">{lost.lostRegiDate}</div>
+              <div
+                className="contentDetail"
+                onClick={() => view(lost.lostBoardCode)}
+              >
                 <h4>{lost.lostAnimalName}</h4>
-                이미지 : {lost.lostAnimalImage}
-                {/* <img src={lost.lostAnimalImage} /> */}
+                이미지 :{lost.lostAnimalImage}
+                {/* <img
+                  src={lost.lostAnimalImage?.replace("file", "localhost:3030")}
+                /> */}
                 <div className="text">
                   신고자 닉네임 : {lost.userNickname}
                   <br />
@@ -129,6 +158,7 @@ const ViewAllLostBoard = () => {
                   성별 : {lost.lostAnimalGender}
                   <br />
                   실종일 : {lost.lostDate}
+                  실종일 : {formatLostDates}
                   <br />
                   실종지역 : {lost.lostLocation}
                   <br />

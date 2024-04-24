@@ -28,7 +28,6 @@ const instanceComment = axios.create({
 // http://localhost:8080/compagno/lostBoard
 export const createlostBoard = async (data) => {
   return await authorize.post("lostBoard", data);
-  // return await instance.post("lostBoard", data);
 };
 
 // 전체 보기\
@@ -38,7 +37,7 @@ export const viewAllLostBoard = async () => {
 };
 
 // 1개 보기
-export const viewOneLosstBoard = async (code) => {
+export const viewOneLostBoard = async (code) => {
   return await instance.get("/" + code);
 };
 
