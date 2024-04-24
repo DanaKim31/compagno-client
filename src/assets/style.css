@@ -20,6 +20,8 @@ header {
   -webkit-transition-timing-function: ease;
   transition-duration: 0.4s;
   transition-timing-function: ease;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 .head {
@@ -809,11 +811,48 @@ span img {
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
   display: flex;
+  color: white;
+}
+
+.footer h1 {
+  font-size: 7.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.info {
+  display: flex;
+}
+
+.service {
+  flex-direction: column;
+  font-size: 1.2rem;
+  position: relative;
+  padding: 44px;
+  left: 141px;
+  bottom: -19px;
+  height: 348px;
+  text-align: center;
+}
+
+.service a {
+  color: white;
 }
 
 .person {
-  width: 40%;
+  width: 13%;
   display: flex;
+  flex-direction: column;
+  position: relative;
+  left: 332px;
+  height: 351px;
+  top: 60px;
+}
+
+.sns {
+  position: relative;
+  bottom: 5px;
+  left: 173px;
 }
 
 .sns a {
@@ -823,8 +862,11 @@ span img {
   font-size: 3rem;
   padding: 10px;
   padding-right: 10px;
+  margin: 10px;
+  position: relative;
+  top: 200px;
 }
 
 .sns a:hover {
-  color: yellow;
+  color: rgb(33, 55, 70);
 }

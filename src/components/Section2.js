@@ -1,5 +1,4 @@
 import "../assets/style.css";
-import { useEffect } from "react";
 
 // 화면 노출 관련 js
 const Section2 = () => {
@@ -32,7 +31,6 @@ const Section2 = () => {
   };
 
   Section(); // Section2 함수 호출
-
   return (
     <>
       <section id="section2">

@@ -19,58 +19,88 @@ const Footer = () => {
               <h1>Compagno</h1>
               <h3></h3>
               <p></p>
-            </div>
-            <div>
-              <div>
-                <h2></h2>
+              <div className="sns">
+                <a href="">
+                  <FaFacebookF className="i" />
+                </a>
+                <a href="">
+                  <FaLinkedinIn className="i" />
+                </a>
+                <a href="">
+                  <FaInstagram className="i" />
+                </a>
+                <a href="">
+                  <CiYoutube className="i" />
+                </a>
+                <a href="">
+                  <MdOutlineEmail className="i" />
+                </a>
               </div>
             </div>
-            <div className="sns">
-              <a href="">
-                <FaFacebookF className="i" />
-              </a>
-              <a href="">
-                <FaLinkedinIn className="i" />
-              </a>
-              <a href="">
-                <FaInstagram className="i" />
-              </a>
-              <a href="">
-                <CiYoutube className="i" />
-              </a>
-              <a href="">
-                <MdOutlineEmail className="i" />
-              </a>
+            <div className="info">
+              <div className="service">
+                <p>Service</p>
+                <a href="">name</a> <br />
+                <a href="">name</a> <br />
+                <a href="">name</a> <br />
+                <a href="">name</a> <br />
+                <a href="">name</a>
+              </div>
+              <div className="service">
+                <p>Service</p>
+                <a href="">name</a> <br />
+                <a href="">name</a> <br />
+                <a href="">name</a> <br />
+                <a href="">name</a> <br />
+                <a href="">name</a>
+              </div>
+              <div className="service">
+                <p>Service</p>
+                <a href="">name</a> <br />
+                <a href="">name</a> <br />
+                <a href="">name</a> <br />
+                <a href="">name</a> <br />
+                <a href="">name</a>
+              </div>
+            </div>
+            {/* 여기는 조원들 이름과 이메일 정보 */}
+            <div className="person">
+              <p>
+                name
+                <br />T +010-xxxx-xxxx <br />
+                kh123@naver.com
+              </p>
+              <p>
+                name
+                <br />T +010-xxxx-xxxx <br />
+                kh123@naver.com
+              </p>
+              <p>
+                name
+                <br />T +010-xxxx-xxxx <br />
+                kh123@naver.com
+              </p>
+              <p>
+                name
+                <br />T +010-xxxx-xxxx <br />
+                kh123@naver.com
+              </p>
             </div>
             <div className="person">
               <p>
                 name
-                <br />T +010-xxxx-xxxx kh123@naver.com
-              </p>
-              <br></br>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx kh123@naver.com
+                <br />T +010-xxxx-xxxx <br />
+                kh123@naver.com
               </p>
               <p>
                 name
-                <br />T +010-xxxx-xxxx kh123@naver.com
+                <br />T +010-xxxx-xxxx <br />
+                kh123@naver.com
               </p>
               <p>
                 name
-                <br />T +010-xxxx-xxxx kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx kh123@naver.com
+                <br />T +010-xxxx-xxxx <br />
+                kh123@naver.com
               </p>
             </div>
           </div>
