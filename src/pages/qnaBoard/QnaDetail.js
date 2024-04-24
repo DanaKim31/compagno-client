@@ -39,24 +39,57 @@ const QnaDetail = () => {
   // 파일을 파일 길이만큼 돌려서 FileReader()를 통해 onload로 반복문 돌려서 reader.result;
   // [...images]
   // reader.readAsDataURL(file)
-  const [preview, setPreview] = useState([]);
+  // const [preview, setPreview] = useState([]);
+  const [showImages, setShowImages] = useState([]);
 
-  const prevSet = (e) => {
-    const files = Array.from(e.target.files);
-    setImages(files);
-
-    let file;
-    for (let i = 0; i < files.length; i++) {
-      file = files[i];
-      let reader = new FileReader();
-
-      reader.onload = () => {
-        images[i] = reader.result;
-        setPreview([...images]);
-      };
-      reader.readAsDataURL(file);
-    }
+  const imageChange = (e) => {
+    const images = Array.from(e.target.files);
+    setImages(images);
   };
+
+  // const prevSet = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   // setImages(files);
+
+  //   let file;
+  //   for (let i = 0; i < files.length; i++) {
+  //     file = files[i];
+  //     let reader = new FileReader();
+
+  //     reader.onload = () => {
+  //       images[i] = reader.result;
+  //       setPreview([...images]);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+
+  const handleAddImages = (e) => {
+    imageChange(e);
+
+    const imageLists = e.target.files;
+    let imageUrlLists = [...showImages];
+
+    for (let i = 0; i < imageLists.length; i++) {
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(currentImageUrl);
+    }
+    setShowImages(imageUrlLists);
+  };
+
+  const handleDeleteImage = (id) => {
+    setShowImages(showImages.filter((_, index) => index !== id));
+  };
+
+  // setEditQ((prev) => {
+  //   return { ...prev, images: files };
+  // });
+  // console.log(Array.from(editQ.images));
+  // console.log(files);
+  // const editQImages = Array.from(editQ.images);
+
+  // files.push(editQImages);
+  // console.log(editQImages);
+  // console.log(files);
 
   // Q 세팅
   const questionAPI = async () => {
@@ -74,22 +107,24 @@ const QnaDetail = () => {
     formData.append("qnaQTitle", editQ.qnaQTitle);
     formData.append("qnaQContent", editQ.qnaQContent);
 
+    editQ.images?.forEach((image, index) => {
+      formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
+      formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
+      formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
+      console.log(image);
+      console.log(showImages);
+    });
+
     // 새로 추가된 이미지
     images.forEach((image, index) => {
       formData.append(`files[${index}]`, image);
     });
-
-    formData.append("qnaQCode", editQ.qnaQCode);
-
-    // formData.append("images", []);
-
-    editQ.images?.forEach((image, index) => {
-      formData.append(`images[${index}]`, image.qnaQUrl);
-    });
+    // setEditQ("images", showImages);
 
     await updateQuestion(formData);
     setImages([]);
     setEditQ(null);
+    console.log(showImages);
 
     questionAPI();
   };
@@ -132,11 +167,6 @@ const QnaDetail = () => {
     console.log("전송");
   };
 
-  const imageChange = (e) => {
-    const images = Array.from(e.target.files);
-    setImages(images);
-  };
-
   // 답변 삭제
   const onDeleteAnswer = async (code) => {
     await deleteAnswer(code);
@@ -149,7 +179,17 @@ const QnaDetail = () => {
     console.log("수정 버튼 눌렀어염");
   };
 
-  const deleteImage = () => {};
+  useEffect(() => {
+    console.log(images);
+  }, [images]);
+
+  const deleteImage = (code) => {
+    setEditQ((prev) => {
+      const images = prev.images.filter((image) => image.qnaQImgCode !== code);
+      console.log(images);
+      return { ...prev, images: images };
+    });
+  };
 
   // 답변 취소
   const cancelAnswer = () => {
@@ -180,10 +220,26 @@ const QnaDetail = () => {
         {editQ !== null && editQ?.qnaQCode === question.qnaQCode ? (
           <>
             <div>
-              {preview.map((imgSrc, i) => (
+              {editQ.images?.map((image) => (
+                <img
+                  alt=""
+                  key={image.qnaQImgCode}
+                  src={"http://localhost:8081" + image.qnaQUrl}
+                  onClick={() => deleteImage(image.qnaQImgCode)}
+                />
+              ))}
+              {/* {preview.map((imgSrc, i) => (
                 <div key={i}>
                   <button type="button">업로드 이미지 제거</button>
                   <img src={imgSrc} />
+                </div>
+              ))} */}
+              {showImages.map((image, id) => (
+                <div key={id}>
+                  <img src={image} alt={`${image}-${id}`} />
+                  <button onClick={() => handleDeleteImage(id)}>
+                    이미지 삭제하기
+                  </button>
                 </div>
               ))}
             </div>
@@ -208,7 +264,7 @@ const QnaDetail = () => {
               type="file"
               multiple
               accept="image/*"
-              onChange={prevSet}
+              onChange={handleAddImages}
             />
             <Button variant="warning" onClick={questionUpdate}>
               수정
@@ -238,14 +294,13 @@ const QnaDetail = () => {
               ))}
             </div> */}
 
-            <div>
-              {question.images?.map((image) => (
-                <img
-                  key={image.qnaQImgCode}
-                  src={"/upload/QnaQ/" + image.qnaQUrl}
-                />
-              ))}
-            </div>
+            {question.images?.map((image) => (
+              <img
+                alt=""
+                key={image.qnaQImgCode}
+                src={"http://localhost:8081" + image.qnaQUrl}
+              />
+            ))}
             <div>
               <p>{question.qnaQTitle}</p>
               <p>{question.qnaQDate}</p>
@@ -282,7 +337,7 @@ const QnaDetail = () => {
             type="file"
             multiple
             accept="image/*"
-            onChange={imageChange}
+            onChange={handleAddImages}
           />
           <Button variant="dark" onClick={answerSubmit}>
             답변 등록
