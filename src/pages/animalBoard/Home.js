@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import styled from "styled-components";
 import { viewBoardList } from "../../api/animalBoard";
 
+const Div = styled.div`
+  padding-top: 112px;
+`;
+
 // 여기서 viewAll 의 역할을 해줌
-const Home = () => {
+const AnimalHome = () => {
   const [boards, setBoard] = useState([]); // 여러개 = 배열
 
   const getBoard = async () => {
@@ -17,7 +21,7 @@ const Home = () => {
   }, []);
 
   return (
-    <>
+    <Div>
       <Link to="/compagno/write-board"> 글쓰기! </Link>
       <table>
         <thead>
@@ -46,8 +50,8 @@ const Home = () => {
           ))}
         </tbody>
       </table>
-    </>
+    </Div>
   );
 };
 
-export default Home;
+export default AnimalHome;

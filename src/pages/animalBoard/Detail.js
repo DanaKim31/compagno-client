@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   viewDetail,
   getComments,
@@ -10,20 +11,30 @@ import {
 import { Link } from "react-router-dom";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import styled from "styled-components";
-import { FaReply, FaReplyAll } from "react-icons/fa";
+import { FaReply } from "react-icons/fa";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import Dropdown from "react-bootstrap/Dropdown";
 // import DropdownToggle from "../../components/animalBoard/Dropdown";
 import React from "react";
 import ReplyComment from "../../components/animalBoard/ReplyComment";
-
+const Div = styled.div`
+  padding-top: 112px;
+`;
 const Comment = styled.div`
   display: flex;
-
   flex-direction: column;
   align-items: center;
   /* width: 1200px; */
   margin: auto;
+
+  .dropdown {
+    display: block;
+    width: auto;
+    height: auto;
+    right: 0;
+    top: 0;
+  }
+
   .contents-container {
     /* background-color: greenyellow; */
     width: 800px;
@@ -55,7 +66,7 @@ const Comment = styled.div`
   }
 `;
 
-const Detail = () => {
+const AnimalDetail = () => {
   const { animalBoardCode } = useParams();
   // console.log(animalBoardCode);
   // 현재 게시글 정보 불러오기
@@ -113,13 +124,22 @@ const Detail = () => {
   const [edit, setEdit] = useState({});
   const onUpdate = async (comment) => {
     console.log(comment);
-    setEdit(comment);
+    setEdit({
+      animalCommentCode: comment.animalCommentCode,
+      animalCommentContent: comment.animalCommentContent,
+      animalBoardCode: comment.animalBoardCode,
+      animalCommentDate: comment.animalCommentDate,
+      user: {
+        userId: "pigeon111",
+        userNickname: "비둘기111",
+      },
+    });
     // console.log(edit);
   };
   //댓글 수정하기
   const updateCommentC = async () => {
     await updateComment(edit);
-    console.log(edit);
+    setEdit({});
     animalBoardCommentAPI();
   };
   // 댓글 수정 취소
@@ -134,35 +154,52 @@ const Detail = () => {
 
   // 대댓글 달기
   const [boolean, setBoolean] = useState(false); // 추후 유저정보 토대로 boolean 예정
-  const [response, setResponse] = useState({}); // 부모 댓글 정보
-  const [responseReply, setResponseReply] = useState({
-    // 대댓글로 보낼 정보
-    animalBoardCode: animalBoardCode,
-    animalParentCode: comment.animalCommentCode,
+  const [response, setResponse] = useState({
+    // animalCommentCode: "",
     animalCommentContent: "",
+    animalBoardCode: 0,
+    // animalCommentDate: "",
+    animalParentCode: 0,
     user: {
       userId: "pigeon111",
       userNickname: "비둘기111",
     },
-  });
+  }); // 부모 댓글 정보
+  const [responseReply, setResponseReply] = useState({});
   const accessReply = async (comment) => {
     setResponse(comment); // 현재 클릭한 아이의 댓글정보
-    console.log(comment);
+    // console.log(comment);
+    // console.log(response);
 
     // if(user === null){
     //   alert("로그인 후 입력가능!")
     // }
     if (boolean) {
       setBoolean(false);
+      setResponse({});
     } else {
       setBoolean(true);
     }
   };
-  const addReply = async () => {
-    setResponseReply(responseReply);
-    console.log(responseReply);
-    await writeComment(responseReply);
+  const addReply = async (commentCode) => {
+    console.log(commentCode); // 부모 댓글코드 들어옴
+    // setResponse({});
+    console.log(response);
+    setResponse({
+      animalBoardCode: animalBoardCode,
+      animalParentCode: commentCode,
+      animalCommentContent: response.animalCommentContent,
+      user: {
+        userId: "pigeon111",
+        userNickname: "비둘기111",
+      },
+    });
+    console.log(response);
+    await writeComment(response);
+
+    animalBoardCommentAPI();
   };
+
   // 토글
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <HiOutlineDotsHorizontal
@@ -177,12 +214,13 @@ const Detail = () => {
   useEffect(() => {
     animalBoardAPI();
     animalBoardCommentAPI();
+    // setComment({});
     // viewAPI();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animalBoardCode]);
 
   return (
-    <>
+    <Div>
       <div className="App">
         <div className="container">
           <div className="row">
@@ -315,13 +353,16 @@ const Detail = () => {
                           aria-label="With textarea"
                           value={response.value}
                           onChange={(e) =>
-                            setResponseReply((prev) => ({
+                            setResponse((prev) => ({
                               ...prev,
                               animalCommentContent: e.target.value,
                             }))
                           }
                         />
-                        <Button variant="secondary" onClick={addReply}>
+                        <Button
+                          variant="secondary"
+                          onClick={() => addReply(comment.animalCommentCode)}
+                        >
                           대댓글추가!
                         </Button>
                         <Button
@@ -342,7 +383,7 @@ const Detail = () => {
           </div>
         ))}
       </Comment>
-    </>
+    </Div>
   );
 };
-export default Detail;
+export default AnimalDetail;
