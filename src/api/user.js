@@ -21,3 +21,7 @@ export const checkDupId = async (id) => {
 export const checkDupNick = async (nickname) => {
   return await instance.get("signUp/checknick/" + nickname);
 };
+
+export const changePwd = async (id) => {
+  return await instance.post("mypage/myinfo/" + id);
+};

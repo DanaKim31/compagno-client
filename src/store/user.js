@@ -25,7 +25,7 @@ const user = createSlice({
       return result;
     });
     builder.addCase(asyncLogin.rejected, (state, action) => {
-      alert("로그인 실패!");
+      alert("회원 정보가 존재하지 않습니다.");
     });
   },
 });
