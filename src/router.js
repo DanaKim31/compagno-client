@@ -15,70 +15,72 @@ import Add from "./pages/animalBoard/Add";
 import AnimalHome from "./pages/animalBoard/Home";
 import Edit from "./pages/animalBoard/Edit";
 import AnimalDetail from "./pages/animalBoard/Detail";
-
+import ViewAllProductBoard from "./pages/productBoard/ViewAllProductBoard";
+import ProductBoardDetail from "./pages/productBoard/ProductBoardDetail";
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/compagno/animal-board/:animalBoardCode",
+    element: <AnimalDetail />,
+  },
+  {
+    path: "/compagno",
     element: <Layout />,
+    errorElement: <Error />,
     children: [
       { index: true, element: <Home /> },
       {
-        path: "compagno/signUp",
+        path: "signUp",
         element: <SignUp />,
       },
       {
-        path: "compagno/login",
+        path: "login",
         element: <Login />,
       },
       {
-        path: "compagno/mypage/myinfo",
-        element: <MyPageMyInfo />,
+        path: "mypage",
+        children: [
+          { path: "myinfo", element: <MyPageMyInfo /> },
+          { path: "myactivity", element: <MyPageMyActivity /> },
+        ],
       },
       {
-        path: "compagno/mypage/myactivity",
-        element: <MyPageMyActivity />,
-      },
-      {
-        path: "compagno/animal-board",
+        path: " ",
         element: <AnimalHome />,
       },
       {
-        path: "compagno/write-board",
+        path: "write-board",
         element: <Add />,
       },
       {
-        path: "compagno/edit-board/:animalBoardCode",
+        path: "edit-board/:animalBoardCode",
         element: <Edit />,
       },
       {
-        path: "compagno/animal-board/:animalBoardCode",
-        element: <AnimalDetail />,
+        path: "question",
+        children: [
+          { index: true, element: <List /> },
+          { path: "register", element: <Register /> },
+          {
+            path: "detail/:qnaQCode",
+            element: <QnaDetail />,
+          },
+        ],
       },
-    ],
-  },
-  {
-    path: "/compagno/question",
-    element: <Layout />,
-    children: [
-      { index: true, element: <List /> },
-      { path: "register", element: <Register /> },
       {
-        path: "detail/:qnaQCode",
-        element: <QnaDetail />,
+        path: "lostBoard",
+        children: [
+          { path: "viewAll", element: <ViewAllLostBoard /> },
+          { path: "create", element: <CreateLostBoard /> },
+        ],
+      },
+      {
+        path: "product-board",
+        children: [
+          { index: true, element: <ViewAllProductBoard /> },
+          { path: ":code", element: <ProductBoardDetail /> },
+        ],
       },
     ],
-  },
-  {
-    path: "/compagno/lostBoard/viewAll",
-    element: <Layout />,
-    errorElement: <Error />,
-    children: [{ index: true, element: <ViewAllLostBoard /> }],
-    // element: <ViewAllLostBoard />,
-  },
-  {
-    path: "/compagno/lostBoard/create",
-    element: <Layout />,
-    children: [{ index: true, element: <CreateLostBoard /> }],
   },
 ]);
 

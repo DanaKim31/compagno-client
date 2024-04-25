@@ -17,7 +17,9 @@ export const delProductBoard = async (no) => {
 };
 
 export const getProductBoard = async (no) => {
-  return await instance.post("productBoard" + no);
+  return await instance.get("productBoard/" + no, {
+    withCredentials: true,
+  });
 };
 
 export const updateProductBoard = async (data) => {
