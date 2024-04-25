@@ -1,20 +1,27 @@
-@charset "utf-8";
-* {
-  margin: 0;
-  padding: 0;
+@font-face {
+  font-family: "TAEBAEKmilkyway";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
 header {
+  font-family: "TAEBAEKmilkyway";
+  font-size: 1.6rem;
+  font-weight: bold;
   position: fixed;
   width: 100%;
   height: 112px;
   z-index: 7000;
   font-size: 20px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: white;
   -webkit-transition-duration: 0.4s;
   -webkit-transition-timing-function: ease;
   transition-duration: 0.4s;
   transition-timing-function: ease;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 .head {
@@ -29,8 +36,8 @@ header {
 
 .down {
   /*이부분 헤더 색상 변경!!*/
-  background-color: white;
-  opacity: 1;
+  background-color: black;
+  opacity: 0.7;
   -webkit-transition-duration: 0.4s;
   -webkit-transition-timing-function: ease;
   transition-duration: 0.4s;
@@ -41,6 +48,7 @@ header a {
   font-size: 20px;
   color: rgb(33, 55, 70);
   text-decoration: none;
+  top: 36px;
 }
 /* =========================================== */
 .dropdown {
@@ -59,6 +67,8 @@ header a {
   text-align: center;
   width: 100%;
   display: block;
+  height: 83px;
+  top: 34px;
 }
 
 #p {
@@ -70,11 +80,10 @@ header a {
   position: absolute;
   z-index: 1;
   height: 75px;
-  top: 74px;
+  top: 112px;
   width: 148px;
   right: -4px;
-  background: rgb(175, 175, 175);
-  font-size: 1.2rem;
+
   font-size: 0.9rem;
 }
 
@@ -84,9 +93,9 @@ header a {
   align-items: center;
   height: 76px;
   top: -1px;
-  background: rgb(175, 175, 175);
+  background: white;
   font-size: 1rem;
-
+  opacity: 0.7;
   text-align: center;
 }
 
@@ -99,10 +108,15 @@ header a {
   padding-left: 53px;
 }
 
+.login {
+  position: relative;
+  top: 35px;
+  height: 33px;
+}
+
 .menu {
   display: flex;
-  height: 113px;
-  align-items: center;
+  height: 110px;
   width: 54%;
 }
 /* =========================================== */
@@ -111,7 +125,7 @@ header a {
 
 #toggle {
   position: absolute;
-  top: 45px;
+  top: 42px;
   right: 30px;
   width: 30px;
   height: 21px;
@@ -179,13 +193,13 @@ header a {
   transition: all 0.3s ease, max-height 0s 0.6s ease;
   z-index: 100;
   opacity: 1;
-  background: black;
+  background: white;
 }
 
 #overlay p {
   color: rgb(33, 55, 70);
   position: relative;
-  bottom: 346px;
+  /* bottom: 346px; */
   font-size: 2rem;
 }
 
@@ -218,10 +232,10 @@ header a {
 
 #overlay nav ul li a {
   position: relative;
-  height: 50px;
+  /* height: 50px; */
   display: inline-block;
   /* 여기는 언더라인 색깔조정 */
-  color: #ffffff;
+  color: black;
   transition: all 0.6s 0s ease;
 }
 
@@ -234,7 +248,7 @@ header a {
   opacity: 0;
   height: 1px;
   /* 여기가 언더라인 색깔 */
-  background: white;
+  background: black;
   transition: all 0.6s 0s ease;
 }
 /* 언더라인 줄 길이 */
@@ -248,9 +262,6 @@ header a {
 }
 
 /* 햄버거 메뉴바 눌렸을시 나오는 애니메이션!! */
-#page.overlay #overlay nav p {
-  transition: all 0.9s 0.4s ease;
-}
 #page.overlay #overlay nav ul li:nth-child(1) {
   transition: all 0.9s 0.6s ease;
 }
@@ -272,12 +283,15 @@ header a {
 #page.overlay #overlay nav ul li:nth-child(7) {
   transition: all 0.9s 1.8s ease;
 }
+#page.overlay #overlay nav ul li:nth-child(8) {
+  transition: all 0.9s 1.8s ease;
+}
 
 #overlay nav ul li a {
   text-transform: normal;
   font-size: 35px;
   font-weight: 300;
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
@@ -298,11 +312,12 @@ header a {
 /* ==================================================== */
 
 #section1 {
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   height: 100vh;
-  background: rgb(219, 219, 219);
+  background: #465c58;
   position: relative;
   z-index: 10;
-  /* top: 111px; */
 }
 
 #section1 p {
@@ -386,6 +401,8 @@ header a {
 }
 /* ================== 설명과 시작 ===================== */
 #section2 {
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   background-color: white;
   height: 60vh;
   position: relative;
@@ -441,8 +458,10 @@ header a {
 /* ==================================================== */
 
 #section3 {
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   height: 500vh;
-  background: black;
+  background: rgb(70, 92, 88);
   position: relative;
 }
 
@@ -487,13 +506,12 @@ header a {
   top: 0;
   overflow: hidden;
   width: 4522px;
-  /* background: rgb(255, 0, 157); */
   color: white;
 }
 
 .sec3 > div {
-  background-color: black;
-  opacity: 0.6;
+  background-color: rgb(70, 92, 88);
+  /* opacity: 0.6; */
   width: 1305px;
   position: relative;
   right: 1282px;
@@ -503,7 +521,6 @@ header a {
 
 .sec3 {
   width: 452%;
-  /* height: 100vh; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -511,8 +528,10 @@ header a {
 
 /* ===================================================== */
 #section4 {
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   height: 120vh;
-  background: rgb(219, 219, 219);
+  background: rgb(245, 248, 248);
   position: relative;
   z-index: 5000;
 }
@@ -550,10 +569,11 @@ header a {
 }
 /* =================== 가로로 움직이는 =================== */
 
-/* =========================================================== */
 #section5 {
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   height: 129vh;
-  background: #efede9;
+  background: #ffffff;
   position: relative;
 }
 
@@ -570,6 +590,18 @@ header a {
   position: relative;
   left: 40px;
   border-top: 1px solid;
+}
+
+.advArrow {
+  position: relative;
+  bottom: 7px;
+  font-size: 6rem;
+}
+
+.odcArrow {
+  position: relative;
+  top: 5px;
+  font-size: 6rem;
 }
 
 .odc {
@@ -598,18 +630,14 @@ header a {
 
 .adtdetail {
   position: relative;
-  left: 38%;
-  bottom: 66px;
+  left: 42%;
+  bottom: 60px;
 }
 
 .odcdetail {
   position: relative;
-  left: 56%;
-  bottom: 64px;
-}
-
-i {
-  color: black;
+  left: 44%;
+  bottom: 57px;
 }
 
 /* ============================================================== */
@@ -659,6 +687,8 @@ span img {
 /* ============================================================== */
 
 #section6 {
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   height: 100vh;
   background: rgb(244, 244, 244);
   position: relative;
@@ -771,7 +801,75 @@ span img {
 /* ================================================================== */
 
 .footer {
-  background-color: #213746;
+  width: 100%;
+  background-color: #465c58;
   height: 50vh;
   position: relative;
+  border: 1px solid;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+  display: flex;
+  color: white;
+}
+
+.footer h1 {
+  font-size: 7.5rem;
+  font-weight: bold;
+  color: white;
+  position: relative;
+  top: 30px;
+  left: 54px;
+}
+
+.info {
+  display: flex;
+}
+
+.service {
+  flex-direction: column;
+  font-size: 1.2rem;
+  position: relative;
+  padding: 44px;
+  left: 141px;
+  bottom: -19px;
+  height: 348px;
+  text-align: center;
+}
+
+.service a {
+  color: white;
+}
+
+.person {
+  width: 13%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  left: 332px;
+  height: 351px;
+  top: 60px;
+}
+
+.sns {
+  position: relative;
+  bottom: 5px;
+  left: 173px;
+}
+
+.sns a {
+  color: white;
+  border: 1px solid;
+  border-radius: 15px;
+  font-size: 3rem;
+  padding: 10px;
+  padding-right: 10px;
+  margin: 10px;
+  position: relative;
+  top: 200px;
+}
+
+.sns a:hover {
+  color: rgb(33, 55, 70);
 }

@@ -16,6 +16,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 // import DropdownToggle from "../../components/animalBoard/Dropdown";
 import React from "react";
 import ReplyComment from "../../components/animalBoard/ReplyComment";
+import Header from "../../components/Body/Header";
 
 const Comment = styled.div`
   display: flex;
@@ -183,6 +184,7 @@ const Detail = () => {
 
   return (
     <>
+      <Header />
       <div className="App">
         <div className="container">
           <div className="row">

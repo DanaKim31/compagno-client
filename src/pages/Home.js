@@ -1,22 +1,28 @@
-import Header from "../components/Header";
-import section1 from "../assets/images/Section1- 1.jpg";
+import Section1 from "../components/Body/Section1";
+import Section2 from "../components/Body/Section2";
+import Section3 from "../components/Body/Section3";
+import Section4 from "../components/Body/Section4";
+import Section5 from "../components/Body/Section5";
+import Section6 from "../components/Body/Section6";
+import Footer from "../components/Body/Footer";
+
 const Home = () => {
   return (
     <>
-      {/* <h2>나는야김현수</h2> */}
-      <Header />
-      <section id="section1">
+      <Section1 />
+      {/* <section id="section1">
         <p className="fadeup">Compagno .</p>
         <h1 className="fadeup">우린 동물를 지키고 사랑합니다</h1>
         <div className="reveal">
           <div className="image-wrap">
-            <img src={section1} alt="" />
-            <img src="../Compagno/resource/Section1- 2.jpg" alt="" />
-            <img src="../Compagno/resource/Section1- 3.jpg" alt="" />
+            <img src="/img/Section.jpg" alt="logo image" />
+            <img src="../assets/images/Section1-2.jpg" alt="" />
+            <img src="../assets/images/Section1-3.jpg" alt="" />
           </div>
         </div>
-      </section>
-      <section id="section2">
+      </section> */}
+      <Section2 />
+      {/* <section id="section2">
         <div className="scroll_wrap">
           <div className="scroll_on type_bottom">
             <p>안 녕 하 세 요 꼼 빠 뇨 에 이 전 시 입 니 다</p>
@@ -35,8 +41,9 @@ const Home = () => {
             </h4>
           </div>
         </div>
-      </section>
-      <section id="section3" className="page-start">
+      </section> */}
+      <Section3 />
+      {/* <section id="section3" className="page-start">
         <div className="sec3">
           <div className="son1">
             <h2>01</h2>
@@ -99,8 +106,9 @@ const Home = () => {
             />
           </div>
         </div>
-      </section>
-      <section id="section4">
+      </section> */}
+      <Section4 />
+      {/* <section id="section4">
         <div className="container">
           <div className="row row-cols-2">
             <div className="col">
@@ -145,127 +153,130 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
-      <section id="section5">
+      </section> */}
+      <Section5 />
+      {/* <section id="section5">
         <div className="marquee">
           <h1 className="adt">
-            <i className="fa-solid fa-arrow-right"></i>Advertisement
+            <GoArrowUpRight className="advArrow" />
+            Advertisement
           </h1>
           <a href="" className="adtdetail">
             더 많은 사용후기 보기
           </a>
           <div>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
           </div>
         </div>
         <div className="marquee">
-          <i className="fa-solid fa-arrow-right"></i>
           <h1 className="odc">
-            <i className="fa-solid fa-arrow-right"></i>OneDayclassName
+            <GoArrowUpRight className="odcArrow" />
+            OneDayclassName
           </h1>
           <a href="" className="odcdetail">
             더 많은 사용후기 보기
           </a>
           <div>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
-              <img src="../Compagno/resource/김현수.png" alt="" />
+              <img src="/img/김현수.png" alt="logo image" />
             </span>
           </div>
         </div>
-      </section>
-      <section id="section6">
+      </section> */}
+      <Section6 />
+      {/* <section id="section6">
         <div className="message">
           <div className="content">
             <h1>Messenger</h1>
@@ -289,15 +300,13 @@ const Home = () => {
             <a href="">유저들과의 대화를 원하시나요</a>
           </div>
           <div className="photo">
-            <img src="../Compagno/resource/setion6 message 세로.jpg" alt="" />
-            <img
-              src="../Compagno/resource/message 이미지 section6.jpg"
-              alt=""
-            />
+            <img src="/img/section6-(1).jpg" alt="logo image" />
+            <img src="/img/section6-(2).jpg" alt="logo image" />
           </div>
         </div>
-      </section>
-      <footer>
+      </section> */}
+      <Footer />
+      {/* <footer>
         <section id="section7">
           <div className="text">
             <div>
@@ -308,7 +317,7 @@ const Home = () => {
           </div>
           <div className="footer"></div>
         </section>
-      </footer>
+      </footer> */}
     </>
   );
 };
