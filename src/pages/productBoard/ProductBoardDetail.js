@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   getProductBoard,
   getProductBoardComment,
+  productBoardRecommend,
 } from "../../api/productBoard";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -9,6 +10,8 @@ import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import moment from "moment";
 import Form from "react-bootstrap/Form";
 import { FaThumbsUp, FaRegThumbsUp } from "react-icons/fa6";
+import { useSelector, useDispatch } from "react-redux";
+import { userSave } from "../../store/user";
 
 const Main = styled.main`
   padding-top: 150px;
@@ -71,6 +74,11 @@ const Main = styled.main`
 `;
 
 const ProductBoardDetail = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
   const { code } = useParams();
   const [productBoard, setProductBoard] = useState([]);
   const [comments, setComments] = useState([]);
@@ -81,23 +89,14 @@ const ProductBoardDetail = () => {
     const response = await getProductBoard(code);
     setProductBoard(response.data);
 
-    const checkRecommend = response.data.recommend.filter(
-      (rec) => rec.user.userId === "ghldud5"
-    );
-    if (checkRecommend.length === 1) {
-      setCheckRec(true);
-    } else {
-      setCheckRec(false);
-    }
-
-    const checkBookmark = response.data.bookmark.filter(
-      (book) => book.user.userId === "ghldud5"
-    );
-    if (checkBookmark.length === 1) {
-      setCheckBook(true);
-    } else {
-      setCheckBook(false);
-    }
+    //   const checkBookmark = response.data.bookmark?.filter(
+    //     (book) => book.user.userId === "ghldud5"
+    //   );
+    //   if (checkBookmark?.length === 1) {
+    //     setCheckBook(true);
+    //   } else {
+    //     setCheckBook(false);
+    //   }
   };
 
   const viewProductBoardComment = async () => {
@@ -105,10 +104,13 @@ const ProductBoardDetail = () => {
     setComments(response.data);
   };
 
-  useEffect(() => {
-    viewProductBoard(code);
-    viewProductBoardComment(code);
-  }, []);
+  const recommend = async () => {
+    productBoardRecommend({
+      productBoardCode: code,
+      userId: user.userId,
+    });
+    viewProductBoard();
+  };
 
   const star = (no) => {
     const result = [];
@@ -125,6 +127,26 @@ const ProductBoardDetail = () => {
     }
     return result;
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+    viewProductBoard();
+    viewProductBoardComment();
+  }, []);
+
+  useEffect(() => {
+    const checkRecommend = productBoard.recommend?.filter(
+      (rec) => rec.user.userId === user.userId
+    );
+    if (checkRecommend?.length === 1) {
+      setCheckRec(true);
+    } else {
+      setCheckRec(false);
+    }
+  }, [productBoard]);
 
   return (
     <Main>
@@ -144,7 +166,7 @@ const ProductBoardDetail = () => {
         <p>작성자 : {productBoard.user?.userNickname}</p>
         <img
           src={productBoard.productMainImage?.replace(
-            "C:",
+            "\\DESKTOP-U0CNG13",
             "http://localhost:8081"
           )}
           style={{
@@ -183,9 +205,9 @@ const ProductBoardDetail = () => {
         />
         <div className="recommendDiv">
           {checkRec === false ? (
-            <FaRegThumbsUp className="recommend" />
+            <FaRegThumbsUp className="recommend" onClick={() => recommend()} />
           ) : (
-            <FaThumbsUp className="recommend" />
+            <FaThumbsUp className="recommend" onClick={() => recommend()} />
           )}
           <span>{productBoard.recommend?.length}</span>
         </div>
