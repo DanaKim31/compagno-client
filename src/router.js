@@ -10,6 +10,7 @@ import MyPageMyInfo from "./pages/User/MyPageMyInfo";
 import MyPageMyActivity from "./pages/User/MyPageMyActivity";
 import ViewAllLostBoard from "./pages/lostBoard/ViewAllLostBoard";
 import CreateLostBoard from "./pages/lostBoard/CreateLostBoard";
+import ViewLostBoard from "./pages/lostBoard/ViewLostBoard";
 import Error from "./pages/Error";
 import Add from "./pages/animalBoard/Add";
 import AnimalHome from "./pages/animalBoard/Home";
@@ -77,8 +78,12 @@ const router = createBrowserRouter([
       {
         path: "lostBoard",
         children: [
-          { path: "viewAll", element: <ViewAllLostBoard /> },
+          {
+            path: "viewAll",
+            element: <ViewAllLostBoard />,
+          },
           { path: "create", element: <CreateLostBoard /> },
+          { path: "view/:lostBoardCode", element: <ViewLostBoard /> },
         ],
       },
       {

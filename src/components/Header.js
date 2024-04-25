@@ -19,7 +19,7 @@ const Header = () => {
             <span className="dropbtn">구조 동물</span>
             <div className="dropdown-content">
               <a href="#">입양 공고</a>
-              <a href="#">실종 공고</a>
+              <a href="compagno/lostBoard/viewAll">실종 공고</a>
             </div>
           </div>
           <div className="dropdown">

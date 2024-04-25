@@ -4,13 +4,16 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
+import moment from "moment";
+import "moment/locale/ko";
 const Div = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
 
+  position: relative;
+  top: 180px;
   .contentHeader {
     width: 75%;
     display: flex;
@@ -29,10 +32,15 @@ const Div = styled.div`
   .contents {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-
+    grid-row-gap: 20px;
     width: 80%;
 
-    .content {
+    .regiDate {
+      display: flex;
+      justify-content: right;
+      margin-right: 30px;
+    }
+    .contentDetail {
       border: 1px solid gray;
       height: 250px;
       margin: 20px;
@@ -48,21 +56,22 @@ const Div = styled.div`
         height: 77%;
         border-top: 1px dashed green;
         display: flex;
-
         align-items: center;
       }
+    }
+    .contentDetail:hover {
+      background-color: yellow;
+      cursor: pointer;
     }
   }
 `;
 
 const ViewAllLostBoard = () => {
-  const dispatch = useDispatch();
-
   // 유저정보 가지고온다
+  const dispatch = useDispatch();
   const user = useSelector((state) => {
     return state.user;
   });
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null) {
@@ -70,11 +79,10 @@ const ViewAllLostBoard = () => {
     }
   }, []);
 
+  // 전체 정보 불러오기
   const [losts, setLosts] = useState([]);
-
   const lostAPI = async () => {
     const response = await viewAllLostBoard();
-    console.log("response:" + response.data);
     setLosts(response.data);
   };
 
@@ -85,6 +93,10 @@ const ViewAllLostBoard = () => {
   const navigate = useNavigate();
   const onCreate = async () => {
     navigate("/compagno/lostBoard/create");
+  };
+
+  const view = (code) => {
+    navigate("/compagno/lostBoard/view/" + code);
   };
 
   return (
@@ -99,10 +111,20 @@ const ViewAllLostBoard = () => {
         <div className="contents">
           {losts.map((lost) => (
             <div key={lost.lostBoardCode}>
-              작성일 : {lost.lostRegiDate}
-              <div className="content">
+              {/* <div className="regiDate">{formatRegiDates}</div> */}
+
+              <div className="regiDate">
+                {moment(lost.regiDate).format("YY-MM-DD")}
+              </div>
+              <div
+                className="contentDetail"
+                onClick={() => view(lost.lostBoardCode)}
+              >
                 <h4>{lost.lostAnimalName}</h4>
-                이미지 : {lost.lostAnimalImage}
+                이미지 :{lost.lostAnimalImage}
+                {/* <img
+                  src={lost.lostAnimalImage?.replace("file", "localhost:8081")}
+                /> */}
                 <div className="text">
                   신고자 닉네임 : {lost.userNickname}
                   <br />
@@ -110,7 +132,7 @@ const ViewAllLostBoard = () => {
                   <br />
                   성별 : {lost.lostAnimalGender}
                   <br />
-                  실종일 : {lost.lostDate}
+                  실종일 :{moment(lost.lostDate).format("YY-MM-DD")}
                   <br />
                   실종지역 : {lost.lostLocation}
                   <br />
