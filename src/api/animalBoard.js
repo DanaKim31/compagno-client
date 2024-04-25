@@ -28,12 +28,12 @@ export const addBoard = async (boardInfo) => {
 
 // 글 전체보기
 export const viewBoardList = async () => {
-  return await instance.get(`animal-board`);
+  return await instance.get(`public/animal-board`);
 };
 
 // 글 하나보기 + 조회수
 export const viewDetail = async (animalBoardCode) => {
-  return await instance.get(`animal-board/` + animalBoardCode);
+  return await instance.get(`public/animal-board/` + animalBoardCode);
 };
 
 // 글 수정
@@ -50,7 +50,9 @@ export const delBoard = async (animalBoardCode) => {
 
 // 게시글 댓글 불러오기
 export const getComments = async (animalBoardCode) => {
-  return await instance.get("animal-board/" + animalBoardCode + "/comment");
+  return await instance.get(
+    "public/animal-board/" + animalBoardCode + "/comment"
+  );
 };
 
 // 게시글 댓글 쓰기

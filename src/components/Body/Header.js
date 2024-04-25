@@ -1,9 +1,21 @@
 import "../../assets/style.css";
 import { useState, useEffect } from "react";
+import { userSave, userLogout } from "../../store/user";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // 헤더 색변환 / 햄버거 메뉴바 js
 
 const Header = () => {
+  // 로그인 위해 필요 (유저관련)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // 유저 정보 가져오기 (유저관련)
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
   // // Header >>>>  색변환 !!
   // $(function () {
   //   var $header = $("header"); //헤더를 변수에 넣기
@@ -31,7 +43,23 @@ const Header = () => {
       // #page 요소에 overlay 클래스를 토글합니다.
       document.getElementById("page").classList.toggle("overlay");
     });
+
+    // 유저 정보 가져오기 (유저관련)
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
   }, []);
+
+  // 로그아웃 기능 작동 (유저관련)
+  const logout = (e) => {
+    e.preventDefault(); // 원래 기능을 막는다, 여기서는 a 태그의 리다이렉트 기능을 막음
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    dispatch(userLogout());
+    alert("로그아웃하여 메인페이지로 이동합니다.");
+    navigate("/compagno");
+  };
 
   // useEffect(() => {
   //   document.addEventListener("DOMContentLoaded", function () {
@@ -102,16 +130,26 @@ const Header = () => {
               <a href="#">QnA</a>
             </div>
           </div>
-          <div className="dropdown">
-            <div className="dropbtn">마이페이지</div>
-            <div className="dropdown-content">
-              <a href="#">계정정보 수정</a>
-              <a href="#">활동 내역</a>
-            </div>
-          </div>
-          <div className="login">
-            <a href="/compagno/login">login</a>
-          </div>
+          {Object.keys(user).length !== 0 ? (
+            <>
+              {" "}
+              <div className="dropdown">
+                <span className="dropbtn">마이페이지</span>
+                <div className="dropdown-content">
+                  <a href="/compagno/mypage/myinfo">계정정보 수정</a>
+                  <a href="/compagno/mypage/myactivity">활동 내역</a>
+                </div>
+              </div>
+              <a href="" onClick={logout}>
+                logout
+              </a>
+            </>
+          ) : (
+            <>
+              <a href="/compagno/signup">sigup</a>
+              <a href="/compagno/login">login</a>
+            </>
+          )}
           <div id="page">
             <div id="toggle">
               <div className="bar"></div>
