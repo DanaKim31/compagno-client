@@ -36,6 +36,15 @@ const Div = styled.div`
   }
   .contentsBody {
     width: 80%;
+    #mainImage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 400px;
+        height: 400px;
+      }
+    }
     .contents {
       display: flex;
       flex-direction: column;
@@ -154,6 +163,8 @@ const ViewLostBoard = () => {
     viewsAPI();
   }, []);
 
+  // 이미지 가져오기
+
   return (
     <Div key={lost.lostBoardCode}>
       <div className="contentHeader">
@@ -169,7 +180,14 @@ const ViewLostBoard = () => {
         )}
       </div>
       <div className="contentsBody">
-        {/* <div key={lost.lostBoardCode}> */}
+        <div id="mainImage">
+          <img
+            src={lost.lostAnimalImage?.replace(
+              "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+              "http://192.168.10.28:8081/lostBoard/"
+            )}
+          />
+        </div>
         <div>
           <div className="contents">
             <div className="postOwner">

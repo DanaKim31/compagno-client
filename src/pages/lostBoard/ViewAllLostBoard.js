@@ -52,8 +52,7 @@ const Div = styled.div`
       border: 1px dashed black;
     }
     .contentDetail {
-      /* height: 300px; */
-      height: 100%;
+      height: 85%;
       margin: 20px;
       #animalName {
         text-align: center;
