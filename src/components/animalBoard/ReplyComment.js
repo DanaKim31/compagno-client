@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FaReplyAll } from "react-icons/fa";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { delComment } from "../../api/animalBoard";
+import { delComment, writeComment } from "../../api/animalBoard";
 import Dropdown from "react-bootstrap/Dropdown";
 import React from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import styled from "styled-components";
-
+import { useSelector, useDispatch } from "react-redux";
+import { userSave } from "../../store/user";
+import { updateComment, getComments } from "../../api/animalBoard";
 const InnerComment = styled.div`
   display: flex;
+  flex-direction: column;
   width: 800px;
   padding-left: 40px;
   /* background-color: blue; */
@@ -24,6 +27,9 @@ const InnerComment = styled.div`
       .animal-board-comment-userability {
         margin-bottom: 15px;
         display: flex;
+        .response {
+          cursor: pointer;
+        }
       }
       .dropdown-toggle {
         cursor: pointer;
@@ -34,19 +40,31 @@ const InnerComment = styled.div`
 
 const ReplyComment = ({ replies }) => {
   const { animalBoardCode } = useParams();
-  // console.log(replies); // 기존 대댓글 정보 가져와짐
-  // 댓글 수정버튼 - 기존 해당 댓글내용 가져오기
-  const [editReply, setEditReply] = useState({
-    userId: "pigeon222",
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
   });
-  // console.log(editReply);
-  const onUpdateR = async (reply) => {
-    console.log(reply);
-    // console.log(editReply);
-    setEditReply(reply);
-    // console.log(editReply.animalBoardCommentCode)
+
+  // 대댓글 수정버튼 - 기존 해당 댓글내용 가져오기
+  const [editReply, setEditReply] = useState({});
+  const onAccessUpdate = async (prevReply) => {
+    setEditReply({
+      animalBoardCode: animalBoardCode,
+      animalParentCode: prevReply.animalParentCode,
+      animalCommentContent: prevReply.animalCommentContent,
+      animalCommentCode: prevReply.animalCommentCode,
+      animalCommentDate: prevReply.animalCommentDate,
+      user: {
+        userId: user.userId,
+      },
+    });
+    console.log(prevReply);
   };
-  // console.log(editReply);
+  // 대댓글 수정하기
+  const onUpdateR = async () => {
+    await updateComment(editReply);
+  };
   // 토글
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <HiOutlineDotsHorizontal
@@ -59,7 +77,6 @@ const ReplyComment = ({ replies }) => {
   ));
   // 대댓글 창 불러오기
   const [boolean, setBoolean] = useState(false);
-  const [response, setResponse] = useState({});
   const accessReply = async (reply) => {
     setResponse(reply); // 댓글달 댓글 정보 들어옴.
     if (boolean) {
@@ -71,11 +88,30 @@ const ReplyComment = ({ replies }) => {
   const onCancelR = () => {
     setEditReply({});
   };
-  // 대댓글 S
-  const addReplyR = async () => {};
+  // 대댓글에 댓글 달기
+  const [response, setResponse] = useState({});
+  const addReplyR = async (parentCode) => {
+    await writeComment({
+      animalBoardCode: animalBoardCode,
+      user: {
+        userId: user.userId,
+      },
+      animalCommentContent: response.animalCommentContent,
+      animalParentCode: parentCode,
+      animalCommentTag: response.user.userNickname,
+    });
+  };
+  // 대댓글 삭제
   const onDelete = async (animalCommentCode) => {
     await delComment(animalCommentCode);
   };
+  useEffect(() => {
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+    // console.log(user);
+    // console.log(token);
+  }, []);
   return (
     <>
       {replies.map((reply) => (
@@ -93,10 +129,7 @@ const ReplyComment = ({ replies }) => {
                     <FaReplyAll />
 
                     <div className="btn-container">
-                      <Button
-                        variant="primary"
-                        onClick={() => onUpdateR(editReply)}
-                      >
+                      <Button variant="primary" onClick={onUpdateR}>
                         완료
                       </Button>
                       <Button variant="info" onClick={onCancelR}>
@@ -130,26 +163,49 @@ const ReplyComment = ({ replies }) => {
                     <p>
                       {reply.user.userNickname} {reply.animalCommentDate}
                     </p>
-                    <FaReplyAll onClick={() => accessReply(reply)} />
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        as={CustomToggle}
-                        id="dropdown-custom-components"
-                      ></Dropdown.Toggle>
+                    <FaReplyAll
+                      className="response"
+                      onClick={() => accessReply(reply)}
+                    />
+                    {user.userId === reply.user.userId ? (
+                      <>
+                        <Dropdown>
+                          <Dropdown.Toggle
+                            as={CustomToggle}
+                            id="dropdown-custom-components"
+                          ></Dropdown.Toggle>
 
-                      <Dropdown.Menu className="dropdown-menu">
-                        <Dropdown.Item onClick={() => onUpdateR(reply)}>
-                          수정하기
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          onClick={() => onDelete(reply.animalCommentCode)}
-                        >
-                          삭제하기
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                          <Dropdown.Menu className="dropdown-menu">
+                            <Dropdown.Item
+                              onClick={() => onAccessUpdate(reply)}
+                            >
+                              수정하기
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => onDelete(reply.animalCommentCode)}
+                            >
+                              삭제하기
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </div>
-                  <div>{reply.animalCommentContent}</div>
+                  <div>
+                    {reply.animalCommentTag === null ? (
+                      <></>
+                    ) : (
+                      <>
+                        <a href="/compagno/animal-board">
+                          {"@" + reply.animalCommentTag}
+                        </a>
+                      </>
+                    )}
+
+                    {reply.animalCommentContent}
+                  </div>
                 </div>
               </div>
               <div className="response-to-reply">
@@ -173,7 +229,7 @@ const ReplyComment = ({ replies }) => {
                       />
                       <Button
                         variant="secondary"
-                        onClick={() => addReplyR(reply.animalCommentCode)}
+                        onClick={() => addReplyR(reply.animalParentCode)}
                       >
                         대댓글추가!
                       </Button>

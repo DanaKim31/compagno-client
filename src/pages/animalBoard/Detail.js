@@ -100,7 +100,7 @@ const AnimalDetail = () => {
   const [comments, setComments] = useState([]);
   const animalBoardCommentAPI = async () => {
     const response = await getComments(animalBoardCode);
-    // console.log(response.data);
+    console.log(response.data);
     setComments(response.data);
   };
 
@@ -223,6 +223,7 @@ const AnimalDetail = () => {
       user: {
         userId: user.userId,
       },
+      animalCommentTag: response.user.userNickname,
     });
 
     animalBoardCommentAPI();
@@ -356,23 +357,30 @@ const AnimalDetail = () => {
                         className="response"
                         onClick={() => accessReply(comment)}
                       />
-                      {/* <DropdownToggle comment={comment} /> */}
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          as={CustomToggle}
-                          id="dropdown-custom-components"
-                        ></Dropdown.Toggle>
-                        <Dropdown.Menu className="dropdown-menu">
-                          <Dropdown.Item onClick={() => onUpdate(comment)}>
-                            수정하기
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            onClick={() => onDelete(comment.animalCommentCode)}
-                          >
-                            삭제하기
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                      {user.userId === comment.user.userId ? (
+                        <>
+                          <Dropdown>
+                            <Dropdown.Toggle
+                              as={CustomToggle}
+                              id="dropdown-custom-components"
+                            ></Dropdown.Toggle>
+                            <Dropdown.Menu className="dropdown-menu">
+                              <Dropdown.Item onClick={() => onUpdate(comment)}>
+                                수정하기
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() =>
+                                  onDelete(comment.animalCommentCode)
+                                }
+                              >
+                                삭제하기
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                     <div>{comment.animalCommentContent}</div>
                   </div>
