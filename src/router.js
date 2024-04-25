@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import QnaRegister from "./pages/qnaBoard/QnaRegister";
 import QnaList from "./pages/qnaBoard/QnaList";
 import QnaDetail from "./pages/qnaBoard/QnaDetail";
+import QnaQDetail from "./components/QnaBoard/QnaQDetail";
 import SignUp from "./pages/user/SignUp";
 import Home from "./pages/Home";
 import Login from "./pages/user/Login";
@@ -71,7 +72,7 @@ const router = createBrowserRouter([
           { path: "register", element: <QnaRegister /> },
           {
             path: "detail/:qnaQCode",
-            element: <QnaDetail />,
+            element: <QnaQDetail />,
           },
         ],
       },
