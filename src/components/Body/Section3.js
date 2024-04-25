@@ -2,17 +2,6 @@ import "../../assets/style.css";
 import { useState, useEffect } from "react";
 // 가로 스크롤 !!
 const Section3 = () => {
-  // $(window).scroll(function () {
-  //   let scroll = $(window).scrollTop();
-  //   $(".scroll").text(scroll);
-
-  //   let offset = scroll - $("#section2").offset().top;
-
-  //   if (scroll > $("#section2").offset().top) {
-  //     $(".sec3").css({ left: -offset + "px" });
-  //   }
-  // });
-
   // useEffect(() => {
   //   window.addEventListener("scroll", function () {
   //     let scroll = window.scrollY;
