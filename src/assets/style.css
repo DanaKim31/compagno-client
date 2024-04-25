@@ -30,6 +30,12 @@ header {
   align-items: center;
 }
 
+/* .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} */
+
 header {
   font-size: 2rem;
 }

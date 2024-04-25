@@ -1,5 +1,5 @@
 import ReactQuill from "react-quill";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EditorToolbar, {
   modules,
   // formats,
@@ -7,14 +7,31 @@ import EditorToolbar, {
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import { addBoard } from "../../api/animalBoard";
+import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { userSave } from "../../store/user";
+
+const Div = styled.div`
+  padding-top: 112px;
+`;
 
 const Add = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // 유저 정보
+  // const [user, setUser] = useState({});
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
   const [boardInfo, setboardInfo] = useState({
     animalCategoryCode: "",
     animalBoardTitle: "",
     animalBoardContent: "",
     animalMainImage: "",
+    user: {
+      userId: user.userId,
+    },
   });
 
   const add = async () => {
@@ -22,6 +39,16 @@ const Add = () => {
     await addBoard(boardInfo);
     navigate("/compagno/animal-board");
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    } else {
+      alert("token이 null이라고요");
+    }
+    // console.log(user);
+    // console.log(token);
+  }, []);
 
   // 게시글 글 set
   //   const onContent = (value) => {
@@ -44,8 +71,15 @@ const Add = () => {
 
   //   };
   //   console.log(setboardInfo);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
   return (
-    <>
+    <Div>
       <select
         value={boardInfo.animalCategoryCode}
         onChange={(e) =>
@@ -85,7 +119,7 @@ const Add = () => {
         placeholder="글을 쓰시오"
       />
       <button onClick={add}>submit</button>
-    </>
+    </Div>
   );
 };
 
