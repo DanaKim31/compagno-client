@@ -34,6 +34,16 @@ const Div = styled.div`
       height: 200px;
       border-radius: 50px;
     }
+
+    .info-content h1 {
+      font-size: 1.5rem;
+    }
+
+    #quitInstructions {
+      width: 100%;
+      border: 1px solid skyblue;
+      list-style-type: circle;
+    }
   }
 `;
 
@@ -69,6 +79,10 @@ const MyPageMyInfo = () => {
     }
   }, []);
 
+  /* ----------------------------- 회원탈퇴 ----------------------------- */
+  // const [quitCheck, setQuitCheck] = useState(true);
+  // useEffect(() => {}, [quitCheck]);
+
   return (
     <Div>
       <MyPageSidebar />
@@ -83,7 +97,7 @@ const MyPageMyInfo = () => {
             <div className="info-content">
               <img
                 className="profileImage"
-                src={user.userImg?.replace("C:", "http://localhost:8081")}
+                src={"http://192.168.10.28:8081/" + user.userImg}
               />
               <p>이름 : {user.userId}</p>
               <p>전화번호 : {user.userPhone}</p>
@@ -93,12 +107,23 @@ const MyPageMyInfo = () => {
           </Tab>
           <Tab eventKey="profile" title="정보 수정">
             <div className="info-content">
-              <h1>정보 수정 페이지입니다.</h1>
+              <h1>회원 정보 수정</h1>
             </div>
           </Tab>
           <Tab eventKey="contact" title="회원 탈퇴">
             <div className="info-content">
-              <h1>회원 탈퇴 페이지입니다.</h1>
+              <ul id="quitInstructions">
+                <h1>Compagno 탈퇴 전 확인하세요.</h1>
+                <li>회원탈퇴시 로그인 접근이 제한됩니다.</li>
+                <li>타 유저의 게시글에 작성한 댓글은 삭제되지 않습니다.</li>
+                <li>6개월 후 모든 정보가 삭제되며, 복구가 불가능합니다.</li>
+              </ul>
+              <label>
+                <input type="checkbox" name="quitAgree" />
+                유의사항을 확인했습니다.
+              </label>
+              <br />
+              <button disabled="true">회원 탈퇴</button>
             </div>
           </Tab>
         </Tabs>
