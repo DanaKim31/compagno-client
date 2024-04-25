@@ -1,6 +1,10 @@
 import axios from "axios";
 
 const instance = axios.create({
+  baseURL: "http://localhost:8080/compagno/public/",
+});
+
+const authorize = axios.create({
   baseURL: "http://localhost:8080/compagno/",
 });
 
@@ -11,7 +15,7 @@ export const getSitterBoards = async () => {
 
 // 등록
 export const registerSitterBoard = async (data) => {
-  return await instance.post("sitter", data);
+  return await authorize.post("sitter", data);
 };
 
 // 상세
@@ -21,10 +25,10 @@ export const getSitterBoard = async (code) => {
 
 // 수정
 export const updateSitterBoard = async (data) => {
-  return await instance.put("sitter", data);
+  return await authorize.put("sitter", data);
 };
 
 // 삭제
 export const deleteSitterBoard = async (code) => {
-  return await instance.delete("sitter/" + code);
+  return await authorize.delete("sitter/" + code);
 };

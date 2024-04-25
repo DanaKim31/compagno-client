@@ -92,8 +92,8 @@ const Header = () => {
           <div className="dropdown">
             <div className="dropbtn">동물 등록</div>
             <div className="dropdown-content">
-              <a href="#">대행기관</a>
-              <a href="asdasd">FAQ</a>
+              <a href="/compagno/register-pet/insts">대행기관</a>
+              <a href="/compagno/register-pet/faq">FAQ</a>
             </div>
           </div>
           <div className="dropdown">
@@ -111,7 +111,7 @@ const Header = () => {
               <a href="#">콘테스트</a>
               <a href="#">제품정보 공유</a>
               <a href="#">반려동물 동반</a>
-              <a href="#">우리동네 게시판</a>
+              <a href="/compagno/neighbor">우리동네 게시판</a>
             </div>
           </div>
           <div className="dropdown">
@@ -119,7 +119,7 @@ const Header = () => {
               서비스
             </div>
             <div className="dropdown-content">
-              <a href="#">펫 시터</a>
+              <a href="/compagno/sitter">펫 시터</a>
               <a href="#">원데이 클래스</a>
             </div>
           </div>
