@@ -8,17 +8,12 @@ const Div = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 107px);
-
-  #bigHeader {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 40px;
-    width: 600px;
-  }
+  height: 100vh;
+  width: 100%;
+  padding-top: 112px;
 
   #register {
-    width: 600px;
+    width: 40%;
   }
 
   .idChkZone {
@@ -51,7 +46,6 @@ const Div = styled.div`
     flex-direction: column;
   }
   .input-content input {
-    width: 500px;
     padding: 15px 10px;
     margin-bottom: 5px;
   }
@@ -312,14 +306,13 @@ const SignUp = () => {
       alert("조건 불만족! 전화번호 입력 확인");
     } else {
       await registerUser(user);
-      navigate("/");
+      navigate("/compagno");
       alert("회원가입 완료! 로그인하세요");
     }
   };
 
   return (
     <Div>
-      <div id="bigHeader">compagno.</div>
       <div id="register">
         <div className="input-content">
           <label htmlFor="userId">아이디</label>
@@ -336,8 +329,8 @@ const SignUp = () => {
               <button className="idChkBtn" onClick={idCheck}>
                 중복확인
               </button>
-              <span className="idChkSpan">{checkIdSpan}</span>
             </div>
+            <span className="idChkSpan">{checkIdSpan}</span>
             <span className="regExpMessage">{userIdSpan}</span>
           </div>
         </div>

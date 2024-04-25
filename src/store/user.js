@@ -21,11 +21,11 @@ const user = createSlice({
   extraReducers: (builder) => {
     builder.addCase(asyncLogin.fulfilled, (state, action) => {
       const result = action.payload;
-      localStorage.setItem("token", result.token);
-      localStorage.setItem("user", JSON.stringify(result));
+
+      return result;
     });
     builder.addCase(asyncLogin.rejected, (state, action) => {
-      alert("로그인 실패!");
+      alert("회원 정보가 존재하지 않습니다.");
     });
   },
 });
