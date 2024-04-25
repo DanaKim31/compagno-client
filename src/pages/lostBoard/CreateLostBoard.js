@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { FaShieldDog } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
-import { IoSettingsOutline } from "react-icons/io5";
+
 import { useNavigate } from "react-router-dom";
 import { userSave } from "../../store/user";
 import moment from "moment";
@@ -116,6 +116,7 @@ const Div = styled.div`
       margin: 0 20px;
       width: 80px;
       height: 35px;
+      font-size: 0.8rem;
     }
   }
 `;

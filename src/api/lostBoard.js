@@ -31,14 +31,15 @@ export const createlostBoard = async (data) => {
 };
 
 // 전체 보기\
-// http://localhost:8080/compagno/lostBoard
+// http://localhost:8080/compagno/public/lostBoard
 export const viewAllLostBoard = async () => {
   return await instance.get("lostBoard");
 };
 
 // 1개 보기
+// http://localhost:8080/compagno/public/lostBoard/4
 export const viewOneLostBoard = async (code) => {
-  return await instance.get("/" + code);
+  return await instance.get("lostBoard/" + code);
 };
 
 // 게시글 수정

@@ -11,7 +11,6 @@ const Div = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   position: relative;
   top: 180px;
   .contentHeader {
@@ -29,34 +28,48 @@ const Div = styled.div`
     height: 35px;
     font-size: 0.8rem;
   }
-  .contents {
+  .contentsBody {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-row-gap: 20px;
     width: 80%;
 
-    .regiDate {
+    #mainImage {
+      width: 100%;
+      height: 50%;
+    }
+    #regiDate {
       display: flex;
       justify-content: right;
-      margin-right: 30px;
+      position: absolute;
+      top: 187px;
+      /* bottom: 238px; */
+      padding: 3px;
+      border: 1px solid black;
+      border-radius: 13px;
+      width: 75px;
+      background-color: palegreen;
+      border: 1px dashed black;
     }
     .contentDetail {
-      border: 1px solid gray;
-      height: 250px;
+      /* height: 300px; */
+      height: 100%;
       margin: 20px;
-      h4 {
+      #animalName {
         text-align: center;
         display: flex;
         justify-content: center;
         align-items: center;
         border-bottom: 1px dashed green;
+        border-top: 1px dashed green;
         height: 40px;
       }
       .text {
-        height: 77%;
+        height: 30%;
         border-top: 1px dashed green;
         display: flex;
         align-items: center;
+        margin-top: 10px;
       }
     }
     .contentDetail:hover {
@@ -92,7 +105,11 @@ const ViewAllLostBoard = () => {
 
   const navigate = useNavigate();
   const onCreate = async () => {
-    navigate("/compagno/lostBoard/create");
+    if (Object.keys(user).length !== 0) {
+      navigate("/compagno/lostBoard/create");
+    } else {
+      navigate("/compagno/login");
+    }
   };
 
   const view = (code) => {
@@ -100,50 +117,49 @@ const ViewAllLostBoard = () => {
   };
 
   return (
-    <>
-      <Div>
-        <div className="contentHeader">
-          <h2>동물 신고 게시판</h2>
-          <button className="addBtn" onClick={onCreate}>
-            게시글 작성
-          </button>
-        </div>
-        <div className="contents">
-          {losts.map((lost) => (
-            <div key={lost.lostBoardCode}>
-              {/* <div className="regiDate">{formatRegiDates}</div> */}
-
-              <div className="regiDate">
+    <Div>
+      <div className="contentHeader">
+        <h2>동물 신고 게시판</h2>
+        <button className="addBtn" onClick={onCreate}>
+          게시글 작성
+        </button>
+      </div>
+      <div className="contentsBody">
+        {losts.map((lost) => (
+          <div key={lost.lostBoardCode}>
+            <div
+              className="contentDetail"
+              onClick={() => view(lost.lostBoardCode)}
+            >
+              <h4 id="animalName">{lost.lostAnimalName}</h4>
+              <img
+                id="mainImage"
+                src={lost.lostAnimalImage?.replace(
+                  "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                  "http://192.168.10.28:8081/lostBoard/"
+                )}
+              />
+              <div id="regiDate">
                 {moment(lost.regiDate).format("YY-MM-DD")}
               </div>
-              <div
-                className="contentDetail"
-                onClick={() => view(lost.lostBoardCode)}
-              >
-                <h4>{lost.lostAnimalName}</h4>
-                이미지 :{lost.lostAnimalImage}
-                {/* <img
-                  src={lost.lostAnimalImage?.replace("file", "localhost:8081")}
-                /> */}
-                <div className="text">
-                  신고자 닉네임 : {lost.userNickname}
-                  <br />
-                  실종 동물 품종 : {lost.lostAnimalKind}
-                  <br />
-                  성별 : {lost.lostAnimalGender}
-                  <br />
-                  실종일 :{moment(lost.lostDate).format("YY-MM-DD")}
-                  <br />
-                  실종지역 : {lost.lostLocation}
-                  <br />
-                  실종 동물 특징 : {lost.lostAnimalFeature}
-                </div>
+              <div className="text">
+                신고자 닉네임 : {lost.userNickname}
+                <br />
+                실종 동물 품종 : {lost.lostAnimalKind}
+                <br />
+                성별 : {lost.lostAnimalGender}
+                <br />
+                실종일 :{moment(lost.lostDate).format("YY-MM-DD")}
+                <br />
+                실종지역 : {lost.lostLocation}
+                <br />
+                실종 동물 특징 : {lost.lostAnimalFeature}
               </div>
             </div>
-          ))}
-        </div>
-      </Div>
-    </>
+          </div>
+        ))}
+      </div>
+    </Div>
   );
 };
 export default ViewAllLostBoard;

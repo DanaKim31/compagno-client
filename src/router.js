@@ -83,7 +83,7 @@ const router = createBrowserRouter([
             element: <ViewAllLostBoard />,
           },
           { path: "create", element: <CreateLostBoard /> },
-          { path: "view/:lostBoardCode", element: <ViewLostBoard /> },
+          { path: "view/:code", element: <ViewLostBoard /> },
         ],
       },
       {
