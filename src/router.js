@@ -23,6 +23,9 @@ import SitterCreate from "./pages/sitterBoard/SitterCreate";
 import SitterDetail from "./pages/sitterBoard/SitterDetail";
 import ViewAllProductBoard from "./pages/productBoard/ViewAllProductBoard";
 import ProductBoardDetail from "./pages/productBoard/ProductBoardDetail";
+import NeighborBoard from "./pages/neighborBoard/NeighborBoard";
+import NeighborCreate from "./pages/neighborBoard/NeighborCreate";
+import NeighborDetail from "./pages/neighborBoard/NeighborDetail";
 
 const router = createBrowserRouter([
   {
@@ -98,7 +101,15 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <SitterBoard /> },
           { path: "register", element: <SitterCreate /> },
-          { path: "detail/:sitterCode", element: <SitterDetail /> },
+          { path: "detail/:sitterBoardCode", element: <SitterDetail /> },
+        ],
+      },
+      {
+        path: "neighborBoard",
+        children: [
+          { index: true, element: <NeighborBoard /> },
+          { path: "register", element: <NeighborCreate /> },
+          { path: "detail/:neighborBoardCode", element: <NeighborDetail /> },
         ],
       },
       {

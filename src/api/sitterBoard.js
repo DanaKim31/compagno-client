@@ -32,3 +32,30 @@ export const updateSitterBoard = async (data) => {
 export const deleteSitterBoard = async (code) => {
   return await authorize.delete("sitter/" + code);
 };
+
+// =================== 댓글 ===================
+
+// 각 게시글 댓글 전체보기
+export const getSitterComments = async (code) => {
+  return await instance.get("sitter/" + code + "/comment");
+};
+
+// 댓글 등록
+export const registerSitterComment = async (data) => {
+  return await authorize.post("sitter/comment", data);
+};
+
+// 대댓글 등록
+export const registerSitterReply = async (data) => {
+  return await authorize.post("sitter/comment", data);
+};
+
+// 댓글 수정
+export const updateSitterComment = async (data) => {
+  return await authorize.put("sitter/comment", data);
+};
+
+// 댓글 삭제
+export const deleteSitterComment = async (code) => {
+  return await authorize.delete("sitter/comment" + code);
+};
