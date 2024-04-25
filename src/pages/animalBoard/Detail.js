@@ -27,7 +27,9 @@ const Comment = styled.div`
   align-items: center;
   /* width: 1200px; */
   margin: auto;
-
+  img {
+    width: 70px;
+  }
   .dropdown {
     display: block;
     width: auto;
@@ -69,14 +71,14 @@ const Comment = styled.div`
 
 const AnimalDetail = () => {
   const { animalBoardCode } = useParams();
-
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
   // 유저 정보
   // const [user, setUser] = useState({});
-  const dispatch = useDispatch();
   const user = useSelector((state) => {
     return state.user;
   });
-
+  // console.log(user);
   // 현재 게시글 정보 불러오기
   const [detailInfo, setDetail] = useState({
     userNickname: "",
@@ -90,11 +92,10 @@ const AnimalDetail = () => {
 
   const animalBoardAPI = async () => {
     const response = await viewDetail(animalBoardCode);
-    console.log(response.data);
+    // console.log(response.data);
     setDetail(response.data);
-    // console.log(response.data);s
   };
-
+  // ======================================================================
   // 댓글 불러오기
   const [comments, setComments] = useState([]);
   const animalBoardCommentAPI = async () => {
@@ -103,31 +104,45 @@ const AnimalDetail = () => {
     setComments(response.data);
   };
 
-  // 조회수
-  // const [count, setCount] = useState({
-  //   animalBoardView: 0
-  // });
-  // const viewAPI = async ()=>{
-  //  const response = await viewCount(animalBoardCode);
-  //  console.log(response.data)
-  //  setCount(response);
-  // }
-  // ======================================================================
   // 댓글쓰기
   const [comment, setComment] = useState({
     animalBoardCode: animalBoardCode,
-
     animalCommentContent: "",
+    user: user,
   });
+  const [animalComment, setAnimalComment] = useState("");
   const addComment = async () => {
-    const token = localStorage.getItem("token");
+    console.log(animalComment);
     if (token === null) {
       alert("로그인해주세요");
     } else {
-      await writeComment(comment);
+      // setComment({
+      //   animalBoardCode: animalBoardCode,
+      //   animalCommentContent: animalComment,
+      //   user: {
+      //     userId: user.userId,
+      //   },
+      // });
+      // console.log(comment);
+      await writeComment({
+        animalBoardCode: animalBoardCode,
+        animalCommentContent: animalComment,
+        user: {
+          userId: user.userId,
+        },
+      });
+      setAnimalComment("");
       animalBoardCommentAPI();
     }
   };
+
+  // useEffect(() => {
+
+  // }, [comments]);
+
+  // useEffect(() => {
+  //   setComment({ comment });
+  // }, [comment.content]);
   //댓글 수정버튼 - 기존 해당 댓글내용 가져오기
   const [edit, setEdit] = useState({});
   const onUpdate = async (comment) => {
@@ -169,14 +184,13 @@ const AnimalDetail = () => {
     // animalCommentDate: "",
     animalParentCode: 0,
     user: {
-      userId: "pigeon111",
-      userNickname: "비둘기111",
+      userId: user.userId,
     },
   }); // 부모 댓글 정보
   const [responseReply, setResponseReply] = useState({});
   const accessReply = async (comment) => {
     setResponse(comment); // 현재 클릭한 아이의 댓글정보
-    // console.log(comment);
+    console.log(comment);
     // console.log(response);
 
     // if(user === null){
@@ -184,7 +198,7 @@ const AnimalDetail = () => {
     // }
     if (boolean) {
       setBoolean(false);
-      setResponse({});
+      // setResponse({});
     } else {
       setBoolean(true);
     }
@@ -193,17 +207,23 @@ const AnimalDetail = () => {
     console.log(commentCode); // 부모 댓글코드 들어옴
     // setResponse({});
     console.log(response);
-    setResponse({
+    // setResponse({
+    //   animalBoardCode: animalBoardCode,
+    //   animalParentCode: commentCode,
+    //   animalCommentContent: response.animalCommentContent,
+    //   user: {
+    //     userId: user.userId,
+    //   },
+    // });
+    console.log(response);
+    await writeComment({
       animalBoardCode: animalBoardCode,
       animalParentCode: commentCode,
       animalCommentContent: response.animalCommentContent,
       user: {
-        userId: "pigeon111",
-        userNickname: "비둘기111",
+        userId: user.userId,
       },
     });
-    console.log(response);
-    await writeComment(response);
 
     animalBoardCommentAPI();
   };
@@ -219,7 +239,6 @@ const AnimalDetail = () => {
     />
   ));
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
@@ -266,13 +285,8 @@ const AnimalDetail = () => {
           <Form.Control
             as="textarea"
             aria-label="With textarea"
-            value={comment.value}
-            onChange={(e) =>
-              setComment((prev) => ({
-                ...prev,
-                animalCommentContent: e.target.value,
-              }))
-            }
+            value={animalComment}
+            onChange={(e) => setAnimalComment(e.target.value)}
           />
           <InputGroup.Text>무언가 꾸밀수 있는곳</InputGroup.Text>
           <Button variant="secondary" onClick={addComment}>
@@ -286,7 +300,11 @@ const AnimalDetail = () => {
             {edit.animalCommentCode === comment.animalCommentCode ? (
               <>
                 <div className="animal-board-comment ">
-                  <label>userImage</label>
+                  <label>
+                    <img
+                      src={"http://192.168.10.28:8081/" + edit.user.userImg}
+                    />
+                  </label>
                   <div className="user-action-container">
                     <div className="animal-board-comment-userability">
                       <p>
@@ -324,7 +342,11 @@ const AnimalDetail = () => {
             ) : (
               <>
                 <div className="animal-board-comment ">
-                  <label>userImage</label>
+                  <label>
+                    <img
+                      src={"http://192.168.10.28:8081/" + comment.user.userImg}
+                    />
+                  </label>
                   <div className="user-action-container">
                     <div className="animal-board-comment-userability">
                       <p>

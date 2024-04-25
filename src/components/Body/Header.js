@@ -108,7 +108,7 @@ const Header = () => {
               게시판
             </div>
             <div className="dropdown-content">
-              <a href="#">콘테스트</a>
+              <a href="compagno/animal-board">콘테스트</a>
               <a href="#">제품정보 공유</a>
               <a href="#">반려동물 동반</a>
               <a href="#">우리동네 게시판</a>
