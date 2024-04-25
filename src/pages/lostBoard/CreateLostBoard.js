@@ -143,7 +143,7 @@ const CreateLostBoard = () => {
   const [lostAnimalKind, setLostAnimalKind] = useState("");
   const [lostAnimalColor, setLostAnimalColor] = useState("");
   const [lostAnimalGender, setLostAnimalGender] = useState("");
-  const [lostAnimalAge, setLostAnimalAge] = useState("");
+  const [lostAnimalAge, setLostAnimalAge] = useState(0);
   const [lostAnimalFeature, setLostAnimalFeater] = useState("");
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
   const [images, setImages] = useState([]);
@@ -163,6 +163,9 @@ const CreateLostBoard = () => {
     const regex = /^[0-9]{15}$/g;
     if (regex.test(e.target.value)) {
       setLostAnimalRFID(Number(e.target.value));
+    } else {
+      setLostAnimalRFID("정규표현식 맞추지 못함");
+      console.log(lostAnimalRFID);
     }
   };
 
@@ -184,21 +187,9 @@ const CreateLostBoard = () => {
   };
 
   // 축종이 기타일 경우
-  const selectList = ["-------", "개", "고양이", "기타"];
-  // const [Selected, setSelected] = useState("");
-  // const [lostAnimalKind, setLostAnimalKind] = useState("");
-  // const [state, setState] = useState(true);
-  // const [states, setStates] = useState(true);
+  const selectList = ["", "개", "고양이", "기타"];
   const handleSelect = (e) => {
     setLostAnimalKind(e.target.value);
-    // if (e.target.value == "기타") {
-    //   setState(false);
-    //   setStates(false);
-    // } else {
-    //   // setLostAnimalKind("");
-    //   setState(true);
-    //   setStates(true);
-    // }
   };
   useEffect(() => {
     console.log("dsf : " + lostAnimalKind);
@@ -227,48 +218,40 @@ const CreateLostBoard = () => {
       console.log(image);
     });
 
-    if (lostAnimalRFID !== "") {
-      await createlostBoard(formData);
-      navigate("/compagno/lostBoard/viewAll");
+    // not null 조건
+    if (
+      lostDate == "" ||
+      lostAnimalName == "" ||
+      lostLocation == "" ||
+      lostAnimalKind == "" ||
+      lostAnimalGender == ""
+    ) {
+      alert("필수 입력란을 확인해주세요.");
+      if (lostAnimalRFID !== "") {
+        alert("필수값 안들어가고 rfid 빈칸 아님둥 ");
+      } else {
+        alert(
+          "필수값 안들어가고 rfid 빈칸임둥"
+          // "마이크로칩(RFID) 번호가 잘못 입력되었습니다. 다시 입력해주세요."
+        );
+      }
     } else {
-      alert("마이크로칩(RFID) 번호가 잘못 입력되었습니다. 다시 입력해주세요.");
-      navigate("/compagno/lostBoard/create");
+      if (lostAnimalRFID !== "") {
+        if (lostAnimalRFID == "정규표현식 맞추지 못함") {
+          console.log("줴ㅏㅂㄹ");
+          alert(
+            "마이크로칩(RFID) 번호가 잘못 입력되었습니다. 다시 입력해주세요."
+          );
+        } else {
+          await createlostBoard(formData);
+          navigate("/compagno/lostBoard/viewAll");
+          alert("필수값 다 들어가고 rfid도 조건 맞춤");
+        }
+      } else {
+        await createlostBoard(formData);
+        navigate("/compagno/lostBoard/viewAll");
+      }
     }
-
-    // if (
-    //   (lostAnimalRFID ||
-    //     lostAnimalName ||
-    //     lostDate ||
-    //     lostLocation ||
-    //     lostAnimalKind ||
-    //     lostAnimalGender) == ""
-    // ) {
-    //   alert("잘못 입력되거나 미입력란이 있습니다. 다시 입력해주세요.");
-    //   navigate("/compagno/lostBoard/create");
-    // } else {
-    //   console.log("아래까지 내려옴");
-    //   await createlostBoard(formData);
-    // }
-
-    // navigate("/compagno/lostBoard/create");
-
-    // if (lostAnimalName == "") {
-    //   alert("분실 동물 입력을 작성해주세요.");
-    // }
-    // if (lostDate == "") {
-    //   alert("분실 날짜를 지정해주세요.");
-    // }
-    // if (lostLocation == "") {
-    //   alert("분실 지역을 작성해주세요.");
-    // }
-    // if (lostAnimalKind == "") {
-    //   alert("분실 동물 축종을 선택해주세요.");
-    // }
-    // if (lostAnimalGender == "") {
-    //   alert("분실 동물 성별을 선택해주세요.");
-    // }
-    // console.log("아래까지 내려옴");
-    // await createlostBoard(formData);
   };
 
   // 게시글 작성 취소

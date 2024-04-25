@@ -90,34 +90,6 @@ const ViewAllLostBoard = () => {
     lostAPI();
   }, []);
 
-  // 입력 날짜 형식 변경
-  const lostAll = Array.from(losts);
-  const [formatRegiDates, setFormatRegiDates] = useState([]);
-  const regiDateRender = () => {
-    for (let i = 0; i < lostAll.length; i++) {
-      // console.log(lostAll[i].lostRegiDate);
-      const regiDate = lostAll[i].lostRegiDate;
-
-      const formattedRegiDate = moment(regiDate).format("YY-MM-DD");
-
-      setFormatRegiDates(formattedRegiDate);
-    }
-  };
-
-  // 분실 날짜 형식 변경
-  const [formatLostDates, setFormatLostDates] = useState([]);
-  const lostDateRender = () => {
-    for (let i = 0; i < lostAll.length; i++) {
-      const date = lostAll[i].lostDate;
-      const formattedDate = moment(date).format("YY-MM-DD");
-      setFormatLostDates(formattedDate);
-    }
-  };
-  useEffect(() => {
-    regiDateRender();
-    lostDateRender();
-  });
-
   const navigate = useNavigate();
   const onCreate = async () => {
     navigate("/compagno/lostBoard/create");
@@ -140,7 +112,10 @@ const ViewAllLostBoard = () => {
           {losts.map((lost) => (
             <div key={lost.lostBoardCode}>
               {/* <div className="regiDate">{formatRegiDates}</div> */}
-              <div className="regiDate">{lost.lostRegiDate}</div>
+
+              <div className="regiDate">
+                {moment(lost.regiDate).format("YY-MM-DD")}
+              </div>
               <div
                 className="contentDetail"
                 onClick={() => view(lost.lostBoardCode)}
@@ -148,7 +123,7 @@ const ViewAllLostBoard = () => {
                 <h4>{lost.lostAnimalName}</h4>
                 이미지 :{lost.lostAnimalImage}
                 {/* <img
-                  src={lost.lostAnimalImage?.replace("file", "localhost:3030")}
+                  src={lost.lostAnimalImage?.replace("file", "localhost:8081")}
                 /> */}
                 <div className="text">
                   신고자 닉네임 : {lost.userNickname}
@@ -157,8 +132,7 @@ const ViewAllLostBoard = () => {
                   <br />
                   성별 : {lost.lostAnimalGender}
                   <br />
-                  실종일 : {lost.lostDate}
-                  실종일 : {formatLostDates}
+                  실종일 :{moment(lost.lostDate).format("YY-MM-DD")}
                   <br />
                   실종지역 : {lost.lostLocation}
                   <br />
