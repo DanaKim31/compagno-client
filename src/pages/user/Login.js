@@ -51,7 +51,7 @@ const Login = () => {
 
   useEffect(() => {
     if (localStorage.length !== 0) {
-      alert("로그인 중입니다. 메인페이지로 이동합니다.");
+      alert("이미 로그인 중입니다. 메인페이지로 이동합니다.");
       navigate("/compagno");
     }
   }, []);
