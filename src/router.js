@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout";
-import Register from "./pages/QnaQ/Register";
-import List from "./pages/QnaQ/List";
-import QnaDetail from "./pages/QnaQ/Detail";
+import QnaRegister from "./pages/qnaBoard/QnaRegister";
+import QnaList from "./pages/qnaBoard/QnaList";
+import QnaDetail from "./pages/qnaBoard/QnaDetail";
 import SignUp from "./pages/User/SignUp";
 import Home from "./pages/Home";
 import Login from "./pages/User/Login";
@@ -67,8 +67,8 @@ const router = createBrowserRouter([
       {
         path: "question",
         children: [
-          { index: true, element: <List /> },
-          { path: "register", element: <Register /> },
+          { index: true, element: <QnaList /> },
+          { path: "register", element: <QnaRegister /> },
           {
             path: "detail/:qnaQCode",
             element: <QnaDetail />,
