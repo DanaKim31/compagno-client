@@ -43,7 +43,7 @@ const AnimalHome = () => {
                   {board.animalBoardTitle}
                 </a>
               </td>
-              <td>작성자</td>
+              <td>{board.user.userNickname}</td>
               <td>{board.animalBoardView}</td>
               <td>{board.animalBoardDate}</td>
             </tr>

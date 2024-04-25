@@ -23,7 +23,7 @@ const instance = axios.create({
 
 // 글쓰기
 export const addBoard = async (boardInfo) => {
-  return await instance.post(`animal-board`, boardInfo);
+  return await authorize.post(`animal-board`, boardInfo);
 };
 
 // 글 전체보기
@@ -56,7 +56,7 @@ export const getComments = async (animalBoardCode) => {
 // 게시글 댓글 쓰기
 export const writeComment = async (data) => {
   console.log(data);
-  return await instance.post("animal-board/comment", data);
+  return await authorize.post("animal-board/comment", data);
 };
 
 // 게시글 댓글 수정 // api 분리

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { userSave } from "../../store/user";
 import {
   viewDetail,
   getComments,
@@ -68,21 +69,28 @@ const Comment = styled.div`
 
 const AnimalDetail = () => {
   const { animalBoardCode } = useParams();
-  // console.log(animalBoardCode);
+
+  // 유저 정보
+  // const [user, setUser] = useState({});
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
   // 현재 게시글 정보 불러오기
   const [detailInfo, setDetail] = useState({
-    userName: "",
+    userNickname: "",
     animalType: "",
     animalBoardTitle: "",
     animalBoardContent: "",
-    animalCategory: [],
+    animalCategory: {},
     animalBoardDate: "",
     animalBoardView: 0,
   });
 
   const animalBoardAPI = async () => {
     const response = await viewDetail(animalBoardCode);
-    // console.log(response);
+    console.log(response.data);
     setDetail(response.data);
     // console.log(response.data);s
   };
@@ -108,17 +116,17 @@ const AnimalDetail = () => {
   // 댓글쓰기
   const [comment, setComment] = useState({
     animalBoardCode: animalBoardCode,
-    user: {
-      userId: "pigeon111",
-      userNickname: "비둘기111",
-    },
+
     animalCommentContent: "",
   });
   const addComment = async () => {
-    await writeComment(comment);
-    // console.log(comment);
-    setComment({});
-    animalBoardCommentAPI();
+    const token = localStorage.getItem("token");
+    if (token === null) {
+      alert("로그인해주세요");
+    } else {
+      await writeComment(comment);
+      animalBoardCommentAPI();
+    }
   };
   //댓글 수정버튼 - 기존 해당 댓글내용 가져오기
   const [edit, setEdit] = useState({});
@@ -130,8 +138,8 @@ const AnimalDetail = () => {
       animalBoardCode: comment.animalBoardCode,
       animalCommentDate: comment.animalCommentDate,
       user: {
-        userId: "pigeon111",
-        userNickname: "비둘기111",
+        userId: user.userId,
+        userNickname: user.userNickname,
       },
     });
     // console.log(edit);
@@ -210,12 +218,19 @@ const AnimalDetail = () => {
       }}
     />
   ));
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+    // console.log(user);
+    // console.log(token);
+  }, []);
 
   useEffect(() => {
     animalBoardAPI();
     animalBoardCommentAPI();
-    // setComment({});
-    // viewAPI();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animalBoardCode]);
 
