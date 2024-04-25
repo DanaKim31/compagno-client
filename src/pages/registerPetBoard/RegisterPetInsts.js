@@ -4,18 +4,18 @@ import styled from "styled-components";
 import { location } from "../../assets/location";
 
 const Div = styled.div`
+  width: 90%;
+  margin: auto;
+
   h1 {
     font-size: 2.5rem;
     margin-bottom: 100px;
   }
   .search-area {
     background: lightgrey;
-    width: 90%;
     padding: 20px;
-    margin: auto;
     margin-bottom: 30px;
     border-radius: 5px;
-    /* opacity: 0.5; */
     box-shadow: 0px 0px 5px #444;
     display: flex;
     flex-direction: column;
@@ -79,8 +79,6 @@ const Div = styled.div`
     text-align: left;
   } */
   .list {
-    width: 90%;
-    margin: auto;
     padding: 20px;
     border-top: 1px solid gray;
   }

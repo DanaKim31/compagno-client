@@ -17,6 +17,9 @@ import Edit from "./pages/animalBoard/Edit";
 import AnimalDetail from "./pages/animalBoard/Detail";
 import RegisterPetInsts from "./pages/registerPetBoard/RegisterPetInsts";
 import RegisterPetFaq from "./pages/registerPetBoard/RegisterPetFaq";
+import SitterBoard from "./pages/sitterBoard/SitterBoard";
+import SitterCreate from "./pages/sitterBoard/SitterCreate";
+import SitterDetail from "./pages/sitterBoard/SitterDetail";
 
 const router = createBrowserRouter([
   {
@@ -81,6 +84,14 @@ const router = createBrowserRouter([
         children: [
           { path: "insts", element: <RegisterPetInsts /> },
           { path: "faq", element: <RegisterPetFaq /> },
+        ],
+      },
+      {
+        path: "sitterBoard",
+        children: [
+          { index: true, element: <SitterBoard /> },
+          { path: "register", element: <SitterCreate /> },
+          { path: "detail/:sitterCode", element: <SitterDetail /> },
         ],
       },
     ],
