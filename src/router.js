@@ -20,6 +20,8 @@ import RegisterPetFaq from "./pages/registerPetBoard/RegisterPetFaq";
 import SitterBoard from "./pages/sitterBoard/SitterBoard";
 import SitterCreate from "./pages/sitterBoard/SitterCreate";
 import SitterDetail from "./pages/sitterBoard/SitterDetail";
+import ViewAllProductBoard from "./pages/productBoard/ViewAllProductBoard";
+import ProductBoardDetail from "./pages/productBoard/ProductBoardDetail";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +94,13 @@ const router = createBrowserRouter([
           { index: true, element: <SitterBoard /> },
           { path: "register", element: <SitterCreate /> },
           { path: "detail/:sitterCode", element: <SitterDetail /> },
+        ],
+      },
+      {
+        path: "product-board",
+        children: [
+          { index: true, element: <ViewAllProductBoard /> },
+          { path: ":code", element: <ProductBoardDetail /> },
         ],
       },
     ],
