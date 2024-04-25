@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { getQuestion, updateQuestion } from "../../api/Question";
+import { getQuestion, updateQuestion, delQuestion } from "../../api/Question";
 import {
   getAnswer,
   addAnswer,
@@ -74,10 +74,24 @@ const QnaDetail = () => {
       imageUrlLists.push(currentImageUrl);
     }
     setShowImages(imageUrlLists);
+    setImages((prev) => {
+      return { ...prev };
+    });
+    console.log("하안이어리ㅏㅓ니ㅏ어리나ㅓ");
+    console.log(images);
   };
 
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
+    console.log("프리뷰에서 showImages 실시간 삭제");
+    console.log(showImages);
+    console.log("프리뷰 삭제 시 images");
+    console.log(images);
+    setImages((prev) => {
+      return { ...prev, showImages };
+    });
+    console.log("shoeImages로 images 세팅");
+    console.log(images);
   };
 
   // setEditQ((prev) => {
@@ -131,7 +145,14 @@ const QnaDetail = () => {
 
   // 질문 수정 폼으로 질문 정보 전달
   const onUpdateQuestion = async (data) => {
+    navigate(`/compagno/question/detail/${data.qnaQCode}`);
     await setEditQ(data);
+  };
+
+  // 삭제..
+  const onDeleteQuestion = async (qnaQCode) => {
+    await delQuestion(qnaQCode);
+    navigate("/compagno/question");
   };
 
   // A 세팅
@@ -180,8 +201,10 @@ const QnaDetail = () => {
   };
 
   useEffect(() => {
+    console.log("useEffect===================");
     console.log(images);
-  }, [images]);
+    console.log(showImages);
+  }, [images, showImages]);
 
   const deleteImage = (code) => {
     setEditQ((prev) => {
@@ -279,8 +302,18 @@ const QnaDetail = () => {
           </>
         ) : (
           <>
-            <Button onClick={() => onUpdateQuestion(question)}>수정</Button>
-            <Button>삭제</Button>
+            <Button
+              variant="warning"
+              onClick={() => onUpdateQuestion(question)}
+            >
+              수정
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => onDeleteQuestion(question.qnaQCode)}
+            >
+              삭제
+            </Button>
 
             {/* <div>
               {preview.map((preview, i) => (

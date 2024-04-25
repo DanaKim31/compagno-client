@@ -56,7 +56,7 @@ const Header = () => {
               <a href="#">활동 내역</a>
             </div>
           </div>
-          <a href="/login">login</a>
+          <a href="/compagno/login">login</a>
           <div id="page">
             <div id="toggle">
               <div className="bar"></div>
