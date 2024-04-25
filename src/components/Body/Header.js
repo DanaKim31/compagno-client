@@ -85,7 +85,7 @@ const Header = () => {
   return (
     <>
       <header className="head">
-        <a href="logo" className="logo">
+        <a href="/compagno" className="logo">
           Compagno
         </a>
         <div className="menu">
