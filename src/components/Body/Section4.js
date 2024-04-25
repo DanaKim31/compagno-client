@@ -1,5 +1,4 @@
-import "../assets/style.css";
-
+import "../../assets/style.css";
 const Section4 = () => {
   return (
     <>

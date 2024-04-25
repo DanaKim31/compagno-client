@@ -1,4 +1,4 @@
-import "../assets/style.css";
+import "../../assets/style.css";
 import { FaLinkedinIn, FaFacebookF, FaInstagram } from "react-icons/fa";
 import { CiYoutube } from "react-icons/ci";
 import { MdOutlineEmail } from "react-icons/md";
@@ -80,13 +80,13 @@ const Footer = () => {
                 <br />T +010-xxxx-xxxx <br />
                 kh123@naver.com
               </p>
+            </div>
+            <div className="person">
               <p>
                 name
                 <br />T +010-xxxx-xxxx <br />
                 kh123@naver.com
               </p>
-            </div>
-            <div className="person">
               <p>
                 name
                 <br />T +010-xxxx-xxxx <br />

@@ -1,4 +1,4 @@
-import "../assets/style.css";
+import "../../assets/style.css";
 import { GoArrowUpRight } from "react-icons/go";
 const Section5 = () => {
   return (

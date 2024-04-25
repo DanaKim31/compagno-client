@@ -630,8 +630,8 @@ header a {
 
 .adtdetail {
   position: relative;
-  left: 40%;
-  bottom: 68px;
+  left: 42%;
+  bottom: 60px;
 }
 
 .odcdetail {
@@ -818,6 +818,9 @@ span img {
   font-size: 7.5rem;
   font-weight: bold;
   color: white;
+  position: relative;
+  top: 30px;
+  left: 54px;
 }
 
 .info {

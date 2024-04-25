@@ -1,4 +1,4 @@
-import "../assets/style.css";
+import "../../assets/style.css";
 import { useState, useEffect } from "react";
 // 가로 스크롤 !!
 const Section3 = () => {

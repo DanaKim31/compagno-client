@@ -1,5 +1,4 @@
-import "../assets/style.css";
-
+import "../../assets/style.css";
 // 화면 노출 관련 js
 const Section2 = () => {
   const Section = () => {
@@ -17,19 +16,19 @@ const Section2 = () => {
           rect.top <= winHeight - (contentHeight * exposurePercentage) / 100 &&
           rect.bottom >= (contentHeight * exposurePercentage) / 100
         ) {
-          counter.classList.add("active");
+          counter.classList.add("active"); // css에 있는 .active의 생각대로 추가하겠다
         }
 
         if (loop && (rect.bottom <= 0 || rect.top >= winHeight)) {
-          counter.classList.remove("active");
+          counter.classList.remove("active"); // css에 있는 .active의 생각대로 제거하겠다
         }
       });
     };
-
+    // 이벤트추가 인데 조건이 있음 (이벤트이름, 함수)
     document.addEventListener("scroll", handleScroll);
+
     handleScroll(); // 페이지 로드시 한번 실행
   };
-
   Section(); // Section2 함수 호출
   return (
     <>

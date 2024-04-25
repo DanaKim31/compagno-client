@@ -1,4 +1,4 @@
-import "../assets/style.css";
+import "../../assets/style.css";
 import { useState, useEffect } from "react";
 
 // 헤더 색변환 / 햄버거 메뉴바 js

@@ -1,4 +1,4 @@
-import "../assets/style.css";
+import "../../assets/style.css";
 // import { useState, useEffect } from "react";
 
 // 이미지랑 폰트 관련 등장 JS
