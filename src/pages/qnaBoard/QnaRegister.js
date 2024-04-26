@@ -41,10 +41,6 @@ const QnaRegister = () => {
   const [content, setContent] = useState("");
   const [secret, setSecret] = useState("");
   const [images, setImages] = useState([]);
-  const [user, setUser] = useState({
-    userId: user.userId,
-    userNickname: user.userNickname,
-  });
 
   const dispatch = useDispatch();
 
