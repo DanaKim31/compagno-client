@@ -11,11 +11,25 @@ const Div = styled.div`
   height: calc(100vh - 100px);
 
   #register {
-    text-align: center;
-    width: 800px;
-    height: 800px;
-    border: 1px solid black;
-    background-color: skyblue;
+    display: flex;
+    flex-direction: column;
+
+    input {
+      margin-top: 20px;
+      width: 500px;
+      height: 50px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 500px;
+      height: 50px;
+      color: white;
+      background-color: black;
+      border: none;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
   }
 `;
 
@@ -59,23 +73,25 @@ const Login = () => {
   return (
     <>
       <Div>
-        <input
-          type="text"
-          placeholder="아이디"
-          value={user.userId}
-          onChange={(e) =>
-            setUser((prev) => ({ ...prev, userId: e.target.value }))
-          }
-        />
-        <input
-          type="password"
-          placeholder="비밀번호"
-          value={user.userPwd}
-          onChange={(e) =>
-            setUser((prev) => ({ ...prev, userPwd: e.target.value }))
-          }
-        />
-        <button onClick={submit}>login</button>
+        <div id="register">
+          <input
+            type="text"
+            placeholder="아이디"
+            value={user.userId}
+            onChange={(e) =>
+              setUser((prev) => ({ ...prev, userId: e.target.value }))
+            }
+          />
+          <input
+            type="password"
+            placeholder="비밀번호"
+            value={user.userPwd}
+            onChange={(e) =>
+              setUser((prev) => ({ ...prev, userPwd: e.target.value }))
+            }
+          />
+          <button onClick={submit}>login</button>
+        </div>
       </Div>
     </>
   );

@@ -141,6 +141,7 @@ const MyPageMyInfo = () => {
               <p>전화번호 : {user.userPhone}</p>
               <p>닉네임 : {user.userNickname}</p>
               <p>이메일 : {user.userEmail}</p>
+              <p>가입일 : {user.userEnrollDate}</p>
             </div>
           </Tab>
           <Tab eventKey="profile" title="정보 수정">
