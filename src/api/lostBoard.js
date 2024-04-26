@@ -32,8 +32,14 @@ export const createlostBoard = async (data) => {
 
 // 전체 보기\
 // http://localhost:8080/compagno/public/lostBoard
-export const viewAllLostBoard = async () => {
-  return await instance.get("lostBoard");
+export const viewAllLostBoard = async (page) => {
+  return await instance.get("lostBoard?page=" + page);
+};
+
+// 페이징 처리
+// /public/lostBoard/paging
+export const viewAllPaging = async () => {
+  return await instance.get("lostBoard/paging");
 };
 
 // 1개 보기
@@ -49,7 +55,7 @@ export const updateLostBoard = async (data) => {
 
 // 게시글 삭제
 export const deleteLostBoard = async (code) => {
-  return await authorize.delete("/" + code);
+  return await authorize.delete("lostBoard/" + code);
 };
 
 // 검색 및 정렬

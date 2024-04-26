@@ -1,4 +1,4 @@
-import { viewOneLostBoard } from "../../api/lostBoard";
+import { viewOneLostBoard, deleteLostBoard } from "../../api/lostBoard";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { FaShieldDog } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
   display: flex;
@@ -141,6 +142,7 @@ const Div = styled.div`
 `;
 
 const ViewLostBoard = () => {
+  const navigate = useNavigate();
   // 유저정보 가지고온다
   const dispatch = useDispatch();
   const user = useSelector((state) => {
@@ -165,6 +167,16 @@ const ViewLostBoard = () => {
 
   // 이미지 가져오기
 
+  // 게시글 삭제
+  const btnDel = async () => {
+    await deleteLostBoard(code);
+    navigate("/compagno/lostBoard/viewAll");
+  };
+
+  // 목록버튼
+  const btnList = () => {
+    navigate("/compagno/lostBoard/viewAll");
+  };
   return (
     <Div key={lost.lostBoardCode}>
       <div className="contentHeader">
@@ -173,7 +185,7 @@ const ViewLostBoard = () => {
           <div className="btnChange">
             {/* 유저 당사자일 경우에만 수정, 삭제 버튼 보이도록! */}
             <button>수정</button>
-            <button>삭제</button>
+            <button onClick={btnDel}>삭제</button>
           </div>
         ) : (
           <></>
@@ -292,7 +304,7 @@ const ViewLostBoard = () => {
             </div>
           </div>
           <div className="btnList">
-            <button>목록</button>
+            <button onClick={btnList}>목록</button>
           </div>
         </div>
       </div>

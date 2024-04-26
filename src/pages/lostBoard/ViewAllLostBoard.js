@@ -1,4 +1,4 @@
-import { viewAllLostBoard } from "../../api/lostBoard";
+import { viewAllLostBoard, viewAllPaging } from "../../api/lostBoard";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import moment from "moment";
 import "moment/locale/ko";
+import {
+  FaAngleLeft,
+  FaAnglesLeft,
+  FaAngleRight,
+  FaAnglesRight,
+} from "react-icons/fa6";
+
 const Div = styled.div`
   display: flex;
   flex-direction: column;
@@ -43,7 +50,6 @@ const Div = styled.div`
       justify-content: right;
       position: absolute;
       top: 187px;
-      /* bottom: 238px; */
       padding: 3px;
       border: 1px solid black;
       border-radius: 13px;
@@ -76,6 +82,9 @@ const Div = styled.div`
       cursor: pointer;
     }
   }
+  .paging {
+    margin-bottom: 100px;
+  }
 `;
 
 const ViewAllLostBoard = () => {
@@ -93,14 +102,51 @@ const ViewAllLostBoard = () => {
 
   // 전체 정보 불러오기
   const [losts, setLosts] = useState([]);
+  const [page, setPage] = useState("1");
+
   const lostAPI = async () => {
-    const response = await viewAllLostBoard();
+    let response = "";
+    if (page !== 1) {
+      response = await viewAllLostBoard(page);
+    } else {
+      response = await viewAllLostBoard(1);
+    }
+    // const response = await viewAllLostBoard();
     setLosts(response.data);
   };
 
   useEffect(() => {
     lostAPI();
-  }, []);
+  }, [page]);
+
+  const pageNumber = [1, 2, 3, 4, 5];
+  // const [pageCount, setPageCount] = useState(1);
+  // useEffect(() => {
+  //   // 게시물 전체 갯수 구하기
+  //   const getTotalBoard = async () => {
+  //     const result = await viewAllPaging();
+  //     let total = result.data.length;
+  //     console.log("total" + total);
+  //     return total;
+  //   };
+  //   // 페이지 카운트 하기
+  //   getTotalBoard().then((result) => setPageCount(Math.ceil(result / 12)));
+  //   console.log("pageCount" + pageCount);
+  // }, [losts]);
+
+  // const [numPage, setNumPage] = useState([]);
+  // // 처음부터 끝
+  // const paggg = () => {
+  //   for (let i = 1; i <= pageCount; i++) {
+  //     console.log(i);
+  //     setNumPage([i]);
+  //   }
+  //   console.log(numPage);
+  //   console.log("numPage = " + numPage);
+  // };
+  // useEffect(() => {
+  //   paggg();
+  // }, []);
 
   const navigate = useNavigate();
   const onCreate = async () => {
@@ -157,6 +203,22 @@ const ViewAllLostBoard = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="paging">
+        <FaAnglesLeft />
+        <FaAngleLeft value="1" onClick={(e) => setPage(e.target.value)} />
+        {pageNumber.map((num, index) => (
+          <button
+            key={index}
+            value={num}
+            onClick={(e) => setPage(e.target.value)}
+          >
+            {num}
+          </button>
+        ))}
+
+        <FaAngleRight />
+        <FaAnglesRight />
       </div>
     </Div>
   );

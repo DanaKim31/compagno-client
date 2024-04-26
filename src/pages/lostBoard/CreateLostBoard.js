@@ -70,6 +70,19 @@ const Div = styled.div`
               width: 100%;
             }
           }
+          tr#imgContent {
+            height: 200px;
+
+            td#imgContents {
+              height: 100%;
+              label#imgList {
+                display: flex;
+                margin: 0px;
+                justify-content: center;
+                align-items: center;
+              }
+            }
+          }
           td {
             justify-content: center;
             label {
@@ -395,15 +408,6 @@ const CreateLostBoard = () => {
                         );
                       })}
                     </select>
-                    {/* <input
-                      id="kindInputBox"
-                      type="text"
-                      value={lostAnimalKind}
-                      onChange={(e) => setLostAnimalKind(e.target.value)}
-                      placeholder="축종 기타 선택 시 입력 "
-                      readOnly={state}
-                      disabled={states}
-                    /> */}
                   </td>
                 </tr>
                 <tr>
@@ -481,10 +485,10 @@ const CreateLostBoard = () => {
                     />
                   </td>
                 </tr>
-                <tr>
+                <tr id="imgContent">
                   <th>사진첨부</th>
-                  <td>
-                    <label>
+                  <td id="imgContents">
+                    <label id="imgList">
                       사진 업로드 추가
                       <input
                         type="file"
