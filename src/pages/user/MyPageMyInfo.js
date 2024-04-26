@@ -40,6 +40,15 @@ const Div = styled.div`
       font-size: 1.5rem;
     }
 
+    .changeMyInfo {
+      width: 500px;
+      height: 500px;
+      background-color: skyblue;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+
     #quitInstructions {
       width: 100%;
       border: 1px solid skyblue;
@@ -83,6 +92,8 @@ const MyPageMyInfo = () => {
       }
     }
   }, []);
+
+  /* -----------------------------  ----------------------------- */
 
   /* ----------------------------- 회원탈퇴 ----------------------------- */
   const [quitButton, setQuitButton] = useState(true);
@@ -130,7 +141,7 @@ const MyPageMyInfo = () => {
           id="justify-tab-example"
           className="mb-3"
         >
-          <Tab eventKey="home" title="내 정보">
+          <Tab eventKey="home" title="정보 조회">
             <div className="info-content">
               <img
                 className="profileImage"
@@ -147,6 +158,28 @@ const MyPageMyInfo = () => {
           <Tab eventKey="profile" title="정보 수정">
             <div className="info-content">
               <h1>회원 정보 수정</h1>
+              <div className="changeMyInfo">
+                <label>
+                  기존 비밀번호 :&nbsp;
+                  <input type="password" />
+                </label>
+                <label>
+                  변경할 비밀번호 :&nbsp;
+                  <input type="password" />
+                </label>
+                <label>
+                  변경할 비밀번호 확인 :&nbsp;
+                  <input type="password" />
+                </label>
+                <label>
+                  전화번호 :&nbsp;
+                  <input type="text" />
+                </label>
+                <label>
+                  이메일 :&nbsp;
+                  <input type="text" value={user.userEmail} />
+                </label>
+              </div>
             </div>
           </Tab>
           <Tab eventKey="contact" title="회원 탈퇴">
