@@ -6,7 +6,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { changePwd } from "../../api/user";
+import { changePwd, quitUser } from "../../api/user";
+import { event } from "jquery";
 
 const Div = styled.div`
   display: flex;
@@ -44,6 +45,10 @@ const Div = styled.div`
       border: 1px solid skyblue;
       list-style-type: circle;
     }
+
+    .forQuitInput {
+      width: 340px;
+    }
   }
 `;
 
@@ -80,8 +85,40 @@ const MyPageMyInfo = () => {
   }, []);
 
   /* ----------------------------- 회원탈퇴 ----------------------------- */
-  // const [quitCheck, setQuitCheck] = useState(true);
-  // useEffect(() => {}, [quitCheck]);
+  const [quitButton, setQuitButton] = useState(true);
+  const [quitCheckBox, setQuitCheckBox] = useState(false);
+
+  // 탈퇴 확인용 입력한 정보
+  const [approveInfo, setApproveInfo] = useState({
+    userId: user.userId,
+    userPwd: "",
+  });
+
+  // 체크박스 클릭에 따른 탈퇴버튼 활성화 / 비활성화
+  const clickCheckBox = () => {
+    if (quitCheckBox === false) {
+      setQuitCheckBox(true);
+      setQuitButton(false);
+    }
+    if (quitCheckBox === true) {
+      setQuitCheckBox(false);
+      setQuitButton(true);
+    }
+  };
+
+  // 회원탈퇴 버튼 클릭해서 탈퇴하기
+  const clickQuitBtn = async () => {
+    try {
+      await quitUser(approveInfo);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      dispatch(userLogout());
+      alert("회원 탈퇴가 완료되었습니다. 메인페이지로 이동합니다.");
+      navigate("/compagno");
+    } catch (err) {
+      alert("비밀번호가 일치하지 않습니다.");
+    }
+  };
 
   return (
     <Div>
@@ -99,7 +136,8 @@ const MyPageMyInfo = () => {
                 className="profileImage"
                 src={"http://192.168.10.28:8081/" + user.userImg}
               />
-              <p>이름 : {user.userId}</p>
+              <p>이름 : {user.userPersonName}</p>
+              <p>아이디 : {user.userId}</p>
               <p>전화번호 : {user.userPhone}</p>
               <p>닉네임 : {user.userNickname}</p>
               <p>이메일 : {user.userEmail}</p>
@@ -114,16 +152,36 @@ const MyPageMyInfo = () => {
             <div className="info-content">
               <ul id="quitInstructions">
                 <h1>Compagno 탈퇴 전 확인하세요.</h1>
-                <li>회원탈퇴시 로그인 접근이 제한됩니다.</li>
+                <li>회원탈퇴시 사이트 접근이 제한됩니다.</li>
                 <li>타 유저의 게시글에 작성한 댓글은 삭제되지 않습니다.</li>
                 <li>6개월 후 모든 정보가 삭제되며, 복구가 불가능합니다.</li>
               </ul>
               <label>
-                <input type="checkbox" name="quitAgree" />
+                <input
+                  type="checkbox"
+                  name="quitAgree"
+                  checked={quitCheckBox}
+                  onChange={clickCheckBox}
+                />
                 유의사항을 확인했습니다.
               </label>
               <br />
-              <button disabled="true">회원 탈퇴</button>
+              <input
+                className="forQuitInput"
+                type="password"
+                disabled={quitButton}
+                placeholder="현재 비밀번호를 입력해주세요"
+                value={approveInfo.userPwd}
+                onChange={(e) =>
+                  setApproveInfo({
+                    userId: user.userId,
+                    userPwd: e.target.value,
+                  })
+                }
+              />
+              <button disabled={quitButton} onClick={clickQuitBtn}>
+                회원 탈퇴
+              </button>
             </div>
           </Tab>
         </Tabs>

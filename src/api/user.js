@@ -10,7 +10,7 @@ const instance = axios.create({ baseURL: "http://localhost:8080/compagno/" });
 
 // 인증이 필요한 RESTful API 가져올때 기본 루트
 const authorize = axios.create({
-  baseURL: "http://localhost:8080/api/",
+  baseURL: "http://localhost:8080/compagno/api/",
 });
 
 authorize.interceptors.request.use((config) => {
@@ -45,6 +45,6 @@ export const changePwd = async (data) => {
   return await authorize.post("mypage/myinfo/", data);
 };
 
-export const quitUser = async (id) => {
-  return await authorize.put("/mypage/myinfo/" + id + "/quit");
+export const quitUser = async (data) => {
+  return await authorize.put("mypage/myinfo/quit", data);
 };
