@@ -146,8 +146,10 @@ const Header = () => {
             </>
           ) : (
             <>
-              <a href="/compagno/signup">sigup</a>
-              <a href="/compagno/login">login</a>
+              <div className="user">
+                <a href="/compagno/signup">sigup</a>
+                <a href="/compagno/login">login</a>
+              </div>
             </>
           )}
           <div id="page">
