@@ -16,8 +16,7 @@ export const getAnswer = async (no) => {
 
 // 답변 등록
 export const addAnswer = async (data) => {
-  console.log(data);
-  return await instance.post("answer", data);
+  return await authorize.post("answer", data);
 };
 
 export const updateAnswer = async (data) => {

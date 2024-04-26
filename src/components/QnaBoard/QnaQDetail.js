@@ -1,8 +1,11 @@
 import { getQuestion, updateQuestion, delQuestion } from "../../api/Question";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
+import { userSave } from "../../store/user";
+import QnaADetail from "./QnaADetail";
 
 const Div = styled.div`
   position: relative;
@@ -18,10 +21,15 @@ const QnaQDetail = () => {
   const navigate = useNavigate();
   const { qnaQCode } = useParams();
 
+  // user 세팅
+  const info = useSelector((state) => {
+    return state.user;
+  });
+
   useEffect(() => {
     // 1. Question 세팅 (불러오기)
     questionAPI();
-  });
+  }, []);
 
   // 1. READ =========================================================
   // 1. Question 세팅 (불러오기)
@@ -79,8 +87,9 @@ const QnaQDetail = () => {
   const handleDeleteImage = () => {};
 
   // 3. DELETE ========================================================
-  const onDeleteQuestion = async (qnaQCode) => {
-    await delQuestion(qnaQCode);
+  const onDeleteQuestion = (qnaQCode) => {
+    delQuestion(qnaQCode);
+    navigate("/compagno/question");
     navigate("/compagno/question");
   };
 
@@ -201,6 +210,7 @@ const QnaQDetail = () => {
                 <p>{question.userNickname}</p>
                 <p>{question.qnaQContent}</p>
               </div>
+              <QnaADetail />
             </>
           )}
         </div>

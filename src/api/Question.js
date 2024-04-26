@@ -26,8 +26,8 @@ export const updateQuestion = (data) => {
 };
 
 // 추가하기
-export const addQuestion = async (data) => {
-  return await instance.post("question", data);
+export const addQuestion = (data) => {
+  return authorize.post("question", data);
 };
 
 // 삭제하기
