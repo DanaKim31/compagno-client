@@ -26,17 +26,8 @@ const QnaRegister = () => {
     }
   }, []);
 
-  const [questionInfo, setQuestionInfo] = useState({
-    qnaQTitle: "",
-    qnaQContent: "",
-    secret: "",
-    images: [],
-    user: {
-      userId: user.userId,
-      userNickname: user.userNickname,
-    },
-  });
-
+  const [userId, setUserId] = useState("");
+  const [userNickname, setUserNickname] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [secret, setSecret] = useState("");
@@ -56,11 +47,11 @@ const QnaRegister = () => {
   const add = async () => {
     const formData = new FormData();
 
-    console.log(user.userId);
-    console.log(user.userNickname);
-
     formData.append("userId", user.userId);
+    setUserId(user.userId);
+
     formData.append("userNickname", user.userNickname);
+    setUserNickname(user.userNickname);
 
     formData.append("qnaQTitle", title);
 
@@ -74,6 +65,8 @@ const QnaRegister = () => {
 
     console.log(formData.get("qnaQTitle"));
     console.log(formData.get("qnaQContent"));
+    console.log(formData.get("userId"));
+    console.log(formData.get("userNickname"));
 
     await addQuestion(formData);
     navigate("/compagno/question");

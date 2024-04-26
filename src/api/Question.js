@@ -27,6 +27,7 @@ export const updateQuestion = (data) => {
 
 // 추가하기
 export const addQuestion = (data) => {
+  console.log(data);
   return authorize.post("question", data);
 };
 
