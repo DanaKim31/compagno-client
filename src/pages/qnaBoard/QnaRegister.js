@@ -59,6 +59,7 @@ const QnaRegister = () => {
 
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
+      // formData.append(`files[${index}]`, image);
     });
 
     formData.append("secret", secret);

@@ -1,13 +1,25 @@
 import axios from "axios";
 
+const getToken = () => {
+  return localStorage.getItem("token");
+};
+
+// 인증 필요한 RESTful API 가져올 때 기본 루트
+const authorize = axios.create({
+  baseURL: "http://localhost:8080/compagno/",
+});
+
+authorize.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // 인증이 필요 x
 const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
-});
-
-//인증 필요 o
-const authorize = axios.create({
-  baseURL: "http://localhost:8080/compagno/",
 });
 
 // 목록 보기
@@ -21,13 +33,12 @@ export const getQuestion = async (no) => {
 };
 
 // 수정하기
-export const updateQuestion = (data) => {
-  return instance.put("question", data);
+export const updateQuestion = async (data) => {
+  return await instance.put("question", data);
 };
 
 // 추가하기
 export const addQuestion = (data) => {
-  console.log(data);
   return authorize.post("question", data);
 };
 
