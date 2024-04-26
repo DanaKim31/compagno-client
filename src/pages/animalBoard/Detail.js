@@ -18,6 +18,8 @@ import Dropdown from "react-bootstrap/Dropdown";
 // import DropdownToggle from "../../components/animalBoard/Dropdown";
 import React from "react";
 import ReplyComment from "../../components/animalBoard/ReplyComment";
+import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
+import FavoriteBoard from "../../components/animalBoard/FavoriteBoard";
 const Div = styled.div`
   padding-top: 112px;
 `;
@@ -81,7 +83,7 @@ const AnimalDetail = () => {
   // console.log(user);
   // 현재 게시글 정보 불러오기
   const [detailInfo, setDetail] = useState({
-    userNickname: "",
+    user: {},
     animalType: "",
     animalBoardTitle: "",
     animalBoardContent: "",
@@ -92,7 +94,7 @@ const AnimalDetail = () => {
 
   const animalBoardAPI = async () => {
     const response = await viewDetail(animalBoardCode);
-    // console.log(response.data);
+    console.log(response.data);
     setDetail(response.data);
   };
   // ======================================================================
@@ -103,7 +105,16 @@ const AnimalDetail = () => {
     console.log(response.data);
     setComments(response.data);
   };
+  /*
+ userNickname: "",
+    animalType: "",
+    animalBoardTitle: "",
+    animalBoardContent: "",
+    animalCategory: {},
+    animalBoardDate: "",
+    animalBoardView: 0,
 
+*/
   // 댓글쓰기
   const [comment, setComment] = useState({
     animalBoardCode: animalBoardCode,
@@ -170,23 +181,17 @@ const AnimalDetail = () => {
     setEdit({});
   };
   // 댓글 삭제
-  const onDelete = async (animalCommentCode) => {
-    await delComment(animalCommentCode);
+  const onDelete = async (commentCodes) => {
+    await delComment({
+      animalCommentCode: commentCodes.animalCommentCode,
+      animalParentCode: commentCodes.animalParentCode,
+    });
     animalBoardCommentAPI();
   };
 
   // 대댓글 달기
   const [boolean, setBoolean] = useState(false); // 추후 유저정보 토대로 boolean 예정
-  const [response, setResponse] = useState({
-    // animalCommentCode: "",
-    animalCommentContent: "",
-    animalBoardCode: 0,
-    // animalCommentDate: "",
-    animalParentCode: 0,
-    user: {
-      userId: user.userId,
-    },
-  }); // 부모 댓글 정보
+  const [response, setResponse] = useState({}); // 부모 댓글 정보
   const [responseReply, setResponseReply] = useState({});
   const accessReply = async (comment) => {
     setResponse(comment); // 현재 클릭한 아이의 댓글정보
@@ -225,7 +230,7 @@ const AnimalDetail = () => {
       },
       animalCommentTag: response.user.userNickname,
     });
-
+    setResponse({});
     animalBoardCommentAPI();
   };
 
@@ -253,23 +258,32 @@ const AnimalDetail = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animalBoardCode]);
+  useEffect(() => {
+    animalBoardCommentAPI();
+  }, [comment.replies]);
 
   return (
     <Div>
       <div className="App">
         <div className="container">
           <div className="row">
-            <h1> 아마도 nav 관련이 여기</h1>
+            <DetailPageProfile author={detailInfo} />
             <Link to="/compagno/write-board"> 글쓰기! </Link>
-            <Link to={`/compagno/edit-board/${detailInfo.animalBoardCode}`}>
-              수정하기
-            </Link>
+            {detailInfo.user.userId === user.userId ? (
+              <>
+                <Link to={`/compagno/edit-board/${detailInfo.animalBoardCode}`}>
+                  수정하기
+                </Link>
+              </>
+            ) : (
+              <></>
+            )}
 
             <div className="post__list">
-              <h2>
+              {/* <h2>
                 {detailInfo.animalCategory.animalType}
                 {detailInfo.animalBoardTitle}
-              </h2>
+              </h2> */}
 
               <div
                 className="post__description"
@@ -289,7 +303,9 @@ const AnimalDetail = () => {
             value={animalComment}
             onChange={(e) => setAnimalComment(e.target.value)}
           />
-          <InputGroup.Text>무언가 꾸밀수 있는곳</InputGroup.Text>
+          <InputGroup.Text>
+            <FavoriteBoard user={{ user }} />
+          </InputGroup.Text>
           <Button variant="secondary" onClick={addComment}>
             댓글추가!
           </Button>
@@ -303,7 +319,7 @@ const AnimalDetail = () => {
                 <div className="animal-board-comment ">
                   <label>
                     <img
-                      src={"http://192.168.10.28:8081/" + edit.user.userImg}
+                      src={"http://192.168.10.28:8081/" + comment.user.userImg}
                     />
                   </label>
                   <div className="user-action-container">
@@ -368,11 +384,7 @@ const AnimalDetail = () => {
                               <Dropdown.Item onClick={() => onUpdate(comment)}>
                                 수정하기
                               </Dropdown.Item>
-                              <Dropdown.Item
-                                onClick={() =>
-                                  onDelete(comment.animalCommentCode)
-                                }
-                              >
+                              <Dropdown.Item onClick={() => onDelete(comment)}>
                                 삭제하기
                               </Dropdown.Item>
                             </Dropdown.Menu>
@@ -424,7 +436,10 @@ const AnimalDetail = () => {
                 </div>
               </>
             )}
-            <ReplyComment replies={comment.replies} />
+            <ReplyComment
+              replies={comment.replies}
+              receiveComments={() => animalBoardCommentAPI()}
+            />
           </div>
         ))}
       </Comment>

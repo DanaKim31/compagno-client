@@ -38,7 +38,7 @@ const InnerComment = styled.div`
   }
 `;
 
-const ReplyComment = ({ replies }) => {
+const ReplyComment = ({ replies, receiveComments }) => {
   const { animalBoardCode } = useParams();
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
@@ -58,12 +58,15 @@ const ReplyComment = ({ replies }) => {
       user: {
         userId: user.userId,
       },
+      animalCommentTag: prevReply.animalCommentTag,
     });
     console.log(prevReply);
   };
   // 대댓글 수정하기
   const onUpdateR = async () => {
     await updateComment(editReply);
+    setEditReply({});
+    receiveComments();
   };
   // 토글
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -100,11 +103,28 @@ const ReplyComment = ({ replies }) => {
       animalParentCode: parentCode,
       animalCommentTag: response.user.userNickname,
     });
+    setResponse({});
+    receiveComments();
   };
   // 대댓글 삭제
-  const onDelete = async (animalCommentCode) => {
-    await delComment(animalCommentCode);
+  const onDelete = async (commentCodes) => {
+    await delComment({
+      animalCommentCode: commentCodes.animalCommentCode,
+      animalParentCode: commentCodes.animalParentCode,
+      user: {
+        userId: user.userId,
+      },
+    });
+    receiveComments();
   };
+  // const onDelete = async (commentCode) => {
+  //   await delComment(commentCode);
+  //   receiveComments();
+  // };
+
+  // useEffect(() => {
+  //   receiveComments();
+  // }, []);
   useEffect(() => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
@@ -119,12 +139,15 @@ const ReplyComment = ({ replies }) => {
           {editReply.animalCommentCode === reply.animalCommentCode ? (
             <>
               <div className="animal-board-reply">
-                <label>userImage</label>
+                <label>
+                  <img
+                    src={"http://192.168.10.28:8081/" + reply.user.userImg}
+                  />
+                </label>
                 <div className="user-action-container">
                   <div className="animal-board-comment-userability">
                     <p>
-                      {editReply.user.userNickname}
-                      {editReply.animalCommentDate}
+                      {reply.user.userNickname} {editReply.animalCommentDate}
                     </p>
                     <FaReplyAll />
 
@@ -181,9 +204,7 @@ const ReplyComment = ({ replies }) => {
                             >
                               수정하기
                             </Dropdown.Item>
-                            <Dropdown.Item
-                              onClick={() => onDelete(reply.animalCommentCode)}
-                            >
+                            <Dropdown.Item onClick={() => onDelete(reply)}>
                               삭제하기
                             </Dropdown.Item>
                           </Dropdown.Menu>

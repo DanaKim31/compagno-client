@@ -35,7 +35,11 @@ const Add = () => {
   });
 
   const add = async () => {
-    console.log(boardInfo);
+    if (boardInfo.animalCategoryCode === "default") {
+      alert("카테고리를 선택해주세요");
+      return;
+    }
+    // console.log(boardInfo);
     await addBoard(boardInfo);
     navigate("/compagno/animal-board");
   };

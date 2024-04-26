@@ -67,7 +67,8 @@ export const updateComment = async (data) => {
 
 // 게시글 댓글 삭제
 export const delComment = async (commentCode) => {
-  return await authorize.delete("animal-board/comment/" + commentCode);
+  console.log(commentCode);
+  return await authorize.post("animal-board/deleteComment", commentCode);
 };
 
 // ==============================================================
