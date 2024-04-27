@@ -1,8 +1,20 @@
 import axios from "axios";
 
+const getToken = () => {
+  return localStorage.getItem("token");
+};
+
 // 인증이 필요 x
 const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
+});
+
+authorize.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // 인증 필요 o

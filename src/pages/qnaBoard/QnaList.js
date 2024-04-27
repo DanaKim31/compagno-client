@@ -87,7 +87,7 @@ const QnaList = () => {
 
   useEffect(() => {
     questionAPI();
-  }, []);
+  }, [questions]);
 
   return (
     <Div>

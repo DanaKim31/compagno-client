@@ -89,7 +89,7 @@ const QnaQDetail = () => {
   // 3. DELETE ========================================================
   const onDeleteQuestion = (qnaQCode) => {
     delQuestion(qnaQCode);
-    navigate("/compagno/question");
+    questionAPI();
     navigate("/compagno/question");
   };
 
