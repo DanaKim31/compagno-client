@@ -59,9 +59,7 @@ const QnaADetail = () => {
       formData.append(`files[${index}]`, image);
     });
     await addAnswer(formData);
-
-    console.log(formData.data);
-    // navigate(현재 페이지로1!);
+    answerAPI();
   };
 
   // 1-2. 이미지 변경
@@ -91,6 +89,7 @@ const QnaADetail = () => {
   // 3. DELETE ========================================================
   const onDeleteAnswer = async (code) => {
     await deleteAnswer(code);
+    console.log(code);
     answerAPI();
   };
 

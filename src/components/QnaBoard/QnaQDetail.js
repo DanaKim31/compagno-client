@@ -13,18 +13,29 @@ const Div = styled.div`
 `;
 
 const QnaQDetail = () => {
+  const [userId, setUserId] = useState("");
+  const [userNickname, setUserNickname] = useState("");
+
   const [question, setQuestion] = useState({});
   const [images, setImages] = useState([]);
   const [showImages, setShowImages] = useState([]);
   const [editQ, setEditQ] = useState(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { qnaQCode } = useParams();
 
   // user 세팅
-  const info = useSelector((state) => {
+  const user = useSelector((state) => {
     return state.user;
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
 
   useEffect(() => {
     // 1. Question 세팅 (불러오기)
@@ -48,6 +59,12 @@ const QnaQDetail = () => {
   // 2-2. 수정 폼 제출
   const questionUpdate = async () => {
     const formData = new FormData();
+
+    formData.append("userId", user.userId);
+    setUserId(user.userId);
+
+    formData.append("userNickname", user.userNickname);
+    setUserNickname(user.userNickname);
 
     formData.append("qnaQCode", editQ.qnaQCode);
     formData.append("qnaQTitle", editQ.qnaQTitle);
@@ -96,124 +113,165 @@ const QnaQDetail = () => {
   return (
     <>
       <Div>
-        <div>
-          <h1>public</h1>
-          {question.images?.map((image) => (
-            <img
-              alt=""
-              key={image.qnaQImgCode}
-              src={"http://localhost:8081" + image.qnaQUrl}
-            />
-          ))}
-          <div>
-            <p>{question.qnaQTitle}</p>
-            <p>{question.qnaQDate}</p>
-            <p>{question.userId}</p>
-            <p>{question.userNickname}</p>
-            <p>{question.qnaQContent}</p>
-          </div>
-        </div>
-      </Div>
-      <Div>
-        <h1>작성자와 접속자 아이디가 같을 때 (수정 가능!)</h1>
-        <div key={question.qnaQCode} className="question">
-          {editQ !== null && editQ?.qnaQCode === question.qnaQCode ? (
+        <>
+          {question.userId === user.userId ? (
             <>
-              {/* 수정 페이지! */}
-              {/* 이미지들 */}
-              <div>
-                {/* 기존 이미지들 */}
-                {editQ.images?.map((image) => (
-                  <img
-                    alt=""
-                    key={image.qnaQImgCode}
-                    src={"http://localhost:8081" + image.qnaQUrl}
-                    onClick={() => deleteImage(image.qnaQImgCode)}
-                  />
-                ))}
-                {/* 수정 이미지들 */}
-                {showImages.map((image, id) => (
-                  <div key={id}>
-                    <img src={image} alt={`${image}-${id}`} />
-                    <button onClick={() => handleDeleteImage(id)}>삭제</button>
-                  </div>
-                ))}
+              <h1>작성자 = 접속자</h1>
+              <div key={question.qnaQCode} className="question">
+                {editQ !== null && editQ?.qnaQCode === question.qnaQCode ? (
+                  <>
+                    {/* 수정 페이지! */}
+                    {/* 이미지들 */}
+                    <div>
+                      {/* 기존 이미지들 */}
+                      {editQ.images?.map((image) => (
+                        <img
+                          alt=""
+                          key={image.qnaQImgCode}
+                          src={"http://localhost:8081" + image.qnaQUrl}
+                          onClick={() => deleteImage(image.qnaQImgCode)}
+                        />
+                      ))}
+                      {/* 수정 이미지들 */}
+                      {showImages.map((image, id) => (
+                        <div key={id}>
+                          <img src={image} alt={`${image}-${id}`} />
+                          <button onClick={() => handleDeleteImage(id)}>
+                            삭제
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    {/* 수정 폼 */}
+                    <h1>수정중..</h1>
+                    <Form.Control
+                      type="text"
+                      placeholder="제목"
+                      value={editQ.qnaQTitle}
+                      onChange={(e) =>
+                        setEditQ((prev) => ({
+                          ...prev,
+                          qnaQTitle: e.target.value,
+                        }))
+                      }
+                    />
+                    <Form.Control
+                      type="textarea"
+                      placeholder="내용"
+                      value={editQ.qnaQContent}
+                      onChange={(e) => {
+                        setEditQ((prev) => ({
+                          ...prev,
+                          qnaQContent: e.target.value,
+                        }));
+                      }}
+                    />
+                    <Form.Control
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleAddImages}
+                    />
+                    {/* 수정, 취소 버튼 */}
+                    <Button variant="warning" onClick={questionUpdate}>
+                      수정
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        navigate("/compagno/question");
+                      }}
+                    >
+                      취소
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    {/* 그냥 보는 페이지 */}
+                    {/* 수정, 삭제 버튼 */}
+                    <Button
+                      variant="warning"
+                      onClick={() => onUpdateQuestion(question)}
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      variant="danger"
+                      onClick={() => onDeleteQuestion(question.qnaQCode)}
+                    >
+                      삭제
+                    </Button>
+
+                    {/* 상세 정보 */}
+                    {question.images?.map((image) => (
+                      <img
+                        alt=""
+                        key={image.qnaQImgCode}
+                        src={"http://localhost:8081" + image.qnaQUrl}
+                      />
+                    ))}
+                    <div>
+                      <p>{question.qnaQTitle}</p>
+                      <p>{question.qnaQDate}</p>
+                      <p>{question.userId}</p>
+                      <p>{question.userNickname}</p>
+                      <p>{question.qnaQContent}</p>
+                    </div>
+                  </>
+                )}
               </div>
-              {/* 수정 폼 */}
-              <h1>수정중..</h1>
-              <Form.Control
-                type="text"
-                placeholder="제목"
-                value={editQ.qnaQTitle}
-                onChange={(e) =>
-                  setEditQ((prev) => ({ ...prev, qnaQTitle: e.target.value }))
-                }
-              />
-              <Form.Control
-                type="textarea"
-                placeholder="내용"
-                value={editQ.qnaQContent}
-                onChange={(e) => {
-                  setEditQ((prev) => ({
-                    ...prev,
-                    qnaQContent: e.target.value,
-                  }));
-                }}
-              />
-              <Form.Control
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleAddImages}
-              />
-              {/* 수정, 취소 버튼 */}
-              <Button variant="warning" onClick={questionUpdate}>
-                수정
-              </Button>
-              <Button
-                onClick={() => {
-                  navigate("/compagno/question");
-                }}
-              >
-                취소
-              </Button>
             </>
           ) : (
             <>
-              {/* 그냥 보는 페이지 */}
-              {/* 수정, 삭제 버튼 */}
-              <Button
-                variant="warning"
-                onClick={() => onUpdateQuestion(question)}
-              >
-                수정
-              </Button>
-              <Button
-                variant="danger"
-                onClick={() => onDeleteQuestion(question.qnaQCode)}
-              >
-                삭제
-              </Button>
-
-              {/* 상세 정보 */}
-              {question.images?.map((image) => (
-                <img
-                  alt=""
-                  key={image.qnaQImgCode}
-                  src={"http://localhost:8081" + image.qnaQUrl}
-                />
-              ))}
-              <div>
-                <p>{question.qnaQTitle}</p>
-                <p>{question.qnaQDate}</p>
-                <p>{question.userId}</p>
-                <p>{question.userNickname}</p>
-                <p>{question.qnaQContent}</p>
-              </div>
-              <QnaADetail />
+              {user.userRole === "ROLE_ADMIN" ? (
+                <>
+                  <h1>관리자!!! 수정 x, 삭제 버튼만</h1>
+                  <Button
+                    variant="danger"
+                    onClick={() => onDeleteQuestion(question.qnaQCode)}
+                  >
+                    삭제
+                  </Button>
+                  {/* 상세 정보 */}
+                  {question.images?.map((image) => (
+                    <img
+                      alt=""
+                      key={image.qnaQImgCode}
+                      src={"http://localhost:8081" + image.qnaQUrl}
+                    />
+                  ))}
+                  <div>
+                    <p>{question.qnaQTitle}</p>
+                    <p>{question.qnaQDate}</p>
+                    <p>{question.userId}</p>
+                    <p>{question.userNickname}</p>
+                    <p>{question.qnaQContent}</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <h1>public</h1>
+                    {question.images?.map((image) => (
+                      <img
+                        alt=""
+                        key={image.qnaQImgCode}
+                        src={"http://localhost:8081" + image.qnaQUrl}
+                      />
+                    ))}
+                    <div>
+                      <p>{question.qnaQTitle}</p>
+                      <p>{question.qnaQDate}</p>
+                      <p>{question.userId}</p>
+                      <p>{question.userNickname}</p>
+                      <p>{question.qnaQContent}</p>
+                    </div>
+                  </div>
+                </>
+              )}
             </>
           )}
-        </div>
+        </>
+        <QnaADetail />
       </Div>
     </>
   );

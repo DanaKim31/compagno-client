@@ -35,5 +35,5 @@ export const updateAnswer = async (data) => {
   return await instance.put("answer", data);
 };
 export const deleteAnswer = async (no) => {
-  return await authorize.delete("answer" + no);
+  return await authorize.delete("answer/" + no);
 };

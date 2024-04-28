@@ -13,6 +13,7 @@ const Div = styled.div`
 
 const QnaRegister = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // user 세팅
   const user = useSelector((state) => {
@@ -32,8 +33,6 @@ const QnaRegister = () => {
   const [content, setContent] = useState("");
   const [secret, setSecret] = useState("");
   const [images, setImages] = useState([]);
-
-  const dispatch = useDispatch();
 
   const imageChange = (e) => {
     const files = Array.from(e.target.files);

@@ -2,6 +2,8 @@ import { getQuestions } from "../../api/Question";
 import { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { userSave } from "../../store/user";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -21,6 +23,19 @@ const Table = styled.table`
 const QnaList = () => {
   const [questions, setQuestions] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // user 세팅
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
 
   // 입력한 비밀번호
   const [secretPwd, setSecret] = useState("");
@@ -86,7 +101,7 @@ const QnaList = () => {
 
   useEffect(() => {
     questionAPI();
-  }, [questions]);
+  }, []);
 
   return (
     <Div>
@@ -112,19 +127,32 @@ const QnaList = () => {
                     {question.qnaQTitle}
                   </a>
                 ) : (
-                  // 비밀번호가 걸려있을 때
-                  <a
-                    href={`/compagno/question/detail/${question.qnaQCode}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setModalShow(true);
-                      setSecret(question.secret);
-                      setCode(question.qnaQCode);
-                      console.log(question.secret);
-                    }}
-                  >
-                    {question.qnaQTitle}
-                  </a>
+                  <>
+                    {user.userRole === "ROLE_ADMIN" ? (
+                      <>
+                        <a
+                          href={`/compagno/question/detail/${question.qnaQCode}`}
+                        >
+                          {question.qnaQTitle}
+                        </a>
+                      </>
+                    ) : (
+                      <>
+                        <a
+                          href={`/compagno/question/detail/${question.qnaQCode}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setModalShow(true);
+                            setSecret(question.secret);
+                            setCode(question.qnaQCode);
+                            console.log(question.secret);
+                          }}
+                        >
+                          {question.qnaQTitle}
+                        </a>
+                      </>
+                    )}
+                  </>
                 )}
               </td>
               <td>{question.userId}</td>
