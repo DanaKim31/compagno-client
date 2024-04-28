@@ -31,9 +31,12 @@ export const addAnswer = async (data) => {
   return await authorize.post("answer", data);
 };
 
+// 답변 수정
 export const updateAnswer = async (data) => {
-  return await instance.put("answer", data);
+  return await authorize.put("answer", data);
 };
+
+// 답변 삭제
 export const deleteAnswer = async (no) => {
   return await authorize.delete("answer/" + no);
 };

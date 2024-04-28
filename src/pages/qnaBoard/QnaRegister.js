@@ -57,16 +57,11 @@ const QnaRegister = () => {
     formData.append("qnaQContent", content);
 
     images.forEach((image, index) => {
-      formData.append(`images[${index}]`, image);
+      formData.append(`files[${index}]`, image);
       // formData.append(`files[${index}]`, image);
     });
 
     formData.append("secret", secret);
-
-    console.log(formData.get("qnaQTitle"));
-    console.log(formData.get("qnaQContent"));
-    console.log(formData.get("userId"));
-    console.log(formData.get("userNickname"));
 
     await addQuestion(formData);
     navigate("/compagno/question");

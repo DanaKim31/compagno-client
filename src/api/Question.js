@@ -34,7 +34,7 @@ export const getQuestion = async (no) => {
 
 // 수정하기
 export const updateQuestion = async (data) => {
-  return await instance.put("question", data);
+  return await authorize.put("question", data);
 };
 
 // 추가하기
@@ -44,5 +44,5 @@ export const addQuestion = (data) => {
 
 // 삭제하기
 export const delQuestion = async (no) => {
-  return await instance.delete("question/" + no);
+  return await authorize.delete("question/" + no);
 };
