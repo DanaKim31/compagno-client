@@ -9,17 +9,17 @@ const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
 });
 
+// 인증 필요 o
+const authorize = axios.create({
+  baseURL: "http://localhost:8080/compagno/",
+});
+
 authorize.interceptors.request.use((config) => {
   const token = getToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
-});
-
-// 인증 필요 o
-const authorize = axios.create({
-  baseURL: "http://localhost:8080/compagno/",
 });
 
 export const getAnswer = async (no) => {
@@ -35,5 +35,5 @@ export const updateAnswer = async (data) => {
   return await instance.put("answer", data);
 };
 export const deleteAnswer = async (no) => {
-  return await instance.delete("answer" + no);
+  return await authorize.delete("answer" + no);
 };

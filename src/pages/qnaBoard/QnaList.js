@@ -81,7 +81,6 @@ const QnaList = () => {
 
   const questionAPI = async () => {
     const result = await getQuestions();
-    console.log(result.data);
     setQuestions(result.data);
   };
 

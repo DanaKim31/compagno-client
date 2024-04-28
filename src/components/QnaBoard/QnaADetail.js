@@ -7,17 +7,34 @@ import {
   updateAnswer,
   deleteAnswer,
 } from "../../api/Answer";
+import { useSelector, useDispatch } from "react-redux";
+import { userSave } from "../../store/user";
 
 const QnaADetail = () => {
   const { qnaQCode } = useParams();
 
+  const [userId, setUserId] = useState("");
+  const [userNickname, setUserNickname] = useState("");
   const [answer, setAnswer] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
   const [editA, setEditA] = useState(null);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // user 세팅
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
 
   useEffect(() => {
     answerAPI();
@@ -27,6 +44,12 @@ const QnaADetail = () => {
   // 1-1. 폼 전송
   const answerSubmit = async () => {
     const formData = new FormData();
+
+    formData.append("userId", user.userId);
+    setUserId(user.userId);
+
+    formData.append("userNickname", user.userNickname);
+    setUserNickname(user.userNickname);
 
     formData.append("qnaQCode", qnaQCode);
     formData.append("qnaATitle", title);
@@ -73,8 +96,8 @@ const QnaADetail = () => {
 
   return (
     <>
-      {answer === "" ? (
-        // 답변이 없는 경우
+      {answer === "" && user.userRole === "ROLE_ADMIN" ? (
+        // 답변이 없는 경우 + 관리자의 경우!!
         <div className="Answer">
           <h1>답변 작성 폼</h1>
           <Form.Control
@@ -104,6 +127,7 @@ const QnaADetail = () => {
         <div>
           <div>
             <h1>Answer</h1>
+
             {/* 관리자 && (작성자 id = 로그인 유저 id) */}
             <button>수정</button>
             <button onClick={() => onDeleteAnswer(answer.qnaACode)}>
