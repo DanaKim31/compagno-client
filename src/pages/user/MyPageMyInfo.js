@@ -145,7 +145,8 @@ const MyPageMyInfo = () => {
             <div className="info-content">
               <img
                 className="profileImage"
-                src={"http://192.168.10.28:8081/" + user.userImg}
+                // src={"http://192.168.10.28:8081/" + user.userImg}
+                src={"C:/upload/" + user.userImg}
               />
               <p>이름 : {user.userPersonName}</p>
               <p>아이디 : {user.userId}</p>
@@ -177,8 +178,9 @@ const MyPageMyInfo = () => {
                 </label>
                 <label>
                   이메일 :&nbsp;
-                  <input type="text" value={user.userEmail} />
+                  <input type="text" />
                 </label>
+                <button>회원 정보 수정</button>
               </div>
             </div>
           </Tab>
