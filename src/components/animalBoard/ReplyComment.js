@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import { updateComment, getComments } from "../../api/animalBoard";
+import { FaPencilAlt } from "react-icons/fa";
 const InnerComment = styled.div`
   display: flex;
   flex-direction: column;
@@ -27,6 +28,10 @@ const InnerComment = styled.div`
       .animal-board-comment-userability {
         margin-bottom: 15px;
         display: flex;
+        .writer {
+          font-size: 1.2rem;
+          color: brown;
+        }
         .response {
           cursor: pointer;
         }
@@ -38,7 +43,8 @@ const InnerComment = styled.div`
   }
 `;
 
-const ReplyComment = ({ replies, receiveComments }) => {
+const ReplyComment = ({ replies, receiveComments, boardAuthor }) => {
+  // console.log(boardAuthor); // 글 저자 정보 잘 가져옴
   const { animalBoardCode } = useParams();
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
@@ -184,7 +190,15 @@ const ReplyComment = ({ replies, receiveComments }) => {
                 <div className="user-action-container">
                   <div className="animal-board-comment-userability">
                     <p>
-                      {reply.user.userNickname} {reply.animalCommentDate}
+                      {reply.user.userNickname}
+                      {boardAuthor === reply.user.userId ? (
+                        <>
+                          <FaPencilAlt className="writer" />
+                        </>
+                      ) : (
+                        <></>
+                      )}{" "}
+                      {reply.animalCommentDate}
                     </p>
                     <FaReplyAll
                       className="response"

@@ -20,6 +20,7 @@ import React from "react";
 import ReplyComment from "../../components/animalBoard/ReplyComment";
 import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
 import FavoriteBoard from "../../components/animalBoard/FavoriteBoard";
+import { FaPencilAlt } from "react-icons/fa";
 const Div = styled.div`
   padding-top: 112px;
 `;
@@ -57,6 +58,10 @@ const Comment = styled.div`
       .animal-board-comment-userability {
         margin-bottom: 15px;
         display: flex;
+        .writer {
+          font-weight: 1.2rem;
+          color: brown;
+        }
         .response {
           cursor: pointer;
         }
@@ -94,7 +99,7 @@ const AnimalDetail = () => {
 
   const animalBoardAPI = async () => {
     const response = await viewDetail(animalBoardCode);
-    console.log(response.data);
+    // console.log(response.data);
     setDetail(response.data);
   };
   // ======================================================================
@@ -102,7 +107,7 @@ const AnimalDetail = () => {
   const [comments, setComments] = useState([]);
   const animalBoardCommentAPI = async () => {
     const response = await getComments(animalBoardCode);
-    console.log(response.data);
+    // console.log(response.data);
     setComments(response.data);
   };
   /*
@@ -304,7 +309,12 @@ const AnimalDetail = () => {
             onChange={(e) => setAnimalComment(e.target.value)}
           />
           <InputGroup.Text>
-            <FavoriteBoard user={{ user }} />
+            <FavoriteBoard
+              userId={user.userId}
+              boardCode={animalBoardCode}
+              count={detailInfo.animalBoardFavoriteCount}
+              boardAPI={() => animalBoardAPI()}
+            />
           </InputGroup.Text>
           <Button variant="secondary" onClick={addComment}>
             댓글추가!
@@ -367,7 +377,15 @@ const AnimalDetail = () => {
                   <div className="user-action-container">
                     <div className="animal-board-comment-userability">
                       <p>
-                        {comment.user.userNickname} {comment.animalCommentDate}
+                        {comment.user.userNickname}
+                        {detailInfo.user.userId === comment.user.userId ? (
+                          <>
+                            <FaPencilAlt className="writer" />
+                          </>
+                        ) : (
+                          <></>
+                        )}{" "}
+                        {comment.animalCommentDate}
                       </p>
                       <FaReply
                         className="response"
@@ -439,6 +457,7 @@ const AnimalDetail = () => {
             <ReplyComment
               replies={comment.replies}
               receiveComments={() => animalBoardCommentAPI()}
+              boardAuthor={detailInfo.user.userId}
             />
           </div>
         ))}

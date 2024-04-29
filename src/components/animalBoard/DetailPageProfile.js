@@ -46,7 +46,7 @@ const Div = styled.div`
   }
 `;
 const DetailPageProfile = ({ author }) => {
-  console.log(author);
+  // console.log(author);
   return (
     <Div className="author-profile-container">
       <div className="title-container">

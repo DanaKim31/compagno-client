@@ -76,3 +76,22 @@ export const delComment = async (commentCode) => {
 // export const viewCount = async (animalBoardCode) =>{
 //   return await instance.get("animal-board/" + animalBoardCode);
 // }
+// 해당글의 현재 유저의 좋아요 정보 가져오기 -boradCode + userId
+export const checkFavorite = async (favDetail) => {
+  console.log(favDetail);
+  return await instance.post("animal-board/checkFavorite", favDetail);
+};
+// 해당 글의 좋아요 수 가져오기 - count
+export const FavCount = async (boolean) => {
+  return await instance.put(`animal-board/countFavorite`, boolean);
+};
+
+// 게시글 좋아요
+export const addFavorite = async (boardData) => {
+  return await authorize.post("animal-board/addFavorite", boardData);
+};
+
+// 게시글 좋아요 취소
+export const delFavorite = async (boardData) => {
+  return await authorize.post("animal-board/delFavorite", boardData);
+};
