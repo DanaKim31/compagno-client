@@ -15,7 +15,7 @@ const Edit = () => {
 
   const [detailInfo, setDetail] = useState({
     userId: "",
-    animalCategory: [],
+    animalCategory: {},
     animalBoardTitle: "",
     animalBoardContent: "",
     animalBoardDate: "",

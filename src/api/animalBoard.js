@@ -23,9 +23,9 @@ const instance = axios.create({
 
 // 글쓰기
 export const addBoard = async (boardInfo) => {
+  console.log(boardInfo);
   return await authorize.post(`animal-board`, boardInfo);
 };
-
 // 글 전체보기
 export const viewBoardList = async () => {
   return await instance.get(`animal-board`);

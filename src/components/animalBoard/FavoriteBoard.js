@@ -22,7 +22,6 @@ const FavoriteBoard = ({ userId, boardCode, count, boardAPI }) => {
   // console.log(boardCode);
   // 지금 로그인한 유저의 해당글의 좋아요 여부 확인
   const [boolean, setBoolean] = useState(null);
-  const [coutBoolean, setCountBoolean] = useState(null);
   const currentFavStateAPI = async () => {
     const response = await checkFavorite({
       animalBoardCode: boardCode,
@@ -31,13 +30,6 @@ const FavoriteBoard = ({ userId, boardCode, count, boardAPI }) => {
     setBoolean(response.data);
     console.log(response.data);
   };
-  // console.log(count);
-  // const countFavAPI = async () => {
-  //   await FavCount({
-  //     animalBoardCode: boardCode,
-  //     checkBoolean: coutBoolean,
-  //   });
-  // };
   // 좋아요
   const addFav = async () => {
     await addFavorite({ animalBoardCode: boardCode, userId: userId });
@@ -71,10 +63,6 @@ const FavoriteBoard = ({ userId, boardCode, count, boardAPI }) => {
     });
     boardAPI();
   };
-  // 취소시 count -1
-  // useEffect(() => {
-  //   countFavAPI();
-  // }, [coutBoolean]); // 좋아요 boolean 변경시 count method 작동
   useEffect(() => {
     currentFavStateAPI();
   }, [boolean]);
