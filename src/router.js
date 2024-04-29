@@ -23,6 +23,8 @@ import SitterCreate from "./pages/sitterBoard/SitterCreate";
 import SitterDetail from "./pages/sitterBoard/SitterDetail";
 import ViewAllProductBoard from "./pages/productBoard/ViewAllProductBoard";
 import ProductBoardDetail from "./pages/productBoard/ProductBoardDetail";
+import ClassList from "./pages/onedayClassBoard/ClassList";
+import CreateClass from "./pages/onedayClassBoard/CreateClass";
 
 const router = createBrowserRouter([
   {
@@ -106,6 +108,13 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <ViewAllProductBoard /> },
           { path: ":code", element: <ProductBoardDetail /> },
+        ],
+      },
+      {
+        path: "onedayClassBoard",
+        children: [
+          { path: "viewAll", element: <ClassList /> },
+          { path: "create", element: <CreateClass /> },
         ],
       },
     ],
