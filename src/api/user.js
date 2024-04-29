@@ -21,30 +21,37 @@ authorize.interceptors.request.use((config) => {
   return config;
 });
 
+// 회원 가입
 export const registerUser = async (user) => {
   return await instance.post("signUp", user);
 };
 
+// 로그인
 export const loginUser = async (user) => {
   return await instance.post("login", user);
 };
 
+// 내 정보 불러오기
 export const myPageInfo = async (id) => {
-  return await instance.get("myinfo/" + id);
+  return await authorize.get("mypage/myinfo/" + id);
 };
 
+// 회원가입시 중복 아이디 체크
 export const checkDupId = async (id) => {
   return await instance.get("signUp/checkid/" + id);
 };
 
+// 회원가입이 중복 닉네임 체크
 export const checkDupNick = async (nickname) => {
   return await instance.get("signUp/checknick/" + nickname);
 };
 
-export const changePwd = async (data) => {
-  return await authorize.post("mypage/myinfo/", data);
-};
-
+// 회원 탈퇴
 export const quitUser = async (data) => {
   return await authorize.put("mypage/myinfo/quit", data);
+};
+
+// 회원정보 변경
+export const updateUser = async (data) => {
+  return await authorize.put("mypage/myinfo/update", data);
 };

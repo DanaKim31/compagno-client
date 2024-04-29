@@ -206,6 +206,7 @@ const SignUp = () => {
     onChangeEmail();
   }, [user.userEmail]);
 
+  // 전화번호 체크 정규표현식 실행하는 useEffet
   useEffect(() => {
     onChangePhone();
   }, [user.userPhone]);

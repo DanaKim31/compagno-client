@@ -6,8 +6,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { changePwd, quitUser } from "../../api/user";
-import { event } from "jquery";
+import { updateUser, quitUser, myPageInfo } from "../../api/user";
 
 const Div = styled.div`
   display: flex;
@@ -65,19 +64,41 @@ const MyPageMyInfo = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // 변경할 개인정보 받아줄 변수 언선
+  const [user, setUser] = useState({
+    userEmail: "",
+    userPhone: "",
+    userPwd: "",
+    userPwdCheck: "",
+  });
+
+  const insertDefaultInfo = () => {
+    setUser((prev) => ({
+      ...prev,
+      userEmail: info.userEmail,
+      userPhone: info.userPhone,
+    }));
+  };
+
   // 개인정보 변경용 정규표현식
   const pwdRegexp = /^[a-zA-Z0-9!-~]{8,14}$/; // 비밀번호
+  const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 이메일
+  const phoneRegexp = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/; // 전화번호
 
   // 정보 변경 정규표현식 미충족시 출력할 경고문구
   const pwdText = "영어 대소문자, 숫자 및 특수문자 포함 8~16자"; // 비밀번호
   const pwdChkText = "동일한 비밀번호 입력 요망"; // 비밀번호체크
+  const emailText = "올바른 이메일 양식 입력 요망"; // 이메일
+  const phoneText = "하이픈(-) 포함해서 입력 요망"; // 전화번호
 
   // 정보 변경 경고문구 초기화
   const [userPwdSpan, setUserPwdSpan] = useState("");
   const [userPwdCheckSpan, setUserPwdCheckSpan] = useState("");
+  const [userEmailSpan, setUserEmailSpan] = useState("");
+  const [userPhoneSpan, setUserPhoneSpan] = useState("");
 
   // 유저정보 가지고온다
-  const user = useSelector((state) => {
+  const info = useSelector((state) => {
     return state.user;
   });
 
@@ -93,7 +114,112 @@ const MyPageMyInfo = () => {
     }
   }, []);
 
-  /* -----------------------------  ----------------------------- */
+  useEffect(() => {
+    insertDefaultInfo();
+  }, [info]);
+
+  /* ----------------------------- 회원정보 변경 ----------------------------- */
+  // 입력한 비밀번호 정규표현식으로 체크하는 함수
+  const onChangePwd = () => {
+    if (pwdRegexp.test(user.userPwd) || user.userPwd === "") {
+      setUserPwdSpan("");
+    } else {
+      setUserPwdSpan(pwdText);
+    }
+  };
+
+  // 동일한 비멀번호 입력 체크하는 함수
+  const onChangeChkPwd = () => {
+    if (user.userPwd === user.userPwdCheck || user.userPwdCheck === "") {
+      setUserPwdCheckSpan("");
+    } else {
+      setUserPwdCheckSpan(pwdChkText);
+    }
+  };
+
+  // 입력한 이메일 정규표현식으로 체크하는 함수
+  const onChangeEmail = () => {
+    if (
+      emailRegexp.test(user.userEmail) ||
+      user.userEmail === "" ||
+      user.userEmail === undefined
+    ) {
+      setUserEmailSpan("");
+    } else {
+      setUserEmailSpan(emailText);
+    }
+  };
+
+  // 입력한 전화번호 정규표현식으로 체크하는 함수
+  const onChangePhone = () => {
+    if (
+      phoneRegexp.test(user.userPhone) ||
+      user.userPhone === "" ||
+      user.userPhone === undefined
+    ) {
+      setUserPhoneSpan("");
+    } else {
+      setUserPhoneSpan(phoneText);
+    }
+  };
+
+  // 비밀번호 체크 정규표현식 실행하는 useEffect
+  useEffect(() => {
+    onChangePwd();
+  }, [user.userPwd]);
+
+  // 동일 비밀번호 체크 정규표현식 실행하는 useEffect
+  useEffect(() => {
+    onChangeChkPwd();
+  }, [user.userPwdCheck]);
+
+  // 이메일 체크 정규표현식 실행하는 useEffect
+  useEffect(() => {
+    onChangeEmail();
+  }, [user.userEmail]);
+
+  // 전화번호 체크 정규표현식 실행하는 useEffect
+  useEffect(() => {
+    onChangePhone();
+  }, [user.userPhone]);
+
+  // 회원정보 수정 클릭시 작동 함수
+  const editMyInfo = async () => {
+    if (
+      !pwdRegexp.test(user.userPwd) ||
+      user.userPwd === "" ||
+      user.userPwd === undefined
+    ) {
+      alert("올바른 비밀번호를 입력했는지 확인해주세요");
+    } else if (
+      user.userPwd !== user.userPwdCheck ||
+      user.userPwdCheck === "" ||
+      user.userPwdCheck === undefined
+    ) {
+      alert("동일한 비밀번호를 입력했는지 확인해주세요");
+    } else if (
+      !emailRegexp.test(user.userEmail) ||
+      user.userEmail === "" ||
+      user.userEmail === undefined
+    ) {
+      alert("올바른 이메일 양식으로 입력해주세요");
+    } else if (
+      !phoneRegexp.test(user.userPhone) ||
+      user.userPhone === "" ||
+      user.userPhone === undefined
+    ) {
+      alert("올바른 전화번호 양식으로 입력해주세요");
+    } else {
+      await updateUser(user);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      dispatch(userLogout());
+      alert(
+        "개인정보가 변경되었습니다. 보안을 위해 변경된 정보를 적용하려면 로그아웃 후 다시 로그인해주세요."
+      );
+      navigate("/compagno");
+    }
+  };
 
   /* ----------------------------- 회원탈퇴 ----------------------------- */
   const [quitButton, setQuitButton] = useState(true);
@@ -101,8 +227,9 @@ const MyPageMyInfo = () => {
 
   // 탈퇴 확인용 입력한 정보
   const [approveInfo, setApproveInfo] = useState({
-    userId: user.userId,
+    userId: info.userId,
     userPwd: "",
+    userPhone: "",
   });
 
   // 체크박스 클릭에 따른 탈퇴버튼 활성화 / 비활성화
@@ -145,15 +272,15 @@ const MyPageMyInfo = () => {
             <div className="info-content">
               <img
                 className="profileImage"
-                // src={"http://192.168.10.28:8081/" + user.userImg}
-                src={"C:/upload/" + user.userImg}
+                src={"http://192.168.10.28:8081/" + info.userImg}
+                // src={"C:/upload/" + user.userImg}
               />
-              <p>이름 : {user.userPersonName}</p>
-              <p>아이디 : {user.userId}</p>
-              <p>전화번호 : {user.userPhone}</p>
-              <p>닉네임 : {user.userNickname}</p>
-              <p>이메일 : {user.userEmail}</p>
-              <p>가입일 : {user.userEnrollDate}</p>
+              <p>이름 : {info.userPersonName}</p>
+              <p>아이디 : {info.userId}</p>
+              <p>전화번호 : {info.userPhone}</p>
+              <p>닉네임 : {info.userNickname}</p>
+              <p>이메일 : {info.userEmail}</p>
+              <p>가입일 : {info.userEnrollDate}</p>
             </div>
           </Tab>
           <Tab eventKey="profile" title="정보 수정">
@@ -161,26 +288,63 @@ const MyPageMyInfo = () => {
               <h1>회원 정보 수정</h1>
               <div className="changeMyInfo">
                 <label>
-                  기존 비밀번호 :&nbsp;
-                  <input type="password" />
-                </label>
-                <label>
                   변경할 비밀번호 :&nbsp;
-                  <input type="password" />
+                  <input
+                    type="password"
+                    value={user.userPwd}
+                    onChange={(e) => {
+                      setUser((prev) => ({
+                        ...prev,
+                        userPwd: e.target.value,
+                        userId: info.userId,
+                      }));
+                    }}
+                  />
+                  <span className="regExpMessage">{userPwdSpan}</span>
                 </label>
                 <label>
                   변경할 비밀번호 확인 :&nbsp;
-                  <input type="password" />
+                  <input
+                    type="password"
+                    value={user.userPwdCheck}
+                    onChange={(e) => {
+                      setUser((prev) => ({
+                        ...prev,
+                        userPwdCheck: e.target.value,
+                      }));
+                    }}
+                  />
+                  <span className="regExpMessage">{userPwdCheckSpan}</span>
                 </label>
                 <label>
                   전화번호 :&nbsp;
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={user.userPhone}
+                    onChange={(e) => {
+                      setUser((prev) => ({
+                        ...prev,
+                        userPhone: e.target.value,
+                      }));
+                    }}
+                  />
+                  <span className="regExpMessage">{userPhoneSpan}</span>
                 </label>
                 <label>
                   이메일 :&nbsp;
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={user.userEmail}
+                    onChange={(e) => {
+                      setUser((prev) => ({
+                        ...prev,
+                        userEmail: e.target.value,
+                      }));
+                    }}
+                  />
+                  <span className="regExpMessage">{userEmailSpan}</span>
                 </label>
-                <button>회원 정보 수정</button>
+                <button onClick={editMyInfo}>회원 정보 수정</button>
               </div>
             </div>
           </Tab>
@@ -210,7 +374,7 @@ const MyPageMyInfo = () => {
                 value={approveInfo.userPwd}
                 onChange={(e) =>
                   setApproveInfo({
-                    userId: user.userId,
+                    userId: info.userId,
                     userPwd: e.target.value,
                   })
                 }
