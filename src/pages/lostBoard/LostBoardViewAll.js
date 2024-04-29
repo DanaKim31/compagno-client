@@ -44,6 +44,8 @@ const Div = styled.div`
     width: 90px;
     height: 35px;
     font-size: 0.8rem;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
   }
   .contentsBody {
     display: grid;
@@ -123,7 +125,6 @@ const ViewAllLostBoard = () => {
     } else {
       response = await viewAllLostBoard(1);
     }
-    // const response = await viewAllLostBoard();
     setLosts(response.data);
   };
 

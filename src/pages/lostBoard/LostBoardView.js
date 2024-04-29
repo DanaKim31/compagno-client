@@ -189,6 +189,11 @@ const ViewLostBoard = () => {
 
   // 이미지 가져오기
 
+  // 게시글 수정
+  const btnUpdate = async () => {
+    navigate("/compagno/lostBoard/update/" + code);
+  };
+
   // 게시글 삭제
   const btnDel = async () => {
     await deleteLostBoard(code);
@@ -206,7 +211,7 @@ const ViewLostBoard = () => {
         {user.userId == lost.userId ? (
           <div className="btnChange">
             {/* 유저 당사자일 경우에만 수정, 삭제 버튼 보이도록! */}
-            <button>수정</button>
+            <button onClick={btnUpdate}>수정</button>
             <button onClick={btnDel}>삭제</button>
           </div>
         ) : (

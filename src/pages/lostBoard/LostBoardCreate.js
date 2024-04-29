@@ -12,6 +12,15 @@ import moment from "moment";
 import "moment/locale/ko";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,11 +32,15 @@ const Div = styled.div`
     margin: 5px 10px;
     width: 80%;
     height: 30px;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
   }
 
   h1 {
     font-size: 3rem;
     margin-bottom: 40px;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
   }
   .contents {
     display: flex;
@@ -48,6 +61,8 @@ const Div = styled.div`
       h3 {
         font-size: 1.8rem;
         margin-bottom: 20px;
+        font-family: "TAEBAEKmilkyway";
+        font-weight: bold;
       }
       .pContent {
         border-top: 1px solid green;
@@ -113,6 +128,10 @@ const Div = styled.div`
             input.gender {
               width: 16px;
             }
+            select option {
+              font-family: "TAEBAEKmilkyway";
+              font-weight: bold;
+            }
           }
           #kindInputBox {
             width: 40%;
@@ -130,6 +149,8 @@ const Div = styled.div`
       width: 80px;
       height: 35px;
       font-size: 0.8rem;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
   }
 `;
@@ -242,7 +263,6 @@ const CreateLostBoard = () => {
       lostAnimalKind == "" ||
       lostAnimalGender == ""
     ) {
-      console.log("rfid if문 밖 : length : " + lostAnimalRFID.length);
       alert("필수 입력란을 확인해주세요.");
       if (lostAnimalRFID.length == 0 || lostAnimalRFID.length == 15) {
       } else {
@@ -274,8 +294,7 @@ const CreateLostBoard = () => {
                 <tr>
                   <td>
                     <h3>
-                      <FaUser />
-                      분실 신고자 정보
+                      <FaUser /> 분실 신고자 정보
                       <input
                         type="text"
                         value={lostRegiDate}
@@ -320,8 +339,7 @@ const CreateLostBoard = () => {
                 <tr>
                   <td>
                     <h3>
-                      <FiMapPin />
-                      분실일시 및 장소
+                      <FiMapPin /> 분실일시 및 장소
                     </h3>
                   </td>
                 </tr>
@@ -369,8 +387,7 @@ const CreateLostBoard = () => {
                 <tr>
                   <td>
                     <h3>
-                      <FaShieldDog />
-                      분실동물 정보
+                      <FaShieldDog /> 분실동물 정보
                     </h3>
                   </td>
                 </tr>
