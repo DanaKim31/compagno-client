@@ -98,10 +98,32 @@ const QnaQDetail = () => {
   };
 
   // 2-4. 수정 추가 이미지 관리
-  const handleAddImages = () => {};
+  let count = 0;
+  const handleAddImages = (e) => {
+    const images = Array.from(e.target.files);
+    setImages(images);
+
+    let imageUrlLists = [...showImages];
+    let blobToFileList = [];
+
+    for (let i = 0; i < images.length; i++) {
+      const currentImageUrl = URL.createObjectURL(images[i]);
+
+      imageUrlLists.push(currentImageUrl);
+      const blobToFile = new File([currentImageUrl], `image[${count++}].png`);
+      blobToFileList.push(blobToFile);
+    }
+
+    setImages((prev) => {
+      return [...prev, ...blobToFileList];
+    });
+    setShowImages(imageUrlLists);
+  };
 
   // 2-5. 수정 삭제 이미지 관리
-  const handleDeleteImage = () => {};
+  const handleDeleteImage = (id) => {
+    setShowImages(showImages.filter((_, index) => index !== id));
+  };
 
   // 3. DELETE ========================================================
   const onDeleteQuestion = (qnaQCode) => {
@@ -144,6 +166,20 @@ const QnaQDetail = () => {
                     </div>
                     {/* 수정 폼 */}
                     <h1>수정중..</h1>
+                    <Form.Control
+                      type="text"
+                      placeholder="제목"
+                      value={user.userId}
+                      // onChange={(e) => setUserId(e.target.value)}
+                      readOnly
+                    />
+                    <Form.Control
+                      type="text"
+                      placeholder="비밀글 비밀번호"
+                      value={user.userNickname}
+                      // onChange={(e) => setUserNickname(e.target.value)}
+                      readOnly
+                    />
                     <Form.Control
                       type="text"
                       placeholder="제목"
