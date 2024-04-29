@@ -33,6 +33,16 @@ export const deleteNeighborBoard = async (code) => {
   return await authorize.delete("neighbor/" + code);
 };
 
+// 시도 전체보기
+export const getProvinces = async () => {
+  return await instance.get("location/province");
+};
+
+// 시도에 따른 시군구 전체보기
+export const getDistricts = async (code) => {
+  return await instance.get("location/district/" + code);
+};
+
 // =================== 댓글 ===================
 
 // 각 게시글 댓글 전체보기

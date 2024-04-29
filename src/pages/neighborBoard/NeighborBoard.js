@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { getNeighborBoards } from "../../api/neighborBoard";
+import {
+  getNeighborBoards,
+  getProvinces,
+  getDistricts,
+} from "../../api/neighborBoard";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -33,21 +37,82 @@ const Div = styled.div`
 
 const NeighborBoard = () => {
   const [neighborBoards, setNeighborBoards] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState([]);
+  const [province, setProvince] = useState(0);
+  const [district, setDistrict] = useState(0);
 
   const neighborBoardAPI = async () => {
     const result = await getNeighborBoards();
     setNeighborBoards(result.data);
   };
 
+  const provinceAPI = async () => {
+    const result = await getProvinces();
+    setSelectedProvince(result.data);
+  };
+
+  const districtAPI = async (code) => {
+    if (code !== "") {
+      const result = await getDistricts(code);
+      setSelectedDistrict(result.data);
+    } else {
+      setSelectedDistrict([]);
+    }
+  };
+
   useEffect(() => {
     neighborBoardAPI();
+    provinceAPI();
   }, []);
+
+  const handleProvinceChange = (e) => {
+    districtAPI(e.target.value);
+    setProvince(e.target.value);
+  };
+
+  const handleDistrictChange = (e) => {
+    setDistrict(e.target.value);
+  };
 
   return (
     <Div>
       <h1>우리동네 게시판</h1>
 
-      <div></div>
+      <div className="location-search">
+        <p>지역선택 </p>
+        <div className="selectBox">
+          <div className="provinceSelect">
+            <select id="province" onChange={handleProvinceChange}>
+              <option value="">시/도 선택</option>
+              {selectedProvince.map((province) => (
+                <option
+                  key={province.locationCode}
+                  value={province.locationCode}
+                >
+                  {province.locationName}
+                </option>
+              ))}
+            </select>
+          </div>
+          {selectedProvince && (
+            <div className="districtSelect">
+              <select id="district" onChange={handleDistrictChange}>
+                <option value="">시/군/구 선택</option>
+                {selectedDistrict.map((district) => (
+                  <option
+                    key={district.locationCode}
+                    value={district.locationCode}
+                  >
+                    {district.locationName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      </div>
+
       <table>
         <thead>
           <tr>
