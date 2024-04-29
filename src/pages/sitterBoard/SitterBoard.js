@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
-import { getSitterBoards } from "../../api/sitterBoard";
-import { provinces, districts } from "../../components/LocationSelect";
+import {
+  getCategories,
+  getSitterBoards,
+  getProvinces,
+  getDistricts,
+} from "../../api/sitterBoard";
+import Pagination from "react-bootstrap/Pagination";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -43,35 +48,56 @@ const Div = styled.div`
     }
     .list :nth-child(4) {
       text-align: left;
-      /* 
-      text-overflow: ellipsis;
-      display: block; 
-      */
     }
   }
 `;
 
 const SitterBoard = () => {
-  const [sitterBoards, setSitterBoards] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [sitterBoards, setSitterBoards] = useState({});
+  const [sitterCategories, setSitterCategories] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState([]);
+  const [province, setProvince] = useState(0);
+  const [district, setDistrict] = useState(0);
+  const items = [1, 2, 3, 4, 5];
 
   const sitterBoardAPI = async () => {
     const result = await getSitterBoards();
     setSitterBoards(result.data);
   };
 
+  const categoryAPI = async () => {
+    const result = await getCategories();
+    setSitterCategories(result.data);
+  };
+
+  const provinceAPI = async () => {
+    const result = await getProvinces();
+    setSelectedProvince(result.data);
+  };
+
+  const districtAPI = async (code) => {
+    if (code !== "") {
+      const result = await getDistricts(code);
+      setSelectedDistrict(result.data);
+    } else {
+      setSelectedDistrict([]);
+    }
+  };
+
   useEffect(() => {
     sitterBoardAPI();
+    categoryAPI();
+    provinceAPI();
   }, []);
 
   const handleProvinceChange = (e) => {
-    setSelectedProvince(e.target.value);
-    setSelectedDistrict(""); // 시도 변경 시 시군구 선택 초기화
+    districtAPI(e.target.value);
+    setProvince(e.target.value);
   };
 
   const handleDistrictChange = (e) => {
-    setSelectedDistrict(e.target.value);
+    setDistrict(e.target.value);
   };
 
   return (
@@ -82,30 +108,28 @@ const SitterBoard = () => {
         <p>지역선택 </p>
         <div className="selectBox">
           <div className="provinceSelect">
-            <select
-              id="province"
-              value={selectedProvince}
-              onChange={handleProvinceChange}
-            >
+            <select id="province" onChange={handleProvinceChange}>
               <option value="">시/도 선택</option>
-              {provinces.map((province) => (
-                <option key={province.id} value={province.name}>
-                  {province.name}
+              {selectedProvince.map((province) => (
+                <option
+                  key={province.locationCode}
+                  value={province.locationCode}
+                >
+                  {province.locationName}
                 </option>
               ))}
             </select>
           </div>
           {selectedProvince && (
             <div className="districtSelect">
-              <select
-                id="district"
-                value={selectedDistrict}
-                onChange={handleDistrictChange}
-              >
+              <select id="district" onChange={handleDistrictChange}>
                 <option value="">시/군/구 선택</option>
-                {districts[selectedProvince].map((district, index) => (
-                  <option key={index} value={district}>
-                    {district}
+                {selectedDistrict.map((district) => (
+                  <option
+                    key={district.locationCode}
+                    value={district.locationCode}
+                  >
+                    {district.locationName}
                   </option>
                 ))}
               </select>
@@ -114,14 +138,24 @@ const SitterBoard = () => {
         </div>
       </div>
 
-      <select></select>
+      <select>
+        <option>카테고리 선택</option>
+        {sitterCategories.map((category) => (
+          <option
+            key={category.sitterCategoryCode}
+            value={category.sitterCategoryType}
+          >
+            {category.sitterCategoryType}
+          </option>
+        ))}
+      </select>
       <input type="text" placeholder="검색어 입력" className="search-input" />
       <button>조회</button>
 
       <table>
         <thead>
           <tr>
-            <th>번호</th>
+            <th>번호{sitterBoards.totalElements}</th>
             <th>구분</th>
             <th>지역</th>
             <th>제목</th>
@@ -131,23 +165,30 @@ const SitterBoard = () => {
           </tr>
         </thead>
         <tbody>
-          {sitterBoards.map((sitter) => (
+          {sitterBoards.content?.map((sitter) => (
             <tr key={sitter.sitterBoardCode} className="list">
               <td>{sitter.sitterBoardCode}</td>
-              <td>{sitter.sitterCategory}</td>
-              <td>{sitter.sitterLocation}</td>
+              <td>{sitter.sitterCategory.sitterCategoryType}</td>
+              <td>
+                {sitter.location.parent.locationName +
+                  " " +
+                  sitter.location.locationName}
+              </td>
               <td>
                 <a href={`/sitterBoard/detail/${sitter.sitterBoardCode}`}>
                   {sitter.sitterTitle}
                 </a>
               </td>
-              <td>{sitter.userId}</td>
-              <td>{sitter.sitterRegiDate}</td>
+              <td>{sitter.user.userId}</td>
+              <td>{`${new Date(sitter.sitterRegiDate).getFullYear()}-${new Date(
+                sitter.sitterRegiDate
+              ).getMonth()}-${new Date(sitter.sitterRegiDate).getDate()}`}</td>
               <td>{sitter.sitterViewCount}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      <Pagination>{items}</Pagination>
     </Div>
   );
 };

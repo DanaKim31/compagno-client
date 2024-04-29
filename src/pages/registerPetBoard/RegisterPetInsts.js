@@ -95,17 +95,35 @@ const Div = styled.div`
 
 const RegisterPetInsts = () => {
   const [insts, setInsts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const instsAPI = async () => {
-    const result = await getInsts();
+    setLoading(true);
+    const result = await getInsts(page);
+    const newData = result.data;
     console.log(result.data);
-    setInsts(result.data);
+    setInsts((prev) => [...prev, ...newData]);
+    setPage((prev) => prev + 1);
+    setLoading(false);
   };
 
   useEffect(() => {
-    instsAPI();
-    location();
-  }, []);
+    const scroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.offsetHeight &&
+        !loading
+      ) {
+        instsAPI();
+        location();
+      }
+    };
+    window.addEventListener("scroll", scroll);
+    return () => {
+      window.removeEventListener("scroll", scroll);
+    };
+  }, [page, loading]);
 
   return (
     <Div>
