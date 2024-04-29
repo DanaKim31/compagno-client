@@ -287,6 +287,14 @@ const MyPageMyInfo = () => {
             <div className="info-content">
               <h1>회원 정보 수정</h1>
               <div className="changeMyInfo">
+                <a href="/compagno">
+                  {" "}
+                  <img
+                    className="profileImage"
+                    src={"http://192.168.10.28:8081/" + info.userImg}
+                  />
+                </a>
+
                 <label>
                   변경할 비밀번호 :&nbsp;
                   <input
