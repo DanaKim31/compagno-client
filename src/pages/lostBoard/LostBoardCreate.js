@@ -210,14 +210,10 @@ const CreateLostBoard = () => {
     }
   };
 
-  // 축종이 기타일 경우
-  const selectList = ["", "개", "고양이", "기타"];
-  const handleSelect = (e) => {
+  // 축종 변경
+  const selectKind = (e) => {
     setLostAnimalKind(e.target.value);
   };
-  useEffect(() => {
-    console.log("dsf : " + lostAnimalKind);
-  }, [lostAnimalKind]);
 
   // 성별
   const genderCheck = (gender) => {
@@ -252,7 +248,6 @@ const CreateLostBoard = () => {
     formData.append("lostRegiDate", lostRegiDate);
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
-      console.log(image);
     });
 
     // not null 조건
@@ -352,6 +347,7 @@ const CreateLostBoard = () => {
                       type="Date"
                       value={lostDate}
                       onChange={(e) => setLostDate(e.target.value)}
+                      max={lostRegiDate}
                     />
                   </td>
                 </tr>
@@ -406,14 +402,16 @@ const CreateLostBoard = () => {
                 <tr>
                   <th>축종*</th>
                   <td>
-                    <select onChange={handleSelect} value={lostAnimalKind}>
-                      {selectList.map((item) => {
-                        return (
-                          <option value={item} key={item}>
-                            {item}
-                          </option>
-                        );
-                      })}
+                    <select onChange={selectKind}>
+                      <option value="개" className="animalKind">
+                        개
+                      </option>
+                      <option value="고양이" className="animalKind">
+                        고양이
+                      </option>
+                      <option value="기타" className="animalKind">
+                        기타
+                      </option>
                     </select>
                   </td>
                 </tr>
