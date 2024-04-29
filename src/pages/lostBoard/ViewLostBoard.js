@@ -8,8 +8,18 @@ import { FaShieldDog } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,12 +33,16 @@ const Div = styled.div`
     justify-content: space-between;
     margin: 0px 20px;
 
+    h2 {
+      font-weight: bold;
+    }
     .btnChange {
       button {
         margin: 0px 10px;
         width: 70px;
         border-radius: 20px;
         border: 2px solid green;
+        font-weight: bold;
       }
       button:hover {
         background-color: yellow;
@@ -45,6 +59,12 @@ const Div = styled.div`
         width: 400px;
         height: 400px;
       }
+    }
+    #regiDate {
+      display: flex;
+      justify-content: right;
+      align-items: center;
+      width: 90%;
     }
     .contents {
       display: flex;
@@ -65,6 +85,7 @@ const Div = styled.div`
         h3 {
           font-size: 1.8rem;
           margin-bottom: 20px;
+          font-weight: bold;
         }
         .pContent {
           border-top: 1px solid green;
@@ -136,6 +157,7 @@ const Div = styled.div`
         width: 70px;
         border-radius: 20px;
         border: 2px solid green;
+        font-weight: bold;
       }
     }
   }
@@ -200,6 +222,9 @@ const ViewLostBoard = () => {
             )}
           />
         </div>
+        <div id="regiDate">
+          {moment(lost.regiDate).format("YYYY-MM-DD hh:mm")}
+        </div>
         <div>
           <div className="contents">
             <div className="postOwner">
@@ -209,8 +234,7 @@ const ViewLostBoard = () => {
                     <tr>
                       <td>
                         <h3>
-                          <FaUser />
-                          분실 신고자 정보
+                          <FaUser /> 분실 신고자 정보
                         </h3>
                       </td>
                     </tr>
@@ -235,20 +259,19 @@ const ViewLostBoard = () => {
                     <tr>
                       <td>
                         <h3>
-                          <FiMapPin />
-                          분실일시 및 장소
+                          <FiMapPin /> 분실일시 및 장소
                         </h3>
                       </td>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th>분실 날짜*</th>
-                      <td>{lost.lostDate}</td>
+                      <th>분실 날짜</th>
+                      <td>{moment(lost.lostDate).format("YYYY-MM-DD")}</td>
                     </tr>
 
                     <tr>
-                      <th>분실 장소*</th>
+                      <th>분실 장소</th>
                       <td>{lost.lostLocation}</td>
                     </tr>
                     <tr>
@@ -266,24 +289,23 @@ const ViewLostBoard = () => {
                     <tr>
                       <td>
                         <h3>
-                          <FaShieldDog />
-                          분실동물 정보
+                          <FaShieldDog /> 분실동물 정보
                         </h3>
                       </td>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th>분실 동물 이름*</th>
+                      <th>분실 동물 이름</th>
                       <td>{lost.lostAnimalName}</td>
-                      <th>축종*</th>
+                      <th>축종</th>
                       <td>{lost.lostAnimalKind}</td>
                     </tr>
 
                     <tr>
                       <th>색상</th>
                       <td>{lost.lostAnimalColor}</td>
-                      <th>성별*</th>
+                      <th>성별</th>
                       <td>{lost.lostAnimalGender}</td>
                     </tr>
 

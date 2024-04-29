@@ -14,6 +14,15 @@ import {
 } from "react-icons/fa6";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,6 +38,7 @@ const Div = styled.div`
   h2 {
     font-size: 3rem;
     margin-bottom: 50px;
+    font-weight: bold;
   }
   .addBtn {
     width: 90px;
@@ -60,7 +70,9 @@ const Div = styled.div`
     .contentDetail {
       height: 85%;
       margin: 20px;
+
       #animalName {
+        font-weight: bold;
         text-align: center;
         display: flex;
         justify-content: center;

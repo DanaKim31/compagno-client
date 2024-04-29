@@ -172,17 +172,6 @@ const CreateLostBoard = () => {
     lostRegiDateAPI();
   }, []);
 
-  // RFID 정규표현식
-  const rfidReges = (e) => {
-    const regex = /^[0-9]{15}$/g;
-    if (regex.test(e.target.value)) {
-      setLostAnimalRFID(Number(e.target.value));
-    } else {
-      setLostAnimalRFID("정규표현식 맞추지 못함");
-      console.log(lostAnimalRFID);
-    }
-  };
-
   // 이미지 미리보기
   const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
@@ -208,6 +197,19 @@ const CreateLostBoard = () => {
   useEffect(() => {
     console.log("dsf : " + lostAnimalKind);
   }, [lostAnimalKind]);
+
+  // 성별
+  const genderCheck = (gender) => {
+    const checkboxes = document.getElementsByClassName("gender");
+    for (let i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].value !== gender) {
+        checkboxes[i].checked = false;
+      } else if (checkboxes[i].value == gender) {
+        checkboxes[i].checked = true;
+        setLostAnimalGender(gender);
+      }
+    }
+  };
 
   const navigate = useNavigate();
   const okCreate = async () => {
@@ -240,30 +242,18 @@ const CreateLostBoard = () => {
       lostAnimalKind == "" ||
       lostAnimalGender == ""
     ) {
+      console.log("rfid if문 밖 : length : " + lostAnimalRFID.length);
       alert("필수 입력란을 확인해주세요.");
-      if (lostAnimalRFID !== "") {
-        alert("필수값 안들어가고 rfid 빈칸 아님둥 ");
+      if (lostAnimalRFID.length == 0 || lostAnimalRFID.length == 15) {
       } else {
-        alert(
-          "필수값 안들어가고 rfid 빈칸임둥"
-          // "마이크로칩(RFID) 번호가 잘못 입력되었습니다. 다시 입력해주세요."
-        );
+        alert("마이크로칩 번호 입력란을 확인해주세요.");
       }
     } else {
-      if (lostAnimalRFID !== "") {
-        if (lostAnimalRFID == "정규표현식 맞추지 못함") {
-          console.log("줴ㅏㅂㄹ");
-          alert(
-            "마이크로칩(RFID) 번호가 잘못 입력되었습니다. 다시 입력해주세요."
-          );
-        } else {
-          await createlostBoard(formData);
-          navigate("/compagno/lostBoard/viewAll");
-          alert("필수값 다 들어가고 rfid도 조건 맞춤");
-        }
-      } else {
+      if (lostAnimalRFID.length == 0 || lostAnimalRFID.length == 15) {
         await createlostBoard(formData);
         navigate("/compagno/lostBoard/viewAll");
+      } else {
+        alert("마이크로칩 번호 입력란을 확인해주세요.");
       }
     }
   };
@@ -425,27 +415,27 @@ const CreateLostBoard = () => {
                   <td>
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         value="수컷"
-                        onChange={(e) => setLostAnimalGender(e.target.value)}
+                        onChange={(e) => genderCheck(e.target.value)}
                         className="gender"
                       />
                       수컷
                     </label>
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         value="암컷"
-                        onChange={(e) => setLostAnimalGender(e.target.value)}
+                        onChange={(e) => genderCheck(e.target.value)}
                         className="gender"
                       />
                       암컷
                     </label>
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         value="모름"
-                        onChange={(e) => setLostAnimalGender(e.target.value)}
+                        onChange={(e) => genderCheck(e.target.value)}
                         className="gender"
                       />
                       모름
@@ -479,9 +469,9 @@ const CreateLostBoard = () => {
                   <td>
                     <input
                       type="text"
-                      placeholder="15자리숫자입력해주세요"
+                      placeholder="RFID가 있는 경우, 15자리 숫자 입력해주세요"
                       maxLength="15"
-                      onChange={rfidReges}
+                      onChange={(e) => setLostAnimalRFID(e.target.value)}
                     />
                   </td>
                 </tr>
@@ -510,15 +500,6 @@ const CreateLostBoard = () => {
             </table>
           </div>
         </div>
-        {/* <div className="option">
-          <h3>
-            <IoSettingsOutline />
-            설정 및 기타
-          </h3>
-          <div className="pContent">
-            <label>자동입력 방지 문자입력</label>
-          </div>
-        </div> */}
       </div>
       <div className="btn">
         <button className="okBtn" onClick={okCreate}>
