@@ -133,33 +133,6 @@ const ViewAllLostBoard = () => {
   }, [page]);
 
   const pageNumber = [1, 2, 3, 4, 5];
-  // const [pageCount, setPageCount] = useState(1);
-  // useEffect(() => {
-  //   // 게시물 전체 갯수 구하기
-  //   const getTotalBoard = async () => {
-  //     const result = await viewAllPaging();
-  //     let total = result.data.length;
-  //     console.log("total" + total);
-  //     return total;
-  //   };
-  //   // 페이지 카운트 하기
-  //   getTotalBoard().then((result) => setPageCount(Math.ceil(result / 12)));
-  //   console.log("pageCount" + pageCount);
-  // }, [losts]);
-
-  // const [numPage, setNumPage] = useState([]);
-  // // 처음부터 끝
-  // const paggg = () => {
-  //   for (let i = 1; i <= pageCount; i++) {
-  //     console.log(i);
-  //     setNumPage([i]);
-  //   }
-  //   console.log(numPage);
-  //   console.log("numPage = " + numPage);
-  // };
-  // useEffect(() => {
-  //   paggg();
-  // }, []);
 
   const navigate = useNavigate();
   const onCreate = async () => {
@@ -197,6 +170,7 @@ const ViewAllLostBoard = () => {
                   "http://192.168.10.28:8081/lostBoard/"
                 )}
               />
+
               <div id="regiDate">
                 {moment(lost.regiDate).format("YY-MM-DD")}
               </div>
