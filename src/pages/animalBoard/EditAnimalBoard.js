@@ -51,7 +51,7 @@ const EditAnimalBoard = () => {
   //     },
   //   }); // quill 제외 부분
 
-  const addWrite = async () => {
+  const addEdit = async () => {
     console.log(detailInfo.animalCategoryCode);
     if (
       detailInfo.animalCategoryCode === "0" ||
@@ -209,7 +209,7 @@ const EditAnimalBoard = () => {
         formats={formats}
         placeholder="Give me a title"
       />
-      <button type="button" onClick={addWrite}>
+      <button type="button" onClick={addEdit}>
         SUBMIT
       </button>
     </Div>

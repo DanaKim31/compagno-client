@@ -72,10 +72,10 @@ export const delComment = async (commentCode) => {
 };
 
 // ==============================================================
-// // 조회수
-// export const viewCount = async (animalBoardCode) =>{
-//   return await instance.get("animal-board/" + animalBoardCode);
-// }
+// 조회수
+export const viewCount = async (animalBoardCode) => {
+  return await instance.get(`animal-board/${animalBoardCode}/viewCount`);
+};
 // 해당글의 현재 유저의 좋아요 정보 가져오기 -boradCode + userId
 export const checkFavorite = async (favDetail) => {
   console.log(favDetail);

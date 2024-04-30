@@ -21,6 +21,7 @@ import ReplyComment from "../../components/animalBoard/ReplyComment";
 import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
 import FavoriteBoard from "../../components/animalBoard/FavoriteBoard";
 import { FaPencilAlt } from "react-icons/fa";
+import { viewCount } from "../../api/animalBoard";
 const Div = styled.div`
   padding-top: 112px;
 `;
@@ -96,7 +97,9 @@ const AnimalDetail = () => {
     animalBoardDate: "",
     animalBoardView: 0,
   });
-
+  const setViewCount = async () => {
+    await viewCount(animalBoardCode);
+  };
   const animalBoardAPI = async () => {
     const response = await viewDetail(animalBoardCode);
     // console.log(response.data);
@@ -214,18 +217,6 @@ const AnimalDetail = () => {
     }
   };
   const addReply = async (commentCode) => {
-    console.log(commentCode); // 부모 댓글코드 들어옴
-    // setResponse({});
-    console.log(response);
-    // setResponse({
-    //   animalBoardCode: animalBoardCode,
-    //   animalParentCode: commentCode,
-    //   animalCommentContent: response.animalCommentContent,
-    //   user: {
-    //     userId: user.userId,
-    //   },
-    // });
-    console.log(response);
     await writeComment({
       animalBoardCode: animalBoardCode,
       animalParentCode: commentCode,
@@ -249,6 +240,46 @@ const AnimalDetail = () => {
       }}
     />
   ));
+
+  // 좋아요 기능 여기다 놓고, 함수add/ del 을 props 로 전달
+  /*///////////////////////////////////////////////////////////// */
+  // 좋아요
+  // const addFav = async () => {
+  //   await addFavorite({ animalBoardCode: boardCode, userId: userId });
+  //   addCount();
+  //   currentFavStateAPI();
+  //   animalBoardAPI();
+  //   // setNewCount((prev) => prev + 1);
+  // };
+  // // 좋아요 시 count +1
+  // const addCount = async () => {
+  //   // setCountBoolean(true); // 좋아요 수 +1
+  //   await FavCount({
+  //     animalBoardCode: animalBoardCode,
+  //     checkBoolean: true,
+  //   });
+  // };
+  // // 좋아요 취소
+  // const delFav = async () => {
+  //   await delFavorite({
+  //     animalBoardCode: animalBoardCode,
+  //     userId: user.userId,
+  //   });
+  //   subtCount();
+  //   currentFavStateAPI();
+  //   // setNewCount((prev) => prev - 1);
+  //   animalBoardAPI();
+  // };
+  // // 취소시 count -1
+  // const subtCount = async () => {
+  //   // setCountBoolean(false); // 좋아요 수 -1
+  //   await FavCount({
+  //     animalBoardCode: animalBoardCode,
+  //     checkBoolean: false,
+  //   });
+  // };
+  /*///////////////////////////////////////////////////////////// */
+
   useEffect(() => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
@@ -260,9 +291,10 @@ const AnimalDetail = () => {
   useEffect(() => {
     animalBoardAPI();
     animalBoardCommentAPI();
+    setViewCount();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animalBoardCode]);
+  }, []);
   useEffect(() => {
     animalBoardCommentAPI();
   }, [comment.replies]);
@@ -313,8 +345,11 @@ const AnimalDetail = () => {
               userId={user.userId}
               boardCode={animalBoardCode}
               count={detailInfo.animalBoardFavoriteCount}
-              boardAPI={() => animalBoardAPI()}
+              // addFav={() => addFav()}
+              // delFav={() => delFav()}
+              animalBoardAPI={() => animalBoardAPI()}
             />
+            {detailInfo.animalBoardFavoriteCount}
           </InputGroup.Text>
           <Button variant="secondary" onClick={addComment}>
             댓글추가!

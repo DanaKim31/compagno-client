@@ -17,11 +17,12 @@ const Div = styled.div`
   }
 `;
 
-const FavoriteBoard = ({ userId, boardCode, count, boardAPI }) => {
+const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
   // console.log(userId); // 현재 로그인 한 유저정보 가져와짐
   // console.log(boardCode);
   // 지금 로그인한 유저의 해당글의 좋아요 여부 확인
   const [boolean, setBoolean] = useState(null);
+  // const [newCount, setNewCount] = useState(count);
   const currentFavStateAPI = async () => {
     const response = await checkFavorite({
       animalBoardCode: boardCode,
@@ -35,6 +36,7 @@ const FavoriteBoard = ({ userId, boardCode, count, boardAPI }) => {
     await addFavorite({ animalBoardCode: boardCode, userId: userId });
     addCount();
     currentFavStateAPI();
+    // setNewCount((prev) => prev + 1);
   };
   // 좋아요 시 count +1
   const addCount = async () => {
@@ -43,7 +45,7 @@ const FavoriteBoard = ({ userId, boardCode, count, boardAPI }) => {
       animalBoardCode: boardCode,
       checkBoolean: true,
     });
-    boardAPI();
+    animalBoardAPI();
   };
   // 좋아요 취소
   const delFav = async () => {
@@ -53,6 +55,7 @@ const FavoriteBoard = ({ userId, boardCode, count, boardAPI }) => {
     });
     subtCount();
     currentFavStateAPI();
+    // setNewCount((prev) => prev - 1);
   };
   // 취소시 count -1
   const subtCount = async () => {
@@ -61,9 +64,11 @@ const FavoriteBoard = ({ userId, boardCode, count, boardAPI }) => {
       animalBoardCode: boardCode,
       checkBoolean: false,
     });
-    boardAPI();
+    animalBoardAPI();
   };
   useEffect(() => {
+    // console.log(newCount);
+    // console.log(count);
     currentFavStateAPI();
   }, [boolean]);
   return (
@@ -79,7 +84,7 @@ const FavoriteBoard = ({ userId, boardCode, count, boardAPI }) => {
           <FaRegHeart className="addFav" onClick={addFav} />
         </>
       )}
-      {count}
+      {/* {count} */}
     </Div>
   );
 };
