@@ -30,16 +30,10 @@ export const createlostBoard = async (data) => {
   return await authorize.post("lostBoard", data);
 };
 
-// 전체 보기\
+// 전체 보기+검색&정렬+페이징
 // http://localhost:8080/compagno/public/lostBoard
 export const viewAllLostBoard = async (page) => {
   return await instance.get("lostBoard?page=" + page);
-};
-
-// 페이징 처리
-// /public/lostBoard/paging
-export const viewAllPaging = async () => {
-  return await instance.get("lostBoard/paging");
 };
 
 // 1개 보기
@@ -50,44 +44,13 @@ export const viewOneLostBoard = async (code) => {
 
 // 게시글 수정
 export const updateLostBoard = async (data) => {
-  return await authorize.put(data);
+  return await authorize.put("lostBoard", data);
 };
 
 // 게시글 삭제
 export const deleteLostBoard = async (code) => {
   return await authorize.delete("lostBoard/" + code);
 };
-
-// 검색 및 정렬
-// http://localhost:8080/compagno/lostBoard/search?lostLocation=서울시&lostDate=2024-03-13
-// export const searchLostBoard=async(option, content)=>{
-//   let url = "/search?";
-//   if(option=='page') {
-//     url += "page="+content;
-//   }
-//   if(option=="lostAnimalKind") {
-//     url += "lostAnimalKind="+content;
-//   }
-//   if(option=="lostAnimalGender"){
-//     url +="lostAnimalGender="+content;
-//   }
-//   if(option=="userNickname"){
-//     url+="userNickname="+content;
-//   }
-//   if(option=="lostDate"){
-//     url+="lostDate="+content;
-//   }
-//   if(option=="lostLocation"){
-//     url+="losstLocation="+content;
-//   }
-//   if(option=="lostAnimalName"){
-//     url+="lostAnimalName="+content;
-//   }
-//   if(option=="sort"){
-//     url+="sort="+content;
-//   }
-//   return await instance.get(url);
-// }
 
 // 댓글 추가
 export const addTopCommentLost = async (data) => {

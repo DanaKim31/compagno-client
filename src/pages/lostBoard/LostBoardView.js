@@ -222,9 +222,13 @@ const ViewLostBoard = () => {
         <div id="mainImage">
           <img
             src={lost.lostAnimalImage?.replace(
-              "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-              "http://192.168.10.28:8081/lostBoard/"
+              "C:",
+              "http://localhost:8081/lostBoard/"
             )}
+            // src={lost.lostAnimalImage?.replace(
+            //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+            //   "http://192.168.10.28:8081/lostBoard/"
+            // )}
           />
         </div>
         <div id="regiDate">

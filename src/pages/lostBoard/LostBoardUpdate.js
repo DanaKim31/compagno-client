@@ -187,19 +187,33 @@ const LostBoardUpdate = () => {
 
   // 기존 정보 불러오기
   const { code } = useParams();
-  const [lost, setLost] = useState([]);
+  const [lost, setLost] = useState({});
   const viewsAPI = async () => {
     const response = await viewOneLostBoard(code);
-    setLost(response.data);
+    console.log(response.data);
+    // setLost(response.data);
+    setLostLocation(response.data.lostLocation);
+    setLostDate(moment(response.data.lostDate).format("YYYY-MM-DD"));
+    setLostLocationDetail(response.data.lostLocationDetail);
+    setLostAnimalName(response.data.lostAnimalName);
+    setLostAnimalKind(response.data.lostAnimalKind);
+    setLostAnimalColor(response.data.lostAnimalColor);
+    setLostAnimalGender(response.data.lostAnimalGender);
+    setLostAnimalFeater(response.data.lostAnimalFeature);
+    setLostAnimalRFID(response.data.lostAnimalRFID);
+    setLostAnimalAge(response.data.lostAnimalAge);
+    setImages(response.data.images);
+    setLostBoardCode(code);
   };
+
   useEffect(() => {
     viewsAPI();
   }, []);
 
   // update 기능
-  console.log("우어어 : " + lost.lostLocation);
+  const [lostBoardCode, setLostBoardCode] = useState(0);
   const [lostDate, setLostDate] = useState("");
-  const [lostLocation, setLostLocatioin] = useState("");
+  const [lostLocation, setLostLocation] = useState("");
   const [lostLocationDetail, setLostLocationDetail] = useState("");
   const [lostAnimalName, setLostAnimalName] = useState("");
   const [lostAnimalKind, setLostAnimalKind] = useState("");
@@ -210,11 +224,11 @@ const LostBoardUpdate = () => {
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
   const [images, setImages] = useState([]);
   const [lostRegiDate, setLostRegiDate] = useState("");
-
+  console.log("lostLocation : " + lostLocation);
   // lostRegiDate 수정(오늘) 날짜 입력
-  const lostRegiDateAPI = async () => {
+  const lostRegiDateAPI = () => {
     const nowTime = moment().format("YYYY-MM-DD");
-    await setLostRegiDate(nowTime);
+    setLostRegiDate(nowTime);
   };
   useEffect(() => {
     lostRegiDateAPI();
@@ -224,7 +238,7 @@ const LostBoardUpdate = () => {
   const defaultKind = () => {
     const list = document.getElementsByClassName("animalKind");
     for (let i = 0; i < list.length; i++) {
-      if (list[i].value == lost.lostAnimalKind) {
+      if (list[i].value == lostAnimalKind) {
         list[i].selected = true;
       }
     }
@@ -238,15 +252,21 @@ const LostBoardUpdate = () => {
   const defaultGender = () => {
     const checkboxes = document.getElementsByClassName("gender");
     for (let i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i].value == lost.lostAnimalGender) {
+      if (checkboxes[i].value == lostAnimalGender) {
         checkboxes[i].checked = true;
       }
     }
   };
+  // 나이 기존
+  const defaultAge = () => {
+    const defaultAge = document.getElementById("age");
+    defaultAge.value = lostAnimalAge;
+  };
   useEffect(() => {
     defaultGender();
     defaultKind();
-  }, [lost.lostAnimalGender]);
+    defaultAge();
+  }, [lostAnimalGender, lostAnimalKind, lostAnimalAge]);
 
   // 성별 선택
   const genderCheck = (gender) => {
@@ -278,9 +298,9 @@ const LostBoardUpdate = () => {
     }
   };
 
-  console.log("lostLocation : " + lostLocation);
   const okUpdate = async () => {
     const formData = new FormData();
+    formData.append("lostBoardCode", lostBoardCode);
     formData.append("userId", user.userId);
     formData.append("userImg", user.userImg);
     formData.append("userNickname", user.userNickname);
@@ -299,6 +319,7 @@ const LostBoardUpdate = () => {
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
     });
+
     // not null 조건
     if (
       lostDate == "" ||
@@ -382,9 +403,8 @@ const LostBoardUpdate = () => {
                     <td>
                       <input
                         type="Date"
-                        defaultValue={moment(lost.lostDate).format(
-                          "YYYY-MM-DD"
-                        )}
+                        value={lostDate}
+                        max={lostRegiDate}
                         onChange={(e) => setLostDate(e.target.value)}
                       />
                     </td>
@@ -395,19 +415,9 @@ const LostBoardUpdate = () => {
                     <td>
                       <input
                         type="text"
-                        defaultValue={lost.lostLocation}
-                        onChange={(e) => setLostLocatioin(e.target.value)}
+                        value={lostLocation}
+                        onChange={(e) => setLostLocation(e.target.value)}
                       />
-                      {/* <input
-                        type="text"
-                        value={lost.lostLocation}
-                        onChange={(e) =>
-                          setLostLocatioin((prev) => ({
-                            ...prev,
-                            lostLocation: e.target.value,
-                          }))
-                        }
-                      /> */}
                     </td>
                   </tr>
                   <tr>
@@ -415,7 +425,7 @@ const LostBoardUpdate = () => {
                     <td>
                       <input
                         type="text"
-                        defaultValue={lost.lostLocationDetail}
+                        value={lostLocationDetail}
                         onChange={(e) => setLostLocationDetail(e.target.value)}
                       />
                     </td>
@@ -442,7 +452,7 @@ const LostBoardUpdate = () => {
                     <td>
                       <input
                         type="text"
-                        defaultValue={lost.lostAnimalName}
+                        value={lostAnimalName}
                         onChange={(e) => setLostAnimalName(e.target.value)}
                       />
                     </td>
@@ -468,7 +478,7 @@ const LostBoardUpdate = () => {
                     <td>
                       <input
                         type="text"
-                        defaultValue={lost.lostAnimalColor}
+                        value={lostAnimalColor}
                         onChange={(e) => setLostAnimalColor(e.target.value)}
                       />
                     </td>
@@ -509,9 +519,10 @@ const LostBoardUpdate = () => {
                     <th>나이</th>
                     <td>
                       <input
+                        id="age"
                         type="number"
                         min={0}
-                        defaultValue={lost.lostAnimalAge}
+                        value={lostAnimalAge}
                         placeholder="숫자로 입력해주세요"
                         onChange={(e) => setLostAnimalAge(e.target.value)}
                       />
@@ -522,7 +533,7 @@ const LostBoardUpdate = () => {
                     <td>
                       <input
                         type="text"
-                        defaultValue={lost.lostAnimalFeature}
+                        value={lostAnimalFeature}
                         onChange={(e) => setLostAnimalFeater(e.target.value)}
                       />
                     </td>
@@ -535,7 +546,7 @@ const LostBoardUpdate = () => {
                         type="text"
                         placeholder="RFID가 있는 경우, 15자리 숫자 입력해주세요"
                         maxLength="15"
-                        defaultValue={lost.lostAnimalRFID}
+                        value={lostAnimalRFID}
                         onChange={(e) => setLostAnimalRFID(e.target.value)}
                       />
                     </td>
