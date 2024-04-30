@@ -133,7 +133,13 @@ const NeighborBoard = () => {
               <td>{neighbor.locationCode.locationName}</td>
               <td>{neighbor.neighborBoardTitle}</td>
               <td>{neighbor.user.userId}</td>
-              <td>{neighbor.neighborBoardRegiDate}</td>
+              <td>{`${new Date(
+                neighbor.neighborBoardRegiDate
+              ).getFullYear()}-${new Date(
+                neighbor.neighborBoardRegiDate
+              ).getMonth()}-${new Date(
+                neighbor.neighborBoardRegiDate
+              ).getDate()}`}</td>
               <td>{neighbor.neighborBoardViewCount}</td>
             </tr>
           ))}

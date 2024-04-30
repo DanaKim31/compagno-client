@@ -23,65 +23,8 @@ const Div = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    /* 
-    select,
-    input {
-      width: 90%;
-      height: 40px;
-      margin: auto;
-      margin-bottom: 20px;
-      padding: 0 5px;
-      border-radius: 5px;
-    }
-
-    select {
-      border: 1px solid grey;
-    }
-
-    button {
-      width: 90%;
-      height: 40px;
-      margin: auto;
-      background: black;
-      color: white;
-      border-radius: 5px;
-      border: 1px solid black;
-    }
   }
 
-  @media screen and (min-width: 800px) {
-    .search-area {
-      flex-direction: row;
-
-      select,
-      input {
-        width: 30%;
-        margin-bottom: 0;
-        margin-right: 10px;
-      }
-
-      button {
-        width: 10%;
-      }
-    } */
-  }
-
-  /* table {
-    width: 90%;
-    margin: auto;
-  }
-  th {
-    font-weight: bolder;
-    text-align: center;
-    height: 40px;
-  }
-  td {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  tbody tr :nth-child(3) {
-    text-align: left;
-  } */
   .list {
     padding: 20px;
     border-top: 1px solid gray;
@@ -103,8 +46,8 @@ const RegisterPetInsts = () => {
   const [selectedDistrict, setSelectedDistrict] = useState([]);
   const [province, setProvince] = useState(0);
   const [district, setDistrict] = useState(0);
-  // const [page, setPage] = useState(1);
-  // const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const instsAPI = async () => {
     // setLoading(true);
@@ -133,21 +76,22 @@ const RegisterPetInsts = () => {
   };
 
   useEffect(() => {
-    // const scroll = () => {
-    //   if (
-    //     window.innerHeight + document.documentElement.scrollTop >=
-    //       document.documentElement.offsetHeight &&
-    //     !loading
-    //   ) {
-    //     instsAPI();
-    //     provinceAPI();
-    //   }
-    // };
-    // window.addEventListener("scroll", scroll);
-    // return () => {
-    //   window.removeEventListener("scroll", scroll);
-    // };
+    //   const scroll = () => {
+    //     if (
+    //       window.innerHeight + document.documentElement.scrollTop >=
+    //         document.documentElement.offsetHeight &&
+    //       !loading
+    //     ) {
+    //       instsAPI();
+    //       provinceAPI();
+    //     }
+    //   };
+    //   window.addEventListener("scroll", scroll);
+    //   return () => {
+    //     window.removeEventListener("scroll", scroll);
+    //   };
     // }, [page, loading]);
+
     instsAPI();
     provinceAPI();
   }, []);
@@ -204,29 +148,6 @@ const RegisterPetInsts = () => {
           <button>조회</button>
         </div>
       </div>
-
-      {/* <table>
-        <thead>
-          <tr>
-            <th>no</th>
-            <th>기관명</th>
-            <th>기관주소</th>
-            <th>대표자명</th>
-            <th>전화번호</th>
-          </tr>
-        </thead>
-        <tbody>
-          {insts.map((inst) => (
-            <tr key={inst.regiBoardCode}>
-              <td>{inst.regiBoardCode}</td>
-              <td>{inst.regiInstName}</td>
-              <td>{inst.regiInstAddr}</td>
-              <td>{inst.regiInstOwner}</td>
-              <td>{inst.regiInstPhone}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
 
       {insts.map((inst) => (
         <div key={inst.regiBoardCode} className="list">
