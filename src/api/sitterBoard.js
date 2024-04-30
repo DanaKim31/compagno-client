@@ -9,8 +9,8 @@ const authorize = axios.create({
 });
 
 // 전체보기
-export const getSitterBoards = async () => {
-  return await instance.get("sitter");
+export const getSitterBoards = async (page) => {
+  return await instance.get("sitter?page=" + page);
 };
 
 // 등록
