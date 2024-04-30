@@ -1,9 +1,10 @@
 import { getQuestions } from "../../api/Question";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { userSave } from "../../store/user";
 import { useDispatch, useSelector } from "react-redux";
+import Pagination from "react-js-pagination";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -21,7 +22,6 @@ const Table = styled.table`
 `;
 
 const QnaList = () => {
-  const [questions, setQuestions] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -36,6 +36,25 @@ const QnaList = () => {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
   }, []);
+
+  // 페이징 처리
+  const [questions, setQuestions] = useState([]);
+
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState(10);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
+  // 검색 기능 .. [구현중 + 백에서는 키워드 받는 거 있삼!!]
+  const [search, setSearch] = useState({
+    page: 1,
+    qnaQTitle: "",
+    qnaQContent: "",
+  });
+
+  const [counts, setCounts] = useState(1); // 데이터 총 갯수
 
   // 입력한 비밀번호
   const [secretPwd, setSecret] = useState("");
@@ -101,11 +120,15 @@ const QnaList = () => {
 
   useEffect(() => {
     questionAPI();
+    // Pagination();
   }, []);
 
   return (
     <Div>
       <CenterModal show={modalShow} onHide={() => setModalShow(false)} />
+      <div>
+        <p>총 {questions.length}건</p>
+      </div>
       <Table>
         <thead>
           <tr>
@@ -117,52 +140,69 @@ const QnaList = () => {
           </tr>
         </thead>
         <tbody>
-          {questions.map((question) => (
-            <tr key={question.qnaQCode}>
-              <td>{question.qnaQCode}</td>
-              <td>
-                {question.secret === "" || question.secret == null ? (
-                  // 비밀번호가 걸려있지 않을 때
-                  <a href={`/compagno/question/detail/${question.qnaQCode}`}>
-                    {question.qnaQTitle}
-                  </a>
-                ) : (
-                  <>
-                    {user.userRole === "ROLE_ADMIN" ? (
-                      <>
-                        <a
-                          href={`/compagno/question/detail/${question.qnaQCode}`}
-                        >
-                          {question.qnaQTitle}
-                        </a>
-                      </>
+          {questions
+            .slice(items * (page - 1), items * (page - 1) + items)
+            .map((question) => {
+              return (
+                <tr key={question.qnaQCode}>
+                  <td>{question.qnaQCode}</td>
+                  <td>
+                    {question.secret === "" || question.secret == null ? (
+                      // 비밀번호가 걸려있지 않을 때
+                      <a
+                        href={`/compagno/question/detail/${question.qnaQCode}`}
+                      >
+                        {question.qnaQTitle}
+                      </a>
                     ) : (
                       <>
-                        <a
-                          href={`/compagno/question/detail/${question.qnaQCode}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setModalShow(true);
-                            setSecret(question.secret);
-                            setCode(question.qnaQCode);
-                            console.log(question.secret);
-                          }}
-                        >
-                          {question.qnaQTitle}
-                        </a>
+                        {user.userRole === "ROLE_ADMIN" ? (
+                          <>
+                            <a
+                              href={`/compagno/question/detail/${question.qnaQCode}`}
+                            >
+                              {question.qnaQTitle}
+                            </a>
+                          </>
+                        ) : (
+                          <>
+                            <a
+                              href={`/compagno/question/detail/${question.qnaQCode}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setModalShow(true);
+                                setSecret(question.secret);
+                                setCode(question.qnaQCode);
+                                console.log(question.secret);
+                              }}
+                            >
+                              {question.qnaQTitle}
+                            </a>
+                          </>
+                        )}
                       </>
                     )}
-                  </>
-                )}
-              </td>
-              <td>{question.userId}</td>
-              <td>{question.qnaQStatus}</td>
-              <td>
-                {question.secret === "" || question.secret == null ? "N" : "Y"}
-              </td>
-            </tr>
-          ))}
+                  </td>
+                  <td>{question.userId}</td>
+                  <td>{question.qnaQStatus}</td>
+                  <td>
+                    {question.secret === "" || question.secret == null
+                      ? "N"
+                      : "Y"}
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
+        <div>
+          <Pagination
+            activePage={page}
+            itemsCountPerPage={items}
+            totalItemsCount={questions.length - 1}
+            pageRangeDisplayed={5}
+            onChange={handlePageChange}
+          ></Pagination>
+        </div>
       </Table>
       <Button
         onClick={() => {

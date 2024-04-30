@@ -106,18 +106,30 @@ const QnaQDetail = () => {
     let imageUrlLists = [...showImages];
     let blobToFileList = [];
 
+    /*
     for (let i = 0; i < images.length; i++) {
       const currentImageUrl = URL.createObjectURL(images[i]);
 
       imageUrlLists.push(currentImageUrl);
+      console.log(imageUrlLists);
+
       const blobToFile = new File([currentImageUrl], `image[${count++}].png`);
       blobToFileList.push(blobToFile);
+
+      setShowImages(imageUrlLists);
+    }
+  */
+
+    // 파일 선택에 있는 것들!을 배열에 넣는 과정
+    for (let i = 0; i < images.length; i++) {
+      const currentImageUrl = URL.createObjectURL(images[i]);
+
+      imageUrlLists.push(currentImageUrl);
     }
 
     setImages((prev) => {
       return [...prev, ...blobToFileList];
     });
-    setShowImages(imageUrlLists);
   };
 
   // 2-5. 수정 삭제 이미지 관리
