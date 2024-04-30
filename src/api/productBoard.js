@@ -24,11 +24,11 @@ export const searchProductBoard = async (no) => {
 };
 
 export const addProductBoard = async (data) => {
-  return await instance.post("productBoard", data);
+  return await authorize.post("productBoard", data);
 };
 
 export const delProductBoard = async (no) => {
-  return await instance.delete("productBoard/" + no);
+  return await authorize.delete("productBoard/" + no);
 };
 
 export const getProductBoard = async (no) => {
@@ -57,7 +57,7 @@ export const checkProductBoardBookmark = async (data) => {
   return await instance.post("productBoard/recommend/check", data);
 };
 
-export const getProductBoardComment = async (no) => {
+export const getProductBoardComments = async (no) => {
   return await instance.get("productBoard/comment/" + no);
 };
 
