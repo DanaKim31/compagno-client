@@ -53,5 +53,10 @@ export const quitUser = async (data) => {
 
 // 회원정보 변경
 export const updateUser = async (data) => {
-  return await authorize.put("mypage/myinfo/update", data);
+  return await authorize.put("mypage/myinfo/updateProfile", data);
+};
+
+// 프로필사진 변경
+export const changePhoto = async (data) => {
+  return await authorize.put("mypage/myinfo/updateProfile", data);
 };

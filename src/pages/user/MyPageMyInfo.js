@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { updateUser, quitUser, myPageInfo } from "../../api/user";
+import { Form, Button } from "react-bootstrap";
 
 const Div = styled.div`
   display: flex;
@@ -33,6 +34,7 @@ const Div = styled.div`
       width: 200px;
       height: 200px;
       border-radius: 50px;
+      z-index: 1;
     }
 
     .info-content h1 {
@@ -42,10 +44,21 @@ const Div = styled.div`
     .changeMyInfo {
       width: 500px;
       height: 500px;
-      background-color: skyblue;
+
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
+
+      .defaultProfile {
+        width: 200px;
+        height: 200px;
+        border-radius: 50px;
+        z-index: 2;
+      }
+
+      .imageClick {
+        width: 200px;
+      }
     }
 
     #quitInstructions {
@@ -70,6 +83,7 @@ const MyPageMyInfo = () => {
     userPhone: "",
     userPwd: "",
     userPwdCheck: "",
+    userImg: "",
   });
 
   const insertDefaultInfo = () => {
@@ -77,6 +91,7 @@ const MyPageMyInfo = () => {
       ...prev,
       userEmail: info.userEmail,
       userPhone: info.userPhone,
+      userImg: info.userImg,
     }));
   };
 
@@ -119,6 +134,23 @@ const MyPageMyInfo = () => {
   }, [info]);
 
   /* ----------------------------- 회원정보 변경 ----------------------------- */
+  // 기본 프로필 이미지로 변경할 때 사용할 변수
+  const [defaultImg, setDefaultImg] = useState(false);
+  const imgUrl = defaultImg ? "/img/defaultImage.png" : "";
+
+  const onChangedefaultImg = async () => {
+    if (defaultImg == true) {
+      await setDefaultImg(false);
+    } else if (defaultImg == false) {
+      await setDefaultImg(true);
+    }
+  };
+
+  useEffect(() => {}, [onChangedefaultImg]);
+
+  // 변경할 프로필 이미지파일 담아줄 빈 변수 설정
+  const [image, setImage] = useState();
+
   // 입력한 비밀번호 정규표현식으로 체크하는 함수
   const onChangePwd = () => {
     if (pwdRegexp.test(user.userPwd) || user.userPwd === "") {
@@ -210,7 +242,19 @@ const MyPageMyInfo = () => {
     ) {
       alert("올바른 전화번호 양식으로 입력해주세요");
     } else {
-      await updateUser(user);
+      const formData = new FormData();
+      formData.append("userId", info.userId);
+      formData.append("userPwd", user.userPwd);
+      formData.append("userEmail", user.userEmail);
+      formData.append("userPhone", user.userPhone);
+      console.log(image);
+      if (image != undefined) {
+        formData.append("file", image);
+      } else if (image == undefined) {
+        formData.append("file", null);
+      }
+
+      await updateUser(formData);
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       dispatch(userLogout());
@@ -230,6 +274,7 @@ const MyPageMyInfo = () => {
     userId: info.userId,
     userPwd: "",
     userPhone: "",
+    userImg: info.userImg,
   });
 
   // 체크박스 클릭에 따른 탈퇴버튼 활성화 / 비활성화
@@ -287,17 +332,23 @@ const MyPageMyInfo = () => {
             <div className="info-content">
               <h1>회원 정보 수정</h1>
               <div className="changeMyInfo">
-                <a href="/compagno">
-                  {" "}
-                  <img
-                    className="profileImage"
-                    src={"http://192.168.10.28:8081/" + info.userImg}
+                <img src={imgUrl} className="defaultProfile" />
+                <img
+                  className="profileImage"
+                  src={"http://192.168.10.28:8081/" + info.userImg}
+                />
+                <button onClick={onChangedefaultImg}>기본 이미지로 변경</button>
+                <Form.Group controlId="formFile" className="mb-3">
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    // value={user.userImg}
+                    onChange={(e) => {
+                      setImage(e.target.files[0]); // 이미지 하나만 보낼거니까 배열의 0번
+                    }}
                   />
-                </a>
 
-                <label>
-                  변경할 비밀번호 :&nbsp;
-                  <input
+                  <Form.Control
                     type="password"
                     value={user.userPwd}
                     onChange={(e) => {
@@ -309,8 +360,44 @@ const MyPageMyInfo = () => {
                     }}
                   />
                   <span className="regExpMessage">{userPwdSpan}</span>
-                </label>
-                <label>
+                  <Form.Control
+                    type="password"
+                    value={user.userPwdCheck}
+                    onChange={(e) => {
+                      setUser((prev) => ({
+                        ...prev,
+                        userPwdCheck: e.target.value,
+                      }));
+                    }}
+                  />
+                  <span className="regExpMessage">{userPwdCheckSpan}</span>
+
+                  <Form.Control
+                    type="text"
+                    value={user.userPhone}
+                    onChange={(e) => {
+                      setUser((prev) => ({
+                        ...prev,
+                        userPhone: e.target.value,
+                      }));
+                    }}
+                  />
+                  <span className="regExpMessage">{userPhoneSpan}</span>
+
+                  <Form.Control
+                    type="text"
+                    value={user.userEmail}
+                    onChange={(e) => {
+                      setUser((prev) => ({
+                        ...prev,
+                        userEmail: e.target.value,
+                      }));
+                    }}
+                  />
+                  <span className="regExpMessage">{userEmailSpan}</span>
+                </Form.Group>
+                <Button onClick={editMyInfo}>회원 정보 수정</Button>
+                {/* <label>
                   변경할 비밀번호 확인 :&nbsp;
                   <input
                     type="password"
@@ -352,7 +439,7 @@ const MyPageMyInfo = () => {
                   />
                   <span className="regExpMessage">{userEmailSpan}</span>
                 </label>
-                <button onClick={editMyInfo}>회원 정보 수정</button>
+                <button onClick={editMyInfo}>회원 정보 수정</button> */}
               </div>
             </div>
           </Tab>
