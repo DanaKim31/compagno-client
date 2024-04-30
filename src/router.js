@@ -113,7 +113,7 @@ const router = createBrowserRouter([
       {
         path: "onedayClassBoard",
         children: [
-          { path: "viewAll", element: <ClassList /> },
+          { index: true, element: <ClassList /> },
           { path: "create", element: <CreateClass /> },
         ],
       },

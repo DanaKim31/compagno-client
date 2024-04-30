@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // Post방식 => 원데이 클래스 등록
-export const addOnedayClass = async () => {
-  return await axios.post("http://localhost:8080/api/ClassBoard");
+export const addOnedayClass = async (data) => {
+  return await axios.post("http://localhost:8080/api/ClassBoard", data);
 };
 
 // Get방식 => 원데이 클래스 등록 전체 보기 !!
