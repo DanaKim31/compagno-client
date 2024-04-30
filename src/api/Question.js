@@ -23,8 +23,8 @@ const instance = axios.create({
 });
 
 // 목록 보기
-export const getQuestions = async () => {
-  return await instance.get("question");
+export const getQuestions = async (page) => {
+  return await instance.get("question?page=" + page);
 };
 
 // 1개 보여주기

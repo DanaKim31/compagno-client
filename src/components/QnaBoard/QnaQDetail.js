@@ -35,9 +35,6 @@ const QnaQDetail = () => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
-  }, []);
-
-  useEffect(() => {
     // 1. Question 세팅 (불러오기)
     questionAPI();
   }, []);
@@ -49,7 +46,7 @@ const QnaQDetail = () => {
     setQuestion(response.data);
   };
 
-  // 2. UPDATE ========================================================
+  // 2. Q UPDATE ========================================================
   // 2-1. 상세 정보 보는 페이지에서 수정 버튼 클릭 (정보를 전달한 채 수정 폼이 나오도록!)
   const onUpdateQuestion = (data) => {
     navigate(`/compagno/question/detail/${data.qnaQCode}`);
@@ -97,39 +94,19 @@ const QnaQDetail = () => {
     });
   };
 
-  // 2-4. 수정 추가 이미지 관리
-  let count = 0;
-  const handleAddImages = (e) => {
-    const images = Array.from(e.target.files);
-    setImages(images);
+  // 2-4. 수정 추가 이미지 미리보기 및 관리
+  const preview = (e) => {
+    const files = Array.from(e.target.files);
+    setImages((prev) => [...prev, ...files]);
 
+    const imageLists = e.target.files;
     let imageUrlLists = [...showImages];
-    let blobToFileList = [];
 
-    /*
-    for (let i = 0; i < images.length; i++) {
-      const currentImageUrl = URL.createObjectURL(images[i]);
-
-      imageUrlLists.push(currentImageUrl);
-      console.log(imageUrlLists);
-
-      const blobToFile = new File([currentImageUrl], `image[${count++}].png`);
-      blobToFileList.push(blobToFile);
-
-      setShowImages(imageUrlLists);
-    }
-  */
-
-    // 파일 선택에 있는 것들!을 배열에 넣는 과정
-    for (let i = 0; i < images.length; i++) {
-      const currentImageUrl = URL.createObjectURL(images[i]);
-
+    for (let i = 0; i < imageLists.length; i++) {
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
     }
-
-    setImages((prev) => {
-      return [...prev, ...blobToFileList];
-    });
+    setShowImages(imageUrlLists);
   };
 
   // 2-5. 수정 삭제 이미지 관리
@@ -218,7 +195,7 @@ const QnaQDetail = () => {
                       type="file"
                       multiple
                       accept="image/*"
-                      onChange={handleAddImages}
+                      onChange={preview}
                     />
                     {/* 수정, 취소 버튼 */}
                     <Button variant="warning" onClick={questionUpdate}>

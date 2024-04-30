@@ -76,9 +76,10 @@ const QnaADetail = () => {
   };
 
   // 2. UPDATE ========================================================
-  // 답변 수정
+  // 2-1. 답변 수정 클릭 시 정보를 담은 폼 화면이 나옴!
   const onUpdateAnswer = async (answer) => {
     setEditA(answer);
+    console.log("!!!!!");
   };
 
   // 답변 취소
@@ -91,53 +92,77 @@ const QnaADetail = () => {
     await deleteAnswer(code);
     console.log(code);
     answerAPI();
+    setEditA(null);
+    answerAPI();
   };
 
   return (
     <>
-      {answer === "" && user.userRole === "ROLE_ADMIN" ? (
-        // 답변이 없는 경우 + 관리자의 경우!!
-        <div className="Answer">
-          <h1>답변 작성 폼</h1>
-          <Form.Control
-            type="text"
-            placeholder="제목 작성"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Form.Control
-            as="textarea"
-            placeholder="내용 작성"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-          <Form.Control
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={imageChange}
-          />
-          <Button variant="dark" onClick={answerSubmit}>
-            답변 등록
-          </Button>
-          <Button onClick={cancelAnswer}>취소</Button>
-        </div>
+      {user.userRole === "ROLE_ADMIN" ? (
+        // 관리자의 경우!
+        <>
+          {answer === "" ? (
+            // 답변이 없는 경우
+            <div className="Answer">
+              <h1>답변 작성 폼</h1>
+              <Form.Control
+                type="text"
+                placeholder="제목 작성"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <Form.Control
+                as="textarea"
+                placeholder="내용 작성"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+              <Form.Control
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={imageChange}
+              />
+              <Button variant="dark" onClick={answerSubmit}>
+                답변 등록
+              </Button>
+              <Button onClick={cancelAnswer}>취소</Button>
+            </div>
+          ) : (
+            <>
+              <h1>ANSWER!!!</h1>
+
+              <button onClick={() => onUpdateAnswer(answer)}>수정</button>
+              <button onClick={() => onDeleteAnswer(answer.qnaACode)}>
+                삭제
+              </button>
+              <div>
+                <p>{answer.qnaATitle}</p>
+                <p>{answer.qnaAContent}</p>
+              </div>
+            </>
+          )}
+        </>
       ) : (
-        <div>
-          <div>
-            <h1>Answer</h1>
-
-            {/* 관리자 && (작성자 id = 로그인 유저 id) */}
-            <button>수정</button>
-            <button onClick={() => onDeleteAnswer(answer.qnaACode)}>
-              삭제
-            </button>
-          </div>
-          <p>{answer.qnaATitle}</p>
-          <p>{answer.qnaAContent}</p>
-        </div>
+        // 회원의 경우
+        <>
+          {answer === "" ? (
+            // 답변이 없을 때
+            <>
+              <h1>답변이 아직 작성되지 않았습니다.</h1>
+            </>
+          ) : (
+            // 답변이 있을 때
+            <>
+              <div>
+                <h1>ANSWER!!!!!</h1>
+                <p>{answer.qnaATitle}</p>
+                <p>{answer.qnaAContent}</p>
+              </div>
+            </>
+          )}
+        </>
       )}
-
       <button onClick={() => navigate("/compagno/question")}>목록</button>
     </>
   );
