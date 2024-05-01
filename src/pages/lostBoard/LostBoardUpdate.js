@@ -33,6 +33,9 @@ const Div = styled.div`
   select {
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
+    option {
+      font-weight: bold;
+    }
   }
   .contentHeader {
     width: 70%;
@@ -46,15 +49,7 @@ const Div = styled.div`
   }
   .contentsBody {
     width: 80%;
-    #mainImage {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      img {
-        width: 400px;
-        height: 400px;
-      }
-    }
+
     #regiDate {
       display: flex;
       justify-content: right;
@@ -114,6 +109,31 @@ const Div = styled.div`
                 width: 40%;
               }
             }
+            tr#imgContent {
+              height: 200px;
+              td#imgContents {
+                img {
+                  width: 200px;
+                  height: 200px;
+                  margin: 0px 10px;
+                }
+                #existingImg {
+                  display: flex;
+                }
+                label#imgList {
+                  display: flex;
+                  flex-direction: column;
+                  margin: 0px;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100%;
+                  margin-top: 40px;
+                  p {
+                    margin-top: 10px;
+                  }
+                }
+              }
+            }
             td {
               justify-content: center;
               label {
@@ -130,10 +150,6 @@ const Div = styled.div`
 
                   div {
                     margin: 0px 20px;
-                    img {
-                      width: 200px;
-                      height: 200px;
-                    }
                   }
                 }
               }
@@ -224,7 +240,7 @@ const LostBoardUpdate = () => {
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
   const [images, setImages] = useState([]);
   const [lostRegiDate, setLostRegiDate] = useState("");
-  console.log("lostLocation : " + lostLocation);
+
   // lostRegiDate 수정(오늘) 날짜 입력
   const lostRegiDateAPI = () => {
     const nowTime = moment().format("YYYY-MM-DD");
@@ -285,16 +301,20 @@ const LostBoardUpdate = () => {
   const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
     const files = Array.from(e.target.files);
-    setImages(files);
-    let file;
-    for (let i = 0; i < files.length; i++) {
-      file = files[i];
-      const reader = new FileReader();
-      reader.onload = () => {
-        images[i] = reader.result;
-        setImgSrc([...images]);
-      };
-      reader.readAsDataURL(file);
+    if (files.length > 3) {
+      alert("최대 사진 갯수를 초과하였습니다ㅏ. 다시 선택하여주세요.");
+    } else {
+      setImages(files);
+      let file;
+      for (let i = 0; i < files.length; i++) {
+        file = files[i];
+        const reader = new FileReader();
+        reader.onload = () => {
+          images[i] = reader.result;
+          setImgSrc([...images]);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   };
 
@@ -319,6 +339,10 @@ const LostBoardUpdate = () => {
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
     });
+
+    // for (let i = 0; i < images.length; i++) {
+    //   formData.append("image", prop.files[i]);
+    // }
 
     // not null 조건
     if (
@@ -555,20 +579,38 @@ const LostBoardUpdate = () => {
                     <th>사진첨부</th>
                     <td id="imgContents">
                       <label id="imgList">
-                        사진 업로드 추가{" "}
-                        <input
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={imageCreate}
-                        />
-                        <div className="images">
-                          {imgSrc.map((img, i) => (
-                            <div key={i}>
-                              <img src={img} />
-                            </div>
+                        <div id="existingImg">
+                          {images?.map((image) => (
+                            <img
+                              alt=""
+                              key={image.lostImageCode}
+                              src={image.lostImage?.replace(
+                                "C:",
+                                "http://localhost:8081"
+                              )}
+                              // src={lost.lostAnimalImage?.replace(
+                              //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                              //   "http://192.168.10.28:8081/lostBoard/"
+                              // )}
+                            />
                           ))}
                         </div>
+                        <div id="images">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={imageCreate}
+                          />
+                          <div className="images">
+                            {imgSrc.map((img, i) => (
+                              <div key={i}>
+                                <img src={img} />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <p>사진 업로드 추가 (최대 3장)</p>
                       </label>
                     </td>
                   </tr>
