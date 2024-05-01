@@ -1,19 +1,18 @@
 import styled from "styled-components";
-import MyPageSidebar from "../../components/MyPageSidebar";
+import MyPageSidebar from "../../components/user/MyPageSidebar";
 
 const Div = styled.div`
   display: flex;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   height: 100vh;
   padding-top: 112px;
 
   .activity-content {
     background-color: skyblue;
-    width: 100%;
-
-    display: flex;
+    width: calc(100vw - 300px);
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
   }
 `;
 

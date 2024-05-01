@@ -1,74 +1,81 @@
 import styled from "styled-components";
-import MyPageSidebar from "../../components/MyPageSidebar";
+import MyPageSidebar from "../../components/user/MyPageSidebar";
 import { userSave, userLogout } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { updateUser, quitUser, myPageInfo } from "../../api/user";
 import { Form, Button } from "react-bootstrap";
+import { FaRegEdit } from "react-icons/fa";
 
 const Div = styled.div`
   display: flex;
-  box-sizing: border-box;
-  width: 100%;
+  /* box-sizing: border-box; */
   height: 100vh;
   padding-top: 112px;
 
   .info-zone {
-    width: 100%;
-    height: 100%;
+    width: calc(100vw - 300px);
     box-sizing: border-box;
-
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding-top: 3%;
+    padding-top: 1%;
 
+    // 탭 선택바
     .mb-3 {
       width: 90%;
-    }
-
-    .profileImage {
-      width: 200px;
-      height: 200px;
-      border-radius: 50px;
-      z-index: 1;
-    }
-
-    .info-content h1 {
       font-size: 1.5rem;
     }
-
-    .changeMyInfo {
-      width: 500px;
-      height: 500px;
-
+    // 정보 조회
+    .info-content {
+      padding-top: 100px;
+      width: 40vw;
       display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
+      justify-content: space-around;
+      align-items: center;
 
-      .defaultProfile {
-        width: 200px;
-        height: 200px;
+      .info-image {
+        width: 300px;
+        height: 300px;
         border-radius: 50px;
-        z-index: 2;
-      }
-
-      .imageClick {
-        width: 200px;
       }
     }
 
-    #quitInstructions {
-      width: 100%;
-      border: 1px solid skyblue;
-      list-style-type: circle;
+    // 정보 수정
+    .info-edit {
+      .changeMyInfo {
+        width: 500px;
+        height: 500px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+
+        .profileImage {
+          cursor: pointer;
+
+          img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50px;
+          }
+        }
+      }
     }
 
-    .forQuitInput {
-      width: 340px;
+    .info-quit {
+      #quitInstructions {
+        width: 100%;
+        border: 1px solid skyblue;
+        list-style-type: circle;
+      }
+
+      .forQuitInput {
+        width: 340px;
+      }
     }
   }
 `;
@@ -134,22 +141,35 @@ const MyPageMyInfo = () => {
   }, [info]);
 
   /* ----------------------------- 회원정보 변경 ----------------------------- */
+
+  // 업로드한 이미지 미리보기
+  // const [imgFile, setImgFile] = useState < File > [];
+  // const [imgPath, setImgPath] = useState("");
+  // const imgRef = useRef < HTMLInputElement > null;
+  // const maxImageSize = 1024 * 1024 * 2;
+
+  // const reader = new FileReader();
+  // reader.readAsDataURL();
+
+  {
+    /* ------------------------원본------------------------ */
+  }
   // 기본 프로필 이미지로 변경할 때 사용할 변수
   const [defaultImg, setDefaultImg] = useState(false);
-  const imgUrl = defaultImg ? "/img/defaultImage.png" : "";
-
   const onChangedefaultImg = async () => {
     if (defaultImg == true) {
-      await setDefaultImg(false);
+      setDefaultImg(false);
     } else if (defaultImg == false) {
-      await setDefaultImg(true);
+      setDefaultImg(true);
+      setImage(null);
     }
   };
-
-  useEffect(() => {}, [onChangedefaultImg]);
+  {
+    /* ---------------------------------------------------- */
+  }
 
   // 변경할 프로필 이미지파일 담아줄 빈 변수 설정
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(null);
 
   // 입력한 비밀번호 정규표현식으로 체크하는 함수
   const onChangePwd = () => {
@@ -247,11 +267,11 @@ const MyPageMyInfo = () => {
       formData.append("userPwd", user.userPwd);
       formData.append("userEmail", user.userEmail);
       formData.append("userPhone", user.userPhone);
-      console.log(image);
-      if (image != undefined) {
+
+      if (image != null) {
         formData.append("file", image);
-      } else if (image == undefined) {
-        formData.append("file", null);
+      } else if (image == null) {
+        formData.append("defaultImg", "true");
       }
 
       await updateUser(formData);
@@ -316,37 +336,66 @@ const MyPageMyInfo = () => {
           <Tab eventKey="home" title="정보 조회">
             <div className="info-content">
               <img
-                className="profileImage"
+                className="info-image"
                 src={"http://192.168.10.28:8081/" + info.userImg}
                 // src={"C:/upload/" + user.userImg}
               />
-              <p>이름 : {info.userPersonName}</p>
-              <p>아이디 : {info.userId}</p>
-              <p>전화번호 : {info.userPhone}</p>
-              <p>닉네임 : {info.userNickname}</p>
-              <p>이메일 : {info.userEmail}</p>
-              <p>가입일 : {info.userEnrollDate}</p>
+              <div className="info-text">
+                <p>이름 : {info.userPersonName}</p>
+                <p>아이디 : {info.userId}</p>
+                <p>전화번호 : {info.userPhone}</p>
+                <p>닉네임 : {info.userNickname}</p>
+                <p>이메일 : {info.userEmail}</p>
+                <p>가입일 : {info.userEnrollDate}</p>
+              </div>
             </div>
           </Tab>
           <Tab eventKey="profile" title="정보 수정">
-            <div className="info-content">
+            <div className="info-edit">
               <h1>회원 정보 수정</h1>
               <div className="changeMyInfo">
-                <img src={imgUrl} className="defaultProfile" />
-                <img
-                  className="profileImage"
-                  src={"http://192.168.10.28:8081/" + info.userImg}
-                />
-                <button onClick={onChangedefaultImg}>기본 이미지로 변경</button>
+                {/* <img src={imgUrl} className="defaultProfile" /> */}
+
                 <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Control
-                    type="file"
-                    accept="image/*"
-                    // value={user.userImg}
-                    onChange={(e) => {
-                      setImage(e.target.files[0]); // 이미지 하나만 보낼거니까 배열의 0번
-                    }}
-                  />
+                  <label className="profileImage">
+                    <img
+                      src={"http://192.168.10.28:8081/" + info.userImg}
+                      htmlFor="pic"
+                    />
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        setImage(e.target.files[0]); // 이미지 하나만 보낼거니까 배열의 0번
+                      }}
+                      name="pic"
+                      hidden
+                    />
+                  </label>
+                  <button onClick={onChangedefaultImg}>
+                    기본 이미지로 변경
+                  </button>
+
+                  {/* ---------------------원본--------------------------- */}
+                  {/* <label className="profileImage">
+                    <img
+                      src={"http://192.168.10.28:8081/" + info.userImg}
+                      htmlFor="pic"
+                    />
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        setImage(e.target.files[0]); // 이미지 하나만 보낼거니까 배열의 0번
+                      }}
+                      name="pic"
+                      hidden
+                    />
+                  </label>
+                  <button onClick={onChangedefaultImg}>
+                    기본 이미지로 변경
+                  </button> */}
+                  {/* ---------------------------------------------------- */}
 
                   <Form.Control
                     type="password"
@@ -397,54 +446,11 @@ const MyPageMyInfo = () => {
                   <span className="regExpMessage">{userEmailSpan}</span>
                 </Form.Group>
                 <Button onClick={editMyInfo}>회원 정보 수정</Button>
-                {/* <label>
-                  변경할 비밀번호 확인 :&nbsp;
-                  <input
-                    type="password"
-                    value={user.userPwdCheck}
-                    onChange={(e) => {
-                      setUser((prev) => ({
-                        ...prev,
-                        userPwdCheck: e.target.value,
-                      }));
-                    }}
-                  />
-                  <span className="regExpMessage">{userPwdCheckSpan}</span>
-                </label>
-                <label>
-                  전화번호 :&nbsp;
-                  <input
-                    type="text"
-                    value={user.userPhone}
-                    onChange={(e) => {
-                      setUser((prev) => ({
-                        ...prev,
-                        userPhone: e.target.value,
-                      }));
-                    }}
-                  />
-                  <span className="regExpMessage">{userPhoneSpan}</span>
-                </label>
-                <label>
-                  이메일 :&nbsp;
-                  <input
-                    type="text"
-                    value={user.userEmail}
-                    onChange={(e) => {
-                      setUser((prev) => ({
-                        ...prev,
-                        userEmail: e.target.value,
-                      }));
-                    }}
-                  />
-                  <span className="regExpMessage">{userEmailSpan}</span>
-                </label>
-                <button onClick={editMyInfo}>회원 정보 수정</button> */}
               </div>
             </div>
           </Tab>
-          <Tab eventKey="contact" title="회원 탈퇴">
-            <div className="info-content">
+          <Tab eventKey="quit" title="회원 탈퇴">
+            <div className="info-quit">
               <ul id="quitInstructions">
                 <h1>Compagno 탈퇴 전 확인하세요.</h1>
                 <li>회원탈퇴시 사이트 접근이 제한됩니다.</li>

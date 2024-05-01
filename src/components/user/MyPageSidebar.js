@@ -3,14 +3,13 @@ import styled from "styled-components";
 const Div = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20%;
+  width: 300px;
 
   .mypage-menu {
     border-right: 1px solid black;
     background-color: lightgoldenrodyellow;
     width: 100%;
-
-    height: calc(100vh - 107px);
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
