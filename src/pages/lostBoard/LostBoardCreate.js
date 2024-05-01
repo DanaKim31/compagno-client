@@ -68,6 +68,18 @@ const Div = styled.div`
         border-top: 1px solid green;
         display: flex;
         flex-direction: column;
+        #userInfo {
+          display: flex;
+          justify-content: space-between;
+        }
+        #mark {
+          display: flex;
+          justify-content: space-between;
+        }
+        span {
+          color: red;
+        }
+
         table {
           margin-top: 10px;
           tr {
@@ -92,9 +104,15 @@ const Div = styled.div`
               height: 100%;
               label#imgList {
                 display: flex;
+                flex-direction: column;
                 margin: 0px;
                 justify-content: center;
                 align-items: center;
+                height: 100%;
+                margin-top: 15px;
+                p {
+                  margin-top: 10px;
+                }
               }
             }
           }
@@ -200,16 +218,20 @@ const CreateLostBoard = () => {
   const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
     const files = Array.from(e.target.files);
-    setImages(files);
-    let file;
-    for (let i = 0; i < files.length; i++) {
-      file = files[i];
-      const reader = new FileReader();
-      reader.onload = () => {
-        images[i] = reader.result;
-        setImgSrc([...images]);
-      };
-      reader.readAsDataURL(file);
+    if (files.length > 3) {
+      alert("최대 사진 갯수를 초과하였습니다. 다시 선택하여주세요.");
+    } else {
+      setImages(files);
+      let file;
+      for (let i = 0; i < files.length; i++) {
+        file = files[i];
+        const reader = new FileReader();
+        reader.onload = () => {
+          images[i] = reader.result;
+          setImgSrc([...images]);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   };
 
@@ -285,16 +307,17 @@ const CreateLostBoard = () => {
             <table>
               <thead>
                 <tr>
-                  <td>
+                  <td id="userInfo">
                     <h3>
                       <FaUser /> 분실 신고자 정보
-                      <input
-                        type="text"
-                        value={lostRegiDate}
-                        onChange={lostRegiDateAPI}
-                        hidden
-                      />
                     </h3>
+                    <span>변경 불가 항목입니다.</span>
+                    <input
+                      type="text"
+                      value={lostRegiDate}
+                      onChange={lostRegiDateAPI}
+                      hidden
+                    />
                   </td>
                 </tr>
               </thead>
@@ -330,16 +353,19 @@ const CreateLostBoard = () => {
             <table>
               <thead>
                 <tr>
-                  <td>
+                  <td id="mark">
                     <h3>
                       <FiMapPin /> 분실일시 및 장소
                     </h3>
+                    <span>* : 필수 입력란입니다.</span>
                   </td>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th>분실 날짜*</th>
+                  <th>
+                    분실 날짜<span>*</span>
+                  </th>
                   <td>
                     <input
                       type="Date"
@@ -351,7 +377,9 @@ const CreateLostBoard = () => {
                 </tr>
 
                 <tr>
-                  <th>분실 장소*</th>
+                  <th>
+                    분실 장소<span>*</span>
+                  </th>
                   <td>
                     <input
                       type="text"
@@ -388,7 +416,9 @@ const CreateLostBoard = () => {
               </thead>
               <tbody>
                 <tr>
-                  <th>분실 동물 이름*</th>
+                  <th>
+                    분실 동물 이름<span>*</span>
+                  </th>
                   <td>
                     <input
                       type="text"
@@ -398,7 +428,9 @@ const CreateLostBoard = () => {
                   </td>
                 </tr>
                 <tr>
-                  <th>축종*</th>
+                  <th>
+                    축종<span>*</span>
+                  </th>
                   <td>
                     <select onChange={(e) => setLostAnimalKind(e.target.value)}>
                       <option value="" className="animalKind">
@@ -427,7 +459,9 @@ const CreateLostBoard = () => {
                   </td>
                 </tr>
                 <tr>
-                  <th>성별*</th>
+                  <th>
+                    성별<span>*</span>
+                  </th>
                   <td>
                     <label>
                       <input
@@ -495,20 +529,22 @@ const CreateLostBoard = () => {
                   <th>사진첨부</th>
                   <td id="imgContents">
                     <label id="imgList">
-                      사진 업로드 추가
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={imageCreate}
-                      />
-                      <div className="images">
-                        {imgSrc.map((img, i) => (
-                          <div key={i}>
-                            <img src={img} />
-                          </div>
-                        ))}
+                      <div id="images">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={imageCreate}
+                        />
+                        <div className="images">
+                          {imgSrc.map((img, i) => (
+                            <div key={i}>
+                              <img src={img} />
+                            </div>
+                          ))}
+                        </div>
                       </div>
+                      <p>사진 업로드 추가 (최대 3장)</p>
                     </label>
                   </td>
                 </tr>
