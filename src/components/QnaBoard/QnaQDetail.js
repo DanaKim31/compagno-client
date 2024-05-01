@@ -21,6 +21,11 @@ const QnaQDetail = () => {
   const [showImages, setShowImages] = useState([]);
   const [editQ, setEditQ] = useState(null);
 
+  const [answer, setAnswer] = useState([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [editA, setEditA] = useState(null);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { qnaQCode } = useParams();
@@ -114,7 +119,14 @@ const QnaQDetail = () => {
     setShowImages(showImages.filter((_, index) => index !== id));
   };
 
-  // 3. DELETE ========================================================
+  // 3. A UPDATE ===================================================
+  // 3-1. 답변 수정 클릭 시 정보를 담은 폼 화면이 나옴!
+  const onUpdateAnswer = async (answer) => {
+    setEditA(answer);
+    console.log("!!!!!");
+  };
+
+  // 4. DELETE ========================================================
   const onDeleteQuestion = (qnaQCode) => {
     delQuestion(qnaQCode);
     questionAPI();
