@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import { userSave } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { addProductBoard } from "../../api/productBoard";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { editProductBoard, getProductBoard } from "../../api/productBoard";
 
 const Main = styled.main`
   padding-top: 120px;
@@ -48,7 +48,7 @@ const Main = styled.main`
   }
 `;
 
-const CreateProductBoard = () => {
+const UpdateProductBoard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => {
@@ -62,9 +62,11 @@ const CreateProductBoard = () => {
   const [animal, setAnimal] = useState("");
   const [content, setContent] = useState("");
   const [productCategory, setProductCategory] = useState("");
+  const { code } = useParams();
 
-  const createBoard = async () => {
-    await addProductBoard({
+  const updateBoard = async () => {
+    await editProductBoard({
+      productBoardCode: code,
       productBoardTitle: title,
       productName: productName,
       productPrice: price,
@@ -79,11 +81,23 @@ const CreateProductBoard = () => {
     navigate("/compagno/product-board");
   };
 
+  const viewProductBoard = async () => {
+    const response = (await getProductBoard(code)).data;
+    setTitle(response.productBoardTitle);
+    setProductName(response.productName);
+    setPrice(response.productPrice);
+    setGrade(response.productBoardGrade);
+    setContent(response.productBoardContent);
+    setAnimal(response.animalCategory.animalCategoryCode);
+    setProductCategory(response.productCategory);
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
+    viewProductBoard();
   }, []);
 
   return (
@@ -91,6 +105,7 @@ const CreateProductBoard = () => {
       <span>
         제목 :{" "}
         <input
+          value={title}
           type="text"
           placeholder="제목"
           onChange={(e) => {
@@ -100,10 +115,11 @@ const CreateProductBoard = () => {
       </span>
       <span>썸네일 이미지 :</span>
       <span>
-        제품명 :{" "}
+        상품명 :{" "}
         <input
+          value={productName}
           type="text"
-          placeholder="제품명"
+          placeholder="상품명"
           onChange={(e) => {
             setProductName(e.target.value);
           }}
@@ -112,14 +128,11 @@ const CreateProductBoard = () => {
       <div>
         사용 동물 :{" "}
         <select
-          defaultValue="default"
+          defaultValue={animal}
           onChange={(e) => {
             setAnimal(e.target.value);
           }}
         >
-          <option value="default" disabled="disabled" hidden>
-            동물 선택
-          </option>
           <option value="1">강아지</option>
           <option value="2">고양이</option>
           <option value="3">비둘기</option>
@@ -127,9 +140,10 @@ const CreateProductBoard = () => {
         </select>
       </div>
       <div>
-        제품 분류 :
+        상품 분류 :
         <input
           type="text"
+          value={productCategory}
           onChange={(e) => setProductCategory(e.target.value)}
           placeholder="제품 분류"
         />
@@ -137,6 +151,7 @@ const CreateProductBoard = () => {
       <div>
         가격 :{" "}
         <input
+          value={price}
           type="text"
           placeholder="가격"
           onChange={(e) => {
@@ -246,6 +261,7 @@ const CreateProductBoard = () => {
       <div>
         글 내용 :{" "}
         <Form.Control
+          value={content}
           as="textarea"
           rows={20}
           onChange={(e) => {
@@ -255,7 +271,7 @@ const CreateProductBoard = () => {
       </div>
       <button
         onClick={() => {
-          createBoard();
+          updateBoard();
         }}
         style={{ width: "100px" }}
       >
@@ -265,4 +281,4 @@ const CreateProductBoard = () => {
     </Main>
   );
 };
-export default CreateProductBoard;
+export default UpdateProductBoard;

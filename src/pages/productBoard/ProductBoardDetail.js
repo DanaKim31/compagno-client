@@ -5,7 +5,7 @@ import {
   productBoardRecommend,
   delProductBoardcomment,
   addProductBoardComment,
-  updateProductBoardComment,
+  editProductBoardComment,
   delProductBoard,
 } from "../../api/productBoard";
 import { useParams, useNavigate } from "react-router-dom";
@@ -90,6 +90,18 @@ const Main = styled.main`
     padding: 5px;
     border: 1px black solid;
   }
+
+  .commentDiv {
+    cursor: pointer;
+  }
+
+  .writeReplyDiv {
+    border-top: 1px black solid;
+  }
+
+  .writeReply {
+    margin-top: 15px;
+  }
 `;
 
 const ProductBoardDetail = () => {
@@ -103,7 +115,10 @@ const ProductBoardDetail = () => {
   const [productBoard, setProductBoard] = useState([]);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState([]);
-  const [edit, setEdit] = useState({});
+  const [replyNo, setReplyNo] = useState(0);
+  const [replyContent, setReplyContent] = useState("");
+  const [editNo, setEditNo] = useState(0);
+  const [editContent, setEditContent] = useState("");
 
   const viewProductBoards = async () => {
     const response = await getProductBoard(code);
@@ -165,15 +180,34 @@ const ProductBoardDetail = () => {
     viewProductBoardComment();
   };
 
-  const editComment = async (no) => {
-    await updateProductBoardComment({
-      productCommentcode: no,
+  const addReply = async () => {
+    await addProductBoardComment({
+      productBoardCode: code,
+      productParentCode: replyNo,
+      productCommentContent: replyContent,
     });
+    setReplyNo(0);
+    setReplyContent("");
+    viewProductBoardComment();
+  };
+
+  const editComment = async () => {
+    await editProductBoardComment({
+      productCommentCode: editNo,
+      productCommentContent: editContent,
+    });
+    setReplyContent("");
+    setEditNo(0);
+    viewProductBoardComment();
   };
 
   const removeProductBoard = async () => {
     await delProductBoard(code);
     navigate("/compagno/product-board");
+  };
+
+  const editProductBoard = () => {
+    navigate("/compagno/product-board/edit/" + code);
   };
 
   return (
@@ -193,10 +227,7 @@ const ProductBoardDetail = () => {
         </p>
         <p>작성자 : {productBoard.user?.userNickname}</p>
         <img
-          src={productBoard.productMainImage?.replace(
-            "\\DESKTOP-U0CNG13",
-            "http://localhost:8081"
-          )}
+          src={"http://192.168.10.28:8081/" + productBoard.productMainImage}
           style={{
             height: "400px",
             width: "600px",
@@ -215,7 +246,7 @@ const ProductBoardDetail = () => {
         {productBoard.images?.map((image) => (
           <img
             key={image.productImageCode}
-            src={image.productImage?.replace("C:", "http://localhost:8081")}
+            src={"http://192.168.10.28:8081/" + image.productImage}
             style={{
               height: "300px",
               width: "500px",
@@ -240,13 +271,22 @@ const ProductBoardDetail = () => {
           <span>{productBoard.recommend?.length}</span>
         </div>
         {user.userId === productBoard.user?.userId && (
-          <button
-            onClick={() => {
-              removeProductBoard();
-            }}
-          >
-            삭제
-          </button>
+          <>
+            <button
+              onClick={() => {
+                removeProductBoard();
+              }}
+            >
+              삭제
+            </button>
+            <button
+              onClick={() => {
+                editProductBoard();
+              }}
+            >
+              수정
+            </button>
+          </>
         )}
       </div>
       <div className="boardCommentDiv">
@@ -260,28 +300,108 @@ const ProductBoardDetail = () => {
               setComment(e.target.value);
             }}
           />
-          <button onClick={addComment}>작성</button>
+          <button
+            onClick={() => {
+              addComment();
+            }}
+          >
+            작성
+          </button>
         </div>
         <div className="viewCommentsDiv">
           {comments?.map((comment) =>
             comment.productCommentDelete === "N" ? (
               <div className="viewComment" key={comment.productCommentCode}>
-                작성자 : {comment.user.userNickname}
-                날짜 :{" "}
-                {moment(comment.productBoardRegiDate).format(
-                  "MM월 DD일 HH시 mm분"
-                )}
-                <br />
-                내용 : {comment.productCommentContent}
-                {user.userId === comment.user?.userId && (
-                  <span>
-                    <button>수정</button>
+                <div
+                  className="commentDiv"
+                  onClick={(e) => {
+                    setReplyNo(comment.productCommentCode);
+                  }}
+                >
+                  작성자 : {comment.user.userNickname}
+                  날짜 :{" "}
+                  {moment(comment.productBoardRegiDate).format(
+                    "MM월 DD일 HH시 mm분"
+                  )}
+                  <br />
+                  {editNo === comment.productCommentCode ? (
+                    <>
+                      <Form.Control
+                        defaultValue={comment.productCommentContent}
+                        as="textarea"
+                        rows={3}
+                        className="writeReply"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        onChange={(e) => {
+                          setEditContent(e.target.value);
+                        }}
+                      ></Form.Control>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          editComment();
+                        }}
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditNo(0);
+                          setEditContent("");
+                        }}
+                      >
+                        취소
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      내용 : {comment.productCommentContent}
+                      {user.userId === comment.user?.userId && (
+                        <span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditNo(comment.productCommentCode);
+                            }}
+                          >
+                            수정
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              commentDelete(comment.productCommentCode);
+                            }}
+                          >
+                            삭제
+                          </button>
+                        </span>
+                      )}
+                    </>
+                  )}
+                </div>
+                {replyNo === comment.productCommentCode && (
+                  <div className="writeReplyDiv">
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      className="writeReply"
+                      onChange={(e) => {
+                        setReplyContent(e.target.value);
+                      }}
+                    />
+                    <button onClick={() => addReply()}>작성</button>
                     <button
-                      onClick={() => commentDelete(comment.productCommentCode)}
+                      onClick={() => {
+                        setReplyNo(0);
+                        setReplyContent("");
+                      }}
                     >
-                      삭제
+                      취소
                     </button>
-                  </span>
+                  </div>
                 )}
                 {comment?.replies.map((reply) =>
                   reply.productCommentDelete === "N" ? (
@@ -292,22 +412,66 @@ const ProductBoardDetail = () => {
                         "MM월 DD일 HH시 mm분"
                       )}
                       <br />
-                      내용 : {reply.productCommentContent}
-                      {user.userId === reply.user?.userId && (
-                        <span>
-                          <button>수정</button>
+                      {editNo === reply.productCommentCode ? (
+                        <>
+                          <Form.Control
+                            defaultValue={reply.productCommentContent}
+                            as="textarea"
+                            rows={3}
+                            className="writeReply"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                            onChange={(e) => {
+                              setEditContent(e.target.value);
+                            }}
+                          ></Form.Control>
                           <button
-                            onClick={() =>
-                              commentDelete(reply.productCommentCode)
-                            }
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              editComment();
+                            }}
                           >
-                            삭제
+                            수정
                           </button>
-                        </span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditNo(0);
+                              setEditContent("");
+                            }}
+                          >
+                            취소
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          내용 : {reply.productCommentContent}
+                          {user.userId === reply.user?.userId && (
+                            <span>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setEditNo(reply.productCommentCode);
+                                }}
+                              >
+                                수정
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  commentDelete(reply.productCommentCode);
+                                }}
+                              >
+                                삭제
+                              </button>
+                            </span>
+                          )}
+                        </>
                       )}
                     </div>
                   ) : (
-                    <div className="viewReply" key={comment.productCommentCode}>
+                    <div className="viewReply" key={reply.productCommentCode}>
                       삭제된 댓글입니다.
                     </div>
                   )
@@ -315,7 +479,36 @@ const ProductBoardDetail = () => {
               </div>
             ) : (
               <div className="viewComment" key={comment.productCommentCode}>
-                삭제된 댓글입니다.
+                <div
+                  key={comment.productCommentCode}
+                  className="commentDiv"
+                  onClick={(e) => {
+                    setReplyNo(comment.productCommentCode);
+                  }}
+                >
+                  삭제된 댓글입니다.
+                </div>
+                {replyNo === comment.productCommentCode && (
+                  <div className="writeReplyDiv">
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      className="writeReply"
+                      onChange={(e) => {
+                        setReplyContent(e.target.value);
+                      }}
+                    />
+                    <button onClick={() => addReply()}>작성</button>
+                    <button
+                      onClick={() => {
+                        setReplyNo(0);
+                        setReplyContent("");
+                      }}
+                    >
+                      취소
+                    </button>
+                  </div>
+                )}
                 {comment?.replies.map((reply) =>
                   reply.productCommentDelete === "N" ? (
                     <div className="viewReply" key={reply.productCommentCode}>
@@ -325,18 +518,62 @@ const ProductBoardDetail = () => {
                         "MM월 DD일 HH시 mm분"
                       )}
                       <br />
-                      내용 : {reply.productCommentContent}
-                      {user.userId === reply.user?.userId && (
-                        <span>
-                          <button>수정</button>
+                      {editNo === reply.productCommentCode ? (
+                        <>
+                          <Form.Control
+                            defaultValue={reply.productCommentContent}
+                            as="textarea"
+                            rows={3}
+                            className="writeReply"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                            onChange={(e) => {
+                              setEditContent(e.target.value);
+                            }}
+                          ></Form.Control>
                           <button
-                            onClick={() =>
-                              commentDelete(reply.productCommentCode)
-                            }
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              editComment();
+                            }}
                           >
-                            삭제
+                            수정
                           </button>
-                        </span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditNo(0);
+                              setEditContent("");
+                            }}
+                          >
+                            취소
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          내용 : {reply.productCommentContent}
+                          {user.userId === reply.user?.userId && (
+                            <span>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setEditNo(reply.productCommentCode);
+                                }}
+                              >
+                                수정
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  commentDelete(reply.productCommentCode);
+                                }}
+                              >
+                                삭제
+                              </button>
+                            </span>
+                          )}
+                        </>
                       )}
                     </div>
                   ) : (

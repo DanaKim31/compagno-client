@@ -19,8 +19,8 @@ authorize.interceptors.request.use((config) => {
   return config;
 });
 
-export const searchProductBoard = async (no) => {
-  return await instance.get("productBoard/search?page=");
+export const searchProductBoard = async (page) => {
+  return await instance.get("productBoard/search?page=" + page);
 };
 
 export const addProductBoard = async (data) => {
@@ -37,24 +37,16 @@ export const getProductBoard = async (no) => {
   });
 };
 
-export const updateProductBoard = async (data) => {
-  return await instance.put("productBoard", data);
+export const editProductBoard = async (data) => {
+  return await authorize.put("productBoard", data);
 };
 
 export const productBoardRecommend = async (data) => {
   return await authorize.post("productBoard/recommend", data);
 };
 
-export const checkProductBoardRecommend = async (data) => {
-  return await instance.post("productBoard/recommend/check", data);
-};
-
 export const productBoardBookmark = async (data) => {
   return await authorize.post("productBoard/bookmark", data);
-};
-
-export const checkProductBoardBookmark = async (data) => {
-  return await instance.post("productBoard/recommend/check", data);
 };
 
 export const getProductBoardComments = async (no) => {
@@ -65,7 +57,7 @@ export const addProductBoardComment = async (data) => {
   return await authorize.post("productBoard/comment", data);
 };
 
-export const updateProductBoardComment = async (data) => {
+export const editProductBoardComment = async (data) => {
   return await authorize.patch("productBoard/comment", data);
 };
 
