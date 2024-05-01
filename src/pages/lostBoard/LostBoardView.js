@@ -188,7 +188,13 @@ const ViewLostBoard = () => {
   }, []);
 
   // 이미지 가져오기
-
+  const [images, setImgaes] = useState([]);
+  const imagesAPI = () => {
+    console.log(lost.images);
+  };
+  useEffect(() => {
+    imagesAPI();
+  }, []);
   // 게시글 수정
   const btnUpdate = async () => {
     navigate("/compagno/lostBoard/update/" + code);
@@ -210,7 +216,6 @@ const ViewLostBoard = () => {
         <h2>동물 분실</h2>
         {user.userId == lost.userId ? (
           <div className="btnChange">
-            {/* 유저 당사자일 경우에만 수정, 삭제 버튼 보이도록! */}
             <button onClick={btnUpdate}>수정</button>
             <button onClick={btnDel}>삭제</button>
           </div>
@@ -218,13 +223,13 @@ const ViewLostBoard = () => {
           <></>
         )}
       </div>
+      {/* {lost.images.map((image) => {
+        <div key={image.lostImageCode}>{image.lostImage}</div>;
+      })} */}
       <div className="contentsBody">
         <div id="mainImage">
           <img
-            src={lost.lostAnimalImage?.replace(
-              "C:",
-              "http://localhost:8081/lostBoard/"
-            )}
+            src={lost.lostAnimalImage?.replace("C:", "http://localhost:8081")}
             // src={lost.lostAnimalImage?.replace(
             //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
             //   "http://192.168.10.28:8081/lostBoard/"

@@ -1,4 +1,4 @@
-import { viewAllLostBoard, viewAllPaging } from "../../api/lostBoard";
+import { viewAllLostBoard } from "../../api/lostBoard";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import moment from "moment";
 import "moment/locale/ko";
-import Pagination from "react-js-pagination";
+import { IoSearch } from "react-icons/io5";
 import {
   FaAngleLeft,
   FaAnglesLeft,
@@ -35,6 +35,63 @@ const Div = styled.div`
     display: flex;
     justify-content: space-between;
   }
+  #searching {
+    border: 1px solid black;
+    width: 70%;
+    height: 200px;
+    border-radius: 30px;
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px 20px;
+      input {
+        margin-left: 10px;
+        font-weight: bold;
+      }
+      select {
+        margin-left: 10px;
+        font-weight: bold;
+        option {
+          font-weight: bold;
+        }
+      }
+    }
+    #searchBtn {
+      height: 40px;
+      button {
+        width: 20%;
+        border: 1px solid green;
+        border-radius: 30px;
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  #contentsOption {
+    margin-top: 18px;
+    display: flex;
+    width: 75%;
+    justify-content: space-between;
+    #allCount {
+      display: flex;
+      #num {
+        color: green;
+      }
+    }
+    #sorting {
+      display: flex;
+      justify-content: right;
+
+      select {
+        font-weight: bold;
+        option {
+          font-weight: bold;
+        }
+      }
+    }
+  }
 
   h2 {
     font-size: 3rem;
@@ -47,6 +104,8 @@ const Div = styled.div`
     font-size: 0.8rem;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
+
+    border-radius: 30px;
   }
   .contentsBody {
     display: grid;
@@ -61,14 +120,18 @@ const Div = styled.div`
     #regiDate {
       display: flex;
       justify-content: right;
-      position: absolute;
-      top: 187px;
-      padding: 3px;
-      border: 1px solid black;
-      border-radius: 13px;
       width: 75px;
-      background-color: palegreen;
-      border: 1px dashed black;
+      width: 100%;
+      span {
+        border: 1px solid black;
+        border-radius: 13px;
+        width: 75px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.9rem;
+        margin-top: 10px;
+      }
     }
     .contentDetail {
       height: 85%;
@@ -99,6 +162,16 @@ const Div = styled.div`
   }
   .paging {
     margin-bottom: 100px;
+    width: 80%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+
+    .iconPaging {
+      cursor: pointer;
+    }
   }
 `;
 
@@ -115,18 +188,46 @@ const ViewAllLostBoard = () => {
     }
   }, []);
 
+  // 페이징
   const [losts, setLosts] = useState([]); // 전체 정보 불러오기
   const [page, setPage] = useState(1); // 현재 페이지
   const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지
-  const [prev, setPrev] = useState(false); // 앞으로 한칸 버튼
-  const [next, setNext] = useState(false); // 뒤로 한칸 버튼
+  // const [prev, setPrev] = useState(false); // 앞으로 한칸 버튼
+  // const [next, setNext] = useState(false); // 뒤로 한칸 버튼
   const [pages, setPages] = useState([]); // 페이지들
+
+  // 검색
+  const [searchKind, setSearchKind] = useState("");
+  const [searchGender, setSearchGender] = useState("");
+  const [searchNickname, setSearchNickname] = useState("");
+  const [searchLostDate, setSearchLostDate] = useState("");
+  const [searchLostLocation, setSearchLostLocation] = useState("");
+  const [searchAnimalName, setSearchAnimalName] = useState("");
+  const [sort, setSort] = useState(0);
+  const [allCount, setAllCount] = useState(0);
 
   // 페이지 변경될 때마다 호출!
   const lostAPI = async () => {
-    const response = await viewAllLostBoard(page);
+    let response = await viewAllLostBoard(
+      page +
+        "&lostAnimalKind=" +
+        searchKind +
+        "&lostAnimalGender=" +
+        searchGender +
+        "&userNickname=" +
+        searchNickname +
+        "&lostDate=" +
+        searchLostDate +
+        "&lostLocation=" +
+        searchLostLocation +
+        "&lostAnimalName=" +
+        searchAnimalName +
+        "&sort=" +
+        sort
+    );
     setLosts(response.data.content);
-    setTotalPage(response.data.totalPages); // response에서 totalPages 불러와서 set으로 담기
+    setAllCount(response.data.totalElements);
+    setTotalPage(response.data.totalPages);
   };
 
   // 첫페이지, 마지막 페이지, 페이지 리스트 초기 셋팅
@@ -137,7 +238,7 @@ const ViewAllLostBoard = () => {
   // 페이지가 변할 때마다 lostAPI() 실행
   useEffect(() => {
     lostAPI();
-  }, [page]);
+  }, [page, sort]);
 
   // totalPage가 바뀔 때 마다 실행
   useEffect(() => {
@@ -147,8 +248,8 @@ const ViewAllLostBoard = () => {
     if (totalPage < lastPage) {
       lastPage = totalPage; // 전체 페이지가 마지막 페이지보다 작은 경우엔 전체 페이지 수가 마지막 페이지 수랑 같음
     }
-    setPrev(firstPage > 1);
-    setNext(lastPage < totalPage);
+    // setPrev(firstPage > 1);
+    // setNext(lastPage < totalPage);
     for (let i = firstPage; i <= lastPage; i++) {
       pageList.push(i); // 처음 i는 firstPage, 범위는 lastPage로 반복문 돌려서 i값을 넣은 list 만들기
     }
@@ -168,8 +269,6 @@ const ViewAllLostBoard = () => {
     navigate("/compagno/lostBoard/view/" + code);
   };
 
-  // 페이지 관련
-
   return (
     <Div>
       <div className="contentHeader">
@@ -177,6 +276,88 @@ const ViewAllLostBoard = () => {
         <button className="addBtn" onClick={onCreate}>
           게시글 작성
         </button>
+      </div>
+      <div id="searching">
+        <div id="searchSelect">
+          <div id="aniamlKind">
+            동물 종류 :
+            <select onChange={(e) => setSearchKind(e.target.value)}>
+              <option value="">전체</option>
+              <option value="개">개</option>
+              <option value="고양이">고양이</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+          <div id="animalGender">
+            동물 성별 :
+            <select onChange={(e) => setSearchGender(e.target.value)}>
+              <option value="">전체</option>
+              <option value="수컷">수컷</option>
+              <option value="암컷">암컷</option>
+              <option value="알수없음">알수없음</option>
+            </select>
+          </div>
+          <div id="lostDate">
+            <label>
+              분실 날짜{" "}
+              <input
+                type="date"
+                max={moment().format("YYYY-MM-DD")}
+                onChange={(e) => setSearchLostDate(e.target.value)}
+              />
+            </label>
+          </div>
+        </div>
+        <div id="searchText">
+          <div id="userNickname">
+            <label>
+              작성자 닉네임{" "}
+              <input
+                type="text"
+                onChange={(e) => setSearchNickname(e.target.value)}
+              />
+            </label>
+          </div>
+
+          <div id="lostLocation">
+            <label>
+              분실 지역{" "}
+              <input
+                type="text"
+                onChange={(e) => setSearchLostLocation(e.target.value)}
+              />
+            </label>
+          </div>
+          <div id="lostAnimalName">
+            <label>
+              분실 동물 이름{" "}
+              <input
+                type="text"
+                onChange={(e) => setSearchAnimalName(e.target.value)}
+              />
+            </label>
+          </div>
+        </div>
+        <div id="searchBtn">
+          <button onClick={lostAPI}>
+            <IoSearch />
+            <span>조회</span>
+          </button>
+        </div>
+      </div>
+      <div id="contentsOption">
+        <div id="allCount">
+          <span>전체</span> <div id="num">&nbsp;{allCount}</div>
+          <span>건</span>
+        </div>
+        <div id="sorting">
+          <select onChange={(e) => setSort(e.target.value)}>
+            <option value="0">작성일 최신순</option>
+            <option value="1">작성일 오래된순</option>
+            <option value="2">분실 날짜 최신순</option>
+            <option value="3">분실 날짜 오래된순</option>
+          </select>
+        </div>
       </div>
       <div className="contentsBody">
         {losts.map((lost) => (
@@ -202,7 +383,7 @@ const ViewAllLostBoard = () => {
               />
 
               <div id="regiDate">
-                {moment(lost.regiDate).format("YY-MM-DD")}
+                <span>{moment(lost.lostRegiDate).format("YY-MM-DD")}</span>
               </div>
               <div className="text">
                 신고자 닉네임 : {lost.userNickname}
@@ -222,9 +403,10 @@ const ViewAllLostBoard = () => {
         ))}
       </div>
       <div className="paging">
-        <FaAnglesLeft onClick={() => setPage(1)} />
+        <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
         {/* 가장 첫 페이지로 */}
         <FaAngleLeft
+          className="iconPaging"
           onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
         />
         {pages.map(
@@ -243,11 +425,15 @@ const ViewAllLostBoard = () => {
         )}
 
         <FaAngleRight
+          className="iconPaging"
           onClick={
             () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
           }
         />
-        <FaAnglesRight onClick={() => setPage(totalPage)} />
+        <FaAnglesRight
+          className="iconPaging"
+          onClick={() => setPage(totalPage)}
+        />
         {/* 가장 마지막 페이지로 */}
       </div>
     </Div>

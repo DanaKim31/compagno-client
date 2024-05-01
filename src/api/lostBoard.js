@@ -31,7 +31,7 @@ export const createlostBoard = async (data) => {
 };
 
 // 전체 보기+검색&정렬+페이징
-// http://localhost:8080/compagno/public/lostBoard
+// http://localhost:8080/compagno/public/lostBoard?page={}&
 export const viewAllLostBoard = async (page) => {
   return await instance.get("lostBoard?page=" + page);
 };

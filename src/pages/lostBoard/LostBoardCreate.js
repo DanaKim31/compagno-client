@@ -128,9 +128,12 @@ const Div = styled.div`
             input.gender {
               width: 16px;
             }
-            select option {
-              font-family: "TAEBAEKmilkyway";
+            select {
               font-weight: bold;
+              option {
+                font-family: "TAEBAEKmilkyway";
+                font-weight: bold;
+              }
             }
           }
           #kindInputBox {
@@ -185,9 +188,9 @@ const CreateLostBoard = () => {
   const [lostRegiDate, setLostRegiDate] = useState("");
 
   // lostRegiDate 오늘 날짜 입력
-  const lostRegiDateAPI = async () => {
+  const lostRegiDateAPI = () => {
     const nowTime = moment().format("YYYY-MM-DD");
-    await setLostRegiDate(nowTime);
+    setLostRegiDate(nowTime);
   };
   useEffect(() => {
     lostRegiDateAPI();
@@ -208,11 +211,6 @@ const CreateLostBoard = () => {
       };
       reader.readAsDataURL(file);
     }
-  };
-
-  // 축종 변경
-  const selectKind = (e) => {
-    setLostAnimalKind(e.target.value);
   };
 
   // 성별
@@ -402,7 +400,10 @@ const CreateLostBoard = () => {
                 <tr>
                   <th>축종*</th>
                   <td>
-                    <select onChange={selectKind}>
+                    <select onChange={(e) => setLostAnimalKind(e.target.value)}>
+                      <option value="" className="animalKind">
+                        ----------
+                      </option>
                       <option value="개" className="animalKind">
                         개
                       </option>
@@ -453,7 +454,7 @@ const CreateLostBoard = () => {
                         onChange={(e) => genderCheck(e.target.value)}
                         className="gender"
                       />
-                      모름
+                      알수없음
                     </label>
                   </td>
                 </tr>
