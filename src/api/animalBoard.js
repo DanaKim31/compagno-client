@@ -27,8 +27,8 @@ export const addBoard = async (boardInfo) => {
   return await authorize.post(`animal-board`, boardInfo);
 };
 // 글 전체보기
-export const viewBoardList = async () => {
-  return await instance.get(`animal-board`);
+export const viewBoardList = async (page) => {
+  return await instance.get(`animal-board?page=${page}`);
 };
 
 // 글 하나보기 + 조회수

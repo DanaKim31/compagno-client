@@ -14,6 +14,7 @@ import { Form, InputGroup, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { FaReply } from "react-icons/fa";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import Dropdown from "react-bootstrap/Dropdown";
 // import DropdownToggle from "../../components/animalBoard/Dropdown";
 import React from "react";
@@ -75,6 +76,15 @@ const Comment = styled.div`
       }
     }
   }
+  .repl-toggle-button {
+    border: none;
+    border-radius: 15px;
+    width: 300px;
+    .repl-toggle {
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+  }
 `;
 
 const AnimalDetail = () => {
@@ -102,7 +112,6 @@ const AnimalDetail = () => {
   };
   const animalBoardAPI = async () => {
     const response = await viewDetail(animalBoardCode);
-    // console.log(response.data);
     setDetail(response.data);
   };
   // ======================================================================
@@ -110,7 +119,7 @@ const AnimalDetail = () => {
   const [comments, setComments] = useState([]);
   const animalBoardCommentAPI = async () => {
     const response = await getComments(animalBoardCode);
-    // console.log(response.data);
+    console.log(response.data);
     setComments(response.data);
   };
   /*
@@ -200,7 +209,7 @@ const AnimalDetail = () => {
   // 대댓글 달기
   const [boolean, setBoolean] = useState(false); // 추후 유저정보 토대로 boolean 예정
   const [response, setResponse] = useState({}); // 부모 댓글 정보
-  const [responseReply, setResponseReply] = useState({});
+
   const accessReply = async (comment) => {
     setResponse(comment); // 현재 클릭한 아이의 댓글정보
     console.log(comment);
@@ -240,46 +249,25 @@ const AnimalDetail = () => {
       }}
     />
   ));
-
-  // 좋아요 기능 여기다 놓고, 함수add/ del 을 props 로 전달
-  /*///////////////////////////////////////////////////////////// */
-  // 좋아요
-  // const addFav = async () => {
-  //   await addFavorite({ animalBoardCode: boardCode, userId: userId });
-  //   addCount();
-  //   currentFavStateAPI();
-  //   animalBoardAPI();
-  //   // setNewCount((prev) => prev + 1);
-  // };
-  // // 좋아요 시 count +1
-  // const addCount = async () => {
-  //   // setCountBoolean(true); // 좋아요 수 +1
-  //   await FavCount({
-  //     animalBoardCode: animalBoardCode,
-  //     checkBoolean: true,
-  //   });
-  // };
-  // // 좋아요 취소
-  // const delFav = async () => {
-  //   await delFavorite({
-  //     animalBoardCode: animalBoardCode,
-  //     userId: user.userId,
-  //   });
-  //   subtCount();
-  //   currentFavStateAPI();
-  //   // setNewCount((prev) => prev - 1);
-  //   animalBoardAPI();
-  // };
-  // // 취소시 count -1
-  // const subtCount = async () => {
-  //   // setCountBoolean(false); // 좋아요 수 -1
-  //   await FavCount({
-  //     animalBoardCode: animalBoardCode,
-  //     checkBoolean: false,
-  //   });
-  // };
-  /*///////////////////////////////////////////////////////////// */
-
+  // 대댓글 토글
+  const [replToggle, setReplToggle] = useState(true);
+  const [responseReply, setResponseReply] = useState({});
+  const [prevReply, setprevReply] = useState({});
+  console.log(replToggle);
+  const onRepl = async (comment) => {
+    console.log(comment.animalCommentCode);
+    setResponseReply(comment);
+    if (replToggle) {
+      setReplToggle(false);
+    } else {
+      setReplToggle(true);
+    }
+  };
+  const offRepl = (comment) => {
+    console.log();
+    setResponseReply(comment);
+    setReplToggle(true);
+  };
   useEffect(() => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
@@ -487,6 +475,46 @@ const AnimalDetail = () => {
                     <></>
                   )}
                 </div>
+              </>
+            )}
+            {comment.replies.length === 0 ? (
+              <></>
+            ) : (
+              <>
+                {replToggle &&
+                responseReply.animalCommentCode ===
+                  comment.animalCommentCode ? (
+                  <>
+                    <button
+                      className="repl-toggle-button"
+                      onClick={() => onRepl(comment)}
+                    >
+                      더보기 <IoIosArrowUp className="repl-toggle" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {responseReply.animalCommentCode === undefined ? (
+                      <>
+                        <button
+                          className="repl-toggle-button"
+                          onClick={() => onRepl(comment)}
+                        >
+                          더보기 <IoIosArrowUp className="repl-toggle" />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="repl-toggle-button"
+                          onClick={() => onRepl(comment)}
+                        >
+                          줄이기 <IoIosArrowDown className="repl-toggle" />
+                        </button>
+                      </>
+                    )}
+                  </>
+                )}
               </>
             )}
             <ReplyComment
