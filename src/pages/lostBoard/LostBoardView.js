@@ -56,8 +56,9 @@ const Div = styled.div`
       justify-content: center;
       align-items: center;
       img {
-        width: 400px;
-        height: 400px;
+        width: 300px;
+        height: 300px;
+        margin: 0px 20px;
       }
     }
     #regiDate {
@@ -179,22 +180,16 @@ const ViewLostBoard = () => {
 
   const { code } = useParams();
   const [lost, setLost] = useState([]);
+  const [images, setImgaes] = useState([]); // 이미지 가져오기
   const viewsAPI = async () => {
     const response = await viewOneLostBoard(code);
+    setImgaes(response.data.images);
     setLost(response.data);
   };
   useEffect(() => {
     viewsAPI();
   }, []);
 
-  // 이미지 가져오기
-  const [images, setImgaes] = useState([]);
-  const imagesAPI = () => {
-    console.log(lost.images);
-  };
-  useEffect(() => {
-    imagesAPI();
-  }, []);
   // 게시글 수정
   const btnUpdate = async () => {
     navigate("/compagno/lostBoard/update/" + code);
@@ -223,18 +218,19 @@ const ViewLostBoard = () => {
           <></>
         )}
       </div>
-      {/* {lost.images.map((image) => {
-        <div key={image.lostImageCode}>{image.lostImage}</div>;
-      })} */}
       <div className="contentsBody">
         <div id="mainImage">
-          <img
-            src={lost.lostAnimalImage?.replace("C:", "http://localhost:8081")}
-            // src={lost.lostAnimalImage?.replace(
-            //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-            //   "http://192.168.10.28:8081/lostBoard/"
-            // )}
-          />
+          {images?.map((image) => (
+            <img
+              alt=""
+              key={image.lostImageCode}
+              src={image.lostImage?.replace("C:", "http://localhost:8081")}
+              // src={lost.lostAnimalImage?.replace(
+              //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+              //   "http://192.168.10.28:8081/lostBoard/"
+              // )}
+            />
+          ))}
         </div>
         <div id="regiDate">
           {moment(lost.regiDate).format("YYYY-MM-DD hh:mm")}
