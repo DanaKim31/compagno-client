@@ -66,6 +66,11 @@ header a {
   right: 10px;
 }
 
+.logout {
+  position: relative;
+  top: 35px;
+  right: 15px;
+}
 /* =========================================== */
 .dropdown {
   display: inline-block;
@@ -98,7 +103,7 @@ header a {
   height: 75px;
   top: 112px;
   width: 148px;
-  right: 13px;
+  right: -4px;
   font-size: 0.9rem;
 }
 
@@ -112,6 +117,7 @@ header a {
   font-size: 1rem;
   opacity: 0.7;
   text-align: center;
+  width: 146px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -214,15 +220,16 @@ header a {
 #overlay p {
   color: rgb(33, 55, 70);
   position: relative;
-  /* bottom: 346px; */
-  font-size: 2rem;
+  bottom: -542px;
+  font-size: 3rem;
+  left: -14px;
 }
 
 /* 클릭 오버시 전체 색깔 관련 색깔 */
 
 #overlay nav {
   position: absolute;
-  bottom: 30px;
+  bottom: 88px;
   left: 30px;
 }
 
@@ -235,7 +242,9 @@ header a {
 }
 
 #overlay nav ul {
-  padding: 30px;
+  position: relative;
+  padding: 1px;
+  left: 44px;
 }
 
 #overlay nav ul li {
@@ -243,6 +252,7 @@ header a {
   opacity: 0;
   transition: all 0.9s 0s ease;
   margin-left: 60px;
+  width: 100%;
 }
 
 #overlay nav ul li a {
@@ -253,6 +263,7 @@ header a {
   color: black;
   transition: all 0.6s 0s ease;
   width: 255px;
+  text-align: center;
 }
 
 #overlay nav ul li a:after {

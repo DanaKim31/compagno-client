@@ -41,6 +41,7 @@ const ClassList = () => {
   const onedayClassAPI = async () => {
     const result = await viewAllClass();
     setOnedayClasses(result.data);
+    console.log(result.data);
   };
 
   useEffect(() => {
@@ -71,7 +72,9 @@ const ClassList = () => {
           <div className="lastDate">
             클래스 마지막 날짜 : {onedayClass.odcLastDate}
           </div>
-          <div className="fileupload">파일 업로드: {}</div>
+          <img
+            src={onedayClass.images?.replace("D:", "http://localhost:8080")}
+          />
         </div>
       ))}
     </StyledDiv>

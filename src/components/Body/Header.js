@@ -140,9 +140,11 @@ const Header = () => {
                   <a href="/compagno/mypage/myactivity">활동 내역</a>
                 </div>
               </div>
-              <a href="" onClick={logout}>
-                logout
-              </a>
+              <div>
+                <a href="" onClick={logout} className="logout">
+                  logout
+                </a>
+              </div>
             </>
           ) : (
             <>
