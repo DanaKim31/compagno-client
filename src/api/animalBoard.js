@@ -27,11 +27,23 @@ export const addBoard = async (boardInfo) => {
   return await authorize.post(`animal-board`, boardInfo);
 };
 // 글 전체보기
-export const viewBoardList = async (page) => {
-  return await instance.get(`animal-board?page=${page}`);
+export const viewBoardList = async (page, category, sort) => {
+  let url = `animal-board?page=${page}`;
+  if (category !== null || category !== undefined) {
+    url += category;
+  }
+  if (sort !== null || sort !== undefined) {
+    url += sort;
+  }
+  console.log(url);
+  return await instance.get(url);
+};
+// 글 검색 카테고리 불러오기
+export const viewCategory = async () => {
+  return await instance.get("animal-board/animalCategory");
 };
 
-// 글 하나보기 + 조회수
+// 글 하나보기
 export const viewDetail = async (animalBoardCode) => {
   return await instance.get(`animal-board/` + animalBoardCode);
 };

@@ -390,6 +390,7 @@ const AnimalDetail = () => {
                         {detailInfo.user.userId === comment.user.userId ? (
                           <>
                             <FaPencilAlt className="writer" />
+                            작성자
                           </>
                         ) : (
                           <></>
