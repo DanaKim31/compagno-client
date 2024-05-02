@@ -90,7 +90,6 @@ const Content = () => {
 
   const ContentAPI = async () => {
     const response = await getContents(page, mainCate, subCate, mainReg);
-    console.log(response.data);
     setContent(response.data.content);
   };
 
