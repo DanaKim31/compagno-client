@@ -43,7 +43,12 @@ const InnerComment = styled.div`
   }
 `;
 
-const ReplyComment = ({ replies, receiveComments, boardAuthor }) => {
+const ReplyComment = ({
+  replies,
+  receiveComments,
+  boardAuthor,
+  currentUser,
+}) => {
   // console.log(boardAuthor); // 글 저자 정보 잘 가져옴
   const { animalBoardCode } = useParams();
   const token = localStorage.getItem("token");
@@ -87,6 +92,9 @@ const ReplyComment = ({ replies, receiveComments, boardAuthor }) => {
   // 대댓글 창 불러오기
   const [boolean, setBoolean] = useState(false);
   const accessReply = async (reply) => {
+    if (currentUser === undefined || currentUser === null) {
+      return alert("로그인이 필요합니다.");
+    }
     setResponse(reply); // 댓글달 댓글 정보 들어옴.
     if (boolean) {
       setBoolean(false);

@@ -33,9 +33,14 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
   };
   // 좋아요
   const addFav = async () => {
-    await addFavorite({ animalBoardCode: boardCode, userId: userId });
-    addCount();
-    currentFavStateAPI();
+    if (userId === undefined || userId === null) {
+      alert("로그인이 필요합니다.");
+    } else {
+      await addFavorite({ animalBoardCode: boardCode, userId: userId });
+      addCount();
+      currentFavStateAPI();
+    }
+
     // setNewCount((prev) => prev + 1);
   };
   // 좋아요 시 count +1
@@ -49,12 +54,16 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
   };
   // 좋아요 취소
   const delFav = async () => {
-    await delFavorite({
-      animalBoardCode: boardCode,
-      userId: userId,
-    });
-    subtCount();
-    currentFavStateAPI();
+    if (userId === undefined || userId === null) {
+      alert("로그인이 필요합니다.");
+    } else {
+      await delFavorite({
+        animalBoardCode: boardCode,
+        userId: userId,
+      });
+      subtCount();
+      currentFavStateAPI();
+    }
     // setNewCount((prev) => prev - 1);
   };
   // 취소시 count -1
