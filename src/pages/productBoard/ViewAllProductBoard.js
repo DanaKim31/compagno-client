@@ -112,31 +112,32 @@ const ViewAllProductBoard = () => {
   const [pages, setPages] = useState([]); // 페이지들
   const [grade, setGrade] = useState(0);
 
-  const [productName, setProductName] = useState("");
-  const [productCate, setProductCate] = useState("");
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
-  const [animal, setAnimal] = useState(0);
-  const [minGrade, setMinGrade] = useState(0);
-  const [title, setTitle] = useState("");
-  const [select, setSelect] = useState("title");
-  const [keyword, setKeyword] = useState("");
-  const [sort, setSort] = useState("");
+  const [filter, setFilter] = useState({
+    productName: "",
+    productCate: "",
+    minPrice: 0,
+    maxPrice: 0,
+    animal: 0,
+    minGrade: 0,
+    title: "",
+    select: "title",
+    keyword: "",
+    sort: "",
+  });
+
+  // const [productName, setProductName] = useState("");
+  // const [productCate, setProductCate] = useState("");
+  // const [minPrice, setMinPrice] = useState(0);
+  // const [maxPrice, setMaxPrice] = useState(0);
+  // const [animal, setAnimal] = useState(0);
+  // const [minGrade, setMinGrade] = useState(0);
+  // const [title, setTitle] = useState("");
+  // const [select, setSelect] = useState("title");
+  // const [keyword, setKeyword] = useState("");
+  // const [sort, setSort] = useState("");
 
   const getProductBoards = async () => {
-    const result = await searchProductBoard(
-      // productName,
-      // productCate,
-      // minPrice,
-      // maxPrice,
-      // animal,
-      // minGrade,
-      // title,
-      // select,
-      // keyword,
-      // sort,
-      page
-    );
+    const result = await searchProductBoard(filter, page);
     setProductBoards(result.data);
     setTotalPage(result.data.totalPages);
   };
@@ -217,27 +218,37 @@ const ViewAllProductBoard = () => {
         <input
           type="text"
           placeholder="제품 품목"
-          onChange={(e) => setProductCate(e.target.value)}
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, productCate: e.target.value }))
+          }
         />
         <input
           type="text"
           placeholder="제품 명"
-          onChange={(e) => setProductName(e.target.value)}
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, productName: e.target.value }))
+          }
         />
         <br />
         <input
           type="text"
           placeholder="최소 금액"
-          onChange={(e) => setMinPrice(e.target.value)}
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, minPrice: e.target.value }))
+          }
         />
         <input
           type="text"
           placeholder="최대 금액"
-          onChange={(e) => setMaxPrice(e.target.value)}
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, maxPrice: e.target.value }))
+          }
         />
         <select
-          defaultValue={animal}
-          onChange={(e) => setAnimal(e.target.value)}
+          defaultValue={filter.animal}
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, animal: e.target.value }))
+          }
         >
           <option value="default" disabled="disabled" hidden>
             동물 선택
@@ -250,27 +261,27 @@ const ViewAllProductBoard = () => {
         </select>
         <div className="gradeDiv">
           최소 평점 :
-          {grade >= 1 ? (
+          {filter.grade >= 1 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(0.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 0.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(1)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 1 }))}
               ></span>
               <FaStar className="star" />
             </div>
-          ) : grade === 0.5 ? (
+          ) : filter.grade === 0.5 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(0.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 0.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(1)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 1 }))}
               ></span>
               <FaStarHalfAlt className="starHalf" />
             </div>
@@ -278,36 +289,36 @@ const ViewAllProductBoard = () => {
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(0.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 0.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(1)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 1 }))}
               ></span>
               <FaRegStar className="star" />
             </div>
           )}
-          {grade >= 2 ? (
+          {filter.grade >= 2 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(1.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 1.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(2)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 2 }))}
               ></span>
               <FaStar className="star" />
             </div>
-          ) : grade === 1.5 ? (
+          ) : filter.grade === 1.5 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(1.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 1.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(2)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 2 }))}
               ></span>
               <FaStarHalfAlt className="starHalf" />
             </div>
@@ -315,36 +326,36 @@ const ViewAllProductBoard = () => {
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(1.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 1.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(2)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 2 }))}
               ></span>
               <FaRegStar className="star" />
             </div>
           )}
-          {grade >= 3 ? (
+          {filter.grade >= 3 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(2.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 2.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(3)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 3 }))}
               ></span>
               <FaStar className="star" />
             </div>
-          ) : grade === 2.5 ? (
+          ) : filter.grade === 2.5 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(2.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 2.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(3)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 3 }))}
               ></span>
               <FaStarHalfAlt className="starHalf" />
             </div>
@@ -352,36 +363,36 @@ const ViewAllProductBoard = () => {
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(2.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 2.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(3)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 3 }))}
               ></span>
               <FaRegStar className="star" />
             </div>
           )}
-          {grade >= 4 ? (
+          {filter.grade >= 4 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(3.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 3.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(4)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 4 }))}
               ></span>
               <FaStar className="star" />
             </div>
-          ) : grade === 3.5 ? (
+          ) : filter.grade === 3.5 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(3.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 3.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(4)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 4 }))}
               ></span>
               <FaStarHalfAlt className="starHalf" />
             </div>
@@ -389,36 +400,36 @@ const ViewAllProductBoard = () => {
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(3.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 3.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(4)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 4 }))}
               ></span>
               <FaRegStar className="star" />
             </div>
           )}
-          {grade === 5 ? (
+          {filter.grade === 5 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(4.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 4.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 5 }))}
               ></span>
               <FaStar className="star" />
             </div>
-          ) : grade === 4.5 ? (
+          ) : filter.grade === 4.5 ? (
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(4.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 4.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 5 }))}
               ></span>
               <FaStarHalfAlt className="starHalf" />
             </div>
@@ -426,17 +437,21 @@ const ViewAllProductBoard = () => {
             <div className="starDiv">
               <span
                 className="starLeftSpan"
-                onClick={() => setGrade(4.5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 4.5 }))}
               ></span>
               <span
                 className="starRightSpan"
-                onClick={() => setGrade(5)}
+                onClick={() => setFilter((prev) => ({ ...prev, grade: 5 }))}
               ></span>
               <FaRegStar className="star" />
             </div>
           )}
         </div>
-        <select onChange={(e) => setSelect(e.target.value)}>
+        <select
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, select: e.target.value }))
+          }
+        >
           <option value="title">제목</option>
           <option value="content">내용</option>
           <option value="nickname">작성자</option>
@@ -445,13 +460,20 @@ const ViewAllProductBoard = () => {
         <input
           type="text"
           placeholder="검색문장"
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, keyword: e.target.value }))
+          }
         />
-        <select onChange={(e) => setSort(e.target.value)}>
+        <select
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, sort: e.target.value }))
+          }
+        >
           <option value="">날짜 순</option>
           <option value="view">조회 순</option>
           <option value="recommend">추천 순</option>
         </select>
+        <button onClick={() => getProductBoards()}>검색</button>
       </div>
       <div className="boardList">
         {productBoards.content?.map((productBoard) => (
