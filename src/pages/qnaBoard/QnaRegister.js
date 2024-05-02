@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addQuestion } from "../../api/Question";
 import { useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
+import { userSave } from "../../store/user";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -11,15 +13,26 @@ const Div = styled.div`
 
 const QnaRegister = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  // user 세팅
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
+
+  const [userId, setUserId] = useState("");
+  const [userNickname, setUserNickname] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [secret, setSecret] = useState("");
   const [images, setImages] = useState([]);
-
-  // const info = useSelector((state) => {
-  //   return state.user;
-  // });
 
   const imageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -32,16 +45,23 @@ const QnaRegister = () => {
 
   const add = async () => {
     const formData = new FormData();
+
+    formData.append("userId", user.userId);
+    setUserId(user.userId);
+
+    formData.append("userNickname", user.userNickname);
+    setUserNickname(user.userNickname);
+
     formData.append("qnaQTitle", title);
+
     formData.append("qnaQContent", content);
+
     images.forEach((image, index) => {
       formData.append(`files[${index}]`, image);
-      console.log(image);
+      // formData.append(`files[${index}]`, image);
     });
-    formData.append("secret", secret);
 
-    console.log(formData.get("qnaQTitle"));
-    console.log(images);
+    formData.append("secret", secret);
 
     await addQuestion(formData);
     navigate("/compagno/question");

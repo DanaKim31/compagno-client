@@ -63,20 +63,28 @@ const QnaDetail = () => {
   //     reader.readAsDataURL(file);
   //   }
 
+  let count = 0;
   const handleAddImages = (e) => {
     imageChange(e);
 
     const imageLists = e.target.files;
+
     let imageUrlLists = [...showImages];
+    let blobToFileList = [];
 
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
+
       imageUrlLists.push(currentImageUrl);
+      const blobToFile = new File([currentImageUrl], `image[${count++}].png`);
+      blobToFileList.push(blobToFile);
     }
-    setShowImages(imageUrlLists);
+
     setImages((prev) => {
-      return { ...prev };
+      return [...prev, ...blobToFileList];
     });
+    console.log(imageUrlLists);
+    setShowImages(imageUrlLists);
     console.log("하안이어리ㅏㅓ니ㅏ어리나ㅓ");
     console.log(images);
   };
@@ -87,9 +95,7 @@ const QnaDetail = () => {
     console.log(showImages);
     console.log("프리뷰 삭제 시 images");
     console.log(images);
-    setImages((prev) => {
-      return { ...prev, showImages };
-    });
+
     console.log("shoeImages로 images 세팅");
     console.log(images);
   };
