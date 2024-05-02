@@ -6,6 +6,7 @@ import EditorToolbar, {
 } from "../../components/animalBoard/EditorToolbar";
 import { useNavigate, useParams } from "react-router-dom";
 import { viewDetail, updateBoard } from "../../api/animalBoard";
+import user from "../../store/user";
 
 const Edit = () => {
   // 글정보 가져오기
@@ -14,8 +15,8 @@ const Edit = () => {
   //   console.log(animalBoardCode);
 
   const [detailInfo, setDetail] = useState({
-    userId: "",
-    animalCategory: [],
+    userId: user.userId,
+    animalCategory: {},
     animalBoardTitle: "",
     animalBoardContent: "",
     animalBoardDate: "",

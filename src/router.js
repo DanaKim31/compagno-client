@@ -12,9 +12,7 @@ import ViewAllLostBoard from "./pages/lostBoard/ViewAllLostBoard";
 import CreateLostBoard from "./pages/lostBoard/CreateLostBoard";
 import ViewLostBoard from "./pages/lostBoard/ViewLostBoard";
 import Error from "./pages/Error";
-import Add from "./pages/animalBoard/Add";
 import AnimalHome from "./pages/animalBoard/Home";
-import Edit from "./pages/animalBoard/Edit";
 import AnimalDetail from "./pages/animalBoard/Detail";
 import RegisterPetInsts from "./pages/registerPetBoard/RegisterPetInsts";
 import RegisterPetFaq from "./pages/registerPetBoard/RegisterPetFaq";
@@ -23,6 +21,8 @@ import SitterCreate from "./pages/sitterBoard/SitterCreate";
 import SitterDetail from "./pages/sitterBoard/SitterDetail";
 import ViewAllProductBoard from "./pages/productBoard/ViewAllProductBoard";
 import ProductBoardDetail from "./pages/productBoard/ProductBoardDetail";
+import WriteAnimalBoard from "./pages/animalBoard/WriteAnimalBoard";
+import EditAnimalBoard from "./pages/animalBoard/EditAnimalBoard";
 
 const router = createBrowserRouter([
   {
@@ -58,11 +58,11 @@ const router = createBrowserRouter([
       },
       {
         path: "write-board",
-        element: <Add />,
+        element: <WriteAnimalBoard />,
       },
       {
         path: "edit-board/:animalBoardCode",
-        element: <Edit />,
+        element: <EditAnimalBoard />,
       },
       {
         path: "question",
