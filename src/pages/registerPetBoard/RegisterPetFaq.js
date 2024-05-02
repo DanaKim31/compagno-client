@@ -24,11 +24,12 @@ const Div = styled.div`
     .faq-answer {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
       line-height: 25px;
-      .btn {
-        width: 80px;
-        margin-left: 10px;
+
+      .btns {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
       }
     }
   }
@@ -63,14 +64,10 @@ const RegisterPetFaq = () => {
               {faq.regiFaqQuestion}
             </Accordion.Header>
             <Accordion.Body className="faq-answer">
-              {faq.regiFaqAnswer}
+              <div>{faq.regiFaqAnswer}</div>
               <div className="btns">
-                <Button variant="outline-dark" className="btn edit">
-                  수정
-                </Button>
-                <Button variant="outline-warning" className="btn delete">
-                  삭제
-                </Button>
+                <button>수정</button>
+                <button>삭제</button>
               </div>
             </Accordion.Body>
           </Accordion.Item>

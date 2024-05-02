@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import {
-  getCategories,
-  getSitterBoards,
+  getNeighborBoards,
   getProvinces,
   getDistricts,
-} from "../../api/sitterBoard";
+} from "../../api/neighborBoard";
 import {
   FaAnglesLeft,
   FaAngleLeft,
@@ -100,10 +99,6 @@ const Div = styled.div`
       flex-wrap: wrap;
       justify-content: center;
 
-      #sitter-category {
-        display: flex;
-        margin-bottom: 10px;
-      }
       #animal-category {
         display: flex;
         margin-bottom: 10px;
@@ -164,29 +159,22 @@ const Div = styled.div`
   }
 `;
 
-const SitterBoard = () => {
-  const [sitterBoards, setSitterBoards] = useState({});
-  const [sitterCategories, setSitterCategories] = useState([]);
+const NeighborBoard = () => {
+  const [neighborBoards, setNeighborBoards] = useState({});
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
   const [province, setProvince] = useState(0);
   const [district, setDistrict] = useState(0);
-  const [page, setPage] = useState(1); // 현재 페이지
-  const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지
-  const [prev, setPrev] = useState(false); // 앞으로 한칸 버튼
-  const [next, setNext] = useState(false); // 뒤로 한칸 버튼
-  const [pages, setPages] = useState([]); // 페이지네이션 노출 페이지
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const [prev, setPrev] = useState(false);
+  const [next, setNext] = useState(false);
+  const [pages, setPages] = useState([]);
 
-  const sitterBoardAPI = async () => {
-    const result = await getSitterBoards(page);
-    console.log(result.data);
-    setSitterBoards(result.data);
-    setTotalPage(result.data.totalPages); // result에서 totalPages 불러와서 set으로 담기
-  };
-
-  const categoryAPI = async () => {
-    const result = await getCategories();
-    setSitterCategories(result.data);
+  const neighborBoardAPI = async () => {
+    const result = await getNeighborBoards(page);
+    setNeighborBoards(result.data);
+    setTotalPage(result.data.totalPages);
   };
 
   const provinceAPI = async () => {
@@ -204,8 +192,7 @@ const SitterBoard = () => {
   };
 
   useEffect(() => {
-    sitterBoardAPI();
-    categoryAPI();
+    neighborBoardAPI();
     provinceAPI();
   }, [page]);
 
@@ -214,18 +201,17 @@ const SitterBoard = () => {
   let pageList = [];
 
   useEffect(() => {
-    // totalPage가 바뀔 때 마다 실행
     lastPage = Math.ceil(page / 10) * 10;
     firstPage = lastPage - 9;
     if (totalPage < lastPage) {
-      lastPage = totalPage; // 전체 페이지가 마지막 페이지보다 작은 경우엔 전체 페이지 수가 마지막 페이지 수랑 같음
+      lastPage = totalPage;
     }
     setPrev(firstPage > 1);
     setNext(lastPage < totalPage);
     for (let i = firstPage; i <= lastPage; i++) {
-      pageList.push(i); // 처음 i는 firstPage, 범위는 lastPage로 반복문 돌려서 i값을 넣은 list 만들기
+      pageList.push(i);
     }
-    setPages(pageList); // 해당 list 배열을 setPages에 담기
+    setPages(pageList);
   }, [totalPage]);
 
   const handleProvinceChange = (e) => {
@@ -239,7 +225,7 @@ const SitterBoard = () => {
 
   return (
     <Div>
-      <h1>시터 게시판</h1>
+      <h1>우리동네 게시판</h1>
 
       <div className="keyword-options">
         <div className="keyword">
@@ -294,21 +280,6 @@ const SitterBoard = () => {
         </div>
 
         <div className="category-search">
-          <div id="sitter-category">
-            <span>카테고리</span>
-            <select>
-              <option>전체</option>
-              {sitterCategories.map((category) => (
-                <option
-                  key={category.sitterCategoryCode}
-                  value={category.sitterCategoryCode}
-                >
-                  {category.sitterCategoryType}
-                </option>
-              ))}
-            </select>
-          </div>
-
           <div id="animal-category">
             <span>반려동물</span>
             <select>
@@ -323,7 +294,7 @@ const SitterBoard = () => {
           <option>최신순</option>
           <option>조회순</option>
         </select>
-        <span>총 {sitterBoards.totalElements}건</span>
+        <span>총 {neighborBoards.totalElements}건</span>
       </div>
 
       <table>
@@ -339,27 +310,31 @@ const SitterBoard = () => {
           </tr>
         </thead>
         <tbody>
-          {sitterBoards.content?.map((sitter) => (
-            <tr key={sitter.sitterBoardCode} className="list">
-              <td>{sitter.sitterBoardCode}</td>
-              <td>{sitter.sitterCategory.sitterCategoryType}</td>
+          {neighborBoards.content?.map((neighbor) => (
+            <tr key={neighbor.neighborBoardCode} className="list">
+              <td>{neighbor.neighborBoardCode}</td>
+              <td>{neighbor.animalCategoryCode.animalType}</td>
               <td>
-                {sitter.location.parent.locationName +
+                {neighbor.location.parent.locationName +
                   " " +
-                  sitter.location.locationName}
+                  neighbor.location.locationName}
               </td>
               <td>
                 <a
-                  href={`/compagno/sitterBoard/detail/${sitter.sitterBoardCode}`}
+                  href={`/compagno/neighborBoard/detail/${neighbor.neighborBoardCode}`}
                 >
-                  {sitter.sitterTitle}
+                  {neighbor.neighborBoardTitle}
                 </a>
               </td>
-              <td>{sitter.user.userId}</td>
-              <td>{`${new Date(sitter.sitterRegiDate).getFullYear()}-${new Date(
-                sitter.sitterRegiDate
-              ).getMonth()}-${new Date(sitter.sitterRegiDate).getDate()}`}</td>
-              <td>{sitter.sitterViewCount}</td>
+              <td>{neighbor.user.userId}</td>
+              <td>{`${new Date(
+                neighbor.neighborBoardRegiDate
+              ).getFullYear()}-${new Date(
+                neighbor.neighborBoardRegiDate
+              ).getMonth()}-${new Date(
+                neighbor.neighborBoardRegiDate
+              ).getDate()}`}</td>
+              <td>{neighbor.neighborBoardViewCount}</td>
             </tr>
           ))}
         </tbody>
@@ -367,11 +342,9 @@ const SitterBoard = () => {
 
       <div className="paging">
         <FaAnglesLeft onClick={() => setPage(1)} />
-        {/* 가장 첫 페이지로 */}
         <FaAngleLeft
-          onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
+          onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
         />
-        {/* 배열 담은 pages를 map으로 만들어서 반복문 페이지번호 생성 */}
         {pages.map((num, index) => (
           <button
             key={index}
@@ -382,15 +355,14 @@ const SitterBoard = () => {
           </button>
         ))}
         <FaAngleRight
-          onClick={
-            () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
+          onClick={() =>
+            page < totalPage ? setPage(page + 1) : setPage(totalPage)
           }
         />
         <FaAnglesRight onClick={() => setPage(totalPage)} />
-        {/* 가장 마지막 페이지로 */}
       </div>
     </Div>
   );
 };
 
-export default SitterBoard;
+export default NeighborBoard;
