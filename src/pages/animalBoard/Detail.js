@@ -258,6 +258,7 @@ const AnimalDetail = () => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
+    // localStorage.setItem
     // console.log(user);
     // console.log(token);
   }, []);

@@ -43,12 +43,9 @@ const SearchOption = ({ getBoard }) => {
 
   const [cateBoolean, setCateBoolean] = useState(false);
   const [sort, setSort] = useState("");
-  console.log(sort);
   const [category, setCategory] = useState("");
-  console.log(category);
   const [page, setPage] = useState(1);
   const [newData, setNewData] = useState({});
-  console.log(page);
   const onSearch = async () => {
     console.log({ page, category, sort });
     const response = await viewBoardList(page, category, sort);
