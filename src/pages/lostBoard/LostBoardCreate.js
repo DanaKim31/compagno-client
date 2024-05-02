@@ -5,13 +5,22 @@ import { useSelector, useDispatch } from "react-redux";
 import { FaShieldDog } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
-import { IoSettingsOutline } from "react-icons/io5";
+
 import { useNavigate } from "react-router-dom";
 import { userSave } from "../../store/user";
 import moment from "moment";
 import "moment/locale/ko";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,11 +32,15 @@ const Div = styled.div`
     margin: 5px 10px;
     width: 80%;
     height: 30px;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
   }
 
   h1 {
     font-size: 3rem;
     margin-bottom: 40px;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
   }
   .contents {
     display: flex;
@@ -48,11 +61,25 @@ const Div = styled.div`
       h3 {
         font-size: 1.8rem;
         margin-bottom: 20px;
+        font-family: "TAEBAEKmilkyway";
+        font-weight: bold;
       }
       .pContent {
         border-top: 1px solid green;
         display: flex;
         flex-direction: column;
+        #userInfo {
+          display: flex;
+          justify-content: space-between;
+        }
+        #mark {
+          display: flex;
+          justify-content: space-between;
+        }
+        span {
+          color: red;
+        }
+
         table {
           margin-top: 10px;
           tr {
@@ -68,6 +95,25 @@ const Div = styled.div`
             td {
               padding-left: 20px;
               width: 100%;
+            }
+          }
+          tr#imgContent {
+            height: 200px;
+
+            td#imgContents {
+              height: 100%;
+              label#imgList {
+                display: flex;
+                flex-direction: column;
+                margin: 0px;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                margin-top: 15px;
+                p {
+                  margin-top: 10px;
+                }
+              }
             }
           }
           td {
@@ -100,6 +146,13 @@ const Div = styled.div`
             input.gender {
               width: 16px;
             }
+            select {
+              font-weight: bold;
+              option {
+                font-family: "TAEBAEKmilkyway";
+                font-weight: bold;
+              }
+            }
           }
           #kindInputBox {
             width: 40%;
@@ -116,6 +169,9 @@ const Div = styled.div`
       margin: 0 20px;
       width: 80px;
       height: 35px;
+      font-size: 0.8rem;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
   }
 `;
@@ -150,50 +206,47 @@ const CreateLostBoard = () => {
   const [lostRegiDate, setLostRegiDate] = useState("");
 
   // lostRegiDate 오늘 날짜 입력
-  const lostRegiDateAPI = async () => {
+  const lostRegiDateAPI = () => {
     const nowTime = moment().format("YYYY-MM-DD");
-    await setLostRegiDate(nowTime);
+    setLostRegiDate(nowTime);
   };
   useEffect(() => {
     lostRegiDateAPI();
   }, []);
 
-  // RFID 정규표현식
-  const rfidReges = (e) => {
-    const regex = /^[0-9]{15}$/g;
-    if (regex.test(e.target.value)) {
-      setLostAnimalRFID(Number(e.target.value));
-    } else {
-      setLostAnimalRFID("정규표현식 맞추지 못함");
-      console.log(lostAnimalRFID);
-    }
-  };
-
   // 이미지 미리보기
   const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
     const files = Array.from(e.target.files);
-    setImages(files);
-    let file;
-    for (let i = 0; i < files.length; i++) {
-      file = files[i];
-      const reader = new FileReader();
-      reader.onload = () => {
-        images[i] = reader.result;
-        setImgSrc([...images]);
-      };
-      reader.readAsDataURL(file);
+    if (files.length > 3) {
+      alert("최대 사진 갯수를 초과하였습니다. 다시 선택하여주세요.");
+    } else {
+      setImages(files);
+      let file;
+      for (let i = 0; i < files.length; i++) {
+        file = files[i];
+        const reader = new FileReader();
+        reader.onload = () => {
+          images[i] = reader.result;
+          setImgSrc([...images]);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   };
 
-  // 축종이 기타일 경우
-  const selectList = ["", "개", "고양이", "기타"];
-  const handleSelect = (e) => {
-    setLostAnimalKind(e.target.value);
+  // 성별
+  const genderCheck = (gender) => {
+    const checkboxes = document.getElementsByClassName("gender");
+    for (let i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].value !== gender) {
+        checkboxes[i].checked = false;
+      } else if (checkboxes[i].value == gender) {
+        checkboxes[i].checked = true;
+        setLostAnimalGender(gender);
+      }
+    }
   };
-  useEffect(() => {
-    console.log("dsf : " + lostAnimalKind);
-  }, [lostAnimalKind]);
 
   const navigate = useNavigate();
   const okCreate = async () => {
@@ -215,7 +268,6 @@ const CreateLostBoard = () => {
     formData.append("lostRegiDate", lostRegiDate);
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
-      console.log(image);
     });
 
     // not null 조건
@@ -227,29 +279,16 @@ const CreateLostBoard = () => {
       lostAnimalGender == ""
     ) {
       alert("필수 입력란을 확인해주세요.");
-      if (lostAnimalRFID !== "") {
-        alert("필수값 안들어가고 rfid 빈칸 아님둥 ");
+      if (lostAnimalRFID.length == 0 || lostAnimalRFID.length == 15) {
       } else {
-        alert(
-          "필수값 안들어가고 rfid 빈칸임둥"
-          // "마이크로칩(RFID) 번호가 잘못 입력되었습니다. 다시 입력해주세요."
-        );
+        alert("마이크로칩 번호 입력란을 확인해주세요.");
       }
     } else {
-      if (lostAnimalRFID !== "") {
-        if (lostAnimalRFID == "정규표현식 맞추지 못함") {
-          console.log("줴ㅏㅂㄹ");
-          alert(
-            "마이크로칩(RFID) 번호가 잘못 입력되었습니다. 다시 입력해주세요."
-          );
-        } else {
-          await createlostBoard(formData);
-          navigate("/compagno/lostBoard/viewAll");
-          alert("필수값 다 들어가고 rfid도 조건 맞춤");
-        }
-      } else {
+      if (lostAnimalRFID.length == 0 || lostAnimalRFID.length == 15) {
         await createlostBoard(formData);
         navigate("/compagno/lostBoard/viewAll");
+      } else {
+        alert("마이크로칩 번호 입력란을 확인해주세요.");
       }
     }
   };
@@ -268,17 +307,17 @@ const CreateLostBoard = () => {
             <table>
               <thead>
                 <tr>
-                  <td>
+                  <td id="userInfo">
                     <h3>
-                      <FaUser />
-                      분실 신고자 정보
-                      <input
-                        type="text"
-                        value={lostRegiDate}
-                        onChange={lostRegiDateAPI}
-                        hidden
-                      />
+                      <FaUser /> 분실 신고자 정보
                     </h3>
+                    <span>변경 불가 항목입니다.</span>
+                    <input
+                      type="text"
+                      value={lostRegiDate}
+                      onChange={lostRegiDateAPI}
+                      hidden
+                    />
                   </td>
                 </tr>
               </thead>
@@ -314,28 +353,33 @@ const CreateLostBoard = () => {
             <table>
               <thead>
                 <tr>
-                  <td>
+                  <td id="mark">
                     <h3>
-                      <FiMapPin />
-                      분실일시 및 장소
+                      <FiMapPin /> 분실일시 및 장소
                     </h3>
+                    <span>* : 필수 입력란입니다.</span>
                   </td>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th>분실 날짜*</th>
+                  <th>
+                    분실 날짜<span>*</span>
+                  </th>
                   <td>
                     <input
                       type="Date"
                       value={lostDate}
                       onChange={(e) => setLostDate(e.target.value)}
+                      max={lostRegiDate}
                     />
                   </td>
                 </tr>
 
                 <tr>
-                  <th>분실 장소*</th>
+                  <th>
+                    분실 장소<span>*</span>
+                  </th>
                   <td>
                     <input
                       type="text"
@@ -365,15 +409,16 @@ const CreateLostBoard = () => {
                 <tr>
                   <td>
                     <h3>
-                      <FaShieldDog />
-                      분실동물 정보
+                      <FaShieldDog /> 분실동물 정보
                     </h3>
                   </td>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th>분실 동물 이름*</th>
+                  <th>
+                    분실 동물 이름<span>*</span>
+                  </th>
                   <td>
                     <input
                       type="text"
@@ -383,26 +428,24 @@ const CreateLostBoard = () => {
                   </td>
                 </tr>
                 <tr>
-                  <th>축종*</th>
+                  <th>
+                    축종<span>*</span>
+                  </th>
                   <td>
-                    <select onChange={handleSelect} value={lostAnimalKind}>
-                      {selectList.map((item) => {
-                        return (
-                          <option value={item} key={item}>
-                            {item}
-                          </option>
-                        );
-                      })}
+                    <select onChange={(e) => setLostAnimalKind(e.target.value)}>
+                      <option value="" className="animalKind">
+                        ----------
+                      </option>
+                      <option value="개" className="animalKind">
+                        개
+                      </option>
+                      <option value="고양이" className="animalKind">
+                        고양이
+                      </option>
+                      <option value="기타" className="animalKind">
+                        기타
+                      </option>
                     </select>
-                    {/* <input
-                      id="kindInputBox"
-                      type="text"
-                      value={lostAnimalKind}
-                      onChange={(e) => setLostAnimalKind(e.target.value)}
-                      placeholder="축종 기타 선택 시 입력 "
-                      readOnly={state}
-                      disabled={states}
-                    /> */}
                   </td>
                 </tr>
                 <tr>
@@ -416,34 +459,36 @@ const CreateLostBoard = () => {
                   </td>
                 </tr>
                 <tr>
-                  <th>성별*</th>
+                  <th>
+                    성별<span>*</span>
+                  </th>
                   <td>
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         value="수컷"
-                        onChange={(e) => setLostAnimalGender(e.target.value)}
+                        onChange={(e) => genderCheck(e.target.value)}
                         className="gender"
                       />
                       수컷
                     </label>
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         value="암컷"
-                        onChange={(e) => setLostAnimalGender(e.target.value)}
+                        onChange={(e) => genderCheck(e.target.value)}
                         className="gender"
                       />
                       암컷
                     </label>
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         value="모름"
-                        onChange={(e) => setLostAnimalGender(e.target.value)}
+                        onChange={(e) => genderCheck(e.target.value)}
                         className="gender"
                       />
-                      모름
+                      알수없음
                     </label>
                   </td>
                 </tr>
@@ -474,30 +519,32 @@ const CreateLostBoard = () => {
                   <td>
                     <input
                       type="text"
-                      placeholder="15자리숫자입력해주세요"
+                      placeholder="RFID가 있는 경우, 15자리 숫자 입력해주세요"
                       maxLength="15"
-                      onChange={rfidReges}
+                      onChange={(e) => setLostAnimalRFID(e.target.value)}
                     />
                   </td>
                 </tr>
-                <tr>
+                <tr id="imgContent">
                   <th>사진첨부</th>
-                  <td>
-                    <label>
-                      사진 업로드 추가
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={imageCreate}
-                      />
-                      <div className="images">
-                        {imgSrc.map((img, i) => (
-                          <div key={i}>
-                            <img src={img} />
-                          </div>
-                        ))}
+                  <td id="imgContents">
+                    <label id="imgList">
+                      <div id="images">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={imageCreate}
+                        />
+                        <div className="images">
+                          {imgSrc.map((img, i) => (
+                            <div key={i}>
+                              <img src={img} />
+                            </div>
+                          ))}
+                        </div>
                       </div>
+                      <p>사진 업로드 추가 (최대 3장)</p>
                     </label>
                   </td>
                 </tr>
@@ -505,15 +552,6 @@ const CreateLostBoard = () => {
             </table>
           </div>
         </div>
-        {/* <div className="option">
-          <h3>
-            <IoSettingsOutline />
-            설정 및 기타
-          </h3>
-          <div className="pContent">
-            <label>자동입력 방지 문자입력</label>
-          </div>
-        </div> */}
       </div>
       <div className="btn">
         <button className="okBtn" onClick={okCreate}>

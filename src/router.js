@@ -8,9 +8,10 @@ import Home from "./pages/Home";
 import Login from "./pages/user/Login";
 import MyPageMyInfo from "./pages/user/MyPageMyInfo";
 import MyPageMyActivity from "./pages/user/MyPageMyActivity";
-import ViewAllLostBoard from "./pages/lostBoard/ViewAllLostBoard";
-import CreateLostBoard from "./pages/lostBoard/CreateLostBoard";
-import ViewLostBoard from "./pages/lostBoard/ViewLostBoard";
+import LostBoardViewAll from "./pages/lostBoard/LostBoardViewAll";
+import LostBoardCreate from "./pages/lostBoard/LostBoardCreate";
+import LostBoardView from "./pages/lostBoard/LostBoardView";
+import LostBoardUpdate from "./pages/lostBoard/LostBoardUpdate";
 import Error from "./pages/Error";
 import AnimalHome from "./pages/animalBoard/Home";
 import AnimalDetail from "./pages/animalBoard/Detail";
@@ -83,10 +84,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: "viewAll",
-            element: <ViewAllLostBoard />,
+            element: <LostBoardViewAll />,
           },
-          { path: "create", element: <CreateLostBoard /> },
-          { path: "view/:lostBoardCode", element: <ViewLostBoard /> },
+          { path: "create", element: <LostBoardCreate /> },
+          { path: "view/:code", element: <LostBoardView /> },
+          { path: "update/:code", element: <LostBoardUpdate /> },
         ],
       },
       {
