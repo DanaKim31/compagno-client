@@ -101,7 +101,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <SitterBoard /> },
           { path: "register", element: <SitterCreate /> },
-          { path: "detail/:sitterBoardCode", element: <SitterDetail /> },
+          { path: "detail/:code", element: <SitterDetail /> },
         ],
       },
       {
@@ -109,7 +109,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <NeighborBoard /> },
           { path: "register", element: <NeighborCreate /> },
-          { path: "detail/:neighborBoardCode", element: <NeighborDetail /> },
+          { path: "detail/:code", element: <NeighborDetail /> },
         ],
       },
       {

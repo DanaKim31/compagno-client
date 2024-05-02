@@ -22,31 +22,104 @@ const Div = styled.div`
     margin-bottom: 100px;
   }
 
-  .search-area {
-    background: lightgrey;
-    padding: 10px;
-    border-radius: 5px;
+  .keyword-options {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
 
-    .location-search {
+    .keyword {
       display: flex;
-      /* flex-direction: row; */
-      margin-bottom: 10px;
-
-      span {
-        line-height: 40px;
-        padding-right: 20px;
-      }
 
       select {
         height: 40px;
-        width: 300px;
+        width: 100px;
         padding: 5px;
+        margin-right: 5px;
         border-radius: 5px;
       }
 
-      #province {
-        margin-right: 20px;
+      input {
+        width: 300px;
+        height: 40px;
+        padding: 5px;
+        border-radius: 5px;
+        margin-right: 10px;
       }
+    }
+    button {
+      height: 40px;
+      width: 90px;
+      border-radius: 5px;
+      background: black;
+      color: white;
+      cursor: pointer;
+    }
+  }
+
+  .search-area {
+    background: lightgrey;
+    padding: 20px 0 10px 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-bottom: 40px;
+
+    span {
+      display: inline-block;
+      width: 65px;
+      line-height: 40px;
+    }
+
+    select {
+      height: 40px;
+      width: 300px;
+      padding: 5px;
+      margin-right: 20px;
+      border-radius: 5px;
+    }
+
+    .location-search {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      #province {
+        display: flex;
+        margin-bottom: 10px;
+      }
+      #district {
+        display: flex;
+        margin-bottom: 10px;
+      }
+    }
+
+    .category-search {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      #sitter-category {
+        display: flex;
+        margin-bottom: 10px;
+      }
+      #animal-category {
+        display: flex;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .sorting {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: center;
+
+    select {
+      padding: 5px;
+      border-radius: 5px;
     }
   }
 
@@ -56,6 +129,7 @@ const Div = styled.div`
     margin: auto;
 
     th {
+      font-weight: bold;
       padding: 10px;
       border-bottom: 2px solid black;
     }
@@ -67,6 +141,25 @@ const Div = styled.div`
     }
     .list :nth-child(4) {
       text-align: left;
+    }
+  }
+
+  .paging {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+
+    button {
+      width: 30px;
+      margin: 0 5px;
+      border-radius: 5px;
+    }
+
+    button:focus {
+      background: black;
+      color: white;
     }
   }
 `;
@@ -148,11 +241,29 @@ const SitterBoard = () => {
     <Div>
       <h1>시터 게시판</h1>
 
+      <div className="keyword-options">
+        <div className="keyword">
+          <select>
+            <option>제목</option>
+            <option>작성자</option>
+          </select>
+          <input
+            type="text"
+            placeholder="검색어 입력"
+            className="search-input"
+          />
+        </div>
+
+        <div className="search-btn">
+          <button>조회</button>
+        </div>
+      </div>
+
       <div className="search-area">
         <div className="location-search">
-          <span>시/도 선택</span>
-          <div className="selectBox">
-            <select id="province" onChange={handleProvinceChange}>
+          <div id="province">
+            <span>시/도</span>
+            <select onChange={handleProvinceChange}>
               <option value="">전체</option>
               {selectedProvince.map((province) => (
                 <option
@@ -163,9 +274,11 @@ const SitterBoard = () => {
                 </option>
               ))}
             </select>
-            <span>시/군/구 선택</span>
+          </div>
+          <div id="district">
+            <span>시/군/구</span>
             {selectedProvince && (
-              <select id="district" onChange={handleDistrictChange}>
+              <select onChange={handleDistrictChange}>
                 <option value="">전체</option>
                 {selectedDistrict.map((district) => (
                   <option
@@ -181,38 +294,38 @@ const SitterBoard = () => {
         </div>
 
         <div className="category-search">
-          <select>
-            <option>카테고리 선택</option>
-            {sitterCategories.map((category) => (
-              <option
-                key={category.sitterCategoryCode}
-                value={category.sitterCategoryCode}
-              >
-                {category.sitterCategoryType}
-              </option>
-            ))}
-          </select>
+          <div id="sitter-category">
+            <span>카테고리</span>
+            <select>
+              <option>전체</option>
+              {sitterCategories.map((category) => (
+                <option
+                  key={category.sitterCategoryCode}
+                  value={category.sitterCategoryCode}
+                >
+                  {category.sitterCategoryType}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <select>
-            <option>제목</option>
-            <option>작성자</option>
-          </select>
-          <input
-            type="text"
-            placeholder="검색어 입력"
-            className="search-input"
-          />
-          <button>조회</button>
+          <div id="animal-category">
+            <span>반려동물</span>
+            <select>
+              <option>전체</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <div>
+      <div className="sorting">
         <select>
           <option>최신순</option>
           <option>조회순</option>
         </select>
-        <span>총 {sitterBoards.totalElements}개</span>
+        <span>총 {sitterBoards.totalElements}건</span>
       </div>
+
       <table>
         <thead>
           <tr>

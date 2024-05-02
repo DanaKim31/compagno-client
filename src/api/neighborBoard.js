@@ -9,8 +9,8 @@ const authorize = axios.create({
 });
 
 // 전체보기
-export const getNeighborBoards = async () => {
-  return await instance.get("neighbor");
+export const getNeighborBoards = async (page) => {
+  return await instance.get("neighbor?page=" + page);
 };
 
 // 등록

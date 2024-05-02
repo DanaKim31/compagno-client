@@ -1,3 +1,18 @@
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import {
+  getNeighborBoard,
+  updateNeighborBoard,
+  deleteNeighborBoard,
+  getNeighborComments,
+  registerNeighborComment,
+  registerNeighborReply,
+  updateNeighborComment,
+  deleteNeighborComment,
+} from "../../api/sitterBoard";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+
 const NeighborDetail = () => {
   return (
     <>

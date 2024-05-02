@@ -14,29 +14,84 @@ const Div = styled.div`
     font-size: 2.5rem;
     margin-bottom: 100px;
   }
-  .search-area {
-    background: lightgrey;
-    padding: 20px;
-    margin-bottom: 30px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px #444;
+
+  .search-btn {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+
+    button {
+      height: 40px;
+      width: 90px;
+      border-radius: 5px;
+      background: black;
+      color: white;
+      cursor: pointer;
+    }
   }
 
-  .list {
-    padding: 20px;
-    border-top: 1px solid gray;
-  }
-  .title {
+  .search-area {
+    background: lightgrey;
+    padding: 20px 0 10px 20px;
+    border-radius: 5px;
     display: flex;
-    line-height: 30px;
-  }
-  span {
-    margin-right: 10px;
-    font-weight: bolder;
-    color: darkgrey;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-bottom: 40px;
+
+    span {
+      display: inline-block;
+      width: 65px;
+      line-height: 40px;
+    }
+
+    select {
+      height: 40px;
+      width: 300px;
+      padding: 5px;
+      margin-right: 20px;
+      border-radius: 5px;
+    }
+
+    .location-search {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      #province {
+        display: flex;
+        margin-bottom: 10px;
+      }
+      #district {
+        display: flex;
+        margin-bottom: 10px;
+      }
+    }
+
+    .keyword-search {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+
+      .keyword {
+        display: flex;
+
+        select {
+          width: 90px;
+          margin-right: 10px;
+        }
+
+        input {
+          width: 200px;
+          height: 40px;
+          padding: 5px;
+          border-radius: 5px;
+          margin-right: 19px;
+        }
+      }
+    }
   }
 `;
 
@@ -50,15 +105,13 @@ const RegisterPetInsts = () => {
   const [loading, setLoading] = useState(false);
 
   const instsAPI = async () => {
-    // setLoading(true);
-    // const result = await getInsts(page);
-    // const newData = result.data;
-    // console.log(result.data);
-    // setInsts((prev) => [...prev, ...newData]);
-    // setPage((prev) => prev + 1);
-    // setLoading(false);
-    const result = await getInsts();
-    setInsts(result.data);
+    setLoading(true);
+    const result = await getInsts(page);
+    const newData = result.data;
+    console.log(result.data);
+    setInsts((prev) => [...prev, ...newData]);
+    setPage((prev) => prev + 1);
+    setLoading(false);
   };
 
   const provinceAPI = async () => {
@@ -76,25 +129,21 @@ const RegisterPetInsts = () => {
   };
 
   useEffect(() => {
-    //   const scroll = () => {
-    //     if (
-    //       window.innerHeight + document.documentElement.scrollTop >=
-    //         document.documentElement.offsetHeight &&
-    //       !loading
-    //     ) {
-    //       instsAPI();
-    //       provinceAPI();
-    //     }
-    //   };
-    //   window.addEventListener("scroll", scroll);
-    //   return () => {
-    //     window.removeEventListener("scroll", scroll);
-    //   };
-    // }, [page, loading]);
-
-    instsAPI();
-    provinceAPI();
-  }, []);
+    const scroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.offsetHeight &&
+        !loading
+      ) {
+        instsAPI();
+        provinceAPI();
+      }
+    };
+    window.addEventListener("scroll", scroll);
+    return () => {
+      window.removeEventListener("scroll", scroll);
+    };
+  }, [page, loading]);
 
   const handleProvinceChange = (e) => {
     districtAPI(e.target.value);
@@ -108,48 +157,62 @@ const RegisterPetInsts = () => {
   return (
     <Div>
       <h1>동물등록 대행기관</h1>
+
+      <div className="search-btn">
+        <button>조회</button>
+      </div>
+
       <div className="search-area">
         <div className="location-search">
-          <p>지역선택 </p>
-          <div className="selectBox">
-            <div className="provinceSelect">
-              <select id="province" onChange={handleProvinceChange}>
-                <option value="">시/도 선택</option>
-                {selectedProvince.map((province) => (
+          <div id="province">
+            <span>시/도</span>
+            <select onChange={handleProvinceChange}>
+              <option value="">전체</option>
+              {selectedProvince.map((province) => (
+                <option
+                  key={province.locationCode}
+                  value={province.locationCode}
+                >
+                  {province.locationName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div id="district">
+            <span>시/군/구</span>
+            {selectedProvince && (
+              <select onChange={handleDistrictChange}>
+                <option value="">전체</option>
+                {selectedDistrict.map((district) => (
                   <option
-                    key={province.locationCode}
-                    value={province.locationCode}
+                    key={district.locationCode}
+                    value={district.locationCode}
                   >
-                    {province.locationName}
+                    {district.locationName}
                   </option>
                 ))}
               </select>
-            </div>
-            {selectedProvince && (
-              <div className="districtSelect">
-                <select id="district" onChange={handleDistrictChange}>
-                  <option value="">시/군/구 선택</option>
-                  {selectedDistrict.map((district) => (
-                    <option
-                      key={district.locationCode}
-                      value={district.locationCode}
-                    >
-                      {district.locationName}
-                    </option>
-                  ))}
-                </select>
-              </div>
             )}
           </div>
         </div>
 
-        <div className="input-search">
-          <input id="seach-input" placeholder="검색어 입력" />
-          <button>조회</button>
+        <div className="keyword-search">
+          <div className="keyword">
+            <span>검색어</span>
+            <select>
+              <option>기관명</option>
+              <option>대표자명</option>
+            </select>
+            <input
+              type="text"
+              placeholder="검색어 입력"
+              className="search-input"
+            />
+          </div>
         </div>
       </div>
 
-      {insts.map((inst) => (
+      {insts.contents?.map((inst) => (
         <div key={inst.regiBoardCode} className="list">
           <div className="title name">
             <span>기관명</span>
