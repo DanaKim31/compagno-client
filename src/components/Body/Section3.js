@@ -2,29 +2,33 @@ import "../../assets/style.css";
 import { useState, useEffect } from "react";
 // 가로 스크롤 !!
 const Section3 = () => {
-  // $(window).scroll(function () {
-  //   let scroll = $(window).scrollTop();
-  //   $(".scroll").text(scroll);
+  const [scroll, setScroll] = useState(0);
 
-  //   let offset = scroll - $("#section2").offset().top;
+  useEffect(() => {
+    function handleScroll() {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop; // 스크롤 Top값 !!
+      setScroll(scrollTop);
 
-  //   if (scroll > $("#section2").offset().top) {
-  //     $(".sec3").css({ left: -offset + "px" });
-  //   }
-  // });
+      const section2Top = document
+        .getElementById("section2")
+        .getBoundingClientRect().top;
+      const offset = scrollTop - section2Top;
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", function () {
-  //     let scroll = window.scrollY;
-  //     document.querySelector(".scroll").textContent = scroll;
+      if (scrollTop > section2Top) {
+        document.querySelectorAll(".sec3").forEach((element) => {
+          element.style.left = -offset + "px";
+        });
+      }
+    }
 
-  //     let offset = scroll - document.getElementById("section2").offsetTop;
+    window.addEventListener("scroll", handleScroll);
 
-  //     if (scroll > document.getElementById("section2").offsetTop) {
-  //       document.querySelector(".sec3").style.left = -offset + "px";
-  //     }
-  //   });
-  // }, []);
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -38,12 +42,19 @@ const Section3 = () => {
               perspiciatis cum laborum, doloribus similique quasi atque odit
               quos laudantium unde obcaecati aliquam. Architecto,
               aspernatur.quasi atque odit quos laudantium unde obcaecati
-              aliquam. Architecto, aspernatur.
+              aliquam. Architecto, aspernatur. Lorem ipsum dolor sit amet
+              consectetur adipisicing elit. Eius voluptatum velit tempore fugiat
+              perferendis! Voluptatem perspiciatis cum laborum, doloribus
+              similique quasi atque odit quos laudantium unde obcaecati aliquam.
+              Architecto, aspernatur.quasi atque odit quos laudantium unde
+              obcaecati aliquam. Architecto, aspernatur. Lorem ipsum dolor sit
+              amet consectetur adipisicing elit. Eius voluptatum velit tempore
+              fugiat perferendis! Voluptatem perspiciatis cum laborum, doloribus
+              similique quasi atque odit quos laudantium unde obcaecati aliquam.
+              Architecto, aspernatur.quasi atque odit quos laudantium unde
+              obcaecati aliquam. Architecto, aspernatur.
             </p>
-            <img
-              src="../Compagno/resource/sahin-sezer-dincer-0uWVVuR3nsc-unsplash.jpg"
-              alt=""
-            />
+            <img src="/img/mountain.jpg" alt="logo image" />
           </div>
           <div className="son1">
             <h2>02</h2>
@@ -53,12 +64,19 @@ const Section3 = () => {
               perspiciatis cum laborum, doloribus similique quasi atque odit
               quos laudantium unde obcaecati aliquam. Architecto,
               aspernatur.quasi atque odit quos laudantium unde obcaecati
-              aliquam. Architecto, aspernatur.
+              aliquam. Architecto, aspernatur. Lorem ipsum dolor sit amet
+              consectetur adipisicing elit. Eius voluptatum velit tempore fugiat
+              perferendis! Voluptatem perspiciatis cum laborum, doloribus
+              similique quasi atque odit quos laudantium unde obcaecati aliquam.
+              Architecto, aspernatur.quasi atque odit quos laudantium unde
+              obcaecati aliquam. Architecto, aspernatur. Lorem ipsum dolor sit
+              amet consectetur adipisicing elit. Eius voluptatum velit tempore
+              fugiat perferendis! Voluptatem perspiciatis cum laborum, doloribus
+              similique quasi atque odit quos laudantium unde obcaecati aliquam.
+              Architecto, aspernatur.quasi atque odit quos laudantium unde
+              obcaecati aliquam. Architecto, aspernatur.
             </p>
-            <img
-              src="../Compagno/resource/sahin-sezer-dincer-0uWVVuR3nsc-unsplash.jpg"
-              alt=""
-            />
+            <img src="/img/mountain.jpg" alt="logo image" />
           </div>
           <div className="son1">
             <h2>03</h2>
@@ -67,13 +85,20 @@ const Section3 = () => {
               voluptatum velit tempore fugiat perferendis! Voluptatem
               perspiciatis cum laborum, doloribus similique quasi atque odit
               quos laudantium unde obcaecati aliquam. Architecto,
-              aspernatur.quasi atque odit quos laudantium unde obcaecati
-              aliquam. Architecto, aspernatur.
+              aspernatur.quasi atque odit quos lauda Lorem ipsum dolor sit amet
+              consectetur adipisicing elit. Eius voluptatum velit tempore fugiat
+              perferendis! Voluptatem perspiciatis cum laborum, doloribus
+              similique quasi atque odit quos laudantium unde obcaecati aliquam.
+              Architecto, aspernatur.quasi atque odit quos laudantium unde
+              obcaecati aliquam. Architecto, aspernatur.ntium unde obcaecati
+              aliquam. Architecto, aspernatur. Lorem ipsum dolor sit amet
+              consectetur adipisicing elit. Eius voluptatum velit tempore fugiat
+              perferendis! Voluptatem perspiciatis cum laborum, doloribus
+              similique quasi atque odit quos laudantium unde obcaecati aliquam.
+              Architecto, aspernatur.quasi atque odit quos laudantium unde
+              obcaecati aliquam. Architecto, aspernatur.
             </p>
-            <img
-              src="../Compagno/resource/sahin-sezer-dincer-0uWVVuR3nsc-unsplash.jpg"
-              alt=""
-            />
+            <img src="/img/mountain.jpg" alt="logo image" />
           </div>
           <div className="son1">
             <h2>04</h2>
@@ -83,12 +108,19 @@ const Section3 = () => {
               perspiciatis cum laborum, doloribus similique quasi atque odit
               quos laudantium unde obcaecati aliquam. Architecto,
               aspernatur.quasi atque odit quos laudantium unde obcaecati
-              aliquam. Architecto, aspernatur.
+              aliquam. Architecto, aspernatur. Lorem ipsum dolor sit amet
+              consectetur adipisicing elit. Eius voluptatum velit tempore fugiat
+              perferendis! Voluptatem perspiciatis cum laborum, doloribus
+              similique quasi atque odit quos laudantium unde obcaecati aliquam.
+              Architecto, aspernatur.quasi atque odit quos laudantium unde
+              obcaecati aliquam. Architecto, aspernatur. Lorem ipsum dolor sit
+              amet consectetur adipisicing elit. Eius voluptatum velit tempore
+              fugiat perferendis! Voluptatem perspiciatis cum laborum, doloribus
+              similique quasi atque odit quos laudantium unde obcaecati aliquam.
+              Architecto, aspernatur.quasi atque odit quos laudantium unde
+              obcaecati aliquam. Architecto, aspernatur.
             </p>
-            <img
-              src="../Compagno/resource/sahin-sezer-dincer-0uWVVuR3nsc-unsplash.jpg"
-              alt=""
-            />
+            <img src="/img/mountain.jpg" alt="logo image" />
           </div>
         </div>
       </section>

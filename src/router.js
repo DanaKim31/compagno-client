@@ -31,6 +31,8 @@ import NeighborCreate from "./pages/neighborBoard/NeighborCreate";
 import NeighborDetail from "./pages/neighborBoard/NeighborDetail";
 import CreateProductBoard from "./pages/productBoard/CreateProductBoard";
 import UpdateProductBoard from "./pages/productBoard/UpdateProductBoard";
+import ClassList from "./pages/onedayClassBoard/ClassList";
+import CreateClass from "./pages/onedayClassBoard/CreateClass";
 
 const router = createBrowserRouter([
   {
@@ -135,6 +137,13 @@ const router = createBrowserRouter([
             path: "detail/:num",
             element: <ContentDetail />,
           },
+        ],
+      },
+      {
+        path: "onedayClassBoard",
+        children: [
+          { index: true, element: <ClassList /> },
+          { path: "create", element: <CreateClass /> },
         ],
       },
     ],

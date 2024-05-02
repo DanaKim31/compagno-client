@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import "../../assets/style.css";
 // import { useState, useEffect } from "react";
 
@@ -5,62 +6,66 @@ import "../../assets/style.css";
 
 const Section1 = () => {
   // 문서가 로드되면 실행하는 함수
-  // document.addEventListener("DOMContentLoaded", function () {
-  //   const options = {
-  //     root: null,
-  //     rootMargin: "0px",
-  //     threshold: 0.4,
-  //   };
-  //   // 문서 전체에 해당하는 "D"
+  const [,] = useState();
 
-  //   // IMAGE ANIMATION
-  //   //이미지 애니메이션을 위한
-  //   let revealCallback = (entries) => {
-  //     entries.forEach((entry) => {
-  //       let container = entry.target;
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.4,
+  };
 
-  //       if (entry.isIntersecting) {
-  //         // console.log(container);
-  //         container.classList.add("animating");
-  //         return;
-  //       }
+  useEffect(() => {
+    document.addEventListener(
+      "DOMContentLoaded",
 
-  //       if (entry.boundingClientRect.top > 0) {
-  //         container.classList.remove("animating");
-  //       }
-  //     });
-  //   };
+      []
+    );
 
-  //   let revealObserver = new IntersectionObserver(revealCallback, options);
+    let revealCallback = (entries) => {
+      entries.forEach((entry) => {
+        let container = entry.target;
 
-  //   document.querySelectorAll(".reveal").forEach((reveal) => {
-  //     revealObserver.observe(reveal);
-  //   });
+        if (entry.isIntersecting) {
+          // console.log(container);
+          container.classList.add("animating");
+          return;
+        }
 
-  //   // TEXT ANIMATION
-  //   // 텍스트 함수를위한
-  //   let fadeupCallback = (entries) => {
-  //     entries.forEach((entry) => {
-  //       let container = entry.target;
-  //       container.classList.add("not-fading-up");
+        if (entry.boundingClientRect.top > 0) {
+          container.classList.remove("animating");
+        }
+      });
+    };
 
-  //       if (entry.isIntersecting) {
-  //         container.classList.add("fading-up");
-  //         return;
-  //       }
+    let revealObserver = new IntersectionObserver(revealCallback, options);
 
-  //       if (entry.boundingClientRect.top > 0) {
-  //         container.classList.remove("fading-up");
-  //       }
-  //     });
-  //   };
+    document.querySelectorAll(".reveal").forEach((reveal) => {
+      revealObserver.observe(reveal);
+    });
+    // TEXT ANIMATION
+    // 텍스트 함수를위한
+    let fadeupCallback = (entries) => {
+      entries.forEach((entry) => {
+        let container = entry.target;
+        container.classList.add("not-fading-up");
 
-  //   let fadeupObserver = new IntersectionObserver(fadeupCallback, options);
+        if (entry.isIntersecting) {
+          container.classList.add("fading-up");
+          return;
+        }
 
-  //   document.querySelectorAll(".fadeup").forEach((fadeup) => {
-  //     fadeupObserver.observe(fadeup);
-  //   });
-  // });
+        if (entry.boundingClientRect.top > 0) {
+          container.classList.remove("fading-up");
+        }
+      });
+    };
+
+    let fadeupObserver = new IntersectionObserver(fadeupCallback, options);
+
+    document.querySelectorAll(".fadeup").forEach((fadeup) => {
+      fadeupObserver.observe(fadeup);
+    });
+  });
 
   return (
     <>
@@ -69,9 +74,9 @@ const Section1 = () => {
         <h1 className="fadeup">우린 동물를 지키고 사랑합니다</h1>
         <div className="reveal">
           <div className="image-wrap">
-            <img src="/img/Section.jpg" alt="logo image" />
-            <img src="../assets/images/Section1-2.jpg" alt="" />
-            <img src="../assets/images/Section1-3.jpg" alt="" />
+            <img src="/img/Section1.jpg" alt="logo image" />
+            <img src="/img/Section2.jpg" alt="logo image" />
+            <img src="/img/Section3.jpg" alt="logo image" />
           </div>
         </div>
       </section>
