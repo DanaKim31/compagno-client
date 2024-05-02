@@ -1,4 +1,3 @@
-import { dataTagSymbol } from "@tanstack/react-query";
 import axios from "axios";
 
 const getToken = () => {
@@ -53,10 +52,5 @@ export const quitUser = async (data) => {
 
 // 회원정보 변경
 export const updateUser = async (data) => {
-  return await authorize.put("mypage/myinfo/updateProfile", data);
-};
-
-// 프로필사진 변경
-export const changePhoto = async (data) => {
   return await authorize.put("mypage/myinfo/updateProfile", data);
 };
