@@ -92,7 +92,6 @@ const Div = styled.div`
       }
     }
   }
-
   h2 {
     font-size: 3rem;
     margin-bottom: 50px;
@@ -110,12 +109,21 @@ const Div = styled.div`
   .contentsBody {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 550px 550px 550px;
     grid-row-gap: 20px;
     width: 80%;
-
-    #mainImage {
+    #imageBox {
       width: 100%;
       height: 50%;
+      border: 0.2px solid gray;
+      #iimage {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    #mainImage {
+      width: 100%;
+      height: 100%;
     }
     #regiDate {
       display: flex;
@@ -148,7 +156,7 @@ const Div = styled.div`
         height: 40px;
       }
       .text {
-        height: 30%;
+        height: 40%;
         border-top: 1px dashed green;
         display: flex;
         align-items: center;
@@ -168,7 +176,6 @@ const Div = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 30px;
-
     .iconPaging {
       cursor: pointer;
     }
@@ -256,6 +263,14 @@ const ViewAllLostBoard = () => {
     setPages(pageList); // 해당 list 배열을 setPages에 담기
   }, [totalPage]);
 
+  // const [mainImg, setMainImg] = useState({});
+  // const mainImgAPI = () => {
+  //   setMainImg(losts)
+  // };
+  // useEffect(() => {
+  //   mainImgAPI();
+  // }, []);
+
   const navigate = useNavigate();
   const onCreate = async () => {
     if (Object.keys(user).length !== 0) {
@@ -268,7 +283,6 @@ const ViewAllLostBoard = () => {
   const view = (code) => {
     navigate("/compagno/lostBoard/view/" + code);
   };
-
   return (
     <Div>
       <div className="contentHeader">
@@ -367,21 +381,41 @@ const ViewAllLostBoard = () => {
               onClick={() => view(lost.lostBoardCode)}
             >
               <h4 id="animalName">{lost.lostAnimalName}</h4>
-              {/* <img
-                id="mainImage"
-                src={lost.lostAnimalImage?.replace(
-                  "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                  "http://192.168.10.28:8081/lostBoard/"
-                )}
-              /> */}
-              <img
+              <div id="imageBox">
+                {/* {lost.images.map?.((image) => (
+                  <img
+                    id="iimage"
+                    alt=""
+                    key={image.lostImageCode}
+                    src={image.lostImage?.replace(
+                      "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                      "http://192.168.10.28:8081/lostBoard/"
+                    )}
+                  />
+                ))} */}
+                {/* <img
+                  id="mainImage"
+                  src={lost.lostAnimalImage?.replace(
+                    "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                    "http://192.168.10.28:8081/lostBoard/"
+                  )}
+                /> */}
+                <img
+                  id="mainImage"
+                  src={lost.lostAnimalImage?.replace(
+                    "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                    "http://192.168.10.28:8081/lostBoard/"
+                  )}
+                />
+
+                {/* <img
                 id="mainImage"
                 src={lost.lostAnimalImage?.replace(
                   "C:",
                   "http://localhost:8081"
                 )}
-              />
-
+              /> */}
+              </div>
               <div id="regiDate">
                 <span>{moment(lost.lostRegiDate).format("YY-MM-DD")}</span>
               </div>

@@ -98,7 +98,7 @@ const Div = styled.div`
             }
           }
           tr#imgContent {
-            height: 200px;
+            height: 200%;
 
             td#imgContents {
               height: 100%;
@@ -107,8 +107,9 @@ const Div = styled.div`
                 flex-direction: column;
                 margin: 0px;
                 justify-content: center;
-                align-items: center;
-                height: 100%;
+                align-items: self-start;
+                height: 85%;
+                /* height: auto; */
                 margin-top: 15px;
                 p {
                   margin-top: 10px;
@@ -203,6 +204,7 @@ const CreateLostBoard = () => {
   const [lostAnimalFeature, setLostAnimalFeater] = useState("");
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
   const [images, setImages] = useState([]);
+  const [lostAnimalImage, setLostAnimalImage] = useState("");
   const [lostRegiDate, setLostRegiDate] = useState("");
 
   // lostRegiDate 오늘 날짜 입력
@@ -222,6 +224,9 @@ const CreateLostBoard = () => {
       alert("최대 사진 갯수를 초과하였습니다. 다시 선택하여주세요.");
     } else {
       setImages(files);
+      setLostAnimalImage(files[0]);
+      console.log(images);
+      console.log(lostAnimalImage);
       let file;
       for (let i = 0; i < files.length; i++) {
         file = files[i];
@@ -229,9 +234,18 @@ const CreateLostBoard = () => {
         reader.onload = () => {
           images[i] = reader.result;
           setImgSrc([...images]);
+          setLostAnimalImage("images[0]");
         };
+        console.log(lostAnimalImage);
         reader.readAsDataURL(file);
       }
+      // file = files[0];
+      // const reader = new FileReader();
+      // reader.onload = () => {
+      //   images[0] = reader.result;
+      //   setLostAnimalImage({ images });
+      //   console.log(lostAnimalImage);
+      // };
     }
   };
 
@@ -266,10 +280,10 @@ const CreateLostBoard = () => {
     formData.append("lostAnimalFeature", lostAnimalFeature);
     formData.append("lostAnimalRFID", lostAnimalRFID);
     formData.append("lostRegiDate", lostRegiDate);
+    formData.append("lostAnimalImage", lostAnimalImage);
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
     });
-
     // not null 조건
     if (
       lostDate == "" ||

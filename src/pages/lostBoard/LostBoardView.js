@@ -180,10 +180,11 @@ const ViewLostBoard = () => {
 
   const { code } = useParams();
   const [lost, setLost] = useState([]);
-  const [images, setImgaes] = useState([]); // 이미지 가져오기
+  const [images, setImages] = useState([]); // 이미지 가져오기
   const viewsAPI = async () => {
     const response = await viewOneLostBoard(code);
-    setImgaes(response.data.images);
+    console.log(response.data);
+    setImages(response.data.images);
     setLost(response.data);
   };
   useEffect(() => {
@@ -224,11 +225,11 @@ const ViewLostBoard = () => {
             <img
               alt=""
               key={image.lostImageCode}
-              src={image.lostImage?.replace("C:", "http://localhost:8081")}
-              // src={lost.lostAnimalImage?.replace(
-              //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-              //   "http://192.168.10.28:8081/lostBoard/"
-              // )}
+              // src={image.lostImage?.replace("C:", "http://localhost:8081")}
+              src={image.lostImage?.replace(
+                "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                "http://192.168.10.28:8081/lostBoard/"
+              )}
             />
           ))}
         </div>
