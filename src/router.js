@@ -29,6 +29,8 @@ import EditAnimalBoard from "./pages/animalBoard/EditAnimalBoard";
 import NeighborBoard from "./pages/neighborBoard/NeighborBoard";
 import NeighborCreate from "./pages/neighborBoard/NeighborCreate";
 import NeighborDetail from "./pages/neighborBoard/NeighborDetail";
+import CreateProductBoard from "./pages/productBoard/CreateProductBoard";
+import UpdateProductBoard from "./pages/productBoard/UpdateProductBoard";
 
 const router = createBrowserRouter([
   {
@@ -121,6 +123,8 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <ViewAllProductBoard /> },
           { path: ":code", element: <ProductBoardDetail /> },
+          { path: "create", element: <CreateProductBoard /> },
+          { path: "edit/:code", element: <UpdateProductBoard /> },
         ],
       },
       {
