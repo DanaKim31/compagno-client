@@ -2,7 +2,7 @@ import styled from "styled-components";
 import MyPageSidebar from "../../components/user/MyPageSidebar";
 import { userSave, userLogout } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
@@ -143,13 +143,28 @@ const MyPageMyInfo = () => {
   /* ----------------------------- 회원정보 변경 ----------------------------- */
 
   // 업로드한 이미지 미리보기
-  // const [imgFile, setImgFile] = useState < File > [];
-  // const [imgPath, setImgPath] = useState("");
-  // const imgRef = useRef < HTMLInputElement > null;
-  // const maxImageSize = 1024 * 1024 * 2;
+  const [pImageUrl, setPImageUrl] = useState("");
+  const [pImageFile, setPImageFile] = useState(null);
 
-  // const reader = new FileReader();
-  // reader.readAsDataURL();
+  // 업로드한 이미지 미리보기 - 이미지 업로드
+  const uploadProfileImage = (e) => {
+    if (!e.target.files[0]) {
+      return;
+    }
+    const file = e.target.files[0];
+    if (file) {
+      let pImage = URL.createObjectURL(file);
+      setPImageUrl(pImage);
+      setPImageFile(file);
+    }
+  };
+
+  // 업로드한 이미지 미리보기 - 이미지 서버로 전송
+  // const submitProfileImage = () => {
+  //   if (!pImageFile) {
+  //     return alert("이미지를 선택해 주세요");
+  //   }
+  // };
 
   {
     /* ------------------------원본------------------------ */
@@ -268,11 +283,15 @@ const MyPageMyInfo = () => {
       formData.append("userEmail", user.userEmail);
       formData.append("userPhone", user.userPhone);
 
-      if (image != null) {
-        formData.append("file", image);
-      } else if (image == null) {
-        formData.append("defaultImg", "true");
+      if (pImageFile != null) {
+        console.log(pImageFile);
+        console.log(pImageUrl);
+        formData.append("file", pImageFile);
       }
+
+      // else if (image == null) {
+      //   formData.append("defaultImg", "true");
+      // }
 
       await updateUser(formData);
       localStorage.removeItem("token");
@@ -359,15 +378,17 @@ const MyPageMyInfo = () => {
                 <Form.Group controlId="formFile" className="mb-3">
                   <label className="profileImage">
                     <img
-                      src={"http://192.168.10.28:8081/" + info.userImg}
+                      src={
+                        pImageUrl
+                          ? pImageUrl
+                          : "http://192.168.10.28:8081/" + info.userImg
+                      }
                       htmlFor="pic"
                     />
                     <Form.Control
                       type="file"
                       accept="image/*"
-                      onChange={(e) => {
-                        setImage(e.target.files[0]); // 이미지 하나만 보낼거니까 배열의 0번
-                      }}
+                      onChange={uploadProfileImage}
                       name="pic"
                       hidden
                     />
