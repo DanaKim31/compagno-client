@@ -96,10 +96,20 @@ const Div = styled.div`
                   color: red;
                 }
               }
+              #mark {
+                display: flex;
+                justify-content: space-between;
+                span {
+                  color: red;
+                }
+              }
               th {
                 border-right: 1px solid black;
                 padding-right: 50px;
                 width: 25%;
+                span {
+                  color: red;
+                }
               }
               td {
                 padding-left: 20px;
@@ -112,6 +122,7 @@ const Div = styled.div`
             tr#imgContent {
               height: 200px;
               td#imgContents {
+                height: 100%;
                 img {
                   width: 200px;
                   height: 200px;
@@ -126,8 +137,8 @@ const Div = styled.div`
                   margin: 0px;
                   justify-content: center;
                   align-items: center;
-                  height: 100%;
-                  margin-top: 40px;
+                  height: fit-content;
+                  margin-top: 20px;
                   p {
                     margin-top: 10px;
                   }
@@ -206,7 +217,6 @@ const LostBoardUpdate = () => {
   const [lost, setLost] = useState({});
   const viewsAPI = async () => {
     const response = await viewOneLostBoard(code);
-    console.log(response.data);
     // setLost(response.data);
     setLostLocation(response.data.lostLocation);
     setLostDate(moment(response.data.lostDate).format("YYYY-MM-DD"));
@@ -240,6 +250,10 @@ const LostBoardUpdate = () => {
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
   const [images, setImages] = useState([]);
   const [lostRegiDate, setLostRegiDate] = useState("");
+  console.log(images);
+  const imagesFIle = () => {
+    // new FileOutStream("C://upload/lostBoard");
+  };
 
   // lostRegiDate 수정(오늘) 날짜 입력
   const lostRegiDateAPI = () => {
@@ -305,6 +319,7 @@ const LostBoardUpdate = () => {
       alert("최대 사진 갯수를 초과하였습니다ㅏ. 다시 선택하여주세요.");
     } else {
       setImages(files);
+
       let file;
       for (let i = 0; i < files.length; i++) {
         file = files[i];
@@ -317,7 +332,7 @@ const LostBoardUpdate = () => {
       }
     }
   };
-
+  console.log(images);
   const okUpdate = async () => {
     const formData = new FormData();
     formData.append("lostBoardCode", lostBoardCode);
@@ -339,7 +354,7 @@ const LostBoardUpdate = () => {
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
     });
-
+    console.log(images[0]);
     // for (let i = 0; i < images.length; i++) {
     //   formData.append("image", prop.files[i]);
     // }
@@ -414,16 +429,19 @@ const LostBoardUpdate = () => {
               <table>
                 <thead>
                   <tr>
-                    <td>
+                    <td id="mark">
                       <h3>
                         <FiMapPin /> 분실일시 및 장소
                       </h3>
+                      <span>* : 필수 입력란입니다.</span>
                     </td>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th>분실 날짜*</th>
+                    <th>
+                      분실 날짜<span>*</span>
+                    </th>
                     <td>
                       <input
                         type="Date"
@@ -435,7 +453,9 @@ const LostBoardUpdate = () => {
                   </tr>
 
                   <tr>
-                    <th>분실 장소*</th>
+                    <th>
+                      분실 장소<span>*</span>
+                    </th>
                     <td>
                       <input
                         type="text"
@@ -472,7 +492,9 @@ const LostBoardUpdate = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <th>분실 동물 이름*</th>
+                    <th>
+                      분실 동물 이름<span>*</span>
+                    </th>
                     <td>
                       <input
                         type="text"
@@ -482,7 +504,9 @@ const LostBoardUpdate = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>축종*</th>
+                    <th>
+                      축종<span>*</span>
+                    </th>
                     <td>
                       <select onChange={selectKind}>
                         <option value="개" className="animalKind">
@@ -508,7 +532,9 @@ const LostBoardUpdate = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>성별*</th>
+                    <th>
+                      성별<span>*</span>
+                    </th>
                     <td>
                       <label>
                         <input
@@ -578,23 +604,23 @@ const LostBoardUpdate = () => {
                   <tr id="imgContent">
                     <th>사진첨부</th>
                     <td id="imgContents">
+                      <div id="existingImg">
+                        {images?.map((image) => (
+                          <img
+                            alt=""
+                            key={image.lostImageCode}
+                            src={image.lostImage?.replace(
+                              "C:",
+                              "http://localhost:8081"
+                            )}
+                            // src={lost.lostAnimalImage?.replace(
+                            //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                            //   "http://192.168.10.28:8081/lostBoard/"
+                            // )}
+                          />
+                        ))}
+                      </div>
                       <label id="imgList">
-                        <div id="existingImg">
-                          {images?.map((image) => (
-                            <img
-                              alt=""
-                              key={image.lostImageCode}
-                              src={image.lostImage?.replace(
-                                "C:",
-                                "http://localhost:8081"
-                              )}
-                              // src={lost.lostAnimalImage?.replace(
-                              //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                              //   "http://192.168.10.28:8081/lostBoard/"
-                              // )}
-                            />
-                          ))}
-                        </div>
                         <div id="images">
                           <input
                             type="file"
@@ -610,6 +636,7 @@ const LostBoardUpdate = () => {
                             ))}
                           </div>
                         </div>
+
                         <p>사진 업로드 추가 (최대 3장)</p>
                       </label>
                     </td>
