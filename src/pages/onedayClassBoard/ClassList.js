@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { getOnedayClasses } from "../../api/onedayClass";
+import { viewAllClass } from "../../api/onedayClass";
 import { useState, useEffect } from "react";
 
 const StyledDiv = styled.div`
@@ -39,7 +39,7 @@ const ClassList = () => {
 
   //   ======== 비동기처리로된 원데이 클래스 리스트 정보 =======
   const onedayClassAPI = async () => {
-    const result = await getOnedayClasses();
+    const result = await viewAllClass();
     setOnedayClasses(result.data);
   };
 
@@ -47,7 +47,7 @@ const ClassList = () => {
     onedayClassAPI();
   }, []);
 
-  //  ========
+  //  =======================================================
 
   return (
     <StyledDiv>
@@ -71,6 +71,7 @@ const ClassList = () => {
           <div className="lastDate">
             클래스 마지막 날짜 : {onedayClass.odcLastDate}
           </div>
+          <div className="fileupload">파일 업로드: {}</div>
         </div>
       ))}
     </StyledDiv>
