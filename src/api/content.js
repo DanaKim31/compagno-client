@@ -4,7 +4,13 @@ const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
 });
 
-export const getContents = async (page, mainCate, subCate, mainReg) => {
+export const getContents = async (
+  page,
+  mainCate,
+  subCate,
+  mainReg,
+  keyword
+) => {
   return await instance.get(
     "content?page=" +
       page +
@@ -13,7 +19,9 @@ export const getContents = async (page, mainCate, subCate, mainReg) => {
       "&subCate=" +
       subCate +
       "&mainReg=" +
-      mainReg
+      mainReg +
+      "&keyword=" +
+      keyword
   );
 };
 

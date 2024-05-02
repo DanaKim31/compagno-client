@@ -110,7 +110,7 @@ const Header = () => {
             <div className="dropdown-content">
               <a href="compagno/animal-board">콘테스트</a>
               <a href="/compagno/product-board">제품정보 공유</a>
-              <a href="content">반려동물 동반</a>
+              <a href="/compagno/content">반려동물 동반</a>
               <a href="/compagno/neighborBoard">우리동네 게시판</a>
             </div>
           </div>
@@ -127,7 +127,7 @@ const Header = () => {
             <div className="dropbtn">공지사항</div>
             <div className="dropdown-content">
               <a href="#">공지사항</a>
-              <a href="question">QnA</a>
+              <a href="/compagno/question">QnA</a>
             </div>
           </div>
           {Object.keys(user).length !== 0 ? (

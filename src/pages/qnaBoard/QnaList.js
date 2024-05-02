@@ -215,13 +215,29 @@ const QnaList = () => {
           })}
         </tbody>
       </Table>
-      <Button
-        onClick={() => {
-          navigate("/compagno/question/register");
-        }}
-      >
-        등록
-      </Button>
+
+      {Object.keys(user).length === 0 ? (
+        <>
+          <Button
+            onClick={() => {
+              navigate("/compagno/login");
+            }}
+          >
+            등록
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button
+            onClick={() => {
+              navigate("/compagno/question/register");
+            }}
+          >
+            등록
+          </Button>
+        </>
+      )}
+
       <div className="paging">
         <FaAnglesLeft onClick={() => setPage(1)} />
         {/* 가장 첫 페이지로 */}
