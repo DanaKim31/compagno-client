@@ -5,9 +5,9 @@ import {
 } from "../../api/onedayClass";
 
 const ClassDetail = () => {
-  const viewClass = async () => {
-    const result = await onedayClass();
-  };
+  // const viewClass = async () => {
+  //   const result = await onedayClass();
+  // };
 
   return <></>;
 };

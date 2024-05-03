@@ -6,6 +6,7 @@ const instance = axios.create({
 
 // Post방식 => 원데이 클래스 등록
 export const addOnedayClass = async (data) => {
+  console.log(data);
   return await instance.post("ClassBoard", data);
 };
 

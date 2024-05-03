@@ -58,12 +58,22 @@ const CreateClass = () => {
   const [odcTitle, setOdcTitle] = useState("");
   const [odcContent, setContent] = useState("");
   const [odcAccompaying, setOdcAccompaying] = useState("");
+  const [odcMainImage, setOdcMainImage] = useState("");
+  const [odcStartDate, setOdcStartDate] = useState("");
+  const [odcLastDate, setOdcLastDate] = useState("");
 
   const navigate = useNavigate();
 
   const onCreate = async () => {
+    const formData = new FormData();
     console.log(odcTitle, odcContent, odcAccompaying);
-    await addOnedayClass({ odcTitle, odcContent, odcAccompaying });
+    // formData.append("odcTitle", odcTitle);
+    // formData.append("odcContent", odcContent);
+    // formData.append("odcAccompaying", odcAccompaying);
+    // formData.append("odcMainImage", odcMainImage);
+    // formData.append("odcStartDate", odcStartDate);
+    // formData.append("odcLastDate", odcLastDate);
+    await addOnedayClass(formData);
     navigate("onedayClassBoard");
   };
 
@@ -72,8 +82,8 @@ const CreateClass = () => {
   };
 
   // ============================================================== 날짜
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(new Date());
+  // const [endDate, setEndDate] = useState(new Date());
 
   // ========== OnCreate 함수에다가 비동기 처리된 클래스 추가관련 로직들 =============
 
@@ -96,6 +106,26 @@ const CreateClass = () => {
           value={odcContent}
           onChange={(e) => setContent(e.target.value)}
         />
+        {/* 파일 업로드 */}
+        <input
+          type="file"
+          placeholder="내용을 입력하세요"
+          value={odcMainImage}
+          onChange={(e) => setOdcMainImage(e.target.value)}
+        />
+        <h1>원데이클래스 관련 날짜</h1>
+        <label>시작날짜</label>
+        <input
+          type="date"
+          value={odcStartDate}
+          onChange={(e) => setOdcStartDate(e.target.value)}
+        />
+        <label>종료날짜</label>
+        <input
+          type="date"
+          value={odcLastDate}
+          onChange={(e) => setOdcLastDate(e.target.value)}
+        />
         <legend>동반 여부</legend>
         <label>
           Y
@@ -105,34 +135,9 @@ const CreateClass = () => {
           N
           <input type="checkbox" onChange={(e) => setOdcAccompaying("N")} />
         </label>
-
         <button onClick={onCreate}>추가</button>
         <button onClick={onBack}>취소</button>
       </StyledDiv>
-      <StyledSec>
-        <h1>원데이클래스 관련 날짜</h1>
-        <div>
-          <h2>쿨래스 시작일</h2>
-          <SDatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-          />
-        </div>
-        <div>
-          <h2>클래스 종료일</h2>
-          <SDatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-          />
-        </div>
-      </StyledSec>
     </div>
   );
 };

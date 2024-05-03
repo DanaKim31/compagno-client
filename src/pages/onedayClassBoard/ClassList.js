@@ -33,7 +33,7 @@ const StyledDiv = styled.div`
   }
 `;
 
-// 원데이 클래스 리스트 페이지 !!
+// 원데이 클래스 리스트 페이지 !!  ==> 전체 조회 viewAllClass
 const ClassList = () => {
   const [onedayClasses, setOnedayClasses] = useState([]); // 내가 가저올 원데이 클래스 리스트들 관련 변수랑 함수
 
@@ -72,9 +72,6 @@ const ClassList = () => {
           <div className="lastDate">
             클래스 마지막 날짜 : {onedayClass.odcLastDate}
           </div>
-          <img
-            src={onedayClass.images?.replace("D:", "http://localhost:8080")}
-          />
         </div>
       ))}
     </StyledDiv>
