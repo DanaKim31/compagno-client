@@ -91,15 +91,6 @@ const Content = () => {
   const filtering = () => {
     navigate(
       `/compagno/content/list?mainCate=${mainCate}&subCate=${subCate}&mainReg=${mainReg}&keyword=${keyword}`
-      //   "compagno/content/list",
-      //   {
-      //     state: {
-      //       mainCate: mainCate,
-      //       subCate: subCate,
-      //       mainReg: mainReg,
-      //       keyword: keyword,
-      //     },
-      //   }
     );
   };
   return (

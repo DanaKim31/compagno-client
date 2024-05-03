@@ -30,6 +30,8 @@ const ContentDetail = () => {
     contentAPI();
   }, []);
 
+  const container = document.querySelector("map");
+
   return (
     <Div>
       <div key={content.num}>

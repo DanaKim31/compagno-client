@@ -8,10 +8,17 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import styled from "styled-components";
+import MapList from "./MapList";
 
 const Div = styled.div`
   position: relative;
   top: 200px;
+
+  #map {
+    width: 500px;
+    height: 500px;
+    border: 1px solid;
+  }
 `;
 
 const ContentList = () => {
@@ -21,34 +28,36 @@ const ContentList = () => {
 
   const location = useLocation();
 
-  //   const [mainCate, setMainCate] = useState(0);
-  //   const [subCate, setSubCate] = useState(0);
-  //   const [mainReg, setMainReg] = useState(0);
-  //   const [keyword, setKeyword] = useState("");
-  const [mainCate, setMainCate] = useState(location.state?.mainCate);
-  const [subCate, setSubCate] = useState(location.state?.subCate);
-  const [mainReg, setMainReg] = useState(location.state?.mainReg);
-  const [keyword, setKeyword] = useState(location.state?.keyword);
+  const [mainCate, setMainCate] = useState(0);
+  const [subCate, setSubCate] = useState(0);
+  const [mainReg, setMainReg] = useState(0);
+  const [keyword, setKeyword] = useState("");
 
   // useLocation, useSearchParams
-  //   function useQuery() {
-  //     console.log("oooooooo");
-  //     new URLSearchParams(useLocation().search);
-  //   }
-
-  const [useQuery, setUseQuery] = useState("");
-
-  setUseQuery(URLSearchParams(location.search));
-
-  console.log(useQuery);
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
 
   let query = useQuery();
 
-  console.log(query.get("mainCate"));
-  setMainCate(query.get("mainCate"));
-  setSubCate(query.get("subCate"));
-  setMainReg(query.get("mainReg"));
-  setKeyword(query.get("keyword"));
+  useEffect(() => {
+    setMainCate(query.get("mainCate"));
+    setSubCate(query.get("subCate"));
+    setMainReg(query.get("mainReg"));
+
+    console.log(query.get("keyword"));
+    if (query.get("keyword") === null) {
+      setKeyword("");
+    } else {
+      setKeyword(query.get("keyword"));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (mainCate !== 0) {
+      ContentAPI();
+    }
+  }, [mainCate, subCate, mainReg, keyword, page]);
 
   // 페이징 처리
   const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지
@@ -66,10 +75,8 @@ const ContentList = () => {
     );
     setContent(response.data.content);
     setContents(response.data);
-    setTotalPage(response.data.totalpages);
+    setTotalPage(response.data.totalPages);
   };
-
-  useEffect(() => {}, []);
 
   // 첫페이지, 마지막 페이지, 페이지 리스트 초기 셋팅
   let lastPage = 0;
@@ -78,18 +85,19 @@ const ContentList = () => {
 
   // totalPage가 바뀔 때 마다 실행
   useEffect(() => {
-    lastPage = Math.ceil(page / 5) * 5; // 나는 한 화면에 1~5, 6~10 등 5개로 나뉘어서 보이기 때문에 5로 설정
-    firstPage = lastPage - 4;
+    lastPage = Math.ceil(page / 10) * 10; // 나는 한 화면에 1~5, 6~10 등 5개로 나뉘어서 보이기 때문에 5로 설정
+    firstPage = lastPage - 9;
     if (totalPage < lastPage) {
       lastPage = totalPage; // 전체 페이지가 마지막 페이지보다 작은 경우엔 전체 페이지 수가 마지막 페이지 수랑 같음
     }
     setPrev(firstPage > 1);
     setNext(lastPage < totalPage);
+
     for (let i = firstPage; i <= lastPage; i++) {
       pageList.push(i); // 처음 i는 firstPage, 범위는 lastPage로 반복문 돌려서 i값을 넣은 list 만들기
     }
     setPages(pageList); // 해당 list 배열을 setPages에 담기
-  }, [totalPage]);
+  }, [totalPage, page]);
 
   return (
     <Div>
@@ -116,6 +124,9 @@ const ContentList = () => {
             })}
           </tbody>
         </table>
+        <div id="map">
+          <MapList content={content} />
+        </div>
       </>
       <div className="paging">
         <FaAnglesLeft onClick={() => setPage(1)} />

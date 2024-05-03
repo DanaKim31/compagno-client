@@ -12,7 +12,7 @@ export const getContents = async (
   keyword
 ) => {
   return await instance.get(
-    "content?page=" +
+    "content/list?page=" +
       page +
       "&mainCate=" +
       mainCate +
