@@ -20,9 +20,6 @@ const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
 });
 
-const instanceComment = axios.create({
-  baseURL: "http://localhost:8080/compagno/lostBoard/comment",
-});
 
 // 분실 신청
 // http://localhost:8080/compagno/lostBoard
@@ -54,25 +51,26 @@ export const deleteLostBoard = async (code) => {
 
 // 댓글 추가
 export const addTopCommentLost = async (data) => {
-  return await instanceComment.post(data);
+  return await authorize.post("lostBoard/comment", data);
 };
 
 // 대댓글 추가
 export const addBottomCommentLost = async (data) => {
-  return await instanceComment.post(data);
+  return await authorize.post("losstBoard/comment/", data);
 };
 
 // 댓글 보기
+// http://localhost:8080/compagno/public/lostBoard/comment/48
 export const viewCommentLost = async (code) => {
-  return await instanceComment.get("/" + code);
+  return await instance.get("lostBoard/comment/" + code);
 };
 
 // 댓글 삭제
 export const deleteCommentLost = async (code) => {
-  return await instanceComment.delete("/" + code);
+  return await authorize.delete("lostBoard/comment/" + code);
 };
 
 // 댓글 수정
 export const updateCommentLost = async (data) => {
-  return await instanceComment.put(data);
+  return await authorize.put("lostBoard/comment/", data);
 };
