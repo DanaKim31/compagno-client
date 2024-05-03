@@ -54,3 +54,8 @@ export const quitUser = async (data) => {
 export const updateUser = async (data) => {
   return await authorize.put("mypage/myinfo/updateProfile", data);
 };
+
+// 내 활동내역 - animalboard 좋아요 목록 출력
+export const getAnimalboardFavList = async (id, pageNum) => {
+  return await authorize.get("mypage/myactivity/" + id + "?page=" + pageNum);
+};

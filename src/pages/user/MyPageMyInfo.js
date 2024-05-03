@@ -138,7 +138,6 @@ const MyPageMyInfo = () => {
 
   useEffect(() => {
     insertDefaultInfo();
-    console.log(typeof info.userEnrollDate);
   }, [info]);
 
   /* ----------------------------- 회원정보 변경 ----------------------------- */
