@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { FaStar, FaStarHalfAlt, FaRegStar, FaRegImage } from "react-icons/fa";
+import { FaRegCircleXmark } from "react-icons/fa6";
+import { useState, useEffect, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import { userSave } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
@@ -46,6 +47,56 @@ const Main = styled.main`
     display: flex;
     flex-direction: row;
   }
+  .mainImageDiv,
+  .nullMainImageDiv {
+    width: 400px;
+    height: 300px;
+    border: 1px solid black;
+    margin-left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .nullMainImageDiv {
+    cursor: pointer;
+    svg {
+      font-size: 3rem;
+    }
+    span {
+      font-weight: bold;
+    }
+  }
+  .imagesDiv {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .imageDiv {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    margin: 0px 10px;
+    margin-bottom: 10px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    svg {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.5rem;
+      color: #212121;
+      cursor: pointer;
+    }
+  }
 `;
 
 const UpdateProductBoard = () => {
@@ -62,22 +113,34 @@ const UpdateProductBoard = () => {
   const [animal, setAnimal] = useState("");
   const [content, setContent] = useState("");
   const [productCategory, setProductCategory] = useState("");
+  const [productMainFile, setProductMainFile] = useState({});
+  const [files, setFiles] = useState([]);
   const { code } = useParams();
+  const [imgSrc, setImgSrc] = useState([]);
+  const [mainImgSrc, setMainImgSrc] = useState("");
+  const [prevMainImg, setPrevMainImg] = useState("");
+  const [prevImg, setPrevImg] = useState([]);
+  const [prevImgSrc, setPrevImgSrc] = useState([]);
 
   const updateBoard = async () => {
-    await editProductBoard({
-      productBoardCode: code,
-      productBoardTitle: title,
-      productName: productName,
-      productPrice: price,
-      productBoardGrade: grade,
-      productBoardContent: content,
-      animalCategoryCode: animal,
-      productCategory: productCategory,
-      user: {
-        userId: user.userId,
-      },
-    });
+    const formData = new FormData();
+    formData.append("productBoardCode", code);
+    formData.append("productBoardTitle", title);
+    formData.append("productName", productName);
+    formData.append("productPrice", price);
+    formData.append("productBoardGrade", grade);
+    formData.append("productBoardContent", content);
+    formData.append("animalCategoryCode", animal);
+    formData.append("productCategory", productCategory);
+    formData.append("userId", user.userId);
+    if (mainImgSrc === "http://192.168.10.28:8081/" + prevMainImg) {
+      formData.append("mainImage", prevMainImg);
+    }
+
+    if (productMainFile instanceof File) {
+      formData.append("productMainFile", productMainFile);
+    }
+    await editProductBoard(formData);
     navigate("/compagno/product-board");
   };
 
@@ -90,6 +153,11 @@ const UpdateProductBoard = () => {
     setContent(response.productBoardContent);
     setAnimal(response.animalCategory.animalCategoryCode);
     setProductCategory(response.productCategory);
+    setMainImgSrc("http://192.168.10.28:8081/" + response.productMainImage);
+    setPrevMainImg(response.productMainImage);
+
+    setPrevImgSrc(response.images);
+    setPrevImg(response.images);
   };
 
   useEffect(() => {
@@ -100,6 +168,45 @@ const UpdateProductBoard = () => {
     viewProductBoard();
   }, []);
 
+  const imageCreate = (e) => {
+    const images = Array.from(e.target.files);
+    setFiles(images);
+
+    let file;
+    for (let i = 0; i < images.length; i++) {
+      file = images[i];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        files[i] = reader.result;
+        setImgSrc([...files]);
+      };
+    }
+  };
+  const mainImageCreate = (e) => {
+    if (e.target.files[0] instanceof File) {
+      setProductMainFile(e.target.files[0]);
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setMainImgSrc(reader.result);
+      };
+    }
+  };
+
+  const mainSelectImage = useRef("");
+
+  const deletePrevSrc = (code) => {
+    const images = prevImgSrc.filter(
+      (image) => image.productImageCode !== code
+    );
+    setPrevImgSrc(images);
+  };
+
+  const deleteImgSrc = (no) => {
+    console.log(imgSrc[no]);
+  };
   return (
     <Main>
       <span>
@@ -113,7 +220,48 @@ const UpdateProductBoard = () => {
           }}
         />
       </span>
-      <span>썸네일 이미지 :</span>
+      <div>
+        썸네일 이미지 :
+        <input
+          type="file"
+          accept="image/*"
+          onChange={mainImageCreate}
+          style={{ display: "none" }}
+          ref={mainSelectImage}
+        />
+        {mainImgSrc !== "" ? (
+          <div
+            className="mainImageDiv"
+            onClick={() => mainSelectImage.current.click()}
+          >
+            <img src={mainImgSrc} />
+          </div>
+        ) : (
+          <div
+            className="nullMainImageDiv"
+            onClick={() => mainSelectImage.current.click()}
+          >
+            <FaRegImage />
+            <span>썸네일로 사용할 이미지 업로드</span>
+          </div>
+        )}
+        <button
+          onClick={() => {
+            setProductMainFile({});
+            setMainImgSrc("");
+          }}
+        >
+          지우기
+        </button>
+        <button
+          onClick={() => {
+            setProductMainFile({});
+            setMainImgSrc("http://192.168.10.28:8081/" + prevMainImg);
+          }}
+        >
+          취소
+        </button>
+      </div>
       <span>
         상품명 :{" "}
         <input
@@ -257,7 +405,26 @@ const UpdateProductBoard = () => {
           </div>
         )}
       </div>
-      <div>이미지 : </div>
+      <div>
+        이미지 :
+        <input type="file" accept="image/*" multiple onChange={imageCreate} />
+        <div className="imagesDiv">
+          {imgSrc.map((img, i) => (
+            <span className="imageDiv" key={i}>
+              <img src={img} key={i} />
+              <FaRegCircleXmark onClick={() => deleteImgSrc(i)} />
+            </span>
+          ))}
+          {prevImgSrc.map((img, i) => (
+            <span className="imageDiv" key={img.productImageCode}>
+              <img src={"http://192.168.10.28:8081/" + img.productImage} />
+              <FaRegCircleXmark
+                onClick={() => deletePrevSrc(img.productImageCode)}
+              />
+            </span>
+          ))}
+        </div>
+      </div>
       <div>
         글 내용 :{" "}
         <Form.Control
