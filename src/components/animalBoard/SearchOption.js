@@ -3,7 +3,7 @@ import { viewBoardList, viewCategory } from "../../api/animalBoard";
 import styled from "styled-components";
 import { IoIosArrowUp } from "react-icons/io";
 import { GoTriangleDown } from "react-icons/go";
-
+// 이 컴포넌트는 폐지됐답니다.
 const Select = styled.div`
   width: 150px;
   text-align: center;

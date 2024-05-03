@@ -38,6 +38,10 @@ export const viewBoardList = async (page, category, sort) => {
   console.log(url);
   return await instance.get(url);
 };
+// 좋아요 랭킹 불러오기
+export const viewRanker = async () => {
+  return await instance.get("animal-board/weeklyRank");
+};
 // 글 검색 카테고리 불러오기
 export const viewCategory = async () => {
   return await instance.get("animal-board/animalCategory");
@@ -90,7 +94,7 @@ export const viewCount = async (animalBoardCode) => {
 };
 // 해당글의 현재 유저의 좋아요 정보 가져오기 -boradCode + userId
 export const checkFavorite = async (favDetail) => {
-  console.log(favDetail);
+  // console.log(favDetail);
   return await instance.post("animal-board/checkFavorite", favDetail);
 };
 // 해당 글의 좋아요 수 가져오기 - count
