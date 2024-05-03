@@ -20,7 +20,6 @@ const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
 });
 
-
 // 분실 신청
 // http://localhost:8080/compagno/lostBoard
 export const createlostBoard = async (data) => {
@@ -71,6 +70,7 @@ export const deleteCommentLost = async (code) => {
 };
 
 // 댓글 수정
+// http://localhost:8080/compagno/lostBoard/comment
 export const updateCommentLost = async (data) => {
-  return await authorize.put("lostBoard/comment/", data);
+  return await authorize.put("lostBoard/comment", data);
 };

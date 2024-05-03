@@ -16,6 +16,8 @@ import { FiMapPin } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import "moment/locale/ko";
+import { hover } from "@testing-library/user-event/dist/hover";
 
 const Div = styled.div`
   @font-face {
@@ -225,7 +227,7 @@ const Div = styled.div`
         width: 100%;
         #commentsImgAndContent {
           width: 80%;
-          margin-top: 20px;
+          margin-top: 15px;
           display: flex;
           border-bottom: 1px dashed black;
           padding-bottom: 10px;
@@ -346,14 +348,14 @@ const ViewLostBoard = () => {
   };
 
   // 댓글 수정
-  // updateCommentLost;
   const [edit, setEdit] = useState({});
   const updateBtn = async (comment) => {
     setEdit({
       commentContent: comment.commentContent,
       lostBoardCode: code,
       lostCommentCode: comment.lostCommentCode,
-      // animalCommentDate: comment.animalCommentDate,
+
+      commentDate: moment().format("YYYY-MM-DD hh:mm:ss"),
       user: {
         userId: user.userId,
         userNickname: user.userNickname,
@@ -361,18 +363,32 @@ const ViewLostBoard = () => {
       },
     });
   };
-  console.log(edit);
-  const updateComment = () => {
-    console.log(edit);
-    // await updateCommentLost(edit);
-    // setEdit({}); 댓글 수정 취소 시 들어감
 
+  const updateComment = async () => {
+    console.log(edit);
+    console.log(typeof edit.commentDate);
+    await updateCommentLost(edit);
+    setEdit({});
     commentsAPI();
   };
   //수정 취소
   const delUpdate = () => {
     setEdit({});
     commentsAPI();
+  };
+  // 대댓글 쓰기
+  const [bottomComments, setBottomComments] = useState({
+    userImg: user.userImg,
+    userNickname: user.userNickname,
+    userId: user.userId,
+    commentContent: "",
+    lostBoardCode: code,
+    lostParentCode: comments.lostCommentCode,
+  });
+
+  const [num, setNum] = useState(0);
+  const writeReplies = (lostCommentCode) => {
+    setNum(lostCommentCode);
   };
 
   return (
@@ -557,22 +573,63 @@ const ViewLostBoard = () => {
                         }
                       />
                     </div>
-
-                    <div id="commentsContent">
-                      <p id="userNickname"> {comment.user.userNickname}</p>
-                      {edit.lostCommentCode == comment.lostCommentCode ? (
-                        <textarea
-                          style={{ resize: "none", width: "500px" }}
-                          value={edit.commentContent}
-                          onChange={(e) =>
-                            setEdit((prev) => ({
-                              ...prev,
-                              commentContent: e.target.value,
-                            }))
-                          }
-                        ></textarea>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <div id="commentsContent">
+                        <p id="userNickname"> {comment.user.userNickname}</p>
+                        {edit.lostCommentCode == comment.lostCommentCode ? (
+                          <textarea
+                            style={{ resize: "none", width: "500px" }}
+                            value={edit.commentContent}
+                            onChange={(e) =>
+                              setEdit((prev) => ({
+                                ...prev,
+                                commentContent: e.target.value,
+                              }))
+                            }
+                          ></textarea>
+                        ) : (
+                          <p id="commentContent">{comment.commentContent}</p>
+                        )}
+                      </div>
+                      {num == 0 ? (
+                        <></>
                       ) : (
-                        <p id="commentContent">{comment.commentContent}</p>
+                        <div
+                          id="commentWrite"
+                          style={{
+                            marginTop: "10px",
+                            width: "556px",
+                            fontSize: "0.8rem",
+                            height: "80px",
+                          }}
+                        >
+                          <div
+                            id="user"
+                            style={{ height: "15px", margin: "8px 10px" }}
+                          >
+                            <img
+                              style={{ height: "20px", width: "20px" }}
+                              src={
+                                "http://localhost:8081/upload/" + user.userImg
+                              }
+                              id="userImg"
+                            />
+                            {user.userNickname}
+                          </div>
+                          <div id="boxAndBtn">
+                            <textarea
+                              style={{ height: "80%" }}
+                              value={bottomComments.commentContent}
+                              onChange={(e) =>
+                                setBottomComments((prev) => ({
+                                  ...prev,
+                                  commentContent: e.target.value,
+                                }))
+                              }
+                            ></textarea>
+                            <button onClick={okCreate}>등록</button>
+                          </div>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -593,11 +650,45 @@ const ViewLostBoard = () => {
                           >
                             삭제
                           </button>
+                          <div style={{ fontSize: "0.7rem", marginTop: "5px" }}>
+                            {moment(comment.commentDate).format(
+                              "YY-MM-DD hh:mm"
+                            )}
+                          </div>
+                          <button
+                            style={{ border: "none", backgroundColor: "white" }}
+                            onClick={(e) =>
+                              writeReplies(comment.lostCommentCode)
+                            }
+                          >
+                            답글 쓰기
+                          </button>
                         </div>
                       )}
                     </div>
                   ) : (
-                    <></>
+                    <div>
+                      <div
+                        style={{
+                          fontSize: "0.7rem",
+                          marginTop: "15px",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        {moment(comment.commentDate).format("YY-MM-DD hh:mm")}
+                        <button
+                          style={{
+                            border: "none",
+                            backgroundColor: "white",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          답글 쓰기
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
