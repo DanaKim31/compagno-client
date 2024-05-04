@@ -353,7 +353,7 @@ const ViewLostBoard = () => {
       commentContent: comment.commentContent,
       lostBoardCode: code,
       lostCommentCode: comment.lostCommentCode,
-
+      lostParentCode: 0,
       commentDate: moment().format("YYYY-MM-DD hh:mm:ss"),
       user: {
         userId: user.userId,
@@ -363,15 +363,36 @@ const ViewLostBoard = () => {
     });
   };
 
+  useEffect(() => {
+    console.log(edit);
+  }, [edit]);
+
   const updateComment = async () => {
     await updateCommentLost(edit);
     setEdit({});
     commentsAPI();
   };
 
+  // const updateBottomComment = async () => {
+  //   setEdit({
+  //     lostBoardCode: code,
+  //     commentDate: moment().format("YYYY-MM-DD hh:mm:ss"),
+  //     user: {
+  //       userId: user.userId,
+  //       userNickname: user.userNickname,
+  //       userImg: user.userImg,
+  //     },
+  //   });
+  //   console.log(edit);
+  //   await updateCommentLost(edit);
+  //   setEdit({});
+  //   commentsAPI();
+  // };
+
   //수정 취소
   const delUpdate = () => {
     setEdit({});
+    setEdit({ lostParentCode: 0 });
     commentsAPI();
   };
 
@@ -407,10 +428,7 @@ const ViewLostBoard = () => {
     setViewBottomCode(e);
     setViewBottomBtn(true);
   };
-  useEffect(() => {
-    console.log(viewBottomBtn);
-    console.log(viewBottomCode);
-  }, [viewBottomCode]);
+
   const viewAllNotBottom = () => {
     setViewBottomBtn(false);
   };
@@ -625,7 +643,11 @@ const ViewLostBoard = () => {
                               style={{ display: "flex", alignItems: "center" }}
                             >
                               <textarea
-                                style={{ resize: "none", width: "500px" }}
+                                style={{
+                                  resize: "none",
+                                  width: "500px",
+                                  fontWeight: "bold",
+                                }}
                                 value={edit.commentContent}
                                 onChange={(e) =>
                                   setEdit((prev) => ({
@@ -635,12 +657,28 @@ const ViewLostBoard = () => {
                                 }
                               ></textarea>
                               <div style={{ marginLeft: "10px" }}>
-                                <button onClick={updateComment}>
+                                <button
+                                  onClick={updateComment}
+                                  style={{
+                                    fontWeight: "bold",
+                                    borderRadius: "5px",
+                                    border: "none",
+                                    backgroundColor: "gray",
+                                    color: "white",
+                                  }}
+                                >
                                   수정 완료
                                 </button>
                                 <button
                                   onClick={delUpdate}
-                                  style={{ marginLeft: "10px" }}
+                                  style={{
+                                    marginLeft: "10px",
+                                    fontWeight: "bold",
+                                    borderRadius: "5px",
+                                    border: "none",
+                                    backgroundColor: "black",
+                                    color: "white",
+                                  }}
                                 >
                                   수정 취소
                                 </button>
@@ -665,9 +703,35 @@ const ViewLostBoard = () => {
                                 flexDirection: "column",
                               }}
                             >
-                              <p id="userNickname">
-                                {comment.user.userNickname}
-                              </p>
+                              <div
+                                id="writerPoint"
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <p id="userNickname">
+                                  {comment.user.userNickname}
+                                </p>
+                                {comment.user.userNickname ==
+                                lost.userNickname ? (
+                                  <span
+                                    id="bottomWriter"
+                                    style={{
+                                      marginLeft: "9px",
+                                      backgroundColor: "green",
+                                      color: "white",
+                                      borderRadius: "30px",
+                                      padding: "3px 5px",
+                                      fontSize: "0.5rem",
+                                    }}
+                                  >
+                                    작성자
+                                  </span>
+                                ) : (
+                                  <></>
+                                )}
+                              </div>
                               <p id="commentContent">
                                 {comment.commentContent}
                               </p>
@@ -769,17 +833,23 @@ const ViewLostBoard = () => {
                                 >
                                   <div
                                     id="userWriter"
-                                    style={{ display: "flex" }}
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                    }}
                                   >
                                     <span
                                       id="bottomName"
-                                      style={{ fontSize: "0.8rem" }}
+                                      style={{
+                                        fontSize: "0.8rem",
+                                        paddingTop: "5px",
+                                      }}
                                     >
                                       {bottom.user.userNickname}
                                     </span>
                                     {/* 상위 댓글 작성자와 하위 댓글 작성자가 같을 때 -> 작성자 표시 */}
-                                    {comment.user.userId ==
-                                    bottom.user.userId ? (
+                                    {lost.userNickname ==
+                                    bottom.user.userNickname ? (
                                       <div
                                         id="bottomWriterBtn"
                                         style={{
@@ -802,48 +872,161 @@ const ViewLostBoard = () => {
                                         >
                                           작성자
                                         </span>
-                                        <div
-                                          id="bottomBtn"
-                                          style={{ fontSize: "0.6rem" }}
-                                        >
-                                          <button
+                                        {/* 수정 버튼을 클릭 안했을 때 */}
+                                        {edit.lostCommentCode !=
+                                        bottom.lostCommentCode ? (
+                                          <div
                                             style={{
-                                              marginRight: "10px",
-                                              fontWeight: "bold",
-                                              borderRadius: "5px",
-                                              border: "none",
-                                              backgroundColor: "gray",
-                                              color: "white",
+                                              display: "flex",
+                                              flexDirection: "column",
                                             }}
                                           >
-                                            수정
-                                          </button>
-                                          <button
-                                            style={{
-                                              fontWeight: "bold",
-                                              borderRadius: "5px",
-                                              border: "none",
-                                              backgroundColor: "black",
-                                              color: "white",
-                                            }}
-                                            onClick={() =>
-                                              delComment(bottom.lostCommentCode)
-                                            }
-                                          >
-                                            삭제
-                                          </button>
-                                        </div>
+                                            <div
+                                              id="bottomBtn"
+                                              style={{ fontSize: "0.6rem" }}
+                                            >
+                                              <button
+                                                style={{
+                                                  marginRight: "10px",
+                                                  fontWeight: "bold",
+                                                  borderRadius: "5px",
+                                                  border: "none",
+                                                  backgroundColor: "gray",
+                                                  color: "white",
+                                                }}
+                                                onClick={() =>
+                                                  setEdit({
+                                                    lostParentCode:
+                                                      comment.lostCommentCode,
+                                                    lostCommentCode:
+                                                      bottom.lostCommentCode,
+                                                    commentContent:
+                                                      bottom.commentContent,
+                                                    lostBoardCode: code,
+                                                    commentDate:
+                                                      moment().format(
+                                                        "YYYY-MM-DD hh:mm:ss"
+                                                      ),
+                                                    user: {
+                                                      userId: user.userId,
+                                                      userNickname:
+                                                        user.userNickname,
+                                                      userImg: user.userImg,
+                                                    },
+                                                  })
+                                                }
+                                              >
+                                                수정
+                                              </button>
+                                              <button
+                                                style={{
+                                                  fontWeight: "bold",
+                                                  borderRadius: "5px",
+                                                  border: "none",
+                                                  backgroundColor: "black",
+                                                  color: "white",
+                                                }}
+                                                onClick={() =>
+                                                  delComment(
+                                                    bottom.lostCommentCode
+                                                  )
+                                                }
+                                              >
+                                                삭제
+                                              </button>
+                                            </div>
+                                            <div
+                                              style={{
+                                                fontSize: "0.6rem",
+                                              }}
+                                            >
+                                              {moment(
+                                                bottom.commentDate
+                                              ).format("YY-MM-DD hh:mm")}
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <div style={{ fontSize: "0.6rem" }}>
+                                            {moment(bottom.commentDate).format(
+                                              "YY-MM-DD hh:mm"
+                                            )}
+                                          </div>
+                                        )}
                                       </div>
                                     ) : (
-                                      <></>
+                                      <div style={{ fontSize: "0.6rem" }}>
+                                        {moment(bottom.commentDate).format(
+                                          "YY-MM-DD hh:mm"
+                                        )}
+                                      </div>
                                     )}
                                   </div>
-                                  <span
-                                    id="bottomContent"
-                                    style={{ fontSize: "0.7rem" }}
-                                  >
-                                    {bottom.commentContent}
-                                  </span>
+                                  {edit.lostCommentCode ==
+                                  bottom.lostCommentCode ? (
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        marginTop: "10px",
+                                      }}
+                                    >
+                                      <textarea
+                                        style={{
+                                          resize: "none",
+                                          width: "500px",
+                                          fontWeight: "bold",
+                                          fontSize: "0.8rem",
+                                        }}
+                                        value={edit.commentContent}
+                                        onChange={(e) =>
+                                          setEdit((prev) => ({
+                                            ...prev,
+                                            commentContent: e.target.value,
+                                          }))
+                                        }
+                                      ></textarea>
+                                      <div
+                                        style={{
+                                          marginLeft: "10px",
+                                          display: "flex",
+                                          fontSize: "0.6rem",
+                                        }}
+                                      >
+                                        <button
+                                          onClick={updateComment}
+                                          style={{
+                                            fontWeight: "bold",
+                                            borderRadius: "5px",
+                                            border: "none",
+                                            backgroundColor: "gray",
+                                            color: "white",
+                                          }}
+                                        >
+                                          수정 완료
+                                        </button>
+                                        <button
+                                          onClick={delUpdate}
+                                          style={{
+                                            marginLeft: "10px",
+                                            fontWeight: "bold",
+                                            borderRadius: "5px",
+                                            border: "none",
+                                            backgroundColor: "black",
+                                            color: "white",
+                                          }}
+                                        >
+                                          수정 취소
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <span
+                                      id="bottomContent"
+                                      style={{ fontSize: "0.7rem" }}
+                                    >
+                                      {bottom.commentContent}
+                                    </span>
+                                  )}
                                 </div>
                               </div>
                             ))}
@@ -881,7 +1064,11 @@ const ViewLostBoard = () => {
                           </div>
                           <div id="boxAndBtn">
                             <textarea
-                              style={{ height: "80%", margin: "0px 10px" }}
+                              style={{
+                                height: "80%",
+                                margin: "0px 10px",
+                                fontWeight: "bold",
+                              }}
                               value={bottomComments.commentContent}
                               onChange={(e) =>
                                 setBottomComments((prev) => ({
