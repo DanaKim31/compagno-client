@@ -5,6 +5,7 @@ import {
   viewCommentLost,
   deleteCommentLost,
   updateCommentLost,
+  addBottomCommentLost,
 } from "../../api/lostBoard";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -17,7 +18,7 @@ import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/ko";
-import { hover } from "@testing-library/user-event/dist/hover";
+import { WiDirectionUp, WiDirectionDown } from "react-icons/wi";
 
 const Div = styled.div`
   @font-face {
@@ -314,15 +315,6 @@ const ViewLostBoard = () => {
     navigate("/compagno/lostBoard/viewAll");
   };
 
-  // 댓글 작성
-  const [topComments, setTopComments] = useState({
-    userImg: user.userImg,
-    userNickname: user.userNickname,
-    userId: user.userId,
-    commentContent: "",
-    lostBoardCode: code,
-  });
-
   // 댓글 보기
   const [comments, setComments] = useState([]);
   const commentsAPI = async () => {
@@ -336,6 +328,14 @@ const ViewLostBoard = () => {
     commentsAPI();
   }, []);
 
+  // 댓글 작성
+  const [topComments, setTopComments] = useState({
+    userImg: user.userImg,
+    userNickname: user.userNickname,
+    userId: user.userId,
+    commentContent: "",
+    lostBoardCode: code,
+  });
   const okCreate = async () => {
     await addTopCommentLost(topComments);
     commentsAPI();
@@ -365,30 +365,53 @@ const ViewLostBoard = () => {
   };
 
   const updateComment = async () => {
-    console.log(edit);
-    console.log(typeof edit.commentDate);
     await updateCommentLost(edit);
     setEdit({});
     commentsAPI();
   };
+
   //수정 취소
   const delUpdate = () => {
     setEdit({});
     commentsAPI();
   };
-  // 대댓글 쓰기
+
+  // 대댓글 작성
   const [bottomComments, setBottomComments] = useState({
     userImg: user.userImg,
     userNickname: user.userNickname,
     userId: user.userId,
     commentContent: "",
     lostBoardCode: code,
-    lostParentCode: comments.lostCommentCode,
+    lostParentCode: "",
   });
 
-  const [num, setNum] = useState(0);
-  const writeReplies = (lostCommentCode) => {
-    setNum(lostCommentCode);
+  // 대댓글 작성 완료
+  const okBottomWrite = async () => {
+    await addBottomCommentLost(bottomComments);
+    setBottomComments({ lostParentCode: "", commentContent: "" });
+    commentsAPI();
+  };
+
+  // 대댓글 작성 취소
+  const delBottomWrite = () => {
+    setBottomComments({ lostParentCode: "" });
+    commentsAPI();
+  };
+
+  // 버튼 클릭 시 대댓글 전체 보기
+  const [viewBottomBtn, setViewBottomBtn] = useState(false);
+  const [viewBottomCode, setViewBottomCode] = useState(0);
+  const viewAllBottom = (e) => {
+    setViewBottomCode(e);
+    setViewBottomBtn(true);
+  };
+  useEffect(() => {
+    console.log(viewBottomBtn);
+    console.log(viewBottomCode);
+  }, [viewBottomCode]);
+  const viewAllNotBottom = () => {
+    setViewBottomBtn(false);
   };
 
   return (
@@ -528,10 +551,12 @@ const ViewLostBoard = () => {
           </div>
         </div>
       </Div>
+      {/* 여기서부터가 댓글----------------------------------------------------------------------------------------- */}
       <Div>
         <div id="commentBox">
           <h4>댓글</h4>
-          {user.userNickname != null ? (
+          {user.userNickname !=
+          null /* userNickname있어야지만 댓글 작성 폼 나타남 --------------------------------*/ ? (
             <div id="commentWrite">
               <div id="user">
                 <img
@@ -554,14 +579,16 @@ const ViewLostBoard = () => {
               </div>
             </div>
           ) : (
+            /* userNickname 없으면 댓글 작성 폼 안나타남 ----------------------------------------------------------------- */
             <h5
               style={{ color: "green", fontWeight: "bold", fontSize: "0.9rem" }}
             >
-              댓글 작성은 회원만 가능합니다.
+              댓글 및 대댓글 작성은 회원만 가능합니다.
             </h5>
           )}
-
+          {/* 여기는 작성된 댓글들 보이는 곳 ---------------------------------------------------------------------------------- */}
           <div id="commetsViewAll">
+            {/* 상위 댓글들 반복 돌리기 ----------------------------------------------------------------------------- */}
             {comments?.map((comment) => (
               <div key={comment.lostCommentCode} id="contentBtn">
                 <div id="commentsImgAndContent">
@@ -576,6 +603,8 @@ const ViewLostBoard = () => {
                     <div style={{ display: "flex", flexDirection: "column" }}>
                       <div id="commentsContent">
                         <p id="userNickname"> {comment.user.userNickname}</p>
+                        {/* 상위 수정 코드와 상위 댓글 코드 같을 때만 수정 박스 나오도록 ------------------------------------- */}
+                        {/* 수정 박스는 없어도 화살표로 인해 대댓이 보이긴 해야 함 -------------------------------------- */}
                         {edit.lostCommentCode == comment.lostCommentCode ? (
                           <textarea
                             style={{ resize: "none", width: "500px" }}
@@ -588,17 +617,43 @@ const ViewLostBoard = () => {
                             }
                           ></textarea>
                         ) : (
-                          <p id="commentContent">{comment.commentContent}</p>
+                          // 이때는 수정 박스가 나오면 안됨! -----------------------------------------------------------
+                          // 수정 박스는 없어도 화살표로 인해 대댓이 보이긴 해야 함 --------------------------------------
+                          <div>
+                            {/* 수정 박스 말고 그냥 원래 있던 댓글 보여야 함 */}
+                            <p id="commentContent">{comment.commentContent}</p>
+                          </div>
                         )}
+                        {/* 화살표 눌러서 viewBottomBtn의 boolean 값 변함+viewBottomCode가 들어감 -> 대댓글 보이도록  */}
+                        {/* 즉 여기서 대댓글 반복문이 돌아야 함 */}
+                        <div>
+                          {viewBottomBtn &&
+                          viewBottomCode == comment.losstCommentCode ? (
+                            <div>
+                              <h2>이호창 이자식</h2>
+                              {comment.replies.map((bottom) => (
+                                <div key={bottom.lostCommentCode}>
+                                  {bottom.user.userImg}
+                                  {bottom.user.userNickname}
+                                  {bottom.commentContent}
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+                        </div>
                       </div>
-                      {num == 0 ? (
+                      {/* 대댓글 작성 추가 폼 */}
+                      {comment.lostCommentCode !=
+                      bottomComments.lostParentCode ? (
                         <></>
                       ) : (
                         <div
                           id="commentWrite"
                           style={{
                             marginTop: "10px",
-                            width: "556px",
+                            width: "580px",
                             fontSize: "0.8rem",
                             height: "80px",
                           }}
@@ -618,7 +673,7 @@ const ViewLostBoard = () => {
                           </div>
                           <div id="boxAndBtn">
                             <textarea
-                              style={{ height: "80%" }}
+                              style={{ height: "80%", margin: "0px 10px" }}
                               value={bottomComments.commentContent}
                               onChange={(e) =>
                                 setBottomComments((prev) => ({
@@ -627,7 +682,18 @@ const ViewLostBoard = () => {
                                 }))
                               }
                             ></textarea>
-                            <button onClick={okCreate}>등록</button>
+                            <button
+                              onClick={okBottomWrite}
+                              style={{ width: "50px" }}
+                            >
+                              등록
+                            </button>
+                            <button
+                              onClick={delBottomWrite}
+                              style={{ width: "50px" }}
+                            >
+                              취소
+                            </button>
                           </div>
                         </div>
                       )}
@@ -655,14 +721,48 @@ const ViewLostBoard = () => {
                               "YY-MM-DD hh:mm"
                             )}
                           </div>
-                          <button
-                            style={{ border: "none", backgroundColor: "white" }}
-                            onClick={(e) =>
-                              writeReplies(comment.lostCommentCode)
-                            }
-                          >
-                            답글 쓰기
-                          </button>
+                          {bottomComments.lostParentCode == "" ? (
+                            <div>
+                              <button
+                                style={{
+                                  border: "none",
+                                  backgroundColor: "white",
+                                }}
+                                onClick={() =>
+                                  setBottomComments((prev) => ({
+                                    ...prev,
+                                    lostParentCode: comment.lostCommentCode,
+                                  }))
+                                }
+                              >
+                                대댓글 쓰기
+                              </button>
+                              <WiDirectionUp
+                                style={{ fontSize: "1.4rem" }}
+                                onClick={viewAllNotBottom}
+                              />
+                              <WiDirectionDown
+                                style={{ fontSize: "2rem" }}
+                                onClick={() =>
+                                  viewAllBottom(comment.lostCommentCode)
+                                }
+                              />
+                            </div>
+                          ) : (
+                            <>
+                              {" "}
+                              <WiDirectionUp
+                                style={{ fontSize: "1.4rem" }}
+                                onClick={viewAllNotBottom}
+                              />
+                              <WiDirectionDown
+                                style={{ fontSize: "2rem" }}
+                                onClick={() =>
+                                  viewAllBottom(comment.lostCommentCode)
+                                }
+                              />
+                            </>
+                          )}
                         </div>
                       )}
                     </div>
@@ -684,9 +784,27 @@ const ViewLostBoard = () => {
                             backgroundColor: "white",
                             fontWeight: "bold",
                           }}
+                          onClick={() =>
+                            setBottomComments((prev) => ({
+                              ...prev,
+                              lostParentCode: comment.lostCommentCode,
+                            }))
+                          }
                         >
-                          답글 쓰기
+                          대댓글 쓰기
                         </button>
+                        <div style={{ display: "flex" }}>
+                          <WiDirectionUp
+                            style={{ fontSize: "1.4rem" }}
+                            onClick={viewAllNotBottom}
+                          />
+                          <WiDirectionDown
+                            style={{ fontSize: "2rem" }}
+                            onClick={() =>
+                              viewAllBottom(comment.lostCommentCode)
+                            }
+                          />
+                        </div>
                       </div>
                     </div>
                   )}

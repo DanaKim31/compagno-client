@@ -54,8 +54,9 @@ export const addTopCommentLost = async (data) => {
 };
 
 // 대댓글 추가
+// http://localhost:8080/compagno/lostBoard/comment
 export const addBottomCommentLost = async (data) => {
-  return await authorize.post("losstBoard/comment/", data);
+  return await authorize.post("lostBoard/comment", data);
 };
 
 // 댓글 보기
