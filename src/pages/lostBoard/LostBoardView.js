@@ -18,7 +18,7 @@ import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/ko";
-import { WiDirectionUp, WiDirectionDown } from "react-icons/wi";
+import { BsCaretDownFill, BsCaretUpFill } from "react-icons/bs";
 
 const Div = styled.div`
   @font-face {
@@ -230,33 +230,31 @@ const Div = styled.div`
           width: 80%;
           margin-top: 15px;
           display: flex;
-          border-bottom: 1px dashed black;
+          border-bottom: 1px solid green;
           padding-bottom: 10px;
           align-items: center;
 
           display: flex;
           justify-content: space-between;
-          #t {
-            display: flex;
-            #userImg {
-              img {
-                width: 35px;
-                height: 35px;
-                border-radius: 50%;
-                border: 0.3px solid black;
-                margin-right: 10px;
-                align-content: center;
-              }
+
+          #userImg {
+            img {
+              width: 35px;
+              height: 35px;
+              border-radius: 50%;
+              border: 0.3px solid black;
+              margin-right: 10px;
+              align-content: center;
             }
-            #commentsContent {
-              font-size: 0.7rem;
-              #userNickname {
-                margin-bottom: 5px;
-                font-size: 0.9rem;
-              }
-              #commentContent {
-                margin-bottom: 0px;
-              }
+          }
+          #commentsContent {
+            font-size: 0.7rem;
+            #userNickname {
+              margin-bottom: 5px;
+              font-size: 0.9rem;
+            }
+            #commentContent {
+              margin-bottom: 0px;
             }
           }
         }
@@ -338,6 +336,7 @@ const ViewLostBoard = () => {
   });
   const okCreate = async () => {
     await addTopCommentLost(topComments);
+    setTopComments({ commentContent: "" });
     commentsAPI();
   };
 
@@ -389,6 +388,8 @@ const ViewLostBoard = () => {
   // 대댓글 작성 완료
   const okBottomWrite = async () => {
     await addBottomCommentLost(bottomComments);
+    setViewBottomCode(bottomComments.lostParentCode);
+    setViewBottomBtn(true);
     setBottomComments({ lostParentCode: "", commentContent: "" });
     commentsAPI();
   };
@@ -592,7 +593,10 @@ const ViewLostBoard = () => {
             {comments?.map((comment) => (
               <div key={comment.lostCommentCode} id="contentBtn">
                 <div id="commentsImgAndContent">
-                  <div id="t">
+                  <div
+                    id="topImgAndContents"
+                    style={{ display: "flex", width: "-webkit-fill-available" }}
+                  >
                     <div id="userImg">
                       <img
                         src={
@@ -600,49 +604,253 @@ const ViewLostBoard = () => {
                         }
                       />
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                      <div id="commentsContent">
-                        <p id="userNickname"> {comment.user.userNickname}</p>
+                    <div
+                      id="firstSection"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "100%",
+                      }}
+                    >
+                      <div id="commentsContent" style={{ width: "100%" }}>
                         {/* 상위 수정 코드와 상위 댓글 코드 같을 때만 수정 박스 나오도록 ------------------------------------- */}
                         {/* 수정 박스는 없어도 화살표로 인해 대댓이 보이긴 해야 함 -------------------------------------- */}
                         {edit.lostCommentCode == comment.lostCommentCode ? (
-                          <textarea
-                            style={{ resize: "none", width: "500px" }}
-                            value={edit.commentContent}
-                            onChange={(e) =>
-                              setEdit((prev) => ({
-                                ...prev,
-                                commentContent: e.target.value,
-                              }))
-                            }
-                          ></textarea>
+                          <div id="topComemntUpdateBox">
+                            <p id="userNickname">
+                              {" "}
+                              {comment.user.userNickname}
+                            </p>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <textarea
+                                style={{ resize: "none", width: "500px" }}
+                                value={edit.commentContent}
+                                onChange={(e) =>
+                                  setEdit((prev) => ({
+                                    ...prev,
+                                    commentContent: e.target.value,
+                                  }))
+                                }
+                              ></textarea>
+                              <div style={{ marginLeft: "10px" }}>
+                                <button onClick={updateComment}>
+                                  수정 완료
+                                </button>
+                                <button
+                                  onClick={delUpdate}
+                                  style={{ marginLeft: "10px" }}
+                                >
+                                  수정 취소
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         ) : (
-                          // 이때는 수정 박스가 나오면 안됨! -----------------------------------------------------------
+                          // 수정 안하는 경우(기본 댓글 내용만 보이도록)
                           // 수정 박스는 없어도 화살표로 인해 대댓이 보이긴 해야 함 --------------------------------------
-                          <div>
-                            {/* 수정 박스 말고 그냥 원래 있던 댓글 보여야 함 */}
-                            <p id="commentContent">{comment.commentContent}</p>
+                          <div
+                            id="contentsAndBtn"
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              width: "100%",
+                            }}
+                          >
+                            <div
+                              id="nameAndContent"
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <p id="userNickname">
+                                {comment.user.userNickname}
+                              </p>
+                              <p id="commentContent">
+                                {comment.commentContent}
+                              </p>
+                            </div>
+                            {/* 기본 글 밑으로 대댓글이 전부 보이도록 해야 함~ */}
+                            {/* 조건은 버튼 클릭으로 인한 viewBottomBtn=true, viewBottomCode==comment.lostCommentCode */}
+
+                            {/* 수정&삭제 버튼 -> 현재 user와 글쓴이의 user가 같을 때 */}
+                            {user.userId == comment.user.userId ? (
+                              <div>
+                                <button
+                                  onClick={() => updateBtn(comment)}
+                                  style={{
+                                    fontWeight: "bold",
+                                    borderRadius: "5px",
+                                    border: "none",
+                                    backgroundColor: "gray",
+                                    color: "white",
+                                  }}
+                                >
+                                  수정
+                                </button>
+                                <button
+                                  style={{
+                                    marginLeft: "10px",
+                                    fontWeight: "bold",
+                                    borderRadius: "5px",
+                                    border: "none",
+                                    backgroundColor: "black",
+                                    color: "white",
+                                  }}
+                                  onClick={() =>
+                                    delComment(comment.lostCommentCode)
+                                  }
+                                >
+                                  삭제
+                                </button>
+                                <div
+                                  style={{
+                                    fontSize: "0.7rem",
+                                    marginTop: "5px",
+                                  }}
+                                >
+                                  {moment(comment.commentDate).format(
+                                    "YY-MM-DD hh:mm"
+                                  )}
+                                </div>
+                              </div>
+                            ) : (
+                              <>
+                                {moment(comment.commentDate).format(
+                                  "YY-MM-DD hh:mm"
+                                )}
+                              </>
+                            )}
                           </div>
                         )}
-                        {/* 화살표 눌러서 viewBottomBtn의 boolean 값 변함+viewBottomCode가 들어감 -> 대댓글 보이도록  */}
+                        {/* 위에 괄호에서 이미 수정 버튼 눌렀을 때  */}
                         {/* 즉 여기서 대댓글 반복문이 돌아야 함 */}
-                        <div>
-                          {viewBottomBtn &&
-                          viewBottomCode == comment.losstCommentCode ? (
-                            <div>
-                              <h2>이호창 이자식</h2>
-                              {comment.replies.map((bottom) => (
-                                <div key={bottom.lostCommentCode}>
-                                  {bottom.user.userImg}
-                                  {bottom.user.userNickname}
-                                  {bottom.commentContent}
+                      </div>
+                      <div>
+                        {viewBottomBtn &&
+                        viewBottomCode == comment.lostCommentCode ? (
+                          <div>
+                            {comment.replies.map((bottom) => (
+                              <div
+                                key={bottom.lostCommentCode}
+                                style={{
+                                  display: "flex",
+                                  margin: "10px 0px",
+                                  borderTop: "0.5px dashed gray",
+                                  paddingTop: "10px",
+                                  width: "700px",
+                                }}
+                              >
+                                <div
+                                  id="bottomUserImg"
+                                  style={{ marginRight: "10px" }}
+                                >
+                                  <img
+                                    style={{
+                                      width: "25px",
+                                      height: "25px",
+                                      borderRadius: "50%",
+                                    }}
+                                    src={
+                                      "http://localhost:8081/upload/" +
+                                      bottom.user.userImg
+                                    }
+                                  />
                                 </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <></>
-                          )}
-                        </div>
+                                <div
+                                  id="bottomUserContent"
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <div
+                                    id="userWriter"
+                                    style={{ display: "flex" }}
+                                  >
+                                    <span
+                                      id="bottomName"
+                                      style={{ fontSize: "0.8rem" }}
+                                    >
+                                      {bottom.user.userNickname}
+                                    </span>
+                                    {/* 상위 댓글 작성자와 하위 댓글 작성자가 같을 때 -> 작성자 표시 */}
+                                    {comment.user.userId ==
+                                    bottom.user.userId ? (
+                                      <div
+                                        id="bottomWriterBtn"
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          width: "100%",
+                                          justifyContent: "space-between",
+                                        }}
+                                      >
+                                        <span
+                                          id="bottomWriter"
+                                          style={{
+                                            marginLeft: "9px",
+                                            backgroundColor: "green",
+                                            color: "white",
+                                            borderRadius: "30px",
+                                            padding: "3px 5px",
+                                            fontSize: "0.5rem",
+                                          }}
+                                        >
+                                          작성자
+                                        </span>
+                                        <div
+                                          id="bottomBtn"
+                                          style={{ fontSize: "0.6rem" }}
+                                        >
+                                          <button
+                                            style={{
+                                              marginRight: "10px",
+                                              fontWeight: "bold",
+                                              borderRadius: "5px",
+                                              border: "none",
+                                              backgroundColor: "gray",
+                                              color: "white",
+                                            }}
+                                          >
+                                            수정
+                                          </button>
+                                          <button
+                                            style={{
+                                              fontWeight: "bold",
+                                              borderRadius: "5px",
+                                              border: "none",
+                                              backgroundColor: "black",
+                                              color: "white",
+                                            }}
+                                            onClick={() =>
+                                              delComment(bottom.lostCommentCode)
+                                            }
+                                          >
+                                            삭제
+                                          </button>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <></>
+                                    )}
+                                  </div>
+                                  <span
+                                    id="bottomContent"
+                                    style={{ fontSize: "0.7rem" }}
+                                  >
+                                    {bottom.commentContent}
+                                  </span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <></>
+                        )}
                       </div>
                       {/* 대댓글 작성 추가 폼 */}
                       {comment.lostCommentCode !=
@@ -697,109 +905,52 @@ const ViewLostBoard = () => {
                           </div>
                         </div>
                       )}
-                    </div>
-                  </div>
-                  {user.userNickname == comment.user.userNickname ? (
-                    <div id="btn">
-                      {edit.lostCommentCode == comment.lostCommentCode ? (
-                        <div>
-                          <button onClick={updateComment}>수정 완료</button>
-                          <button onClick={delUpdate}>수정 취소</button>
-                        </div>
-                      ) : (
-                        <div>
-                          <button onClick={() => updateBtn(comment)}>
-                            수정
-                          </button>
+                      <div id="bottomWriteViewBtn" style={{ display: "flex" }}>
+                        {/* 대댓글 쓰기 버튼 : 비회원일 경우 안보이도록 */}
+                        {Object.keys(user).length == 0 ? (
+                          <></>
+                        ) : (
                           <button
-                            onClick={() => delComment(comment.lostCommentCode)}
+                            style={{
+                              border: "none",
+                              fontSize: "0.7rem",
+                              fontWeight: "bold",
+                              width: "70px",
+                              marginTop: "5px",
+                              backgroundColor: "white",
+                              color: "green",
+                            }}
+                            onClick={() =>
+                              setBottomComments((prev) => ({
+                                ...prev,
+                                lostParentCode: comment.lostCommentCode,
+                              }))
+                            }
                           >
-                            삭제
+                            대댓글 쓰기
                           </button>
-                          <div style={{ fontSize: "0.7rem", marginTop: "5px" }}>
-                            {moment(comment.commentDate).format(
-                              "YY-MM-DD hh:mm"
-                            )}
-                          </div>
-                          {bottomComments.lostParentCode == "" ? (
-                            <div>
-                              <button
-                                style={{
-                                  border: "none",
-                                  backgroundColor: "white",
-                                }}
-                                onClick={() =>
-                                  setBottomComments((prev) => ({
-                                    ...prev,
-                                    lostParentCode: comment.lostCommentCode,
-                                  }))
-                                }
-                              >
-                                대댓글 쓰기
-                              </button>
-                              <WiDirectionUp
-                                style={{ fontSize: "1.4rem" }}
-                                onClick={viewAllNotBottom}
-                              />
-                              <WiDirectionDown
-                                style={{ fontSize: "2rem" }}
-                                onClick={() =>
-                                  viewAllBottom(comment.lostCommentCode)
-                                }
-                              />
-                            </div>
-                          ) : (
-                            <>
-                              {" "}
-                              <WiDirectionUp
-                                style={{ fontSize: "1.4rem" }}
-                                onClick={viewAllNotBottom}
-                              />
-                              <WiDirectionDown
-                                style={{ fontSize: "2rem" }}
-                                onClick={() =>
-                                  viewAllBottom(comment.lostCommentCode)
-                                }
-                              />
-                            </>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div>
-                      <div
-                        style={{
-                          fontSize: "0.7rem",
-                          marginTop: "15px",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "flex-start",
-                        }}
-                      >
-                        {moment(comment.commentDate).format("YY-MM-DD hh:mm")}
-                        <button
+                        )}
+
+                        <div
                           style={{
-                            border: "none",
-                            backgroundColor: "white",
-                            fontWeight: "bold",
+                            display: "flex",
+                            alignItems: "center",
                           }}
-                          onClick={() =>
-                            setBottomComments((prev) => ({
-                              ...prev,
-                              lostParentCode: comment.lostCommentCode,
-                            }))
-                          }
                         >
-                          대댓글 쓰기
-                        </button>
-                        <div style={{ display: "flex" }}>
-                          <WiDirectionUp
-                            style={{ fontSize: "1.4rem" }}
+                          <BsCaretUpFill
+                            style={{
+                              fontSize: "0.9rem",
+                              cursor: "pointer",
+                              marginRight: "0px",
+                            }}
                             onClick={viewAllNotBottom}
                           />
-                          <WiDirectionDown
-                            style={{ fontSize: "2rem" }}
+                          <BsCaretDownFill
+                            style={{
+                              fontSize: "0.9rem",
+                              cursor: "pointer",
+                              marginLeft: "0px",
+                            }}
                             onClick={() =>
                               viewAllBottom(comment.lostCommentCode)
                             }
@@ -807,7 +958,7 @@ const ViewLostBoard = () => {
                         </div>
                       </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
             ))}
