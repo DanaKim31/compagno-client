@@ -19,6 +19,12 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/ko";
 import { BsCaretDownFill, BsCaretUpFill } from "react-icons/bs";
+import {
+  FaAngleLeft,
+  FaAnglesLeft,
+  FaAngleRight,
+  FaAnglesRight,
+} from "react-icons/fa6";
 
 const Div = styled.div`
   @font-face {
@@ -271,6 +277,9 @@ const Div = styled.div`
       }
     }
   }
+  .iconPaging {
+    cursor: pointer;
+  }
 `;
 
 const ViewLostBoard = () => {
@@ -312,12 +321,24 @@ const ViewLostBoard = () => {
   const btnList = () => {
     navigate("/compagno/lostBoard/viewAll");
   };
+  // 현재 페이지
+  const [page, setPage] = useState(1);
+  // 총 댓글 수
+  const [totalComments, setTotalComments] = useState(0);
+  // 전체 총 페이지 : 총 댓글수/10
+  const [totalPage, setTotalPage] = useState(0);
+  // 페이지들
+  const [pages, setPages] = useState([]);
+  // 한 페이지 당 보일 댓글 수  : 10
 
   // 댓글 보기
   const [comments, setComments] = useState([]);
   const commentsAPI = async () => {
-    const response = await viewCommentLost(code);
+    const response = await viewCommentLost(code, page);
     console.log(response.data);
+    console.log(response.data.length); // 총 댓글 수
+    setTotalComments(response.data.length);
+    setTotalPage(Math.ceil(response.data.length / 5) + 5);
     setComments(response.data);
   };
 
@@ -325,6 +346,35 @@ const ViewLostBoard = () => {
     viewsAPI();
     commentsAPI();
   }, []);
+
+  useEffect(() => {
+    commentsAPI();
+  }, [page]);
+
+  // 댓글 페이징 처리
+  // 첫 페이지, 마지막 페이지, 페이지 리스트 초기 셋팅
+  let lastPage = 0;
+  let firstPage = 0;
+  let pageList = [];
+
+  useEffect(() => {
+    lastPage = Math.ceil(page / 5) * 5;
+    firstPage = lastPage - 4;
+
+    if (totalPage < lastPage) {
+      lastPage = totalPage;
+    }
+    for (let i = firstPage; i <= lastPage; i++) {
+      pageList.push(i); // 처음 i는 firstPage, 범위는 lastPage로 반복문 돌려서 i값을 넣은 list 만들기
+    }
+    setPages(pageList);
+  }, [totalPage]);
+
+  console.log(page);
+  console.log(totalComments);
+  console.log("totalComemnts/5소수점올리기");
+  console.log(totalPage);
+  console.log(pages);
 
   // 댓글 작성
   const [topComments, setTopComments] = useState({
@@ -336,7 +386,13 @@ const ViewLostBoard = () => {
   });
   const okCreate = async () => {
     await addTopCommentLost(topComments);
-    setTopComments({ commentContent: "" });
+    setTopComments({
+      userImg: user.userImg,
+      userNickname: user.userNickname,
+      userId: user.userId,
+      commentContent: "",
+      lostBoardCode: code,
+    });
     commentsAPI();
   };
 
@@ -1149,6 +1205,44 @@ const ViewLostBoard = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div
+            id="pagingBtn"
+            style={{
+              width: "65%",
+              textAlign: "center",
+              margin: "20px 0px",
+              position: "absolute",
+              paddingBottom: "20px",
+            }}
+          >
+            <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
+            <FaAngleLeft
+              className="iconPaging"
+              onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
+            />
+            {pages.map((num, index) => (
+              <>
+                <button
+                  key={index}
+                  value={num}
+                  onClick={(e) => setPage(Number(e.target.value))}
+                >
+                  {num}
+                </button>
+              </>
+            ))}
+            <FaAngleRight
+              className="iconPaging"
+              onClick={
+                () =>
+                  page < totalPage ? setPage(page + 1) : setPage(totalPage) // 현재 페이지에서 한칸 뒤로
+              }
+            />
+            <FaAnglesRight
+              className="iconPaging"
+              onClick={() => setPage(totalPage)}
+            />
           </div>
         </div>
       </Div>

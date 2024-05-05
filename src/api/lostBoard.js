@@ -61,8 +61,8 @@ export const addBottomCommentLost = async (data) => {
 
 // 댓글 보기
 // http://localhost:8080/compagno/public/lostBoard/comment/48
-export const viewCommentLost = async (code) => {
-  return await instance.get("lostBoard/comment/" + code);
+export const viewCommentLost = async (code, page) => {
+  return await instance.get("lostBoard/comment/" + code + "?page=" + page);
 };
 
 // 댓글 삭제
