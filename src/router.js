@@ -33,6 +33,8 @@ import CreateProductBoard from "./pages/productBoard/CreateProductBoard";
 import UpdateProductBoard from "./pages/productBoard/UpdateProductBoard";
 import ClassList from "./pages/onedayClassBoard/ClassList";
 import CreateClass from "./pages/onedayClassBoard/CreateClass";
+import AdopBoardViewAll from "./pages/adoptionBoard/AdopBoardViewAll";
+// import AdopBoardCreate from "./pages/adoptionBoard/AdopBoardCreate";
 
 const router = createBrowserRouter([
   {
@@ -97,6 +99,19 @@ const router = createBrowserRouter([
           { path: "update/:code", element: <LostBoardUpdate /> },
         ],
       },
+      {
+        path: "adoptionBoard",
+        children: [
+          {
+            path: "viewAll",
+            element: <AdopBoardViewAll />,
+          },
+          // { path: "create", element: <LostBoardCreate /> },
+          // { path: "view/:code", element: <LostBoardView /> },
+          // { path: "update/:code", element: <LostBoardUpdate /> },
+        ],
+      },
+
       {
         path: "register-pet",
         children: [
