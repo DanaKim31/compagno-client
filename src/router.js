@@ -33,6 +33,8 @@ import CreateProductBoard from "./pages/productBoard/CreateProductBoard";
 import UpdateProductBoard from "./pages/productBoard/UpdateProductBoard";
 import ClassList from "./pages/onedayClassBoard/ClassList";
 import CreateClass from "./pages/onedayClassBoard/CreateClass";
+import NeighborUpdate from "./pages/neighborBoard/NeighborUpdate";
+import SitterUpdate from "./pages/sitterBoard/SitterUpdate";
 
 const router = createBrowserRouter([
   {
@@ -110,6 +112,7 @@ const router = createBrowserRouter([
           { index: true, element: <SitterBoard /> },
           { path: "register", element: <SitterCreate /> },
           { path: "detail/:code", element: <SitterDetail /> },
+          { path: "edit/:code", element: <SitterUpdate /> },
         ],
       },
       {
@@ -118,6 +121,7 @@ const router = createBrowserRouter([
           { index: true, element: <NeighborBoard /> },
           { path: "register", element: <NeighborCreate /> },
           { path: "detail/:code", element: <NeighborDetail /> },
+          { path: "edit/:code", element: <NeighborUpdate /> },
         ],
       },
       {
