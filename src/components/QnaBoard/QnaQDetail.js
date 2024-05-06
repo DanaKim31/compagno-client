@@ -10,6 +10,11 @@ import QnaADetail from "./QnaADetail";
 const Div = styled.div`
   position: relative;
   top: 200px;
+  #qtopbar {
+    background-color: pink;
+    display: flex;
+    justify-content: space-between;
+  }
 `;
 
 const QnaQDetail = () => {
@@ -224,21 +229,33 @@ const QnaQDetail = () => {
                 ) : (
                   <>
                     {/* 그냥 보는 페이지 */}
-                    {/* 수정, 삭제 버튼 */}
-                    <Button
-                      variant="warning"
-                      onClick={() => onUpdateQuestion(question)}
-                    >
-                      수정
-                    </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => onDeleteQuestion(question.qnaQCode)}
-                    >
-                      삭제
-                    </Button>
+                    <div id="qtopbar">
+                      <h1>{question.qnaQTitle}</h1>
+                      {/* 수정, 삭제 버튼 */}
+                      <div>
+                        <Button
+                          variant="warning"
+                          onClick={() => onUpdateQuestion(question)}
+                        >
+                          수정
+                        </Button>
+                        <Button
+                          variant="danger"
+                          onClick={() => onDeleteQuestion(question.qnaQCode)}
+                        >
+                          삭제
+                        </Button>
+                      </div>
+                    </div>
 
                     {/* 상세 정보 */}
+
+                    <div>
+                      <p>날짜 : {question.qnaQDate}</p>
+                      <p>{question.userId}</p>
+                      <p>{question.userNickname}</p>
+                      <p>{question.qnaQContent}</p>
+                    </div>
                     {question.images?.map((image) => (
                       <img
                         alt=""
@@ -246,13 +263,6 @@ const QnaQDetail = () => {
                         src={"http://localhost:8081" + image.qnaQUrl}
                       />
                     ))}
-                    <div>
-                      <p>{question.qnaQTitle}</p>
-                      <p>{question.qnaQDate}</p>
-                      <p>{question.userId}</p>
-                      <p>{question.userNickname}</p>
-                      <p>{question.qnaQContent}</p>
-                    </div>
                   </>
                 )}
               </div>

@@ -14,6 +14,13 @@ const Div = styled.div`
   position: relative;
   top: 200px;
 
+  #content {
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+
+    background-color: pink;
+  }
   #map {
     width: 500px;
     height: 500px;
@@ -104,28 +111,30 @@ const ContentList = () => {
       <>
         <h1>리스트 출력</h1>
         <p>총 {contents.totalElements}건</p>
-        <table>
-          <thead>
-            <tr>
-              <th>이름</th>
-            </tr>
-          </thead>
-          <tbody>
-            {content?.map((item) => {
-              return (
-                <tr key={item.num}>
-                  <td>
-                    <a href={`/compagno/content/detail/${item.num}`}>
-                      {item.name}
-                    </a>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <div id="map">
-          <MapList content={content} />
+        <div id="content">
+          <table>
+            <thead>
+              <tr>
+                <th>이름</th>
+              </tr>
+            </thead>
+            <tbody>
+              {content?.map((item) => {
+                return (
+                  <tr key={item.num}>
+                    <td>
+                      <a href={`/compagno/content/detail/${item.num}`}>
+                        {item.name}
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <div id="map">
+            <MapList content={content} />
+          </div>
         </div>
       </>
       <div className="paging">
