@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   getSitterBoard,
   updateSitterBoard,
@@ -13,7 +13,8 @@ import {
   updateSitterComment,
   deleteSitterComment,
 } from "../../api/sitterBoard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userSave } from "../../store/user";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -27,8 +28,9 @@ const Div = styled.div`
   .board-area {
     width: 100%;
     display: flex;
-    justify-content: center;
     margin-bottom: 40px;
+    flex-direction: column;
+    align-items: center;
   }
 
   .comment-area {
@@ -105,11 +107,18 @@ const SitterDetail = () => {
   const { code } = useParams();
   const [sitterBoard, setSitterBoard] = useState({});
   const [user, setUser] = useState({});
-  const [comment, setComment] = useState("");
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState("");
+  const [commentEditCode, setCommentEditCode] = useState(0);
+  const [commentEditContent, setCommentEditConent] = useState("");
+  const [replyCode, setReplyCode] = useState(0);
+  const [replyContent, setReplyContent] = useState("");
   const [commentEdit, setCommentEdit] = useState(null);
 
-  // ================= 계정 관련 =================
+  // ================= 유저정보 =================
   const userInfo = useSelector((state) => {
     return state.user;
   });
@@ -127,6 +136,9 @@ const SitterDetail = () => {
   };
 
   useEffect(() => {
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
     sitterBoardAPI(code);
     sitterCommentsAPI();
     if (Object.keys(userInfo).length === 0) {
@@ -137,9 +149,20 @@ const SitterDetail = () => {
   }, []);
 
   // ================= 댓글 등록 =================
-  const registerComment = async (data) => {
-    await registerSitterComment(data);
-    sitterCommentsAPI();
+  const registerComment = async () => {
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+    } else {
+      await registerSitterComment({
+        sitterBoardCode: code,
+        sitterCommentContent: comment,
+        user: {
+          userId: user.userId,
+        },
+      });
+      setComment("");
+      sitterCommentsAPI();
+    }
   };
 
   // ================= 댓글 삭제 =================
@@ -149,8 +172,13 @@ const SitterDetail = () => {
   };
 
   // ================= 댓글 수정 =================
-  const updateComment = async (data) => {
-    await updateSitterComment(data);
+  const updateComment = async () => {
+    await updateSitterComment({
+      sitterCommentCode: commentEditCode,
+      sitterCommentContent: commentEditContent,
+    });
+    // setReplyContent("");
+    setCommentEditCode(0);
     sitterCommentsAPI();
   };
 
@@ -160,24 +188,39 @@ const SitterDetail = () => {
 
   const commentUpdate = async () => {};
 
+  // ================= 게시글 수정 =================
+  const updateBoard = () => {
+    navigate("/compagno/sitterBoard/edit/" + code);
+  };
+
+  // ================= 게시글 삭제 =================
+  const deleteBoard = async () => {
+    await deleteSitterBoard(code);
+    alert("게시글이 삭제됩니다.");
+    navigate("/compagno/sitterBoard");
+  };
+
   return (
     <Div>
       <h1>Detail</h1>
-      <div className="board-area">
-        <div key={sitterBoard.sitterBoardCode}>
-          <h3>
-            카테고리 구분 : {sitterBoard.sitterCategory?.sitterCategoryType}
-          </h3>
-          <h3>반려동물 구분 : {sitterBoard.animalCategoryCode?.animalType}</h3>
-          <h3>작성자 : {sitterBoard.user?.userId}</h3>
-          <h3>제목 : {sitterBoard.sitterTitle}</h3>
-          <h3>
-            장소 : {sitterBoard.location?.parent?.locationName}{" "}
-            {sitterBoard.location?.locationName}
-          </h3>
-          <h3>내용 : {sitterBoard.sitterContent}</h3>
-          {/* <img src={sitterBoard.images?.sitterImg?.replace()}></img> */}
-        </div>
+      <div className="board-area" key={sitterBoard.sitterBoardCode}>
+        <h3>
+          카테고리 구분 : {sitterBoard.sitterCategory?.sitterCategoryType}
+        </h3>
+        <h3>반려동물 구분 : {sitterBoard.animalCategoryCode?.animalType}</h3>
+        <h3>작성자 : {sitterBoard.user?.userId}</h3>
+        <h3>제목 : {sitterBoard.sitterTitle}</h3>
+        <h3>내용 : {sitterBoard.sitterContent}</h3>
+        <h3>
+          장소 : {sitterBoard.location?.parent?.locationName}{" "}
+          {sitterBoard.location?.locationName}
+        </h3>
+        {sitterBoard.images?.map((image) => (
+          <img
+            key={sitterBoard.sitterImgCode}
+            src={"http://localhost:8081" + image.sitterImg}
+          ></img>
+        ))}
       </div>
 
       <div className="comment-area">
@@ -199,19 +242,45 @@ const SitterDetail = () => {
                 </div>
                 <p id="comment-content">{comment.sitterCommentContent}</p>
               </div>
-              <div className="comment-btns">
-                <button>수정</button>
-                <button>삭제</button>
-              </div>
+              {user.userId === comment.user?.userId && (
+                <div className="comment-btns">
+                  <button>수정</button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteComment(comment.sitterCommentCode);
+                    }}
+                  >
+                    삭제
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
 
         <div className="comment-input">
-          <input></input>
-          <button>등록</button>
+          <input onChange={(e) => setComment(e.target.value)}></input>
+          <button onClick={registerComment}>등록</button>
         </div>
       </div>
+
+      {/* <div className="board-btns">
+        <button
+          onClick={() => {
+            deleteBoard();
+          }}
+        >
+          삭제
+        </button>
+        <button
+          onClick={() => {
+            updateBoard();
+          }}
+        >
+          수정
+        </button>
+      </div> */}
     </Div>
   );
 };

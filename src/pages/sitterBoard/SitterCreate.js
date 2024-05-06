@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { userSave } from "../../store/user";
+import { useSelector, useDispatch } from "react-redux";
 import { registerSitterBoard } from "../../api/sitterBoard";
 import { Button, Form } from "react-bootstrap";
 import styled from "styled-components";
@@ -23,15 +25,21 @@ const Div = styled.div`
 `;
 
 const SitterCreate = () => {
-  const [sitterBoard, setSitterBoard] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
+  });
 
-  const onCancel = () => {
-    navigate("/sitterBoard");
+  const [sitterBoard, setSitterBoard] = useState({});
+
+  const cancelBtn = () => {
+    alert("🚨 작성한 내용이 저장되지 않고 목록으로 돌아갑니다.");
+    navigate("/compagno/sitterBoard");
   };
-  const onRegister = async () => {
+  const registerBtn = async () => {
     await registerSitterBoard(sitterBoard);
-    navigate("/sitterBoard");
+    navigate("/compagno/sitterBoard");
   };
 
   return (
@@ -81,10 +89,10 @@ const SitterCreate = () => {
       </Form.Group>
 
       <div className="btn">
-        <Button variant="outline-secondary" onClick={onCancel}>
+        <Button variant="outline-secondary" onClick={cancelBtn}>
           취소
         </Button>
-        <Button variant="outline-dark" onClick={onRegister}>
+        <Button variant="outline-dark" onClick={registerBtn}>
           등록
         </Button>
       </div>
