@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getNeighborBoards,
   getProvinces,
@@ -10,6 +12,7 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import { userSave } from "../../store/user";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -161,15 +164,28 @@ const Div = styled.div`
 
 const NeighborBoard = () => {
   const [neighborBoards, setNeighborBoards] = useState({});
+  // ========== 검색조건 ==========
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
   const [province, setProvince] = useState(0);
   const [district, setDistrict] = useState(0);
+  // ========== 페이징 ==========
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [prev, setPrev] = useState(false);
   const [next, setNext] = useState(false);
   const [pages, setPages] = useState([]);
+  // ========== 유저정보 ==========
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
+  });
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
 
   const neighborBoardAPI = async () => {
     const result = await getNeighborBoards(page);

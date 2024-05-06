@@ -1,11 +1,23 @@
 import axios from "axios";
 
+const getToken = () => {
+  return localStorage.getItem("token");
+};
+
 const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
 });
 
 const authorize = axios.create({
   baseURL: "http://localhost:8080/compagno/",
+});
+
+authorize.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // 전체보기
@@ -20,7 +32,9 @@ export const registerNeighborBoard = async (data) => {
 
 // 상세
 export const getNeighborBoard = async (code) => {
-  return await instance.get("neighbor/" + code);
+  return await instance.get("neighbor/" + code, {
+    withCredentials: true,
+  });
 };
 
 // 수정
@@ -52,6 +66,7 @@ export const getNeighborComments = async (code) => {
 
 // 댓글 등록
 export const registerNeighborComment = async (data) => {
+  console.log(data);
   return await authorize.post("neighbor/comment", data);
 };
 
