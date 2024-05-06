@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import ReplyComment from "./ReplyComment";
+import styled from "styled-components";
+
+const Button = styled.button`
+  color: rgb(244, 245, 219);
+  background-color: rgb(70, 92, 88);
+`;
 
 const ViewMoreReply = ({
   comment,
@@ -32,33 +38,33 @@ const ViewMoreReply = ({
           {replToggle &&
           responseReply.animalCommentCode === comment.animalCommentCode ? (
             <>
-              <button
+              <Button
                 className="repl-toggle-button"
                 onClick={() => onRepl(comment)}
               >
                 더보기 <IoIosArrowUp className="repl-toggle" />
-              </button>
+              </Button>
             </>
           ) : (
             <>
               {responseReply.animalCommentCode === undefined ? (
                 <>
-                  <button
+                  <Button
                     className="repl-toggle-button"
                     onClick={() => onRepl(comment)}
                   >
                     더보기 <IoIosArrowUp className="repl-toggle" />
-                  </button>
+                  </Button>
                 </>
               ) : (
                 <>
                   {" "}
-                  <button
+                  <Button
                     className="repl-toggle-button"
                     onClick={() => onRepl(comment)}
                   >
                     줄이기 <IoIosArrowDown className="repl-toggle" />
-                  </button>
+                  </Button>
                   <ReplyComment
                     replies={comment.replies}
                     receiveComments={() => receiveComments()}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Dropdown } from "react-bootstrap";
 import TableList from "../../components/animalBoard/TableList";
@@ -13,8 +13,10 @@ import WeeklyRank from "../../components/animalBoard/WeeklyRank";
 import { viewBoardList, viewCategory, viewRanker } from "../../api/animalBoard";
 import { IoIosArrowUp } from "react-icons/io";
 import { GoTriangleDown } from "react-icons/go";
+import AllReplies from "../../components/animalBoard/AllReplies";
 const HomeContainer = styled.div`
   display: flex;
+  flex-direction: column;
   .search-container {
     display: flex;
     /* background-color: red; */
@@ -59,6 +61,7 @@ const HomeContainer = styled.div`
     }
   }
   .main-container {
+    /* background-color: red; */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -70,8 +73,11 @@ const Div = styled.div`
   padding-top: 112px;
   display: flex;
   flex-direction: column;
+
   /* justify-content: center; */
+  width: 80%;
   align-items: center;
+
   .mb-4 {
     width: 300px;
   }
@@ -79,12 +85,19 @@ const Div = styled.div`
     width: 80%;
   }
   .table-container {
-    width: 80%;
+    width: 600px;
   }
+`;
+const SearchBarContainer = styled.div`
+  display: flex;
+  background-color: red;
+  justify-content: space-evenly;
+  align-items: end;
 `;
 
 // 여기서 viewAll 의 역할을 해줌
 const AnimalHome = () => {
+  const navigate = useNavigate();
   // 유저 ===========================
   const dispatch = useDispatch();
   const user = useSelector((state) => {
@@ -134,8 +147,21 @@ const AnimalHome = () => {
     setRanker(response.data);
     console.log(rankers);
   };
+  // 정렬 옵션바 띄우기
+  const [option, setOption] = useState(false);
+  const setOptionBar = () => {
+    if (option) {
+      setOption(false);
+    } else {
+      setOption(true);
+    }
+  };
   // 리스트 옵션 토글
   const [listBoolean, setListBoolean] = useState(true);
+  // 글쓰기 버튼
+  const accessWrite = () => {
+    navigate("navigate");
+  };
   useEffect(() => {
     if (!loading) {
       animalBoardsAPI(true);
@@ -151,69 +177,91 @@ const AnimalHome = () => {
   }, []);
   return (
     <HomeContainer>
-      <div className="search-container">
-        <div className="category-container">
-          <div className="outer-option" onClick={() => setSort("&sortBy=1")}>
-            조회수
-          </div>
-          <div className="outer-option" onClick={() => setSort("&sortBy=2")}>
-            좋아요
-          </div>
-          <div className="outer-option" onClick={() => setSort("&sortBy=0")}>
-            최신순
-          </div>
-          <div className="outer-option" onClick={() => setSort("&sortBy=3")}>
-            옛날순
-          </div>
-          <div
-            className="outer-option"
-            onMouseEnter={() => setCateBoolean(true)}
-            onMouseLeave={() => setCateBoolean(false)}
-          >
-            동물별
-            <GoTriangleDown />
-          </div>
-          <div
-            onMouseEnter={() => setCateBoolean(true)}
-            onMouseLeave={() => setCateBoolean(false)}
-          >
-            {cateBoolean ? (
-              <>
-                {categories.map((category) => (
-                  <div
-                    key={category.animalCategoryCode}
-                    onClick={() =>
-                      setCategory(
-                        "&animalCategory=" + category.animalCategoryCode
-                      )
-                    }
-                    className="inner-option"
-                  >
-                    {category.animalType}
-                  </div>
-                ))}
-                <div
-                  className="outer-option"
-                  onClick={() => setCateBoolean(false)}
-                >
-                  <IoIosArrowUp className="up" />
-                </div>
-              </>
-            ) : (
-              <></>
-            )}
-          </div>
-          <button
-            className="search-filter"
-            onClick={() => animalBoardsAPI(false)}
-          >
-            검색!
-          </button>
-        </div>
-      </div>
       <div className="main-container">
         <WeeklyRank rankers={rankers} />
-        <Div className="paging-container">
+        <SearchBarContainer className="SearchBarContainer">
+          <div className="search-container">
+            <div className="category-container">
+              <button
+                className="search-filter"
+                onClick={() => animalBoardsAPI(false)}
+              >
+                검색!
+              </button>
+              <div className="outer-option" onClick={setOptionBar}>
+                정렬
+                <GoTriangleDown />
+              </div>
+              {option ? (
+                <>
+                  <div
+                    className="outer-option"
+                    onClick={() => setSort("&sortBy=1")}
+                  >
+                    조회수
+                  </div>
+                  <div
+                    className="outer-option"
+                    onClick={() => setSort("&sortBy=2")}
+                  >
+                    좋아요
+                  </div>
+                  <div
+                    className="outer-option"
+                    onClick={() => setSort("&sortBy=0")}
+                  >
+                    최신순
+                  </div>
+                  <div
+                    className="outer-option"
+                    onClick={() => setSort("&sortBy=3")}
+                  >
+                    옛날순
+                  </div>
+                  <div
+                    className="outer-option"
+                    onMouseEnter={() => setCateBoolean(true)}
+                    onMouseLeave={() => setCateBoolean(false)}
+                  >
+                    동물별
+                    <GoTriangleDown />
+                  </div>
+                  <div
+                    onMouseEnter={() => setCateBoolean(true)}
+                    onMouseLeave={() => setCateBoolean(false)}
+                  >
+                    {cateBoolean ? (
+                      <>
+                        {categories.map((category) => (
+                          <div
+                            key={category.animalCategoryCode}
+                            onClick={() =>
+                              setCategory(
+                                "&animalCategory=" + category.animalCategoryCode
+                              )
+                            }
+                            className="inner-option"
+                          >
+                            {category.animalType}
+                          </div>
+                        ))}
+                        <div
+                          className="outer-option"
+                          onClick={() => setCateBoolean(false)}
+                        >
+                          <IoIosArrowUp className="up" />
+                        </div>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
           <Dropdown>
             <Dropdown.Toggle variant="link" id="dropdown-basic">
               보기
@@ -232,7 +280,9 @@ const AnimalHome = () => {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Link to="/compagno/write-board"> 글쓰기! </Link>
+          <button onClick={accessWrite}>글쓰기!</button>
+        </SearchBarContainer>
+        <Div className="paging-container">
           {listBoolean ? (
             <>
               <div className="table-container">

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
+import moment from "moment";
 import {
   viewDetail,
   getComments,
@@ -14,25 +15,37 @@ import { Form, InputGroup, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { FaReply } from "react-icons/fa";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-
 import Dropdown from "react-bootstrap/Dropdown";
-// import DropdownToggle from "../../components/animalBoard/Dropdown";
 import React from "react";
-import ReplyComment from "../../components/animalBoard/ReplyComment";
 import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
 import FavoriteBoard from "../../components/animalBoard/FavoriteBoard";
 import { FaPencilAlt } from "react-icons/fa";
 import { viewCount } from "../../api/animalBoard";
 import ViewMoreReply from "../../components/animalBoard/ViewMoreReply";
+import AllReplies from "../../components/animalBoard/AllReplies";
+import ParentComments from "../../components/animalBoard/ParentComments";
 const Div = styled.div`
   padding-top: 112px;
-`;
-const Comment = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* width: 1200px; */
+  justify-content: center;
   margin: auto;
+  .detail-container {
+    /* background-color: red; */
+    width: 70%;
+  }
+`;
+const Comment = styled.div`
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  width: 70%;
+  .animal-board-write-comment {
+    width: 100%;
+  }
   img {
     width: 70px;
   }
@@ -117,222 +130,194 @@ const AnimalDetail = () => {
   };
   // ======================================================================
   // 댓글 불러오기
-  const [comments, setComments] = useState([]);
-  const animalBoardCommentAPI = async () => {
-    const response = await getComments(animalBoardCode);
-    console.log(response.data);
-    setComments(response.data);
-  };
-  /*
- userNickname: "",
-    animalType: "",
-    animalBoardTitle: "",
-    animalBoardContent: "",
-    animalCategory: {},
-    animalBoardDate: "",
-    animalBoardView: 0,
+  // const [comments, setComments] = useState([]);
+  // const animalBoardCommentAPI = async () => {
+  //   const response = await getComments(animalBoardCode);
+  //   console.log(response.data);
+  //   setComments(response.data);
+  // };
+  // // 댓글쓰기
+  // const [comment, setComment] = useState({
+  //   animalBoardCode: animalBoardCode,
+  //   animalCommentContent: "",
+  //   user: user,
+  // });
+  // const [animalComment, setAnimalComment] = useState("");
+  // const addComment = async () => {
+  //   console.log(animalComment);
+  //   if (token === null) {
+  //     alert("로그인해주세요");
+  //   } else {
+  //     await writeComment({
+  //       animalBoardCode: animalBoardCode,
+  //       animalCommentContent: animalComment,
+  //       user: {
+  //         userId: user.userId,
+  //       },
+  //     });
+  //     setAnimalComment("");
+  //     animalBoardCommentAPI();
+  //   }
+  // };
+  // //댓글 수정버튼 - 기존 해당 댓글내용 가져오기
+  // const [edit, setEdit] = useState({});
+  // const onUpdate = async (comment) => {
+  //   console.log(comment);
+  //   setEdit({
+  //     animalCommentCode: comment.animalCommentCode,
+  //     animalCommentContent: comment.animalCommentContent,
+  //     animalBoardCode: comment.animalBoardCode,
+  //     animalCommentDate: comment.animalCommentDate,
+  //     user: {
+  //       userId: user.userId,
+  //       userNickname: user.userNickname,
+  //     },
+  //   });
+  // };
+  // //댓글 수정하기
+  // const updateCommentC = async () => {
+  //   await updateComment(edit);
+  //   setEdit({});
+  //   animalBoardCommentAPI();
+  // };
+  // // 댓글 수정 취소
+  // const onCancel = () => {
+  //   setEdit({});
+  // };
+  // // 댓글 삭제
+  // const onDelete = async (commentCodes) => {
+  //   await delComment({
+  //     animalCommentCode: commentCodes.animalCommentCode,
+  //     animalParentCode: commentCodes.animalParentCode,
+  //   });
+  //   animalBoardCommentAPI();
+  // };
 
-*/
-  // 댓글쓰기
-  const [comment, setComment] = useState({
-    animalBoardCode: animalBoardCode,
-    animalCommentContent: "",
-    user: user,
-  });
-  const [animalComment, setAnimalComment] = useState("");
-  const addComment = async () => {
-    console.log(animalComment);
-    if (token === null) {
-      alert("로그인해주세요");
-    } else {
-      // setComment({
-      //   animalBoardCode: animalBoardCode,
-      //   animalCommentContent: animalComment,
-      //   user: {
-      //     userId: user.userId,
-      //   },
-      // });
-      // console.log(comment);
-      await writeComment({
-        animalBoardCode: animalBoardCode,
-        animalCommentContent: animalComment,
-        user: {
-          userId: user.userId,
-        },
-      });
-      setAnimalComment("");
-      animalBoardCommentAPI();
-    }
-  };
+  // // 대댓글 달기
+  // const [boolean, setBoolean] = useState(false); // 추후 유저정보 토대로 boolean 예정
+  // const [response, setResponse] = useState({}); // 부모 댓글 정보
 
-  // useEffect(() => {
+  // const accessReply = async (comment) => {
+  //   if (user.userId === undefined || user.userId === null) {
+  //     return alert("로그인이 필요합니다.");
+  //   }
+  //   setResponse(comment); // 현재 클릭한 아이의 댓글정보
+  //   console.log(comment);
+  //   if (boolean) {
+  //     setBoolean(false);
+  //   } else {
+  //     setBoolean(true);
+  //   }
+  // };
+  // const addReply = async (commentCode) => {
+  //   await writeComment({
+  //     animalBoardCode: animalBoardCode,
+  //     animalParentCode: commentCode,
+  //     animalCommentContent: response.animalCommentContent,
+  //     user: {
+  //       userId: user.userId,
+  //     },
+  //     animalCommentTag: response.user.userNickname,
+  //   });
+  //   setResponse({});
+  //   animalBoardCommentAPI();
+  // };
 
-  // }, [comments]);
-
-  // useEffect(() => {
-  //   setComment({ comment });
-  // }, [comment.content]);
-  //댓글 수정버튼 - 기존 해당 댓글내용 가져오기
-  const [edit, setEdit] = useState({});
-  const onUpdate = async (comment) => {
-    console.log(comment);
-    setEdit({
-      animalCommentCode: comment.animalCommentCode,
-      animalCommentContent: comment.animalCommentContent,
-      animalBoardCode: comment.animalBoardCode,
-      animalCommentDate: comment.animalCommentDate,
-      user: {
-        userId: user.userId,
-        userNickname: user.userNickname,
-      },
-    });
-    // console.log(edit);
-  };
-  //댓글 수정하기
-  const updateCommentC = async () => {
-    await updateComment(edit);
-    setEdit({});
-    animalBoardCommentAPI();
-  };
-  // 댓글 수정 취소
-  const onCancel = () => {
-    setEdit({});
-  };
-  // 댓글 삭제
-  const onDelete = async (commentCodes) => {
-    await delComment({
-      animalCommentCode: commentCodes.animalCommentCode,
-      animalParentCode: commentCodes.animalParentCode,
-    });
-    animalBoardCommentAPI();
-  };
-
-  // 대댓글 달기
-  const [boolean, setBoolean] = useState(false); // 추후 유저정보 토대로 boolean 예정
-  const [response, setResponse] = useState({}); // 부모 댓글 정보
-
-  const accessReply = async (comment) => {
-    if (user.userId === undefined || user.userId === null) {
-      return alert("로그인이 필요합니다.");
-    }
-    setResponse(comment); // 현재 클릭한 아이의 댓글정보
-    console.log(comment);
-    // console.log(response);
-
-    // if(user === null){
-    //   alert("로그인 후 입력가능!")
-    // }
-    if (boolean) {
-      setBoolean(false);
-      // setResponse({});
-    } else {
-      setBoolean(true);
-    }
-  };
-  const addReply = async (commentCode) => {
-    await writeComment({
-      animalBoardCode: animalBoardCode,
-      animalParentCode: commentCode,
-      animalCommentContent: response.animalCommentContent,
-      user: {
-        userId: user.userId,
-      },
-      animalCommentTag: response.user.userNickname,
-    });
-    setResponse({});
-    animalBoardCommentAPI();
-  };
-
-  // 토글
-  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-    <HiOutlineDotsHorizontal
-      className="dropdown-toggle"
-      onClick={(e) => {
-        e.preventDefault();
-        onClick(e);
-      }}
-    />
-  ));
+  // // 토글
+  // const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+  //   <HiOutlineDotsHorizontal
+  //     className="dropdown-toggle"
+  //     onClick={(e) => {
+  //       e.preventDefault();
+  //       onClick(e);
+  //     }}
+  //   />
+  // ));
 
   useEffect(() => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
-    // localStorage.setItem
-    // console.log(user);
-    // console.log(token);
   }, []);
 
   useEffect(() => {
     animalBoardAPI();
-    animalBoardCommentAPI();
+    // animalBoardCommentAPI();
     setViewCount();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    animalBoardCommentAPI();
-  }, [comment.replies]);
+  // useEffect(() => {
+  //   animalBoardCommentAPI();
+  // }, [comment.replies]);
 
   return (
     <Div>
-      <div className="App">
-        <div className="container">
-          <div className="row">
-            <DetailPageProfile author={detailInfo} />
-            <Link to="/compagno/write-board"> 글쓰기! </Link>
-            {detailInfo.user.userId === user.userId ? (
-              <>
-                <Link to={`/compagno/edit-board/${detailInfo.animalBoardCode}`}>
-                  수정하기
-                </Link>
-              </>
-            ) : (
-              <></>
-            )}
+      {/* <div className="App"> */}
+      {/* <div className="container"> */}
+      <div className="detail-container">
+        <DetailPageProfile author={detailInfo} />
+        <Link to="/compagno/write-board"> 글쓰기! </Link>
+        {detailInfo.user.userId === user.userId ? (
+          <>
+            <Link to={`/compagno/edit-board/${detailInfo.animalBoardCode}`}>
+              수정하기
+            </Link>
+          </>
+        ) : (
+          <></>
+        )}
 
-            <div className="post__list">
-              {/* <h2>
+        <div className="post__list">
+          {/* <h2>
                 {detailInfo.animalCategory.animalType}
                 {detailInfo.animalBoardTitle}
               </h2> */}
 
-              <div
-                className="post__description"
-                dangerouslySetInnerHTML={{
-                  __html: detailInfo.animalBoardContent,
-                }}
-              />
-            </div>
-          </div>
+          <div
+            className="post__description"
+            dangerouslySetInnerHTML={{
+              __html: detailInfo.animalBoardContent,
+            }}
+          />
         </div>
       </div>
-      <div className="animal-board-comment container-sm">
-        <InputGroup>
-          <Form.Control
-            as="textarea"
-            aria-label="With textarea"
-            value={animalComment}
-            onChange={(e) => setAnimalComment(e.target.value)}
-          />
-          <InputGroup.Text>
-            <FavoriteBoard
-              userId={user.userId}
-              boardCode={animalBoardCode}
-              count={detailInfo.animalBoardFavoriteCount}
-              // addFav={() => addFav()}
-              // delFav={() => delFav()}
-              animalBoardAPI={() => animalBoardAPI()}
+      {/* </div> */}
+      {/* </div> */}
+      <ParentComments
+        user={user}
+        token={token}
+        animalBoardCode={animalBoardCode}
+        detailInfo={detailInfo}
+        animalBoardAPI={() => animalBoardAPI()}
+        commentsBoolean={true}
+      />
+      {/* <Comment className="animal-board-comment-contents">
+        <div className="animal-board-write-comment ">
+          <InputGroup>
+            <Form.Control
+              as="textarea"
+              aria-label="With textarea"
+              value={animalComment}
+              onChange={(e) => setAnimalComment(e.target.value)}
             />
-            {detailInfo.animalBoardFavoriteCount}
-          </InputGroup.Text>
-          <Button variant="secondary" onClick={addComment}>
-            댓글추가!
-          </Button>
-        </InputGroup>
-      </div>
-      <Comment className="animal-board-comment-contents">
-        {comments.map((comment) => (
+            <InputGroup.Text>
+              <FavoriteBoard
+                userId={user.userId}
+                boardCode={animalBoardCode}
+                count={detailInfo.animalBoardFavoriteCount}
+                // addFav={() => addFav()}
+                // delFav={() => delFav()}
+                animalBoardAPI={() => animalBoardAPI()}
+              />
+              {detailInfo.animalBoardFavoriteCount}
+            </InputGroup.Text>
+            <Button variant="secondary" onClick={addComment}>
+              댓글추가!
+            </Button>
+          </InputGroup>
+        </div>
+        {comments.slice(0, 3).map((comment) => (
           <div className="contents-container" key={comment.animalCommentCode}>
             {edit.animalCommentCode === comment.animalCommentCode ? (
               <>
@@ -345,7 +330,8 @@ const AnimalDetail = () => {
                   <div className="user-action-container">
                     <div className="animal-board-comment-userability">
                       <p>
-                        {edit.user.userNickname} {edit.animalCommentDate}
+                        {edit.user.userNickname}
+                        {moment(edit.animalBoardDate).format("MM.DD HH:mm")}
                       </p>
 
                       <FaReply />
@@ -396,7 +382,7 @@ const AnimalDetail = () => {
                         ) : (
                           <></>
                         )}{" "}
-                        {comment.animalCommentDate}
+                        {moment(comment.animalBoardDate).format("MM.DD HH:mm")}
                       </p>
                       <FaReply
                         className="response"
@@ -473,7 +459,16 @@ const AnimalDetail = () => {
             />
           </div>
         ))}
-      </Comment>
+        
+      </Comment> */}
+      <AllReplies
+        user={user}
+        token={token}
+        animalBoardCode={animalBoardCode}
+        detailInfo={detailInfo}
+        animalBoardAPI={() => animalBoardAPI()}
+        commentsBoolean={false}
+      />
     </Div>
   );
 };

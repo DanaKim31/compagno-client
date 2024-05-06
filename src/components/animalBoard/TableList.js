@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const TableParticle = styled.div`
-  cursor: pointer;
   display: flex;
+
+  cursor: pointer;
+
   margin: 20px 0px 20px 0px;
   padding: 20px 0px 20px 0px;
   border-top: 1px solid lightgray;
@@ -66,7 +69,7 @@ const TableList = ({ tableboards }) => {
             <div className="detail">
               {board.user.userNickname +
                 " |  " +
-                board.animalBoardDate +
+                moment(board.animalBoardDate).format("MM.DD HH:mm") +
                 " | 조회 " +
                 board.animalBoardView}
             </div>
