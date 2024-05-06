@@ -65,6 +65,12 @@ export const viewCommentLost = async (code, page) => {
   return await instance.get("lostBoard/comment/" + code + "?page=" + page);
 };
 
+// 댓글 전체 보기
+// http://localhost:8080/compagno/public/lostBoard/commentAll/48
+export const viewAllCommentLost = async (code) => {
+  return await instance.get("lostBoard/commentAll/" + code);
+};
+
 // 댓글 삭제
 export const deleteCommentLost = async (code) => {
   return await authorize.delete("lostBoard/comment/" + code);

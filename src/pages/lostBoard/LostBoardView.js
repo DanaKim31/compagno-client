@@ -6,6 +6,7 @@ import {
   deleteCommentLost,
   updateCommentLost,
   addBottomCommentLost,
+  viewAllCommentLost,
 } from "../../api/lostBoard";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -301,7 +302,6 @@ const ViewLostBoard = () => {
   const [images, setImages] = useState([]); // 이미지 가져오기
   const viewsAPI = async () => {
     const response = await viewOneLostBoard(code);
-    console.log(response.data);
     setImages(response.data.images);
     setLost(response.data);
   };
@@ -321,24 +321,23 @@ const ViewLostBoard = () => {
   const btnList = () => {
     navigate("/compagno/lostBoard/viewAll");
   };
-  // 현재 페이지
-  const [page, setPage] = useState(1);
-  // 총 댓글 수
-  const [totalComments, setTotalComments] = useState(0);
-  // 전체 총 페이지 : 총 댓글수/10
-  const [totalPage, setTotalPage] = useState(0);
-  // 페이지들
-  const [pages, setPages] = useState([]);
-  // 한 페이지 당 보일 댓글 수  : 10
+
+  // 페이징
+  const [page, setPage] = useState(1); // 현재 페이지
+  const [totalComments, setTotalComments] = useState(0); // 총 댓글 수
+  const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지 : 총 댓글수/5
+  const [pages, setPages] = useState([]); // 페이지들
 
   // 댓글 보기
   const [comments, setComments] = useState([]);
   const commentsAPI = async () => {
     const response = await viewCommentLost(code, page);
-    console.log(response.data);
-    console.log(response.data.length); // 총 댓글 수
-    setTotalComments(response.data.length);
-    setTotalPage(Math.ceil(response.data.length / 5) + 5);
+    const responseAll = await viewAllCommentLost(code);
+    // console.log(response.data);
+    // console.log(response.data.length);
+    // console.log(responseAll.data);
+    setTotalComments(responseAll.data.length);
+    setTotalPage(Math.ceil(responseAll.data.length / 5));
     setComments(response.data);
   };
 
@@ -369,12 +368,6 @@ const ViewLostBoard = () => {
     }
     setPages(pageList);
   }, [totalPage]);
-
-  console.log(page);
-  console.log(totalComments);
-  console.log("totalComemnts/5소수점올리기");
-  console.log(totalPage);
-  console.log(pages);
 
   // 댓글 작성
   const [topComments, setTopComments] = useState({
@@ -418,10 +411,6 @@ const ViewLostBoard = () => {
       },
     });
   };
-
-  useEffect(() => {
-    console.log(edit);
-  }, [edit]);
 
   const updateComment = async () => {
     await updateCommentLost(edit);
