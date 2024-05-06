@@ -16,15 +16,40 @@ const Div = styled.div`
 
   #content {
     display: flex;
+    flex-direction: row;
     justify-content: space-evenly;
     width: 80%;
+    margin: 0 auto;
 
     background-color: pink;
+    th {
+      font-weight: bolder;
+      font-size: 20px;
+      padding: 10px;
+    }
+    a {
+      text-decoration: none;
+      color: black;
+    }
+    #map {
+      display: flex;
+      justify-content: center;
+      width: 600px;
+      height: 500px;
+      margin-top: 150px;
+      background-color: skyblue;
+    }
   }
-  #map {
-    width: 500px;
-    height: 500px;
-    border: 1px solid;
+  .paging {
+    width: 100%;
+    padding-top: 30px;
+    text-align: center;
+    button {
+      background-color: white;
+      border-radius: 5px;
+      margin: 5px;
+      font-weight: bolder;
+    }
   }
 `;
 
@@ -109,8 +134,7 @@ const ContentList = () => {
   return (
     <Div>
       <>
-        <h1>리스트 출력</h1>
-        <p>총 {contents.totalElements}건</p>
+        <p>전체 {contents.totalElements}건</p>
         <div id="content">
           <table>
             <thead>

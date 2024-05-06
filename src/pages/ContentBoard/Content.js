@@ -6,6 +6,50 @@ import { useNavigate } from "react-router-dom";
 const Div = styled.div`
   position: relative;
   top: 200px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: skyblue;
+  span {
+    font-weight: bolder;
+    padding-top: 10px;
+    padding-right: 20px;
+  }
+
+  #select {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 50px;
+    margin-bottom: 20px;
+    #mainCate {
+      margin-right: 20px;
+    }
+    #subCate {
+      margin-right: 10px;
+    }
+  }
+
+  #selecttwo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 50px;
+  }
+  #keyword {
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    height: 50px;
+    button {
+      width: 70px;
+      height: 50px;
+      margin-left: 10px;
+    }
+  }
 `;
 
 const Content = () => {
@@ -98,66 +142,77 @@ const Content = () => {
       <Div>
         {/* select... */}
         <div>
-          <span>메인 카테고리</span>
-          <select onChange={handleselectMainCate} value={mainCate}>
-            {selectMainCate.map((item) => {
-              return (
-                <option value={item.value} key={item.value}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
+          <div id="select">
+            <span>메인 카테고리</span>
+            <select
+              onChange={handleselectMainCate}
+              value={mainCate}
+              id="mainCate"
+            >
+              {selectMainCate.map((item) => {
+                return (
+                  <option value={item.value} key={item.value}>
+                    {item.name}
+                  </option>
+                );
+              })}
+            </select>
 
-          {mainCate !== 0 ? (
-            <>
-              <span>서브 카테고리</span>
-              <select onChange={handleselectSubCate} value={subCate}>
-                {filterCate.map((item) => {
-                  return (
-                    <option value={item.value} key={item.value}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </>
-          ) : (
-            <></>
-          )}
+            {mainCate !== 0 ? (
+              <>
+                <span>서브 카테고리</span>
+                <select
+                  onChange={handleselectSubCate}
+                  value={subCate}
+                  id="subCate"
+                >
+                  {filterCate.map((item) => {
+                    return (
+                      <option value={item.value} key={item.value}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
+          <div id="selecttwo">
+            {subCate !== 0 ? (
+              <>
+                <span>지역</span>
+                <select onChange={handleselectMainReg} value={mainReg}>
+                  {selectMainReg.map((item) => {
+                    return (
+                      <option value={item.value} key={item.value}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </>
+            ) : (
+              <></>
+            )}
 
-          {subCate !== 0 ? (
-            <>
-              <span>지역</span>
-              <select onChange={handleselectMainReg} value={mainReg}>
-                {selectMainReg.map((item) => {
-                  return (
-                    <option value={item.value} key={item.value}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </>
-          ) : (
-            <></>
-          )}
-
-          {mainReg !== 0 ? (
-            <>
-              <div>
-                <Form.Control
-                  type="text"
-                  placeholder="검색어를 입력하세요"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                />
-                <Button onClick={filtering}>조회</Button>
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
+            {mainReg !== 0 ? (
+              <>
+                <div id="keyword">
+                  <Form.Control
+                    type="text"
+                    placeholder="검색어를 입력하세요"
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
+                  />
+                  <Button onClick={filtering}>조회</Button>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </Div>
     </>
