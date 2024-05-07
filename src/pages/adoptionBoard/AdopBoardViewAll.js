@@ -6,6 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import moment from "moment";
 import "moment/locale/ko";
+import { IoSearch } from "react-icons/io5";
+import {
+  FaAngleLeft,
+  FaAnglesLeft,
+  FaAngleRight,
+  FaAnglesRight,
+} from "react-icons/fa6";
 
 const Div = styled.div`
   @font-face {
@@ -23,6 +30,158 @@ const Div = styled.div`
   justify-content: center;
   position: relative;
   top: 180px;
+
+  /* 제목+게시글작성버튼 */
+  .contentHeader {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    h2 {
+      font-weight: bold;
+      font-size: 2.5rem;
+    }
+    button#addBtn {
+      font-weight: bold;
+      border-radius: 15px;
+      background-color: black;
+      color: white;
+      font-size: 0.8rem;
+      width: 90px;
+      height: 50px;
+    }
+    button#addBtn:hover {
+      background-color: #94b29b;
+      border: none;
+      color: black;
+    }
+  }
+  /* 검색창 */
+  .searching {
+    margin: 30px 0px;
+    border: 1px solid black;
+    width: 70%;
+    height: 250px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+
+    #aboutAnimal {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      div {
+        margin: 40px 50px;
+        select {
+          margin-left: 10px;
+          font-weight: bold;
+          option {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+    #aboutNotAnimal {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      div {
+        margin: 20px 0px;
+        input {
+          margin-left: 20px;
+          font-weight: bold;
+        }
+      }
+    }
+    #searchBtn {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0px;
+      button {
+        width: 100px;
+        border-radius: 10px;
+        border: none;
+        background-color: gray;
+        color: white;
+        height: 40px;
+        span {
+          margin-left: 10px;
+          font-weight: bold;
+        }
+      }
+      button:hover {
+        background-color: #94b29b;
+      }
+    }
+  }
+  /* 전체 게시물수+정렬 */
+  .headerOptions {
+    display: flex;
+    justify-content: space-between;
+    width: 67%;
+    #allCount {
+      display: flex;
+      #num {
+        color: green;
+        margin-left: 8px;
+      }
+    }
+    #sorting {
+      display: flex;
+      justify-content: right;
+      select {
+        font-weight: bold;
+        option {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  .contentsBody {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 250px 250px 250px;
+    grid-row-gap: 20px;
+    grid-column-gap: 30px;
+    width: 67%;
+    margin-top: 50px;
+
+    .contentDetail {
+      border: 1px solid black;
+
+      #animalKind {
+        display: flex;
+        justify-content: center;
+        padding: 15px 0px;
+        border-bottom: 1px dashed green;
+        font-weight: bold;
+      }
+      #imageBox {
+        width: 100%;
+        height: 50%;
+        border: 0.2px solid gray;
+        #mainImage {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      #regiDate {
+        display: flex;
+        justify-content: right;
+        span {
+          border: 0.5px solid black;
+          border-radius: 10px;
+          padding: 5px 7px;
+        }
+      }
+      .contents {
+        margin-top: 5px;
+        margin-bottom: 15px;
+      }
+    }
+  }
+  .contentDetail:hover {
+    background-color: #e9efeb;
+  }
 `;
 
 const ViewAllAdopBoard = () => {
@@ -93,22 +252,161 @@ const ViewAllAdopBoard = () => {
     setPages(pageList);
   }, [totalPage]);
 
-  //   const navigate = useNavigate();
-  //   const onCreate=async()=>{
-  //     if(Object.keys(user).length!=0){
-  //         navigate("/compagno/adoptionBoard/create");
-  //     } else{
-  //         navigate("/compagno/login");
-  //     }
-  //   }
+  const navigate = useNavigate();
+  const onCreate = async () => {
+    if (Object.keys(user).length != 0) {
+      navigate("/compagno/adoptionBoard/create");
+    } else {
+      navigate("/compagno/login");
+    }
+  };
 
-  //   const view = (code)=>{
-  //     navigate("/compagno/adoptionBoard/view/"+code);
-  //   }
+  const view = (code) => {
+    navigate("/compagno/adoptionBoard/view/" + code);
+  };
 
   return (
     <Div>
-      <h2>전체보기올시다</h2>
+      <div className="contentHeader">
+        <h2>동물 입양 게시판</h2>
+        <button id="addBtn" onClick={onCreate}>
+          게시글 작성
+        </button>
+      </div>
+      {/* 검색창 */}
+      <div className="searching">
+        <div id="aboutAnimal">
+          <div id="animalKind">
+            동물 종류
+            <select onChange={(e) => setSearchKind(e.target.value)}>
+              <option value="">전체</option>
+              <option value="개">개</option>
+              <option value="고양이">고양이</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+          <div id="animalGender">
+            동물 성별 :
+            <select onChange={(e) => setSearchGender(e.target.value)}>
+              <option value="">전체</option>
+              <option value="수컷">수컷</option>
+              <option value="암컷">암컷</option>
+              <option value="알수없음">알수없음</option>
+            </select>
+          </div>
+          <div id="animalNeuter">
+            중성화 :
+            <select onChange={(e) => setSearchNeuter(e.target.value)}>
+              <option value="">전체</option>
+              <option value="예">예</option>
+              <option value="아니오">아니오</option>
+              <option value="알수없음">알수없음</option>
+            </select>
+          </div>
+        </div>
+        <div id="aboutNotAnimal">
+          <div id="findPlace">
+            <label>발견 장소</label>
+            <input
+              type="text"
+              onChange={(e) => setSearchFindplace(e.target.value)}
+            />
+          </div>
+          <div id="centerNaem">
+            <label>보호 센터명</label>
+            <input
+              type="text"
+              onChange={(e) => setSearchCenterName(e.target.vale)}
+            />
+          </div>
+        </div>
+        <div id="searchBtn">
+          <button onClick={adopsAPI}>
+            <IoSearch />
+            <span>조회</span>
+          </button>
+        </div>
+      </div>
+      {/* 총 게시물수 + 정렬 */}
+      <div className="headerOptions">
+        <div id="allCount">
+          <span>전체 </span>
+          <div id="num">{allCount}</div>
+          <span>건</span>
+        </div>
+        <div id="sorting">
+          <select onChange={(e) => setSort(e.target.value)}>
+            <option value="0">작성일 최신순</option>
+            <option value="1">작성일 오래된순</option>
+          </select>
+        </div>
+      </div>
+      {/* 내용 */}
+      <div className="contentsBody">
+        {adops.map((adop) => (
+          <div key={adop.adopBoardCode}>
+            <div
+              className="contentDetail"
+              onClick={() => view(adop.adopBoardCode)}
+            >
+              <h4 id="animalKind">{adop.adopAnimalKind}</h4>
+              <div id="imageBox">
+                <img
+                  id="mainImage"
+                  src={adop.adopAnimalImage?.replace(
+                    "C:",
+                    "http://localhost:8081"
+                  )}
+                />
+                {/* src={lost.lostAnimalImage?.replace( 
+                     "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                     "http://192.168.10.28:8081/lostBoard/"
+                 */}
+              </div>
+              <div id="regiDate">
+                <span>{moment(adop.adopRegiDate).format("YY-MM-DD")}</span>
+              </div>
+              <div className="contents">
+                신고자 닉네임 : {adop.userNickname}
+                <br />
+                성별 : {adop.adopAnimalGender}
+                <br />
+                발견 장소 : {adop.adopAnimalFindplace}
+                <br />
+                특징 : {adop.adopAnimalFeature}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* 페이징 */}
+      <div className="paging">
+        <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
+        <FaAngleLeft
+          className="iconPaging"
+          onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
+        />
+        {pages.map((num, index) => (
+          <button
+            key={index}
+            value={num}
+            onClick={(e) => setPage(Number(e.target.value))}
+          >
+            {num}
+          </button>
+        ))}
+
+        <FaAngleRight
+          className="iconPaging"
+          onClick={
+            () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
+          }
+        />
+        <FaAnglesRight
+          className="iconPaging"
+          onClick={() => setPage(totalPage)}
+        />
+      </div>
     </Div>
   );
 };
