@@ -93,7 +93,7 @@ const Div = styled.div`
     }
   }
   h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 50px;
     font-weight: bold;
   }
@@ -103,7 +103,6 @@ const Div = styled.div`
     font-size: 0.8rem;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
-
     border-radius: 30px;
   }
   .contentsBody {
@@ -116,10 +115,6 @@ const Div = styled.div`
       width: 100%;
       height: 50%;
       border: 0.2px solid gray;
-      #iimage {
-        width: 100%;
-        height: 100%;
-      }
     }
     #mainImage {
       width: 100%;
@@ -128,7 +123,6 @@ const Div = styled.div`
     #regiDate {
       display: flex;
       justify-content: right;
-      width: 75px;
       width: 100%;
       span {
         border: 1px solid black;
