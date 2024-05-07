@@ -39,6 +39,8 @@ import CreateClass from "./pages/onedayClassBoard/CreateClass";
 import NeighborUpdate from "./pages/neighborBoard/NeighborUpdate";
 import SitterUpdate from "./pages/sitterBoard/SitterUpdate";
 import MyPageMyNote from "./pages/user/MyPageMyNote";
+import AdopBoardViewAll from "./pages/adoptionBoard/AdopBoardViewAll";
+import AdopBoardCreate from "./pages/adoptionBoard/AdopBoardCreate";
 
 const router = createBrowserRouter([
   {
@@ -106,6 +108,19 @@ const router = createBrowserRouter([
           { path: "update/:code", element: <LostBoardUpdate /> },
         ],
       },
+      {
+        path: "adoptionBoard",
+        children: [
+          {
+            path: "viewAll",
+            element: <AdopBoardViewAll />,
+          },
+          { path: "create", element: <AdopBoardCreate /> },
+          // { path: "view/:code", element: <LostBoardView /> },
+          // { path: "update/:code", element: <LostBoardUpdate /> },
+        ],
+      },
+
       {
         path: "register-pet",
         children: [

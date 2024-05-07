@@ -99,7 +99,7 @@ const Header = () => {
           <div className="dropdown">
             <div className="dropbtn">구조 동물</div>
             <div className="dropdown-content">
-              <a href="#">입양 공고</a>
+              <a href="/compagno/adoptionBoard/viewAll">입양 공고</a>
               <a href="/compagno/lostBoard/viewAll">실종 공고</a>
             </div>
           </div>

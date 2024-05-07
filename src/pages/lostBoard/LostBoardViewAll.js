@@ -92,9 +92,8 @@ const Div = styled.div`
       }
     }
   }
-
   h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 50px;
     font-weight: bold;
   }
@@ -104,23 +103,26 @@ const Div = styled.div`
     font-size: 0.8rem;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
-
     border-radius: 30px;
   }
   .contentsBody {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 550px 550px 550px;
     grid-row-gap: 20px;
     width: 80%;
-
-    #mainImage {
+    #imageBox {
       width: 100%;
       height: 50%;
+      border: 0.2px solid gray;
+    }
+    #mainImage {
+      width: 100%;
+      height: 100%;
     }
     #regiDate {
       display: flex;
       justify-content: right;
-      width: 75px;
       width: 100%;
       span {
         border: 1px solid black;
@@ -148,7 +150,7 @@ const Div = styled.div`
         height: 40px;
       }
       .text {
-        height: 30%;
+        height: 40%;
         border-top: 1px dashed green;
         display: flex;
         align-items: center;
@@ -168,7 +170,6 @@ const Div = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 30px;
-
     .iconPaging {
       cursor: pointer;
     }
@@ -256,6 +257,14 @@ const ViewAllLostBoard = () => {
     setPages(pageList); // 해당 list 배열을 setPages에 담기
   }, [totalPage]);
 
+  // const [mainImg, setMainImg] = useState({});
+  // const mainImgAPI = () => {
+  //   setMainImg(losts)
+  // };
+  // useEffect(() => {
+  //   mainImgAPI();
+  // }, []);
+
   const navigate = useNavigate();
   const onCreate = async () => {
     if (Object.keys(user).length !== 0) {
@@ -268,7 +277,6 @@ const ViewAllLostBoard = () => {
   const view = (code) => {
     navigate("/compagno/lostBoard/view/" + code);
   };
-
   return (
     <Div>
       <div className="contentHeader">
@@ -367,21 +375,19 @@ const ViewAllLostBoard = () => {
               onClick={() => view(lost.lostBoardCode)}
             >
               <h4 id="animalName">{lost.lostAnimalName}</h4>
-              {/* <img
-                id="mainImage"
-                src={lost.lostAnimalImage?.replace(
-                  "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                  "http://192.168.10.28:8081/lostBoard/"
-                )}
-              /> */}
-              <img
-                id="mainImage"
-                src={lost.lostAnimalImage?.replace(
-                  "C:",
-                  "http://localhost:8081"
-                )}
-              />
-
+              <div id="imageBox">
+                <img
+                  id="mainImage"
+                  // src={lost.lostAnimalImage?.replace(
+                  //   "C:",
+                  //   "http://localhost:8081"
+                  // )}
+                  src={lost.lostAnimalImage?.replace(
+                    "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                    "http://192.168.10.28:8081/lostBoard/"
+                  )}
+                />
+              </div>
               <div id="regiDate">
                 <span>{moment(lost.lostRegiDate).format("YY-MM-DD")}</span>
               </div>
