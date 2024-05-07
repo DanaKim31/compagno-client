@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import MyPageSidebar from "../../components/user/MyPageSidebar";
-import MyPageList from "../../components/user/MyPageList";
+import MyPageList from "./MyPageList";
 import { Tab, Tabs } from "react-bootstrap";
 
 const Div = styled.div`

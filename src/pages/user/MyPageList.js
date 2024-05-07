@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
-import Paging from "./MyPagePagination";
+import Paging from "../../components/user/MyPagePagination";
 
 const Div = styled.div`
   .myPageList {
@@ -77,6 +77,7 @@ const MyPageList = () => {
     const countFavData = countResponse.data;
 
     setAnimalBoardFav(favData);
+    console.log(favData);
 
     setAnimalBoardFavCount(countFavData);
   };
@@ -97,7 +98,16 @@ const MyPageList = () => {
           {animalboardFav?.map((favContent) => (
             <tr key={favContent.animalFavoriteCode}>
               <td>{favContent.animalBoard.animalCategory.animalType}</td>
-              <td>{favContent.animalBoard.animalBoardTitle}</td>
+              <td>
+                <a
+                  href={
+                    `/compagno/animal-board/` +
+                    favContent.animalBoard.animalBoardCode
+                  }
+                >
+                  {favContent.animalBoard.animalBoardTitle}
+                </a>
+              </td>
               <td>{favContent.animalBoard.user.userNickname}</td>
               <td>{favContent.animalFavoriteDate}</td>
               <td>안녕1</td>

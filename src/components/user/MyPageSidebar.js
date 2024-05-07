@@ -26,6 +26,7 @@ const Div = styled.div`
     cursor: pointer;
     text-decoration: 1px dashed underline;
     text-underline-offset: 5px;
+    color: black;
   }
 `;
 
@@ -37,7 +38,7 @@ const MyPageSidebar = () => {
         <h1>마이 페이지</h1>
         <a href="/compagno/mypage/myinfo">내 정보</a>
         <a href="/compagno/mypage/myactivity">내 활동내역</a>
-        <a>쪽지</a>
+        <a href="/compagno/mypage/mynote">쪽지함</a>
       </div>
     </Div>
   );

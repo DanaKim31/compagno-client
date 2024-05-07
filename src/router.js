@@ -33,6 +33,7 @@ import CreateProductBoard from "./pages/productBoard/CreateProductBoard";
 import UpdateProductBoard from "./pages/productBoard/UpdateProductBoard";
 import ClassList from "./pages/onedayClassBoard/ClassList";
 import CreateClass from "./pages/onedayClassBoard/CreateClass";
+import MyPageMyNote from "./pages/user/MyPageMyNote";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
         children: [
           { path: "myinfo", element: <MyPageMyInfo /> },
           { path: "myactivity", element: <MyPageMyActivity /> },
+          { path: "mynote", element: <MyPageMyNote /> },
         ],
       },
       {
