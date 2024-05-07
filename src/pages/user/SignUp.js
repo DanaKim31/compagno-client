@@ -16,11 +16,6 @@ const Div = styled.div`
     width: 40%;
   }
 
-  .idChkZone {
-    width: 100%;
-    display: flex;
-  }
-
   .nickChkBtn,
   .idChkBtn {
     width: 30%;
@@ -33,6 +28,18 @@ const Div = styled.div`
   .input-content {
     display: flex;
     margin-bottom: 5px;
+
+    .idChkZone {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .nickChkZone {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+    }
   }
   .input-content label {
     width: 130px;
@@ -222,8 +229,10 @@ const SignUp = () => {
   };
 
   const onChangeIdChkSpan = () => {
-    if (checkId === 8 || checkId === 0) {
+    if (checkId === 8) {
       setCheckIdSpan("");
+    } else if (checkId === 0) {
+      setCheckIdSpan("사용 가능한 아이디입니다!");
     } else {
       setCheckIdSpan("사용 불가능한 아이디입니다.");
     }
@@ -245,8 +254,10 @@ const SignUp = () => {
   };
 
   const onChangeNickChkSpan = () => {
-    if (checkNick === 8 || checkNick === 0) {
+    if (checkNick === 8) {
       setCheckNickSpan("");
+    } else if (checkNick === 0) {
+      setCheckNickSpan("사용 가능한 닉네임입니다!");
     } else {
       setCheckNickSpan("사용 불가능한 닉네임입니다.");
     }
@@ -330,8 +341,9 @@ const SignUp = () => {
               <button className="idChkBtn" onClick={idCheck}>
                 중복확인
               </button>
+              <span className="idChkSpan">{checkIdSpan}</span>
             </div>
-            <span className="idChkSpan">{checkIdSpan}</span>
+
             <span className="regExpMessage">{userIdSpan}</span>
           </div>
         </div>

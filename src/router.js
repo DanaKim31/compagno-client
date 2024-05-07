@@ -38,6 +38,7 @@ import ClassList from "./pages/onedayClassBoard/ClassList";
 import CreateClass from "./pages/onedayClassBoard/CreateClass";
 import NeighborUpdate from "./pages/neighborBoard/NeighborUpdate";
 import SitterUpdate from "./pages/sitterBoard/SitterUpdate";
+import MyPageMyNote from "./pages/user/MyPageMyNote";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
         children: [
           { path: "myinfo", element: <MyPageMyInfo /> },
           { path: "myactivity", element: <MyPageMyActivity /> },
+          { path: "mynote", element: <MyPageMyNote /> },
         ],
       },
       {
@@ -88,8 +90,8 @@ const router = createBrowserRouter([
             path: "detail/:qnaQCode",
             element: <QnaQDetail />,
           },
-          {path:"manage", element:<ManageQuestions/>},
-          {path:"mypage", element:<MyQuestions/>}
+          { path: "manage", element: <ManageQuestions /> },
+          { path: "mypage", element: <MyQuestions /> },
         ],
       },
       {

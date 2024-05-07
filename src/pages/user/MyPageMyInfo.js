@@ -156,35 +156,28 @@ const MyPageMyInfo = () => {
       let pImage = URL.createObjectURL(file);
       setPImageUrl(pImage);
       setPImageFile(file);
+      setDefaultImgStatus(false);
     }
   };
 
-  // 업로드한 이미지 미리보기 - 이미지 서버로 전송
-  // const submitProfileImage = () => {
-  //   if (!pImageFile) {
-  //     return alert("이미지를 선택해 주세요");
-  //   }
-  // };
+  // 기본 프로필이미지 정보 담고있는 변수
+  const defaultImg = "/img/defaultImage.png";
 
-  {
-    /* ------------------------원본------------------------ */
-  }
   // 기본 프로필 이미지로 변경할 때 사용할 변수
-  const [defaultImg, setDefaultImg] = useState(false);
-  const onChangedefaultImg = async () => {
-    if (defaultImg == true) {
-      setDefaultImg(false);
-    } else if (defaultImg == false) {
-      setDefaultImg(true);
-      setImage(null);
+  const [defaultImgStatus, setDefaultImgStatus] = useState(false);
+  const onChangedefaultImg = () => {
+    if (defaultImgStatus == true) {
+      setDefaultImgStatus(false);
+      setPImageUrl("http://192.168.10.28:8081/" + info.userImg);
+    } else if (defaultImgStatus == false) {
+      setDefaultImgStatus(true);
+      setPImageUrl(defaultImg);
+      setPImageFile(null);
     }
   };
   {
     /* ---------------------------------------------------- */
   }
-
-  // 변경할 프로필 이미지파일 담아줄 빈 변수 설정
-  const [image, setImage] = useState(null);
 
   // 입력한 비밀번호 정규표현식으로 체크하는 함수
   const onChangePwd = () => {
@@ -282,17 +275,21 @@ const MyPageMyInfo = () => {
       formData.append("userPwd", user.userPwd);
       formData.append("userEmail", user.userEmail);
       formData.append("userPhone", user.userPhone);
+      formData.append("userEnrollDate", info.userEnrollDate);
+      formData.append("defaultImg", 0);
 
-      if (pImageFile != null) {
+      if (pImageFile != null && defaultImgStatus == false) {
         console.log(pImageFile);
         console.log(pImageUrl);
         formData.append("file", pImageFile);
       }
+      if (pImageFile == null && defaultImgStatus == true) {
+        // 1을 보내면 기본이미지로 변경하기
+        formData.delete("defaultImg");
+        formData.append("defaultImg", 1);
+      }
 
-      // else if (image == null) {
-      //   formData.append("defaultImg", "true");
-      // }
-
+      console.log(defaultImgStatus);
       await updateUser(formData);
       localStorage.removeItem("token");
       localStorage.removeItem("user");
@@ -394,29 +391,8 @@ const MyPageMyInfo = () => {
                     />
                   </label>
                   <button onClick={onChangedefaultImg}>
-                    기본 이미지로 변경
+                    프로필 이미지 삭제
                   </button>
-
-                  {/* ---------------------원본--------------------------- */}
-                  {/* <label className="profileImage">
-                    <img
-                      src={"http://192.168.10.28:8081/" + info.userImg}
-                      htmlFor="pic"
-                    />
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        setImage(e.target.files[0]); // 이미지 하나만 보낼거니까 배열의 0번
-                      }}
-                      name="pic"
-                      hidden
-                    />
-                  </label>
-                  <button onClick={onChangedefaultImg}>
-                    기본 이미지로 변경
-                  </button> */}
-                  {/* ---------------------------------------------------- */}
 
                   <Form.Control
                     type="password"
