@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import { countComment } from "../../api/animalBoard";
 
 const TableParticle = styled.div`
   display: flex;
@@ -43,56 +45,67 @@ const TableParticle = styled.div`
     justify-content: center;
     align-items: center;
     text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
   }
 `;
 
-const TableList = ({ tableboards }) => {
-  console.log(tableboards);
+const TableList = ({ board }) => {
+  // console.log(tableboards);
   const navigate = useNavigate();
   const goDetail = (boardCode) => {
     navigate(`/compagno/animal-board/${boardCode}`);
   };
+  // 댓글 수
+  const [count, setCount] = useState(0);
+  const countCommentAPI = async () => {
+    const response = await countComment(board.animalBoardCode);
+    setCount(response.data);
+  };
+  useEffect(() => {
+    countCommentAPI();
+  }, [board.animalBoardCode]);
   return (
     <>
-      {tableboards?.map((board) => (
-        <TableParticle
-          key={board.animalBoardCode}
-          onClick={() => goDetail(board.animalBoardCode)}
-        >
-          <div className="basic-info-container">
-            <div className="title-container">
-              <p className="title-cate">
-                {"[" + board.animalCategory.animalType + "]"}
-              </p>
-              <p className="title">{board.animalBoardTitle}</p>
-            </div>
-            <div className="detail">
-              {board.user.userNickname +
-                " |  " +
-                moment(board.animalBoardDate).format("MM.DD HH:mm") +
-                " | 조회 " +
-                board.animalBoardView}
-            </div>
+      {/* {tableboards?.map((board) => ( */}
+      <TableParticle
+        // key={board.animalBoardCode}
+        onClick={() => goDetail(board.animalBoardCode)}
+      >
+        <div className="basic-info-container">
+          <div className="title-container">
+            <p className="title-cate">
+              {"[" + board.animalCategory.animalType + "]"}
+            </p>
+            <p className="title">{board.animalBoardTitle}</p>
           </div>
-          <div className="image-box">
-            <img
-              className="image-thumbnail"
-              rounded
-              src={
-                board?.animalMainImage === "animalDefault.jpg" ||
-                board.animalMainImage === null
-                  ? "http://192.168.10.28:8081/animalBoard/" +
-                    board?.animalMainImage
-                  : `http://192.168.10.28:8081/${board?.animalMainImage}`
-              }
-            />
+          <div className="detail">
+            {board.user.userNickname +
+              " |  " +
+              moment(board.animalBoardDate).format("MM.DD HH:mm") +
+              " | 조회 " +
+              board.animalBoardView}
           </div>
+        </div>
+        <div className="image-box">
+          <img
+            className="image-thumbnail"
+            rounded
+            src={
+              board?.animalMainImage === "animalDefault.jpg" ||
+              board.animalMainImage === null
+                ? "http://192.168.10.28:8081/animalBoard/" +
+                  board?.animalMainImage
+                : `http://192.168.10.28:8081/${board?.animalMainImage}`
+            }
+          />
+        </div>
 
-          <div className="comment-count-container">
-            <div></div>
-          </div>
-        </TableParticle>
-      ))}
+        <div className="comment-count-container">
+          <div>댓글 수 : {count}</div>
+        </div>
+      </TableParticle>
+      {/*  */}
     </>
   );
 };

@@ -86,6 +86,10 @@ export const delComment = async (commentCode) => {
   console.log(commentCode);
   return await authorize.post("animal-board/deleteComment", commentCode);
 };
+// 특정 게시글 댓글 수 조회
+export const countComment = async (animalBoardCode) => {
+  return await instance.get(`animal-board/${animalBoardCode}/countComment`);
+};
 
 // ==============================================================
 // 조회수

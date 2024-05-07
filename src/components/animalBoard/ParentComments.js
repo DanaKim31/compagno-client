@@ -87,6 +87,7 @@ const ParentComments = ({
   detailInfo,
   animalBoardAPI,
   commentsBoolean,
+  countCommentAPI,
 }) => {
   // 댓글 불러오기
   const [comments, setComments] = useState([]);
@@ -116,6 +117,7 @@ const ParentComments = ({
       });
       setAnimalComment("");
       animalBoardCommentAPI();
+      countCommentAPI();
     }
   };
   //댓글 수정버튼 - 기존 해당 댓글내용 가져오기
@@ -150,6 +152,7 @@ const ParentComments = ({
       animalParentCode: commentCodes.animalParentCode,
     });
     animalBoardCommentAPI();
+    countCommentAPI();
   };
 
   // 대댓글 달기
@@ -180,6 +183,7 @@ const ParentComments = ({
     });
     setResponse({});
     animalBoardCommentAPI();
+    countCommentAPI();
   };
 
   // 토글
@@ -557,6 +561,7 @@ const ParentComments = ({
                   receiveComments={() => animalBoardCommentAPI()}
                   boardAuthor={detailInfo.user.userId}
                   currentUser={user.userId}
+                  countCommentAPI={() => countCommentAPI()}
                 />
               </div>
             ))}

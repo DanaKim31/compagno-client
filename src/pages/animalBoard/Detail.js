@@ -2,26 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
-import moment from "moment";
-import {
-  viewDetail,
-  getComments,
-  writeComment,
-  updateComment,
-  delComment,
-} from "../../api/animalBoard";
+import { viewDetail } from "../../api/animalBoard";
 import { Link } from "react-router-dom";
-import { Form, InputGroup, Button } from "react-bootstrap";
 import styled from "styled-components";
-import { FaReply } from "react-icons/fa";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import Dropdown from "react-bootstrap/Dropdown";
 import React from "react";
 import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
-import FavoriteBoard from "../../components/animalBoard/FavoriteBoard";
-import { FaPencilAlt } from "react-icons/fa";
 import { viewCount } from "../../api/animalBoard";
-import ViewMoreReply from "../../components/animalBoard/ViewMoreReply";
 import AllReplies from "../../components/animalBoard/AllReplies";
 import ParentComments from "../../components/animalBoard/ParentComments";
 const Div = styled.div`

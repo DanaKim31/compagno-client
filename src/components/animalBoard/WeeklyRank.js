@@ -6,6 +6,15 @@ const RankProfile = styled.div`
   padding-top: 200px;
   display: flex;
   justify-content: center;
+  .ranker-image-container:nth-child(1) {
+    order: 1;
+  }
+  .ranker-image-container:nth-child(2) {
+    order: 0;
+  }
+  .ranker-image-container:nth-child(3) {
+    order: 2;
+  }
   img {
     width: 200px;
   }
@@ -20,13 +29,16 @@ const WeeklyRank = ({ rankers }) => {
   return (
     <RankProfile>
       {rankers.slice(0, 3).map((ranker) => (
-        <div key={ranker.animalBoardCode}>
+        <div key={ranker.animalBoardCode} className="ranker-image-container">
           <Image
             src={`http://192.168.10.28:8081/${ranker.user.userImg}`}
             roundedCircle
           />
           <p>
-            {ranker.user.userNickname + "님의" + ranker.animalBoardTitle + "!"}
+            {ranker.user.userNickname +
+              "님의  " +
+              ranker.animalBoardTitle +
+              "!"}
           </p>
           <p>
             조회 수 : {ranker.animalBoardView} | 좋아요 :{" "}

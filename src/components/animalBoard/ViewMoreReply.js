@@ -13,6 +13,7 @@ const ViewMoreReply = ({
   receiveComments,
   boardAuthor,
   currentUser,
+  countCommentAPI,
 }) => {
   // 대댓글 토글
   const [replToggle, setReplToggle] = useState(true);
@@ -70,6 +71,7 @@ const ViewMoreReply = ({
                     receiveComments={() => receiveComments()}
                     boardAuthor={boardAuthor}
                     currentUser={currentUser}
+                    countCommentAPI={() => countCommentAPI()}
                   />
                 </>
               )}

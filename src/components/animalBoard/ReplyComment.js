@@ -49,6 +49,7 @@ const ReplyComment = ({
   receiveComments,
   boardAuthor,
   currentUser,
+  countCommentAPI,
 }) => {
   // console.log(boardAuthor); // 글 저자 정보 잘 가져옴
   const { animalBoardCode } = useParams();
@@ -131,6 +132,7 @@ const ReplyComment = ({
       },
     });
     receiveComments();
+    countCommentAPI();
   };
   // const onDelete = async (commentCode) => {
   //   await delComment(commentCode);
