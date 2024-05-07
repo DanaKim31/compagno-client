@@ -221,7 +221,6 @@ const LostBoardUpdate = () => {
   const [lost, setLost] = useState({});
   const viewsAPI = async () => {
     const response = await viewOneLostBoard(code);
-    // setLost(response.data);
     setLostLocation(response.data.lostLocation);
     setLostDate(moment(response.data.lostDate).format("YYYY-MM-DD"));
     setLostLocationDetail(response.data.lostLocationDetail);

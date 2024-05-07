@@ -411,7 +411,7 @@ const ViewLostBoard = () => {
       },
     });
   };
-  console.log(edit.lostPArendCode);
+
   const updateComment = async () => {
     await updateCommentLost(edit);
     setEdit({});
@@ -484,7 +484,7 @@ const ViewLostBoard = () => {
 
   return (
     <>
-      <Div key={lost.lostBoardCode}>
+      <Div>
         <div className="contentHeader">
           <h2>동물 분실</h2>
           {user.userId == lost.userId ? (
