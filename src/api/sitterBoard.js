@@ -1,11 +1,23 @@
 import axios from "axios";
 
+const getToken = () => {
+  return localStorage.getItem("token");
+};
+
 const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
 });
 
 const authorize = axios.create({
   baseURL: "http://localhost:8080/compagno/",
+});
+
+authorize.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // 전체보기
@@ -20,7 +32,9 @@ export const registerSitterBoard = async (data) => {
 
 // 상세
 export const getSitterBoard = async (code) => {
-  return await instance.get("sitter/" + code);
+  return await instance.get("sitter/" + code, {
+    withCredentials: true,
+  });
 };
 
 // 수정
@@ -33,9 +47,14 @@ export const deleteSitterBoard = async (code) => {
   return await authorize.delete("sitter/" + code);
 };
 
-// 카테고리 보기
+// 게시판 카테고리 보기
 export const getCategories = async () => {
   return await instance.get("sitter/category");
+};
+
+// 동물 카테고리 보기
+export const getAnimalCategories = async () => {
+  return await instance.get("sitter/animal-category");
 };
 
 // 시도 전체보기
@@ -57,6 +76,7 @@ export const getSitterComments = async (code) => {
 
 // 댓글 등록
 export const registerSitterComment = async (data) => {
+  console.log(data);
   return await authorize.post("sitter/comment", data);
 };
 
@@ -72,5 +92,5 @@ export const updateSitterComment = async (data) => {
 
 // 댓글 삭제
 export const deleteSitterComment = async (code) => {
-  return await authorize.delete("sitter/comment" + code);
+  return await authorize.delete("sitter/comment/" + code);
 };

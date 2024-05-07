@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getCategories,
   getSitterBoards,
@@ -11,6 +13,7 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import { userSave } from "../../store/user";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -22,6 +25,26 @@ const Div = styled.div`
     margin-bottom: 100px;
   }
 
+  .register {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+
+    #register-btn {
+      height: 40px;
+      width: 90px;
+      border-radius: 5px;
+      color: navy;
+      background: white;
+      border: 2px solid navy;
+    }
+    #register-btn:hover {
+      background: navy;
+      color: white;
+      cursor: pointer;
+    }
+  }
   .keyword-options {
     width: 100%;
     display: flex;
@@ -44,16 +67,8 @@ const Div = styled.div`
         height: 40px;
         padding: 5px;
         border-radius: 5px;
-        margin-right: 10px;
+        margin-right: 5px;
       }
-    }
-    button {
-      height: 40px;
-      width: 90px;
-      border-radius: 5px;
-      background: black;
-      color: white;
-      cursor: pointer;
     }
   }
 
@@ -107,6 +122,20 @@ const Div = styled.div`
       #animal-category {
         display: flex;
         margin-bottom: 10px;
+      }
+    }
+
+    .btn {
+      width: 90%;
+
+      #search-btn {
+        width: 100%;
+        height: 40px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        background: black;
+        margin-right: 10px;
       }
     }
   }
@@ -166,16 +195,29 @@ const Div = styled.div`
 
 const SitterBoard = () => {
   const [sitterBoards, setSitterBoards] = useState({});
+  // ========== 검색조건 ==========
   const [sitterCategories, setSitterCategories] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
   const [province, setProvince] = useState(0);
   const [district, setDistrict] = useState(0);
+  // ========== 페이징 ==========
   const [page, setPage] = useState(1); // 현재 페이지
   const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지
   const [prev, setPrev] = useState(false); // 앞으로 한칸 버튼
   const [next, setNext] = useState(false); // 뒤로 한칸 버튼
   const [pages, setPages] = useState([]); // 페이지네이션 노출 페이지
+  // ========== 유저정보 ==========
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
+  });
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
 
   const sitterBoardAPI = async () => {
     const result = await getSitterBoards(page);
@@ -237,26 +279,24 @@ const SitterBoard = () => {
     setDistrict(e.target.value);
   };
 
+  const navigate = useNavigate();
+  const registerBoard = async () => {
+    if (Object.keys(user).length !== 0) {
+      navigate("/compagno/sitterBoard/register");
+    } else {
+      alert("로그인 해주세요오오오옹");
+      navigate("/compagno/login");
+    }
+  };
+
   return (
     <Div>
       <h1>시터 게시판</h1>
 
-      <div className="keyword-options">
-        <div className="keyword">
-          <select>
-            <option>제목</option>
-            <option>작성자</option>
-          </select>
-          <input
-            type="text"
-            placeholder="검색어 입력"
-            className="search-input"
-          />
-        </div>
-
-        <div className="search-btn">
-          <button>조회</button>
-        </div>
+      <div className="register">
+        <button id="register-btn" onClick={registerBoard}>
+          등록
+        </button>
       </div>
 
       <div className="search-area">
@@ -315,6 +355,24 @@ const SitterBoard = () => {
               <option>전체</option>
             </select>
           </div>
+        </div>
+
+        <div className="keyword-options">
+          <div className="keyword">
+            <select>
+              <option>제목</option>
+              <option>작성자</option>
+            </select>
+            <input
+              type="text"
+              placeholder="검색어 입력"
+              className="search-input"
+            />
+          </div>
+        </div>
+
+        <div className="btn">
+          <button id="search-btn">조회</button>
         </div>
       </div>
 

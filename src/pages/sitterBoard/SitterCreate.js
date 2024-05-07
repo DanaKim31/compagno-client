@@ -1,6 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerSitterBoard } from "../../api/sitterBoard";
+import { userSave } from "../../store/user";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  registerSitterBoard,
+  getCategories,
+  getProvinces,
+  getDistricts,
+} from "../../api/sitterBoard";
 import { Button, Form } from "react-bootstrap";
 import styled from "styled-components";
 
@@ -23,15 +30,65 @@ const Div = styled.div`
 `;
 
 const SitterCreate = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
+  });
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, []);
+
   const [sitterBoard, setSitterBoard] = useState({});
+  const [sitterCategories, setSitterCategories] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState([]);
+  const [province, setProvince] = useState(0);
+  const [district, setDistrict] = useState(0);
   const navigate = useNavigate();
 
-  const onCancel = () => {
-    navigate("/sitterBoard");
+  const categoryAPI = async () => {
+    const result = await getCategories();
+    setSitterCategories(result.data);
   };
-  const onRegister = async () => {
+
+  const provinceAPI = async () => {
+    const result = await getProvinces();
+    setSelectedProvince(result.data);
+  };
+
+  const districtAPI = async (code) => {
+    if (code !== "") {
+      const result = await getDistricts(code);
+      setSelectedDistrict(result.data);
+    } else {
+      setSelectedDistrict([]);
+    }
+  };
+
+  useEffect(() => {
+    categoryAPI();
+    provinceAPI();
+  }, []);
+
+  const handleProvinceChange = (e) => {
+    districtAPI(e.target.value);
+    setProvince(e.target.value);
+  };
+
+  const handleDistrictChange = (e) => {
+    setDistrict(e.target.value);
+  };
+
+  const cancelBtn = () => {
+    alert("🚨 작성한 내용이 저장되지 않고 목록으로 돌아갑니다.");
+    navigate("/compagno/sitterBoard");
+  };
+  const registerBtn = async () => {
     await registerSitterBoard(sitterBoard);
-    navigate("/sitterBoard");
+    navigate("/compagno/sitterBoard");
   };
 
   return (
@@ -41,6 +98,17 @@ const SitterCreate = () => {
       <Form>
         {["radio"].map((type) => (
           <div key={`inline-${type}`} className="mb-3">
+            {/* {sitterCategories.map((category) => (
+              <Form.Check
+                inline
+                label={category.sitterCategoryType}
+                name="group1"
+                type={type}
+                id={`inline-${type}-1`}
+                key={category.sitterCategoryCode}
+                value={category.sitterCategoryCode}
+              />
+            ))} */}
             <Form.Check
               inline
               label="구인"
@@ -58,6 +126,60 @@ const SitterCreate = () => {
           </div>
         ))}
       </Form>
+
+      <div className="location-search">
+        <div id="province">
+          <span>시/도</span>
+          <select onChange={handleProvinceChange}>
+            <option value="">전체</option>
+            {selectedProvince.map((province) => (
+              <option key={province.locationCode} value={province.locationCode}>
+                {province.locationName}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div id="district">
+          <span>시/군/구</span>
+          {selectedProvince && (
+            <select onChange={handleDistrictChange}>
+              <option value="">전체</option>
+              {selectedDistrict.map((district) => (
+                <option
+                  key={district.locationCode}
+                  value={district.locationCode}
+                >
+                  {district.locationName}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+      </div>
+
+      <div className="category-search">
+        <div id="sitter-category">
+          <span>카테고리</span>
+          <select>
+            <option>전체</option>
+            {sitterCategories.map((category) => (
+              <option
+                key={category.sitterCategoryCode}
+                value={category.sitterCategoryCode}
+              >
+                {category.sitterCategoryType}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div id="animal-category">
+          <span>반려동물</span>
+          <select>
+            <option>전체</option>
+          </select>
+        </div>
+      </div>
 
       <input
         type="text"
@@ -81,10 +203,10 @@ const SitterCreate = () => {
       </Form.Group>
 
       <div className="btn">
-        <Button variant="outline-secondary" onClick={onCancel}>
+        <Button variant="outline-secondary" onClick={cancelBtn}>
           취소
         </Button>
-        <Button variant="outline-dark" onClick={onRegister}>
+        <Button variant="outline-dark" onClick={registerBtn}>
           등록
         </Button>
       </div>
