@@ -41,6 +41,7 @@ import SitterUpdate from "./pages/sitterBoard/SitterUpdate";
 import MyPageMyNote from "./pages/user/MyPageMyNote";
 import AdopBoardViewAll from "./pages/adoptionBoard/AdopBoardViewAll";
 import AdopBoardCreate from "./pages/adoptionBoard/AdopBoardCreate";
+import ClassDetail from "./pages/onedayClassBoard/ClassDetail";
 
 const router = createBrowserRouter([
   {
@@ -174,6 +175,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <ClassList /> },
           { path: "create", element: <CreateClass /> },
+          { path: "detail", element: <ClassDetail /> },
         ],
       },
     ],

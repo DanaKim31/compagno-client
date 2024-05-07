@@ -58,7 +58,7 @@ const CreateClass = () => {
   const [odcTitle, setOdcTitle] = useState("");
   const [odcContent, setContent] = useState("");
   const [odcAccompaying, setOdcAccompaying] = useState("");
-  const [odcMainImage, setOdcMainImage] = useState("");
+  const [odcMainImage, setOdcMainImage] = useState(null);
   const [odcStartDate, setOdcStartDate] = useState("");
   const [odcLastDate, setOdcLastDate] = useState("");
 
@@ -69,7 +69,7 @@ const CreateClass = () => {
     formData.append("odcTitle", odcTitle);
     formData.append("odcContent", odcContent);
     formData.append("odcAccompaying", odcAccompaying);
-    formData.append("odcMainImage", odcMainImage);
+    formData.append("file", odcMainImage);
     formData.append("odcStartDate", odcStartDate);
     formData.append("odcLastDate", odcLastDate);
     await addOnedayClass(formData);
@@ -108,8 +108,8 @@ const CreateClass = () => {
         {/* 파일 업로드 */}
         <input
           type="file"
-          value={odcMainImage}
-          onChange={(e) => setOdcMainImage(e.target.value)}
+          // value={odcMainImage}
+          onChange={(e) => setOdcMainImage(e.target.files[0])}
         />
         <h1>원데이클래스 관련 날짜</h1>
         <label>시작날짜</label>
