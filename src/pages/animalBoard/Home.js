@@ -32,6 +32,7 @@ const HomeContainer = styled.div`
         margin-top: 8px;
         position: absolute;
         opacity: 0.95;
+        z-index: 10;
       }
       .outer-option {
         width: 100px;
@@ -110,7 +111,7 @@ const HomeContainer = styled.div`
     .list-container {
       position: absolute;
       margin-top: 45px;
-      z-index: 5;
+      z-index: 10;
       opacity: 0.95;
       .outer-option {
         /* position: absolute; */
@@ -242,10 +243,11 @@ const AnimalHome = () => {
     if (user === null || user === undefined) {
       alert("로그인 후 이용가능합니다.");
     } else {
-      navigate("/animal-board/writeBoard");
+      navigate("/compagno/write-board");
     }
   };
-
+  const count = Object.keys(boards).length;
+  console.log(count);
   useEffect(() => {
     if (!loading) {
       animalBoardsAPI(true);
@@ -314,7 +316,7 @@ const AnimalHome = () => {
                   >
                     {cateBoolean ? (
                       <>
-                        {categories.map((category) => (
+                        {categories?.map((category) => (
                           <div
                             key={category.animalCategoryCode}
                             onClick={() =>
@@ -391,22 +393,22 @@ const AnimalHome = () => {
           {listBoolean ? (
             <>
               <div className="table-container">
-                {boards?.map((board) => (
-                  <div key={board.animalBoardCode}>
-                    <TableList board={board} />
-                  </div>
-                ))}
+                {/* {boards?.map((tableBoard) => (
+                  <div key={tableBoard.animalBoardCode}> */}
+                <TableList boards={boards} />
+                {/* </div>
+                ))} */}
               </div>
             </>
           ) : (
             <>
               <Row md={4} className="row-container">
-                {boards?.map((board) => (
+                {boards?.map((cardBoard) => (
                   <Col
                     className="col-6 col-md-4 col-lg-3 mb-4"
-                    key={board.animalBoardCode}
+                    key={cardBoard.animalBoardCode}
                   >
-                    <CardList board={board} user={user} />
+                    <CardList board={cardBoard} user={user} />
                   </Col>
                 ))}
               </Row>
