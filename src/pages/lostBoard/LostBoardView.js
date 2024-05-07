@@ -498,11 +498,11 @@ const ViewLostBoard = () => {
               <img
                 alt=""
                 key={image.lostImageCode}
-                src={image.lostImage?.replace("C:", "http://localhost:8081")}
-                // src={image.lostImage?.replace(
-                //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                //   "http://192.168.10.28:8081/lostBoard/"
-                // )}
+                // src={image.lostImage?.replace("C:", "http://localhost:8081")}
+                src={image.lostImage?.replace(
+                  "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                  "http://192.168.10.28:8081/lostBoard/"
+                )}
               />
             ))}
           </div>
@@ -624,7 +624,12 @@ const ViewLostBoard = () => {
             <div id="commentWrite">
               <div id="user">
                 <img
-                  src={"http://localhost:8081/upload/" + user.userImg}
+                  // src={"http://localhost:8081/upload/" + user.userImg}
+                  src={"http://192.168.10.28:8081/" + user.userImg}
+                  // src={image.lostImage?.replace(
+                  //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                  //   "http://192.168.10.28:8081/lostBoard/"
+                  // )}
                   id="userImg"
                 />
                 {user.userNickname}
@@ -663,7 +668,8 @@ const ViewLostBoard = () => {
                     <div id="userImg">
                       <img
                         src={
-                          "http://localhost:8081/upload/" + comment.user.userImg
+                          // "http://localhost:8081/upload/" + comment.user.userImg
+                          "http://192.168.10.28:8081/" + comment.user.userImg
                         }
                       />
                     </div>
