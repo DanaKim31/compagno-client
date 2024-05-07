@@ -59,3 +59,8 @@ export const updateUser = async (data) => {
 export const getAnimalboardFavList = async (id, pageNum) => {
   return await authorize.get("mypage/myactivity/" + id + "?page=" + pageNum);
 };
+
+// 내 활동내역 - animalboard 좋아요 갯수 출력
+export const getAnimalboardFavCount = async (id) => {
+  return await authorize.get("mypage/myactivity/countfav/" + id);
+};

@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { getAnimalboardFavList } from "../../api/user";
+import { getAnimalboardFavList, getAnimalboardFavCount } from "../../api/user";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
-import { Pagination } from "react-bootstrap";
+import Paging from "./MyPagePagination";
 
 const Div = styled.div`
   .myPageList {
@@ -26,16 +26,6 @@ const Div = styled.div`
     }
   }
 `;
-
-let active = 1;
-let items = [];
-for (let number = 1; number <= 5; number++) {
-  items.push(
-    <Pagination.Item key={number} active={number === active}>
-      {number}
-    </Pagination.Item>
-  );
-}
 
 const MyPageList = () => {
   const dispatch = useDispatch();
@@ -65,22 +55,31 @@ const MyPageList = () => {
   }, [info]);
 
   // 좋아요 목록과 페이징 기초값 세팅
+  // 페이징에 사용할 좋아요 갯수 가져오기
   const [animalboardFav, setAnimalBoardFav] = useState([]);
   const [page, setPage] = useState(1);
+
+  // 페이지 변경
+  const handlePageChange = async (page) => {
+    await setPage(page);
+    const response = await getAnimalboardFavList(info.userId, page);
+    const favData = response.data;
+    setAnimalBoardFav(favData);
+  };
+
+  const [animalBoardFavCount, setAnimalBoardFavCount] = useState(0);
 
   const userAPI = async () => {
     const response = await getAnimalboardFavList(info.userId, page);
     const favData = response.data;
 
-    setAnimalBoardFav(favData);
-    // setPage(page);
-    console.log(favData);
-  };
+    const countResponse = await getAnimalboardFavCount(info.userId);
+    const countFavData = countResponse.data;
 
-  // 페이지네이션
-  useEffect(() => {
-    setPage(items);
-  }, [items]);
+    setAnimalBoardFav(favData);
+
+    setAnimalBoardFavCount(countFavData);
+  };
 
   return (
     <Div>
@@ -96,17 +95,21 @@ const MyPageList = () => {
         </thead>
         <tbody>
           {animalboardFav?.map((favContent) => (
-            <tr key={favContent?.animalFavoriteCode}>
-              <td>{favContent?.animalBoard.animalCategory.animalType}</td>
-              <td>{favContent?.animalBoard.animalBoardTitle}</td>
-              <td>{favContent?.animalBoard.user.userNickname}</td>
-              <td>{favContent?.animalFavoriteDate}</td>
+            <tr key={favContent.animalFavoriteCode}>
+              <td>{favContent.animalBoard.animalCategory.animalType}</td>
+              <td>{favContent.animalBoard.animalBoardTitle}</td>
+              <td>{favContent.animalBoard.user.userNickname}</td>
+              <td>{favContent.animalFavoriteDate}</td>
               <td>안녕1</td>
             </tr>
           ))}
         </tbody>
-        <Pagination>{items}</Pagination>
       </table>
+      <Paging
+        page={page}
+        count={animalBoardFavCount}
+        setPage={handlePageChange}
+      />
     </Div>
   );
 };
