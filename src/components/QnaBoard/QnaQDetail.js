@@ -329,7 +329,10 @@ const QnaQDetail = () => {
                   ))}
                   <div>
                     <p>{question.qnaQTitle}</p>
-                    <p>{question.qnaQDate}</p>
+                    <p>
+                        날짜 :{" "}
+                        {moment(question.qnaQDate).format("YY-MM-DD hh:mm")}
+                      </p>
                     <p>{question.userId}</p>
                     <p>{question.userNickname}</p>
                     <p>{question.qnaQContent}</p>
@@ -348,7 +351,7 @@ const QnaQDetail = () => {
                     ))}
                     <div>
                       <p>{question.qnaQTitle}</p>
-                      <p>{question.qnaQDate}</p>
+                      <p>{moment(question.qnaQDate).format("YY-MM-DD hh:mm")}</p>
                       <p>{question.userId}</p>
                       <p>{question.userNickname}</p>
                       <p>{question.qnaQContent}</p>
