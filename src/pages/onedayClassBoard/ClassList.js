@@ -33,7 +33,7 @@ const StyledDiv = styled.div`
   }
 `;
 
-// 원데이 클래스 리스트 페이지 !!
+// 원데이 클래스 리스트 페이지 !!  ==> 전체 조회 viewAllClass
 const ClassList = () => {
   const [onedayClasses, setOnedayClasses] = useState([]); // 내가 가저올 원데이 클래스 리스트들 관련 변수랑 함수
 
@@ -41,6 +41,7 @@ const ClassList = () => {
   const onedayClassAPI = async () => {
     const result = await viewAllClass();
     setOnedayClasses(result.data);
+    // console.log(result.data);
   };
 
   useEffect(() => {
@@ -59,6 +60,7 @@ const ClassList = () => {
 
       {onedayClasses.map((onedayClass) => (
         <div key={onedayClass.odcCode} className="">
+          <img className="classImg" />
           <div className="title">제목 : {onedayClass.odcTitle}</div>
           <div className="Content">간단한 내용 : {onedayClass.odcContent}</div>
           <div className="Accompaying">
@@ -71,7 +73,6 @@ const ClassList = () => {
           <div className="lastDate">
             클래스 마지막 날짜 : {onedayClass.odcLastDate}
           </div>
-          <div className="fileupload">파일 업로드: {}</div>
         </div>
       ))}
     </StyledDiv>

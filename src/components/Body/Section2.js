@@ -3,9 +3,9 @@ import { useRef, useState, useEffect } from "react";
 // 화면 노출 관련 js
 const Section2 = () => {
   // const [container1, setContainer1] = useState(false);
-  // //     변수이름    ,   함수이름        초기값을 false로 처리
-  // // const [container2, setContainer2] = useState(false);
-  // // const [container3, setContainer3] = useState(false);
+  //     변수이름    ,   함수이름        초기값을 false로 처리
+  // const [container2, setContainer2] = useState(false);
+  // const [container3, setContainer3] = useState(false);
   // const scrollRef = useRef(null);
 
   // useEffect(() => {
@@ -16,9 +16,9 @@ const Section2 = () => {
   //   }
   // }, [scrollRef.current]);
 
-  // const rect = getBoundingClientRect();
-  // const winHeight = window.innerHeight;
-  // const contentHeight = rect.bottom - rect.top;
+  // // const rect = getBoundingClientRect();
+  // // const winHeight = window.innerHeight;
+  // // const contentHeight = rect.bottom - rect.top;
 
   // const scrollEvent = () => {
   //   const scroll = scrollRef.current.getBoundingClientRect();
