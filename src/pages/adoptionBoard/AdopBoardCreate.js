@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/ko";
 
-import { FaShieldDog } from "react-icons/fa6";
+import { FaShieldDog, FaHouseMedical } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { FaPray, FaUser } from "react-icons/fa";
 
@@ -28,6 +28,33 @@ const Div = styled.div`
   align-items: center;
   position: relative;
   top: 180px;
+
+  .contents {
+    width: 70%;
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+    .pContent {
+      border-top: 1px solid green;
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px;
+      margin-bottom: 40px;
+      h3 {
+        font-weight: bold;
+      }
+      table {
+        #userInfo {
+          display: flex;
+          justify-content: space-evenly;
+        }
+      }
+    }
+  }
 `;
 
 const CreateAdopBoard = () => {
@@ -93,6 +120,19 @@ const CreateAdopBoard = () => {
     }
   };
 
+  // 중성화여부
+  const neuterCheck = (neuter) => {
+    const checkboxes = document.getElementsByClassName("neuter");
+    for (let i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].value !== neuter) {
+        checkboxes[i].checked = false;
+      } else if (checkboxes[i].value == neuter) {
+        checkboxes[i].checked = true;
+        setAdopAnimalNeuter(neuter);
+      }
+    }
+  };
+
   const navigate = useNavigate();
   const okCreate = async () => {
     const formData = new FormData();
@@ -134,8 +174,8 @@ const CreateAdopBoard = () => {
   };
   return (
     <Div>
-      <h1>동물 입양 등록</h1>
       <div className="contents">
+        <h1>동물 입양 등록</h1>
         <div className="postOwner">
           <div className="pContent">
             <table>
@@ -176,6 +216,7 @@ const CreateAdopBoard = () => {
                     <h3>
                       <FaShieldDog /> 입양 동물 정보
                     </h3>
+                    <span>* : 필수 입력란입니다.</span>
                   </td>
                 </tr>
               </thead>
@@ -244,6 +285,38 @@ const CreateAdopBoard = () => {
                   </td>
                 </tr>
                 <tr>
+                  중성화 여부<span>*</span>
+                  <td>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value="예"
+                        onChange={(e) => neuterCheck(e.target.value)}
+                        className="neuter"
+                      />
+                      예
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value="아니오"
+                        onChange={(e) => neuterCheck(e.target.value)}
+                        className="neuter"
+                      />
+                      아니오
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value="알수없음"
+                        onChange={(e) => neuterCheck(e.target.value)}
+                        className="neuter"
+                      />
+                      알수없음
+                    </label>
+                  </td>
+                </tr>
+                <tr>
                   <th>나이</th>
                   <td>
                     <input
@@ -256,12 +329,34 @@ const CreateAdopBoard = () => {
                   </td>
                 </tr>
                 <tr>
+                  <th>무게(kg)</th>
+                  <td>
+                    <input
+                      type="number"
+                      min={0}
+                      value={adopAnimalKg}
+                      placeholder="숫자로 입력해주세요"
+                      onChange={(e) => setAdopAnimalKg(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
                   <th>동물 특징</th>
                   <td>
                     <input
                       type="text"
                       value={adopAnimalFeature}
                       onChange={(e) => setAdopAnimalFeature(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>발견된 장소</th>
+                  <td>
+                    <input
+                      type="text"
+                      value={adopAnimalFindplace}
+                      onChange={(e) => setAdopAnimalFindplace(e.target.value)}
                     />
                   </td>
                 </tr>
@@ -286,6 +381,44 @@ const CreateAdopBoard = () => {
                       </div>
                       <p>사진 업로드 추가 (최대 3장)</p>
                     </label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="center">
+          <div className="pContent">
+            <table>
+              <thead>
+                <tr>
+                  <td id="userInfo">
+                    <h3>
+                      <FaHouseMedical />
+                      입양 센터 정보
+                    </h3>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>보호센터명</th>
+                  <td>
+                    <input
+                      type="text"
+                      value={adopCenterName}
+                      onChange={(e) => setAdopCenterName(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>보호센터 연락처</th>
+                  <td>
+                    <input
+                      type="text"
+                      value={adopCenterPhone}
+                      onChange={(e) => setAdopCenterPhone(e.target.value)}
+                    />
                   </td>
                 </tr>
               </tbody>
