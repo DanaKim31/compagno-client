@@ -226,15 +226,17 @@ const ProductBoardDetail = () => {
           </span>
         </p>
         <p>작성자 : {productBoard.user?.userNickname}</p>
-        <img
-          src={"http://192.168.10.28:8081/" + productBoard.productMainImage}
-          style={{
-            height: "400px",
-            width: "600px",
-            objectFit: "cover",
-            margin: "20px auto",
-          }}
-        />
+        {productBoard.productMainImage != undefined && (
+          <img
+            src={"http://192.168.10.28:8081/" + productBoard.productMainImage}
+            style={{
+              height: "400px",
+              width: "600px",
+              objectFit: "cover",
+              margin: "20px auto",
+            }}
+          />
+        )}
         <p>상품명 : {productBoard.productName}</p>
         <p>사용 동물 : {productBoard.animalCategory?.animalType}</p>
         <p>상품 분류 : {productBoard.productCategory}</p>

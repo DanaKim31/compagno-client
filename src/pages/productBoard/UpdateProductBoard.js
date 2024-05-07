@@ -140,6 +140,16 @@ const UpdateProductBoard = () => {
     if (productMainFile instanceof File) {
       formData.append("productMainFile", productMainFile);
     }
+
+    files.forEach((file, index) => {
+      formData.append(`files[${index}]`, file);
+    });
+
+    prevImgSrc.forEach((image, index) => {
+      console.log(image);
+      formData.append(`images[${index}]`, image.productImage);
+    });
+
     await editProductBoard(formData);
     navigate("/compagno/product-board");
   };
@@ -153,7 +163,9 @@ const UpdateProductBoard = () => {
     setContent(response.productBoardContent);
     setAnimal(response.animalCategory.animalCategoryCode);
     setProductCategory(response.productCategory);
-    setMainImgSrc("http://192.168.10.28:8081/" + response.productMainImage);
+    if (response.productMainImage != null) {
+      setMainImgSrc("http://192.168.10.28:8081/" + response.productMainImage);
+    }
     setPrevMainImg(response.productMainImage);
 
     setPrevImgSrc(response.images);
@@ -176,11 +188,11 @@ const UpdateProductBoard = () => {
     for (let i = 0; i < images.length; i++) {
       file = images[i];
       const reader = new FileReader();
-      reader.readAsDataURL(file);
       reader.onloadend = () => {
         files[i] = reader.result;
         setImgSrc([...files]);
       };
+      reader.readAsDataURL(file);
     }
   };
   const mainImageCreate = (e) => {
@@ -205,7 +217,9 @@ const UpdateProductBoard = () => {
   };
 
   const deleteImgSrc = (no) => {
-    console.log(imgSrc[no]);
+    let newImgSrc = [...imgSrc];
+    newImgSrc.splice(no, 1);
+    setImgSrc(newImgSrc);
   };
   return (
     <Main>
@@ -412,7 +426,11 @@ const UpdateProductBoard = () => {
           {imgSrc.map((img, i) => (
             <span className="imageDiv" key={i}>
               <img src={img} key={i} />
-              <FaRegCircleXmark onClick={() => deleteImgSrc(i)} />
+              <FaRegCircleXmark
+                onClick={() => {
+                  deleteImgSrc(i);
+                }}
+              />
             </span>
           ))}
           {prevImgSrc.map((img, i) => (

@@ -119,7 +119,6 @@ const ViewAllProductBoard = () => {
   const [prev, setPrev] = useState(false); // 앞으로 한칸 버튼
   const [next, setNext] = useState(false); // 뒤로 한칸 버튼
   const [pages, setPages] = useState([]); // 페이지들
-  const [grade, setGrade] = useState(0);
 
   const [filter, setFilter] = useState({
     productName: "",
@@ -214,6 +213,10 @@ const ViewAllProductBoard = () => {
   const productBoardDetail = (code) => {
     navigate("/compagno/product-board/" + code);
   };
+
+  useEffect(() => {
+    getProductBoards();
+  }, [filter.sort]);
 
   return (
     <StyledProductBoard>
@@ -465,9 +468,9 @@ const ViewAllProductBoard = () => {
         <input
           type="text"
           placeholder="검색문장"
-          onChange={(e) =>
-            setFilter((prev) => ({ ...prev, keyword: e.target.value }))
-          }
+          onChange={(e) => {
+            setFilter((prev) => ({ ...prev, keyword: e.target.value }));
+          }}
         />
         <select
           onChange={(e) =>
@@ -516,7 +519,7 @@ const ViewAllProductBoard = () => {
                 style={{
                   height: "200px",
                   width: "100%",
-                  objectFit: "cover",
+                  objectFit: "fill",
                   borderBottom: "1px solid black",
                 }}
               />
