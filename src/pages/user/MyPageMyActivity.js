@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import MyPageSidebar from "../../components/user/MyPageSidebar";
 import MyPageList from "./MyPageList";
+import MyPageFavProduct from "./MyPageFavProduct";
 import { Tab, Tabs } from "react-bootstrap";
 
 const Div = styled.div`
@@ -38,7 +39,7 @@ const MyPageMyActivity = () => {
             <MyPageList />
           </Tab>
           <Tab eventKey="product" title="관심 제품">
-            Tab content for product
+            <MyPageFavProduct />
           </Tab>
           <Tab eventKey="1day class" title="1day class">
             Tab content for 1day class

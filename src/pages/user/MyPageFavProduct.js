@@ -1,5 +1,5 @@
+import { getProductBookmarkList } from "../../api/user";
 import styled from "styled-components";
-import { getAnimalboardFavList, getAnimalboardFavCount } from "../../api/user";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,7 +27,7 @@ const Div = styled.div`
   }
 `;
 
-const MyPageList = () => {
+const MyPageFavProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -49,42 +49,22 @@ const MyPageList = () => {
     }
   }, []);
 
-  // 유저정보 담겨질때 실행
   useEffect(() => {
     userAPI();
-    userAPI2();
   }, [info]);
 
   // 좋아요 목록과 페이징 기초값 세팅
-  // 페이징에 사용할 좋아요 갯수 가져오기
-  const [animalboardFav, setAnimalBoardFav] = useState([]);
+  const [productBoardFav, setProductBoardFav] = useState([]);
   const [page, setPage] = useState(1);
-
-  // 페이지 변경
-  const handlePageChange = async (page) => {
-    await setPage(page);
-    const response = await getAnimalboardFavList(info.userId, page);
-    const favData = response.data;
-    setAnimalBoardFav(favData);
-  };
-
-  const [animalBoardFavCount, setAnimalBoardFavCount] = useState(0);
 
   // 좋아요 목록 불러오기
   const userAPI = async () => {
-    const response = await getAnimalboardFavList(info.userId, page);
+    const response = await getProductBookmarkList(info.userId, page);
     const favData = response.data;
 
-    setAnimalBoardFav(favData);
+    setProductBoardFav(favData);
+    console.log(favData);
   };
-
-  const userAPI2 = async () => {
-    const countResponse = await getAnimalboardFavCount(info.userId);
-    const countFavData = countResponse.data;
-
-    setAnimalBoardFavCount(countFavData);
-  };
-
   return (
     <Div>
       <table className="myPageList">
@@ -98,9 +78,9 @@ const MyPageList = () => {
           </tr>
         </thead>
         <tbody>
-          {animalboardFav?.map((favContent) => (
-            <tr key={favContent.animalFavoriteCode}>
-              <td>{favContent.animalBoard.animalCategory.animalType}</td>
+          {productBoardFav?.map((favContent) => (
+            <tr key={favContent.productBookmarkCode}>
+              {/* <td>{favContent.animalBoard.animalCategory.animalType}</td>
               <td>
                 <a
                   href={
@@ -113,18 +93,13 @@ const MyPageList = () => {
               </td>
               <td>{favContent.animalBoard.user.userNickname}</td>
               <td>{favContent.animalFavoriteDate}</td>
-              <td>안녕1</td>
+              <td>안녕1</td> */}
             </tr>
           ))}
         </tbody>
       </table>
-      <Paging
-        page={page}
-        count={animalBoardFavCount}
-        setPage={handlePageChange}
-      />
     </Div>
   );
 };
 
-export default MyPageList;
+export default MyPageFavProduct;

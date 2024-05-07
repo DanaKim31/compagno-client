@@ -57,10 +57,19 @@ export const updateUser = async (data) => {
 
 // 내 활동내역 - animalboard 좋아요 목록 출력
 export const getAnimalboardFavList = async (id, pageNum) => {
-  return await authorize.get("mypage/myactivity/" + id + "?page=" + pageNum);
+  return await authorize.get(
+    "mypage/myactivity/animalfav/" + id + "?page=" + pageNum
+  );
 };
 
 // 내 활동내역 - animalboard 좋아요 갯수 출력
 export const getAnimalboardFavCount = async (id) => {
-  return await authorize.get("mypage/myactivity/countfav/" + id);
+  return await authorize.get("mypage/myactivity/countanimalfav/" + id);
+};
+
+// 내 활동내역 - productboard 북마크 목록 출력
+export const getProductBookmarkList = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/productfav/" + id + "?page=" + pageNum
+  );
 };
