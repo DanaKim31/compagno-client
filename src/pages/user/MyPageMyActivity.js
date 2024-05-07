@@ -37,7 +37,7 @@ const MyPageMyActivity = () => {
           <Tab eventKey="animalBoardFav" title="최애 동물">
             <MyPageList />
           </Tab>
-          <Tab eventKey="product" title="product">
+          <Tab eventKey="product" title="관심 제품">
             Tab content for product
           </Tab>
           <Tab eventKey="1day class" title="1day class">

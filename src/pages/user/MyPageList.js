@@ -52,6 +52,7 @@ const MyPageList = () => {
   // 유저정보 담겨질때 실행
   useEffect(() => {
     userAPI();
+    userAPI2();
   }, [info]);
 
   // 좋아요 목록과 페이징 기초값 세팅
@@ -73,11 +74,12 @@ const MyPageList = () => {
     const response = await getAnimalboardFavList(info.userId, page);
     const favData = response.data;
 
+    setAnimalBoardFav(favData);
+  };
+
+  const userAPI2 = async () => {
     const countResponse = await getAnimalboardFavCount(info.userId);
     const countFavData = countResponse.data;
-
-    setAnimalBoardFav(favData);
-    console.log(favData);
 
     setAnimalBoardFavCount(countFavData);
   };
