@@ -27,11 +27,27 @@ export const addBoard = async (boardInfo) => {
   return await authorize.post(`animal-board`, boardInfo);
 };
 // 글 전체보기
-export const viewBoardList = async (page) => {
-  return await instance.get(`animal-board?page=${page}`);
+export const viewBoardList = async (page, category, sort) => {
+  let url = `animal-board?page=${page}`;
+  if (category !== null || category !== undefined) {
+    url += category;
+  }
+  if (sort !== null || sort !== undefined) {
+    url += sort;
+  }
+  console.log(url);
+  return await instance.get(url);
+};
+// 좋아요 랭킹 불러오기
+export const viewRanker = async () => {
+  return await instance.get("animal-board/weeklyRank");
+};
+// 글 검색 카테고리 불러오기
+export const viewCategory = async () => {
+  return await instance.get("animal-board/animalCategory");
 };
 
-// 글 하나보기 + 조회수
+// 글 하나보기
 export const viewDetail = async (animalBoardCode) => {
   return await instance.get(`animal-board/` + animalBoardCode);
 };
@@ -70,6 +86,10 @@ export const delComment = async (commentCode) => {
   console.log(commentCode);
   return await authorize.post("animal-board/deleteComment", commentCode);
 };
+// 특정 게시글 댓글 수 조회
+export const countComment = async (animalBoardCode) => {
+  return await instance.get(`animal-board/${animalBoardCode}/countComment`);
+};
 
 // ==============================================================
 // 조회수
@@ -78,7 +98,7 @@ export const viewCount = async (animalBoardCode) => {
 };
 // 해당글의 현재 유저의 좋아요 정보 가져오기 -boradCode + userId
 export const checkFavorite = async (favDetail) => {
-  console.log(favDetail);
+  // console.log(favDetail);
   return await instance.post("animal-board/checkFavorite", favDetail);
 };
 // 해당 글의 좋아요 수 가져오기 - count
