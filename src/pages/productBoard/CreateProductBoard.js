@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { FaStar, FaStarHalfAlt, FaRegStar, FaRegImage } from "react-icons/fa";
+import { useState, useEffect, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import { userSave } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
@@ -46,6 +46,42 @@ const Main = styled.main`
     display: flex;
     flex-direction: row;
   }
+
+  .imagesDiv {
+    display: flex;
+
+    img {
+      width: 300px;
+      height: 200px;
+      margin: 0px 10px;
+      margin-bottom: 10px;
+    }
+  }
+  .mainImageDiv,
+  .nullMainImageDiv {
+    width: 400px;
+    height: 300px;
+    border: 1px solid black;
+    margin-left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .nullMainImageDiv {
+    cursor: pointer;
+    svg {
+      font-size: 3rem;
+    }
+    span {
+      font-weight: bold;
+    }
+  }
 `;
 
 const CreateProductBoard = () => {
@@ -62,20 +98,60 @@ const CreateProductBoard = () => {
   const [animal, setAnimal] = useState("");
   const [content, setContent] = useState("");
   const [productCategory, setProductCategory] = useState("");
+  const [productMainFile, setProductMainFile] = useState({});
+  const [files, setFiles] = useState([]);
+
+  const [imgSrc, setImgSrc] = useState([]);
+  const imageCreate = (e) => {
+    const images = Array.from(e.target.files);
+    setFiles(images);
+
+    let file;
+    for (let i = 0; i < images.length; i++) {
+      file = images[i];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        files[i] = reader.result;
+        setImgSrc([...files]);
+      };
+    }
+  };
+
+  const [mainImgSrc, setMainImgSrc] = useState("");
+  const mainImageCreate = (e) => {
+    if (e.target.files[0] instanceof File) {
+      setProductMainFile(e.target.files[0]);
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setMainImgSrc(reader.result);
+      };
+    }
+  };
 
   const createBoard = async () => {
-    await addProductBoard({
-      productBoardTitle: title,
-      productName: productName,
-      productPrice: price,
-      productBoardGrade: grade,
-      productBoardContent: content,
-      animalCategoryCode: animal,
-      productCategory: productCategory,
-      user: {
-        userId: user.userId,
-      },
+    const formData = new FormData();
+    formData.append("productBoardTitle", title);
+    formData.append("productName", productName);
+    formData.append("productPrice", price);
+    formData.append("productBoardGrade", grade);
+    formData.append("productBoardContent", content);
+    formData.append("animalCategoryCode", animal);
+    formData.append("productCategory", productCategory);
+    formData.append("userId", user.userId);
+
+    if (productMainFile instanceof File) {
+      formData.append("productMainFile", productMainFile);
+    }
+
+    files.forEach((file, index) => {
+      formData.append(`files[${index}]`, file);
     });
+
+    await addProductBoard(formData);
+
     navigate("/compagno/product-board");
   };
 
@@ -85,6 +161,8 @@ const CreateProductBoard = () => {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
   }, []);
+
+  const mainSelectImage = useRef("");
 
   return (
     <Main>
@@ -98,7 +176,40 @@ const CreateProductBoard = () => {
           }}
         />
       </span>
-      <span>썸네일 이미지 :</span>
+      <div>
+        썸네일 이미지 :
+        <input
+          type="file"
+          accept="image/*"
+          onChange={mainImageCreate}
+          style={{ display: "none" }}
+          ref={mainSelectImage}
+        />
+        {mainImgSrc !== "" ? (
+          <div
+            className="mainImageDiv"
+            onClick={() => mainSelectImage.current.click()}
+          >
+            <img src={mainImgSrc} />
+          </div>
+        ) : (
+          <div
+            className="nullMainImageDiv"
+            onClick={() => mainSelectImage.current.click()}
+          >
+            <FaRegImage />
+            <span>썸네일로 사용할 이미지 업로드</span>
+          </div>
+        )}
+        <button
+          onClick={() => {
+            setProductMainFile({});
+            setMainImgSrc("");
+          }}
+        >
+          취소
+        </button>
+      </div>
       <span>
         제품명 :{" "}
         <input
@@ -242,7 +353,15 @@ const CreateProductBoard = () => {
           </div>
         )}
       </div>
-      <div>이미지 : </div>
+      <div>
+        이미지 :
+        <input type="file" accept="image/*" multiple onChange={imageCreate} />
+        <div className="imagesDiv">
+          {imgSrc.map((img, i) => (
+            <img src={img} key={i} />
+          ))}
+        </div>
+      </div>
       <div>
         글 내용 :{" "}
         <Form.Control

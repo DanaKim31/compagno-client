@@ -8,9 +8,10 @@ const Div = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   height: calc(100vh - 100px);
 
-  #register {
+  #login {
     display: flex;
     flex-direction: column;
 
@@ -29,6 +30,11 @@ const Div = styled.div`
       border: none;
       font-weight: bold;
       font-size: 1.5rem;
+    }
+    a {
+      text-decoration-line: none;
+      color: grey;
+      margin-top: 10px;
     }
   }
 `;
@@ -73,7 +79,7 @@ const Login = () => {
   return (
     <>
       <Div>
-        <div id="register">
+        <div id="login">
           <input
             type="text"
             placeholder="아이디"
@@ -91,6 +97,9 @@ const Login = () => {
             }
           />
           <button onClick={submit}>login</button>
+          <a href="/compagno/signup" className="linkToSignUp">
+            회원 가입
+          </a>
         </div>
       </Div>
     </>

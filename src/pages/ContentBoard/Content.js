@@ -1,19 +1,64 @@
 import styled from "styled-components";
-import { getContents } from "../../api/content";
 import { useEffect, useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
   position: relative;
   top: 200px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: skyblue;
+  span {
+    font-weight: bolder;
+    padding-top: 10px;
+    padding-right: 20px;
+  }
+
+  #select {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 50px;
+    margin-bottom: 20px;
+    #mainCate {
+      margin-right: 20px;
+    }
+    #subCate {
+      margin-right: 10px;
+    }
+  }
+
+  #selecttwo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 50px;
+  }
+  #keyword {
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    height: 50px;
+    button {
+      width: 70px;
+      height: 50px;
+      margin-left: 10px;
+    }
+  }
 `;
 
 const Content = () => {
-  const [page, setPage] = useState(1);
+  const navigate = useNavigate();
   const [mainCate, setMainCate] = useState(0);
   const [subCate, setSubCate] = useState(0);
   const [filterCate, setFilterCate] = useState([]);
   const [mainReg, setMainReg] = useState(0);
-  const [content, setContent] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
   //   const [filterReg, setFilterReg] = useState([]);
 
@@ -84,95 +129,91 @@ const Content = () => {
 
   useEffect(() => {
     if (mainReg !== 0) {
-      ContentAPI();
     }
   }, [mainReg]);
 
-  const ContentAPI = async () => {
-    const response = await getContents(page, mainCate, subCate, mainReg);
-    setContent(response.data.content);
+  const filtering = () => {
+    navigate(
+      `/compagno/content/list?mainCate=${mainCate}&subCate=${subCate}&mainReg=${mainReg}&keyword=${keyword}`
+    );
   };
-
   return (
     <>
       <Div>
-        {mainCate !== 0 && subCate !== 0 && mainReg !== 0 ? (
-          <>
-            <h1>리스트 출력</h1>
-            <>
-              <table>
-                <thead>
-                  <tr>
-                    <th>이름</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {content?.map((item) => {
+        {/* select... */}
+        <div>
+          <div id="select">
+            <span>메인 카테고리</span>
+            <select
+              onChange={handleselectMainCate}
+              value={mainCate}
+              id="mainCate"
+            >
+              {selectMainCate.map((item) => {
+                return (
+                  <option value={item.value} key={item.value}>
+                    {item.name}
+                  </option>
+                );
+              })}
+            </select>
+
+            {mainCate !== 0 ? (
+              <>
+                <span>서브 카테고리</span>
+                <select
+                  onChange={handleselectSubCate}
+                  value={subCate}
+                  id="subCate"
+                >
+                  {filterCate.map((item) => {
                     return (
-                      <tr key={item.num}>
-                        <td>
-                          <a href={`/compagno/content/detail/${item.num}`}>
-                            {item.name}
-                          </a>
-                        </td>
-                      </tr>
+                      <option value={item.value} key={item.value}>
+                        {item.name}
+                      </option>
                     );
                   })}
-                </tbody>
-              </table>
-            </>
-          </>
-        ) : (
-          <>
-            {/* select... */}
-            <div>
-              <span>메인 카테고리</span>
-              <select onChange={handleselectMainCate} value={mainCate}>
-                {selectMainCate.map((item) => {
-                  return (
-                    <option value={item.value} key={item.value}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </select>
+                </select>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
+          <div id="selecttwo">
+            {subCate !== 0 ? (
+              <>
+                <span>지역</span>
+                <select onChange={handleselectMainReg} value={mainReg}>
+                  {selectMainReg.map((item) => {
+                    return (
+                      <option value={item.value} key={item.value}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </>
+            ) : (
+              <></>
+            )}
 
-              {mainCate !== 0 ? (
-                <>
-                  <span>서브 카테고리</span>
-                  <select onChange={handleselectSubCate} value={subCate}>
-                    {filterCate.map((item) => {
-                      return (
-                        <option value={item.value} key={item.value}>
-                          {item.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </>
-              ) : (
-                <></>
-              )}
-
-              {subCate !== 0 ? (
-                <>
-                  <span>서브 카테고리</span>
-                  <select onChange={handleselectMainReg} value={mainReg}>
-                    {selectMainReg.map((item) => {
-                      return (
-                        <option value={item.value} key={item.value}>
-                          {item.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </>
-              ) : (
-                <></>
-              )}
-            </div>
-          </>
-        )}
+            {mainReg !== 0 ? (
+              <>
+                <div id="keyword">
+                  <Form.Control
+                    type="text"
+                    placeholder="검색어를 입력하세요"
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
+                  />
+                  <Button onClick={filtering}>조회</Button>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
       </Div>
     </>
   );

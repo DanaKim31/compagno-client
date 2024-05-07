@@ -1,4 +1,3 @@
-import { dataTagSymbol } from "@tanstack/react-query";
 import axios from "axios";
 
 const getToken = () => {
@@ -56,7 +55,12 @@ export const updateUser = async (data) => {
   return await authorize.put("mypage/myinfo/updateProfile", data);
 };
 
-// 프로필사진 변경
-export const changePhoto = async (data) => {
-  return await authorize.put("mypage/myinfo/updateProfile", data);
+// 내 활동내역 - animalboard 좋아요 목록 출력
+export const getAnimalboardFavList = async (id, pageNum) => {
+  return await authorize.get("mypage/myactivity/" + id + "?page=" + pageNum);
+};
+
+// 내 활동내역 - animalboard 좋아요 갯수 출력
+export const getAnimalboardFavCount = async (id) => {
+  return await authorize.get("mypage/myactivity/countfav/" + id);
 };

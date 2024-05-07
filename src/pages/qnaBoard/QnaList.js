@@ -10,19 +10,65 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import { IoSearch } from "react-icons/io5";
+import { FaLock } from "react-icons/fa";
 import styled from "styled-components";
 
 const Div = styled.div`
   position: relative;
   top: 200px;
+  #topbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-top: 5px;
+    background-color: pink;
+    height: 50px;
+
+    Button {
+      height: 35px;
+    }
+  }
+  Table {
+    background-color: skyblue;
+    width: 70%;
+    margin: 0 auto;
+  }
+  .paging {
+    width: 100%;
+    padding-top: 30px;
+    text-align: center;
+    background-color: pink;
+    button {
+      background-color: white;
+      border-radius: 5px;
+      margin: 5px;
+      font-weight: bolder;
+    }
+  }
 `;
 
 const Table = styled.table`
-  padding-top: 200px;
-  margin-left: 400px;
-  width: 50%;
+  thead {
+    text-align: center;
+    font-weight: bolder;
+    th {
+      height: 70px;
+      padding-top: 20px;
+      border: 1px solid;
+    }
+  }
   tbody {
     text-align: center;
+    td {
+      height: 50px;
+      padding-top: 10px;
+      border: 1px solid;
+      a {
+        color: black;
+        text-decoration: none;
+      }
+    }
   }
 `;
 
@@ -150,8 +196,38 @@ const QnaList = () => {
   return (
     <Div>
       <CenterModal show={modalShow} onHide={() => setModalShow(false)} />
-      <div>
-        <p>총 {questions.totalElements}건</p>
+      <div id="topbar">
+        <div>
+          <p>전체 {questions.totalElements}건</p>
+        </div>
+        <div>
+          <input type="text" placeholder="검색어를 입력하세요" />
+          <button>
+            <IoSearch />
+            조회
+          </button>
+        </div>
+        {Object.keys(user).length === 0 ? (
+          <>
+            <Button
+              onClick={() => {
+                navigate("/compagno/login");
+              }}
+            >
+              질문 등록
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              onClick={() => {
+                navigate("/compagno/question/register");
+              }}
+            >
+              질문 등록
+            </Button>
+          </>
+        )}
       </div>
       <Table>
         <thead>
@@ -160,7 +236,6 @@ const QnaList = () => {
             <th>제목</th>
             <th>작성자</th>
             <th>답변 여부</th>
-            <th>비밀글</th>
           </tr>
         </thead>
         <tbody>
@@ -196,7 +271,18 @@ const QnaList = () => {
                               console.log(question.secret);
                             }}
                           >
-                            {question.qnaQTitle}
+                            {question.secret === "" ||
+                            question.secret == null ? (
+                              // 비밀글이 아닐 때
+                              <>{question.qnaQTitle}</>
+                            ) : (
+                              <>
+                                <p>
+                                  <FaLock />
+                                  {question.qnaQTitle}
+                                </p>
+                              </>
+                            )}
                           </a>
                         </>
                       )}
@@ -205,23 +291,12 @@ const QnaList = () => {
                 </td>
                 <td>{question.userId}</td>
                 <td>{question.qnaQStatus}</td>
-                <td>
-                  {question.secret === "" || question.secret == null
-                    ? "N"
-                    : "Y"}
-                </td>
               </tr>
             );
           })}
         </tbody>
       </Table>
-      <Button
-        onClick={() => {
-          navigate("/compagno/question/register");
-        }}
-      >
-        등록
-      </Button>
+
       <div className="paging">
         <FaAnglesLeft onClick={() => setPage(1)} />
         {/* 가장 첫 페이지로 */}

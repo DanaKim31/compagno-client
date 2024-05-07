@@ -123,6 +123,9 @@ const Div = styled.div`
               height: 200px;
               td#imgContents {
                 height: 100%;
+                .images {
+                  display: flex;
+                }
                 img {
                   width: 200px;
                   height: 200px;
@@ -130,13 +133,14 @@ const Div = styled.div`
                 }
                 #existingImg {
                   display: flex;
+                  cursor: pointer;
                 }
                 label#imgList {
                   display: flex;
                   flex-direction: column;
                   margin: 0px;
                   justify-content: center;
-                  align-items: center;
+                  align-items: flex-start;
                   height: fit-content;
                   margin-top: 20px;
                   p {
@@ -157,10 +161,10 @@ const Div = styled.div`
                   display: none;
                 }
                 .images {
+                  margin: 0px 20px;
                   display: flex;
-
-                  div {
-                    margin: 0px 20px;
+                  img {
+                    display: flex;
                   }
                 }
               }
@@ -228,7 +232,7 @@ const LostBoardUpdate = () => {
     setLostAnimalFeater(response.data.lostAnimalFeature);
     setLostAnimalRFID(response.data.lostAnimalRFID);
     setLostAnimalAge(response.data.lostAnimalAge);
-    setImages(response.data.images);
+    setExistImages(response.data.images);
     setLostBoardCode(code);
   };
 
@@ -248,12 +252,11 @@ const LostBoardUpdate = () => {
   const [lostAnimalAge, setLostAnimalAge] = useState(0);
   const [lostAnimalFeature, setLostAnimalFeater] = useState("");
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // 새로 넣을 이미지
+  const [existImages, setExistImages] = useState([]); // 기존 이미지
+  console.log("원래 있던 이미지");
+  console.log(existImages);
   const [lostRegiDate, setLostRegiDate] = useState("");
-  console.log(images);
-  const imagesFIle = () => {
-    // new FileOutStream("C://upload/lostBoard");
-  };
 
   // lostRegiDate 수정(오늘) 날짜 입력
   const lostRegiDateAPI = () => {
@@ -332,7 +335,22 @@ const LostBoardUpdate = () => {
       }
     }
   };
-  console.log(images);
+  // 기존 사진 클릭 삭제
+  const deleteImage = (code) => {
+    const imagesss = existImages.filter(
+      (image) => image.lostImageCode !== code
+    );
+    setExistImages(imagesss);
+  };
+
+  // 수정 사진 클릭 삭제
+  // const delUpdateImage = (id) => {
+  //   const imasdfsdf = imgSrc.filter((_, index) => index !== id);
+  //   console.log(imasdfsdf);
+  //   setImages(images.filter((_, index) => index !== id));
+  //   console.log(images);
+  // };
+
   const okUpdate = async () => {
     const formData = new FormData();
     formData.append("lostBoardCode", lostBoardCode);
@@ -351,14 +369,14 @@ const LostBoardUpdate = () => {
     formData.append("lostAnimalFeature", lostAnimalFeature);
     formData.append("lostAnimalRFID", lostAnimalRFID);
     formData.append("lostRegiDate", lostRegiDate);
+    console.log(images); // 새로 받은 거
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
     });
-    console.log(images[0]);
-    // for (let i = 0; i < images.length; i++) {
-    //   formData.append("image", prop.files[i]);
-    // }
-
+    existImages.forEach((existImg, index) => {
+      formData.append(`image[${index}]`, existImg.lostImage);
+    });
+    console.log(existImages); // 기존에 있는 거
     // not null 조건
     if (
       lostDate == "" ||
@@ -604,22 +622,34 @@ const LostBoardUpdate = () => {
                   <tr id="imgContent">
                     <th>사진첨부</th>
                     <td id="imgContents">
-                      <div id="existingImg">
-                        {images?.map((image) => (
-                          <img
-                            alt=""
-                            key={image.lostImageCode}
-                            src={image.lostImage?.replace(
-                              "C:",
-                              "http://localhost:8081"
-                            )}
-                            // src={lost.lostAnimalImage?.replace(
-                            //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                            //   "http://192.168.10.28:8081/lostBoard/"
-                            // )}
-                          />
-                        ))}
-                      </div>
+                      {imgSrc.length == 0 ? (
+                        <div id="existingImg">
+                          {existImages?.map((image) => (
+                            <img
+                              alt=""
+                              key={image.lostImageCode}
+                              // src={image.lostImage?.replace(
+                              //   "C:",
+                              //   "http://localhost:8081"
+                              // )}
+                              src={image.lostImage?.replace(
+                                "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                                "http://192.168.10.28:8081/lostBoard/"
+                              )}
+                              onClick={() => deleteImage(image.lostImageCode)}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="images">
+                          {imgSrc.map((img, id) => (
+                            <div key={id}>
+                              <img src={img} />
+                              {/* onClick={() => delUpdateImage(id)} */}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       <label id="imgList">
                         <div id="images">
                           <input
@@ -628,15 +658,7 @@ const LostBoardUpdate = () => {
                             multiple
                             onChange={imageCreate}
                           />
-                          <div className="images">
-                            {imgSrc.map((img, i) => (
-                              <div key={i}>
-                                <img src={img} />
-                              </div>
-                            ))}
-                          </div>
                         </div>
-
                         <p>사진 업로드 추가 (최대 3장)</p>
                       </label>
                     </td>

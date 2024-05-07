@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import { updateComment, getComments } from "../../api/animalBoard";
 import { FaPencilAlt } from "react-icons/fa";
+import moment from "moment";
 const InnerComment = styled.div`
   display: flex;
   flex-direction: column;
@@ -48,6 +49,7 @@ const ReplyComment = ({
   receiveComments,
   boardAuthor,
   currentUser,
+  countCommentAPI,
 }) => {
   // console.log(boardAuthor); // 글 저자 정보 잘 가져옴
   const { animalBoardCode } = useParams();
@@ -130,6 +132,7 @@ const ReplyComment = ({
       },
     });
     receiveComments();
+    countCommentAPI();
   };
   // const onDelete = async (commentCode) => {
   //   await delComment(commentCode);
@@ -161,7 +164,10 @@ const ReplyComment = ({
                 <div className="user-action-container">
                   <div className="animal-board-comment-userability">
                     <p>
-                      {reply.user.userNickname} {editReply.animalCommentDate}
+                      {reply.user.userNickname}{" "}
+                      {moment(editReply.animalBoardDate).format(
+                        "MM.DD HH:mm  "
+                      )}
                     </p>
                     <FaReplyAll />
 
@@ -206,7 +212,7 @@ const ReplyComment = ({
                       ) : (
                         <></>
                       )}{" "}
-                      {reply.animalCommentDate}
+                      {moment(reply.animalBoardDate).format("MM.DD HH:mm  ")}
                     </p>
                     <FaReplyAll
                       className="response"

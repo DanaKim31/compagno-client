@@ -3,7 +3,10 @@ import Layout from "./components/Layout";
 import QnaRegister from "./pages/qnaBoard/QnaRegister";
 import QnaList from "./pages/qnaBoard/QnaList";
 import QnaQDetail from "./components/QnaBoard/QnaQDetail";
+import ManageQuestions from "./components/QnaBoard/ManagerQuestion";
+import MyQuestions from "./components/QnaBoard/MyQuestion";
 import Content from "./pages/ContentBoard/Content";
+import ContentList from "./pages/ContentBoard/ContentList";
 import ContentDetail from "./pages/ContentBoard/ContentDetail";
 import SignUp from "./pages/user/SignUp";
 import Home from "./pages/Home";
@@ -35,6 +38,9 @@ import ClassList from "./pages/onedayClassBoard/ClassList";
 import CreateClass from "./pages/onedayClassBoard/CreateClass";
 import NeighborUpdate from "./pages/neighborBoard/NeighborUpdate";
 import SitterUpdate from "./pages/sitterBoard/SitterUpdate";
+import MyPageMyNote from "./pages/user/MyPageMyNote";
+import AdopBoardViewAll from "./pages/adoptionBoard/AdopBoardViewAll";
+import AdopBoardCreate from "./pages/adoptionBoard/AdopBoardCreate";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +62,7 @@ const router = createBrowserRouter([
         children: [
           { path: "myinfo", element: <MyPageMyInfo /> },
           { path: "myactivity", element: <MyPageMyActivity /> },
+          { path: "mynote", element: <MyPageMyNote /> },
         ],
       },
       {
@@ -85,6 +92,8 @@ const router = createBrowserRouter([
             path: "detail/:qnaQCode",
             element: <QnaQDetail />,
           },
+          { path: "manage", element: <ManageQuestions /> },
+          { path: "mypage", element: <MyQuestions /> },
         ],
       },
       {
@@ -99,6 +108,19 @@ const router = createBrowserRouter([
           { path: "update/:code", element: <LostBoardUpdate /> },
         ],
       },
+      {
+        path: "adoptionBoard",
+        children: [
+          {
+            path: "viewAll",
+            element: <AdopBoardViewAll />,
+          },
+          { path: "create", element: <AdopBoardCreate /> },
+          // { path: "view/:code", element: <LostBoardView /> },
+          // { path: "update/:code", element: <LostBoardUpdate /> },
+        ],
+      },
+
       {
         path: "register-pet",
         children: [
@@ -137,6 +159,10 @@ const router = createBrowserRouter([
         path: "content",
         children: [
           { index: true, element: <Content /> },
+          {
+            path: "list",
+            element: <ContentList />,
+          },
           {
             path: "detail/:num",
             element: <ContentDetail />,

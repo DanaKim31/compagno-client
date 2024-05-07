@@ -14,6 +14,7 @@ import {
   FaAnglesLeft,
   FaAngleRight,
   FaAnglesRight,
+  FaRegImage,
 } from "react-icons/fa6";
 
 const StyledProductBoard = styled.main`
@@ -30,8 +31,10 @@ const StyledProductBoard = styled.main`
   }
 
   .boardView {
+    border: 2px solid black;
     background-color: pink;
     position: relative;
+    cursor: pointer;
   }
 
   .boardList {
@@ -40,7 +43,6 @@ const StyledProductBoard = styled.main`
     grid-template-columns: repeat(4, 390px);
     grid-template-rows: 300px;
     gap: 30px;
-    cursor: pointer;
   }
 
   .bookmark {
@@ -95,6 +97,13 @@ const StyledProductBoard = styled.main`
     display: flex;
     flex-direction: row;
   }
+
+  .nullMainImage {
+    height: 200px;
+    width: 100%;
+    font-size: 2rem;
+    border-bottom: 1px solid black;
+  }
 `;
 
 const ViewAllProductBoard = () => {
@@ -106,11 +115,10 @@ const ViewAllProductBoard = () => {
   const navigate = useNavigate();
   const [productBoards, setProductBoards] = useState([]);
   const [page, setPage] = useState(1); // 현재 페이지
-  const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지
+  const [totalPage, setTotalPage] = useState(1); // 전체 총 페이지
   const [prev, setPrev] = useState(false); // 앞으로 한칸 버튼
   const [next, setNext] = useState(false); // 뒤로 한칸 버튼
   const [pages, setPages] = useState([]); // 페이지들
-  const [grade, setGrade] = useState(0);
 
   const [filter, setFilter] = useState({
     productName: "",
@@ -120,7 +128,7 @@ const ViewAllProductBoard = () => {
     animal: 0,
     minGrade: 0,
     title: "",
-    select: "title",
+    select: "",
     keyword: "",
     sort: "",
   });
@@ -168,10 +176,6 @@ const ViewAllProductBoard = () => {
 
   useEffect(() => {
     paging();
-  }, [page]);
-
-  useEffect(() => {
-    paging();
   }, [totalPage]);
 
   useEffect(() => {
@@ -209,6 +213,10 @@ const ViewAllProductBoard = () => {
   const productBoardDetail = (code) => {
     navigate("/compagno/product-board/" + code);
   };
+
+  useEffect(() => {
+    getProductBoards();
+  }, [filter.sort]);
 
   return (
     <StyledProductBoard>
@@ -460,9 +468,9 @@ const ViewAllProductBoard = () => {
         <input
           type="text"
           placeholder="검색문장"
-          onChange={(e) =>
-            setFilter((prev) => ({ ...prev, keyword: e.target.value }))
-          }
+          onChange={(e) => {
+            setFilter((prev) => ({ ...prev, keyword: e.target.value }));
+          }}
         />
         <select
           onChange={(e) =>
@@ -502,11 +510,22 @@ const ViewAllProductBoard = () => {
                 }}
               />
             )}
-            <img
-              className="mainImage"
-              src={"http://192.168.10.28:8081/" + productBoard.productMainImage}
-              style={{ height: "200px", width: "100%", objectFit: "cover" }}
-            />
+            {productBoard.productMainImage != null ? (
+              <img
+                className="mainImage"
+                src={
+                  "http://192.168.10.28:8081/" + productBoard.productMainImage
+                }
+                style={{
+                  height: "200px",
+                  width: "100%",
+                  objectFit: "fill",
+                  borderBottom: "1px solid black",
+                }}
+              />
+            ) : (
+              <FaRegImage className="nullMainImage" />
+            )}
             <br />
             <span className="boardSpan">
               작성자 : {productBoard.user?.userNickname}
@@ -533,12 +552,17 @@ const ViewAllProductBoard = () => {
             <span className="boardSpan">
               <br />
               <span className="boardSpan">
-                상품명 : {productBoard.productName}
+                제품명 : {productBoard.productName}
               </span>
-              평점 : {star(productBoard.productBoardGrade)}
-              {productBoard.productBoardGrade}
+              <span className="boardSpan">
+                제품가격 : {productBoard.productPrice}
+              </span>
+              <br />
+              <span className="boardSpan">
+                평점 : {star(productBoard.productBoardGrade)}
+                {productBoard.productBoardGrade}
+              </span>
             </span>
-            <br />
             <span className="boardSpan">
               날짜 :
               {moment(productBoard.productBoardRegiDate).format(
