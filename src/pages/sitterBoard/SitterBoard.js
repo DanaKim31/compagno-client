@@ -25,6 +25,26 @@ const Div = styled.div`
     margin-bottom: 100px;
   }
 
+  .register {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+
+    #register-btn {
+      height: 40px;
+      width: 90px;
+      border-radius: 5px;
+      color: navy;
+      background: white;
+      border: 2px solid navy;
+    }
+    #register-btn:hover {
+      background: navy;
+      color: white;
+      cursor: pointer;
+    }
+  }
   .keyword-options {
     width: 100%;
     display: flex;
@@ -47,16 +67,8 @@ const Div = styled.div`
         height: 40px;
         padding: 5px;
         border-radius: 5px;
-        margin-right: 10px;
+        margin-right: 5px;
       }
-    }
-    button {
-      height: 40px;
-      width: 90px;
-      border-radius: 5px;
-      background: black;
-      color: white;
-      cursor: pointer;
     }
   }
 
@@ -110,6 +122,20 @@ const Div = styled.div`
       #animal-category {
         display: flex;
         margin-bottom: 10px;
+      }
+    }
+
+    .btn {
+      width: 90%;
+
+      #search-btn {
+        width: 100%;
+        height: 40px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        background: black;
+        margin-right: 10px;
       }
     }
   }
@@ -267,23 +293,10 @@ const SitterBoard = () => {
     <Div>
       <h1>시터 게시판</h1>
 
-      <div className="keyword-options">
-        <div className="keyword">
-          <select>
-            <option>제목</option>
-            <option>작성자</option>
-          </select>
-          <input
-            type="text"
-            placeholder="검색어 입력"
-            className="search-input"
-          />
-        </div>
-
-        <div className="search-btn">
-          <button>조회</button>
-          <button onClick={registerBoard}>등록</button>
-        </div>
+      <div className="register">
+        <button id="register-btn" onClick={registerBoard}>
+          등록
+        </button>
       </div>
 
       <div className="search-area">
@@ -342,6 +355,24 @@ const SitterBoard = () => {
               <option>전체</option>
             </select>
           </div>
+        </div>
+
+        <div className="keyword-options">
+          <div className="keyword">
+            <select>
+              <option>제목</option>
+              <option>작성자</option>
+            </select>
+            <input
+              type="text"
+              placeholder="검색어 입력"
+              className="search-input"
+            />
+          </div>
+        </div>
+
+        <div className="btn">
+          <button id="search-btn">조회</button>
         </div>
       </div>
 

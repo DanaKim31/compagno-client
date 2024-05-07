@@ -47,9 +47,14 @@ export const deleteSitterBoard = async (code) => {
   return await authorize.delete("sitter/" + code);
 };
 
-// 카테고리 보기
+// 게시판 카테고리 보기
 export const getCategories = async () => {
   return await instance.get("sitter/category");
+};
+
+// 동물 카테고리 보기
+export const getAnimalCategories = async () => {
+  return await instance.get("sitter/animal-category");
 };
 
 // 시도 전체보기
