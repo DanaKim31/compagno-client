@@ -59,19 +59,21 @@ const Div = styled.div`
 
 const CreateAdopBoard = () => {
   const dispatch = useDispatch();
+
+  // 유저정보 가지고온다
   const user = useSelector((state) => {
     return state.user;
   });
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token != null) {
+    if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
   }, []);
 
   const [userNickname, setUserNickname] = useState("");
   const [userPhone, setUserPhone] = useState("");
-  const [adopAnimalImage, setAdopAnimalImage] = useState("");
+
   const [adopAnimalKind, setAdopAnimalKind] = useState("");
   const [adopAnimalColor, setAdopAnimalColor] = useState("");
   const [adopAnimalFindplace, setAdopAnimalFindplace] = useState("");
@@ -92,7 +94,7 @@ const CreateAdopBoard = () => {
       alert("최대 사진 갯수를 초과하였습니다. 다시 선택하여주세요.");
     } else {
       setImages(files);
-      setAdopAnimalImage(files[0]);
+      // setAdopAnimalImage(files[0]);
       let file;
       for (let i = 0; i < files.length; i++) {
         file = files[i];
@@ -100,7 +102,6 @@ const CreateAdopBoard = () => {
         reader.onload = () => {
           images[i] = reader.result;
           sestImgSsrc([...images]);
-          setAdopAnimalImage("images[0]");
         };
         reader.readAsDataURL(file);
       }
@@ -132,19 +133,20 @@ const CreateAdopBoard = () => {
       }
     }
   };
-
+  console.log(adopAnimalNeuter);
   const navigate = useNavigate();
   const okCreate = async () => {
     const formData = new FormData();
     formData.append("userId", user.userId);
     formData.append("userImg", user.userImg);
     formData.append("userNickname", user.userNickname);
-    formData.append("adopAnimalImage", adopAnimalImage);
+    formData.append("userPhone", user.userPhone);
+    // formData.append("adopAnimalImage", adopAnimalImage);
     formData.append("adopAnimalKind", adopAnimalKind);
     formData.append("adopAnimalColor", adopAnimalColor);
     formData.append("adopAnimalFindplace", adopAnimalFindplace);
     formData.append("adopAnimalGender", adopAnimalGender);
-    formData.apppend("adopAnimalNeuter", adopAnimalNeuter);
+    formData.append("adopAnimalNeuter", adopAnimalNeuter);
     formData.append("adopAnimalAge", adopAnimalAge);
     formData.append("adopAnimalKg", adopAnimalKg);
     formData.append("adopAnimalFeature", adopAnimalFeature);
