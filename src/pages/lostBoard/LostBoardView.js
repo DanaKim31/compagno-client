@@ -411,7 +411,7 @@ const ViewLostBoard = () => {
       },
     });
   };
-
+  console.log(edit.lostPArendCode);
   const updateComment = async () => {
     await updateCommentLost(edit);
     setEdit({});
@@ -456,7 +456,11 @@ const ViewLostBoard = () => {
     await addBottomCommentLost(bottomComments);
     setViewBottomCode(bottomComments.lostParentCode);
     setViewBottomBtn(true);
-    setBottomComments({ lostParentCode: "", commentContent: "" });
+    setBottomComments({
+      lostParentCode: "",
+      commentContent: "",
+      lostBoardCode: code,
+    });
     commentsAPI();
   };
 
@@ -869,7 +873,8 @@ const ViewLostBoard = () => {
                                       borderRadius: "50%",
                                     }}
                                     src={
-                                      "http://localhost:8081/upload/" +
+                                      // "http://localhost:8081/upload/" +
+                                      "http://192.168.10.28:8081/" +
                                       bottom.user.userImg
                                     }
                                   />
@@ -898,15 +903,14 @@ const ViewLostBoard = () => {
                                     >
                                       {bottom.user.userNickname}
                                     </span>
-                                    {/* 상위 댓글 작성자와 하위 댓글 작성자가 같을 때 -> 작성자 표시 */}
-                                    {lost.userNickname ==
-                                    bottom.user.userNickname ? (
+                                    {/* 게시글 작성자와 댓글 작성자가 같을 때 -> 작성자 표시 */}
+                                    {lost.userId == bottom.user.userId ? (
                                       <div
                                         id="bottomWriterBtn"
                                         style={{
                                           display: "flex",
                                           alignItems: "center",
-                                          width: "100%",
+                                          width: "79%",
                                           justifyContent: "space-between",
                                         }}
                                       >
@@ -923,86 +927,81 @@ const ViewLostBoard = () => {
                                         >
                                           작성자
                                         </span>
+
                                         {/* 수정 버튼을 클릭 안했을 때 */}
-                                        {edit.lostCommentCode !=
-                                        bottom.lostCommentCode ? (
-                                          <div
+                                      </div>
+                                    ) : (
+                                      <></>
+                                    )}
+                                    {user.userId == bottom.user.userId &&
+                                    edit.lostParentCode !=
+                                      comment.lostCommentCode ? (
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          flexDirection: "column",
+                                        }}
+                                      >
+                                        <div
+                                          id="bottomBtn"
+                                          style={{ fontSize: "0.6rem" }}
+                                        >
+                                          <button
                                             style={{
-                                              display: "flex",
-                                              flexDirection: "column",
+                                              marginRight: "10px",
+                                              fontWeight: "bold",
+                                              borderRadius: "5px",
+                                              border: "none",
+                                              backgroundColor: "gray",
+                                              color: "white",
                                             }}
+                                            onClick={() =>
+                                              setEdit({
+                                                lostParentCode:
+                                                  comment.lostCommentCode,
+                                                lostCommentCode:
+                                                  bottom.lostCommentCode,
+                                                commentContent:
+                                                  bottom.commentContent,
+                                                lostBoardCode: code,
+                                                commentDate: moment().format(
+                                                  "YYYY-MM-DD hh:mm:ss"
+                                                ),
+                                                user: {
+                                                  userId: user.userId,
+                                                  userNickname:
+                                                    user.userNickname,
+                                                  userImg: user.userImg,
+                                                },
+                                              })
+                                            }
                                           >
-                                            <div
-                                              id="bottomBtn"
-                                              style={{ fontSize: "0.6rem" }}
-                                            >
-                                              <button
-                                                style={{
-                                                  marginRight: "10px",
-                                                  fontWeight: "bold",
-                                                  borderRadius: "5px",
-                                                  border: "none",
-                                                  backgroundColor: "gray",
-                                                  color: "white",
-                                                }}
-                                                onClick={() =>
-                                                  setEdit({
-                                                    lostParentCode:
-                                                      comment.lostCommentCode,
-                                                    lostCommentCode:
-                                                      bottom.lostCommentCode,
-                                                    commentContent:
-                                                      bottom.commentContent,
-                                                    lostBoardCode: code,
-                                                    commentDate:
-                                                      moment().format(
-                                                        "YYYY-MM-DD hh:mm:ss"
-                                                      ),
-                                                    user: {
-                                                      userId: user.userId,
-                                                      userNickname:
-                                                        user.userNickname,
-                                                      userImg: user.userImg,
-                                                    },
-                                                  })
-                                                }
-                                              >
-                                                수정
-                                              </button>
-                                              <button
-                                                style={{
-                                                  fontWeight: "bold",
-                                                  borderRadius: "5px",
-                                                  border: "none",
-                                                  backgroundColor: "black",
-                                                  color: "white",
-                                                }}
-                                                onClick={() =>
-                                                  delComment(
-                                                    bottom.lostCommentCode
-                                                  )
-                                                }
-                                              >
-                                                삭제
-                                              </button>
-                                            </div>
-                                            <div
-                                              style={{
-                                                fontSize: "0.6rem",
-                                              }}
-                                            >
-                                              {moment(
-                                                bottom.commentDate
-                                              ).format("YY-MM-DD hh:mm")}
-                                            </div>
-                                          </div>
-                                        ) : (
-                                          <div style={{ fontSize: "0.6rem" }}>
-                                            {moment(bottom.commentDate).format(
-                                              "YY-MM-DD hh:mm"
-                                            )}
-                                          </div>
-                                        )}
+                                            수정
+                                          </button>
+                                          <button
+                                            style={{
+                                              fontWeight: "bold",
+                                              borderRadius: "5px",
+                                              border: "none",
+                                              backgroundColor: "black",
+                                              color: "white",
+                                            }}
+                                            onClick={() =>
+                                              delComment(bottom.lostCommentCode)
+                                            }
+                                          >
+                                            삭제
+                                          </button>
+                                        </div>
+                                        <div
+                                          style={{
+                                            fontSize: "0.6rem",
+                                          }}
+                                        >
+                                          {moment(bottom.commentDate).format(
+                                            "YY-MM-DD hh:mm"
+                                          )}
+                                        </div>
                                       </div>
                                     ) : (
                                       <div style={{ fontSize: "0.6rem" }}>
@@ -1107,7 +1106,8 @@ const ViewLostBoard = () => {
                             <img
                               style={{ height: "20px", width: "20px" }}
                               src={
-                                "http://localhost:8081/upload/" + user.userImg
+                                // "http://localhost:8081/upload/" + user.userImg
+                                "http://192.168.10.28:8081/" + user.userImg
                               }
                               id="userImg"
                             />
