@@ -41,7 +41,7 @@ const ClassList = () => {
   const onedayClassAPI = async () => {
     const result = await viewAllClass();
     setOnedayClasses(result.data);
-    console.log(result.data);
+    // console.log(result.data);
   };
 
   useEffect(() => {
@@ -60,6 +60,7 @@ const ClassList = () => {
 
       {onedayClasses.map((onedayClass) => (
         <div key={onedayClass.odcCode} className="">
+          <img className="classImg" />
           <div className="title">제목 : {onedayClass.odcTitle}</div>
           <div className="Content">간단한 내용 : {onedayClass.odcContent}</div>
           <div className="Accompaying">

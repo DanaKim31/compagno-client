@@ -1,4 +1,5 @@
 import axios from "axios";
+import { data } from "jquery";
 
 const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
@@ -10,7 +11,7 @@ export const addOnedayClass = async (data) => {
   return await instance.post("ClassBoard", data);
 };
 
-// Get방식 => 원데이 클래스 등록 전체 보기 !!
+// Get방식 => 원데이 클래스 등록 전체 보기 !! // !!!
 export const viewAllClass = async () => {
   return await instance.get("ClassBoard");
 };

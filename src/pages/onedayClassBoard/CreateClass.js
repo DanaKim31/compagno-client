@@ -66,15 +66,14 @@ const CreateClass = () => {
 
   const onCreate = async () => {
     const formData = new FormData();
-    console.log(odcTitle, odcContent, odcAccompaying);
-    // formData.append("odcTitle", odcTitle);
-    // formData.append("odcContent", odcContent);
-    // formData.append("odcAccompaying", odcAccompaying);
-    // formData.append("odcMainImage", odcMainImage);
-    // formData.append("odcStartDate", odcStartDate);
-    // formData.append("odcLastDate", odcLastDate);
+    formData.append("odcTitle", odcTitle);
+    formData.append("odcContent", odcContent);
+    formData.append("odcAccompaying", odcAccompaying);
+    formData.append("odcMainImage", odcMainImage);
+    formData.append("odcStartDate", odcStartDate);
+    formData.append("odcLastDate", odcLastDate);
     await addOnedayClass(formData);
-    navigate("onedayClassBoard");
+    navigate("/compagno/onedayClassBoard");
   };
 
   const onBack = () => {
@@ -109,7 +108,6 @@ const CreateClass = () => {
         {/* 파일 업로드 */}
         <input
           type="file"
-          placeholder="내용을 입력하세요"
           value={odcMainImage}
           onChange={(e) => setOdcMainImage(e.target.value)}
         />
@@ -129,11 +127,19 @@ const CreateClass = () => {
         <legend>동반 여부</legend>
         <label>
           Y
-          <input type="checkbox" onChange={(e) => setOdcAccompaying("Y")} />
+          <input
+            type="checkbox"
+            value="Y"
+            onChange={(e) => setOdcAccompaying(e.target.value)}
+          />
         </label>
         <label>
           N
-          <input type="checkbox" onChange={(e) => setOdcAccompaying("N")} />
+          <input
+            type="checkbox"
+            value="N"
+            onChange={(e) => setOdcAccompaying(e.target.value)}
+          />
         </label>
         <button onClick={onCreate}>추가</button>
         <button onClick={onBack}>취소</button>
