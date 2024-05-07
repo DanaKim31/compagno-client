@@ -1,6 +1,7 @@
 import { Form, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import moment from "moment";
 import {
   getAnswer,
   addAnswer,
@@ -263,6 +264,10 @@ const QnaADetail = () => {
                     ))}
                   </div>
                   <div>
+                  <p>
+                        날짜 :{" "}
+                        {moment(answer.qnaADate).format("YY-MM-DD hh:mm")}
+                      </p>
                     <p>{answer.qnaATitle}</p>
                     <p>{answer.qnaAContent}</p>
                   </div>
@@ -284,6 +289,10 @@ const QnaADetail = () => {
             <>
               <div>
                 <h1>ANSWER!!!!!</h1>
+                <p>
+                        날짜 :{" "}
+                        {moment(answer.qnaADate).format("YY-MM-DD hh:mm")}
+                      </p>
                 <p>{answer.qnaATitle}</p>
                 <p>{answer.qnaAContent}</p>
               </div>

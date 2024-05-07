@@ -7,6 +7,26 @@ import Map from "./Map";
 const Div = styled.div`
   position: relative;
   top: 200px;
+  #name {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    p {
+      margin-left: 30px;
+      font-size: 20px;
+      margin-top: 10px;
+    }
+  }
+
+  #contents {
+    height: 300px;
+    padding-top: 50px;
+
+    p {
+      margin-left: 50px;
+    }
+  }
+
   #map {
     height: 500px;
     width: 100%;
@@ -30,13 +50,22 @@ const ContentDetail = () => {
     contentAPI();
   }, []);
 
+  const container = document.querySelector("map");
+
   return (
     <Div>
       <div key={content.num}>
-        <p>{content.subCate}</p>
-        <p>{content.roadAddr}</p>
-        <p>{content.phone}</p>
-        <p>{content.parking}</p>
+        <div id="name">
+          <h1>{content.name}</h1>
+          <p>{content.subCate}</p>
+        </div>
+        <div id="contents">
+          <p>주소 : {content.roadAddr}</p>
+          <p>전화번호 : {content.phone}</p>
+          <p>휴무일 : {content.holiday}</p>
+          <p>운영시간 : {content.operatingHours}</p>
+          <p>주차 가능 여부 : {content.parking}</p>
+        </div>
       </div>
       <Map latitude={latitude} longtitude={longtitude} />
     </Div>

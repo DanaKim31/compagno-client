@@ -27,6 +27,16 @@ export const getQuestions = async (page) => {
   return await instance.get("question?page=" + page);
 };
 
+// 매니저 목록 가져오기
+export const manageQuestions = async(page) => {
+  return await authorize.get("question/manage?page=" + page);
+};
+
+// 마이페이지 질문 목록 가져오기
+export const myQuestions = async(page) => {
+  return await authorize.get("question/mypage?page=" + page);
+};
+
 // 1개 보여주기
 export const getQuestion = async (no) => {
   return await instance.get("question/" + no);

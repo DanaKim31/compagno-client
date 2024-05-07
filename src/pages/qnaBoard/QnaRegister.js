@@ -56,15 +56,17 @@ const QnaRegister = () => {
 
     formData.append("qnaQContent", content);
 
-    images.forEach((image, index) => {
-      formData.append(`files[${index}]`, image);
-      // formData.append(`files[${index}]`, image);
-    });
-
     formData.append("secret", secret);
 
-    await addQuestion(formData);
-    navigate("/compagno/question");
+    if (images.length > 3) {
+      alert("파일 업로드는 최대 3개까지 가능합니다!");
+    } else {
+      images.forEach((image, index) => {
+        formData.append(`files[${index}]`, image);
+      });
+      await addQuestion(formData);
+      navigate("/compagno/question");
+    }
   };
 
   return (

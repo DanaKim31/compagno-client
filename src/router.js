@@ -3,7 +3,10 @@ import Layout from "./components/Layout";
 import QnaRegister from "./pages/qnaBoard/QnaRegister";
 import QnaList from "./pages/qnaBoard/QnaList";
 import QnaQDetail from "./components/QnaBoard/QnaQDetail";
+import ManageQuestions from "./components/QnaBoard/ManagerQuestion";
+import MyQuestions from "./components/QnaBoard/MyQuestion";
 import Content from "./pages/ContentBoard/Content";
+import ContentList from "./pages/ContentBoard/ContentList";
 import ContentDetail from "./pages/ContentBoard/ContentDetail";
 import SignUp from "./pages/user/SignUp";
 import Home from "./pages/Home";
@@ -85,6 +88,8 @@ const router = createBrowserRouter([
             path: "detail/:qnaQCode",
             element: <QnaQDetail />,
           },
+          {path:"manage", element:<ManageQuestions/>},
+          {path:"mypage", element:<MyQuestions/>}
         ],
       },
       {
@@ -137,6 +142,10 @@ const router = createBrowserRouter([
         path: "content",
         children: [
           { index: true, element: <Content /> },
+          {
+            path: "list",
+            element: <ContentList />,
+          },
           {
             path: "detail/:num",
             element: <ContentDetail />,
