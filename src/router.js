@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import Login from "./pages/user/Login";
 import MyPageMyInfo from "./pages/user/MyPageMyInfo";
 import MyPageMyActivity from "./pages/user/MyPageMyActivity";
+import MyPageFavProduct from "./pages/user/MyPageFavProduct";
 import LostBoardViewAll from "./pages/lostBoard/LostBoardViewAll";
 import LostBoardCreate from "./pages/lostBoard/LostBoardCreate";
 import LostBoardView from "./pages/lostBoard/LostBoardView";
@@ -61,7 +62,8 @@ const router = createBrowserRouter([
         path: "mypage",
         children: [
           { path: "myinfo", element: <MyPageMyInfo /> },
-          { path: "myactivity", element: <MyPageMyActivity /> },
+          { path: "myanimalfav", element: <MyPageMyActivity /> },
+          { path: "myproductfav", element: <MyPageFavProduct /> },
           { path: "mynote", element: <MyPageMyNote /> },
         ],
       },

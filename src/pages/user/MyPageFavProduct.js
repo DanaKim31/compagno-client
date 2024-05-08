@@ -2,64 +2,77 @@ import { getProductBookmarkList } from "../../api/user";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { userSave } from "../../store/user";
+import { useSelector } from "react-redux";
+import useDidMountEffect from "../../components/user/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
+import MyPageSidebar from "../../components/user/MyPageSidebar";
 
 const Div = styled.div`
-  .myPageList {
-    thead th {
-      background-color: rgb(85, 96, 143);
-      width: 200px;
-      height: 50px;
-      text-align: left;
-      line-height: 50px;
-      color: white;
-    }
+  display: flex;
+  height: 100vh;
+  padding-top: 112px;
 
-    tbody {
-      background: linear-gradient(45deg, #49a09d, #5f2c82);
-      color: white;
-      height: 50px;
-      text-align: left;
-      line-height: 50px;
+  .mypageMain {
+    width: calc(100vw - 300px);
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+
+    .activityHeader {
+      width: calc(100vw - 300px);
+      height: fit-content;
+      display: flex;
+      justify-content: left;
+      padding-left: 8px;
+      border-bottom: 1px dashed black;
+
+      a {
+        width: 150px;
+        margin: 0px 2px;
+        padding: 10px 10px;
+        height: fit-content;
+        text-decoration-line: none;
+        color: black;
+        border-top: 1px dashed black;
+        border-left: 1px dashed black;
+        border-right: 1px dashed black;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        text-align: center;
+      }
     }
   }
 `;
 
 const MyPageFavProduct = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [user, setUser] = useState({});
 
   // 유저정보 가지고온다
   const info = useSelector((state) => {
     return state.user;
   });
 
-  // 유저정보 로컬스토리지에 저장
   useEffect(() => {
-    if (localStorage.length === 0) {
-      alert("로그인 시 접근 가능합니다.");
-      navigate("/compagno/login");
+    if (Object.keys(info).length === 0) {
+      setUser(JSON.parse(localStorage.getItem("user")));
     } else {
-      const token = localStorage.getItem("token");
-      if (token !== null) {
-        dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
-      }
+      setUser(info);
     }
   }, []);
 
-  useEffect(() => {
-    userAPI();
-  }, [info]);
+  useDidMountEffect(() => {
+    favListAPI();
+  }, [user]);
 
   // 좋아요 목록과 페이징 기초값 세팅
   const [productBoardFav, setProductBoardFav] = useState([]);
   const [page, setPage] = useState(1);
 
   // 좋아요 목록 불러오기
-  const userAPI = async () => {
-    const response = await getProductBookmarkList(info.userId, page);
+  const favListAPI = async () => {
+    const response = await getProductBookmarkList(user.userId, page);
     const favData = response.data;
 
     setProductBoardFav(favData);
@@ -67,37 +80,18 @@ const MyPageFavProduct = () => {
   };
   return (
     <Div>
-      <table className="myPageList">
-        <thead>
-          <tr>
-            <th>동물 카테고리</th>
-            <th>글 제목</th>
-            <th>글 작성자</th>
-            <th>글 작성 날짜</th>
-            <th>얜 뭐넣을까</th>
-          </tr>
-        </thead>
-        <tbody>
-          {productBoardFav?.map((favContent) => (
-            <tr key={favContent.productBookmarkCode}>
-              {/* <td>{favContent.animalBoard.animalCategory.animalType}</td>
-              <td>
-                <a
-                  href={
-                    `/compagno/animal-board/` +
-                    favContent.animalBoard.animalBoardCode
-                  }
-                >
-                  {favContent.animalBoard.animalBoardTitle}
-                </a>
-              </td>
-              <td>{favContent.animalBoard.user.userNickname}</td>
-              <td>{favContent.animalFavoriteDate}</td>
-              <td>안녕1</td> */}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <MyPageSidebar />
+      <div className="mypageMain">
+        <div className="activityHeader">
+          <a href="/compagno/mypage/myanimalfav">최애 동물</a>
+          <a href="/compagno/mypage/myproductfav">관심 제품</a>
+          <a href="">1day class</a>
+          <a href="">adoption</a>
+          <a href="">register</a>
+          <a href="">QnA</a>
+        </div>
+        <div className="contentZone"></div>
+      </div>
     </Div>
   );
 };
