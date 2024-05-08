@@ -17,16 +17,16 @@ export const viewAllClass = async () => {
 };
 
 // Get방식 => 원데이 클래스 등록된 게시물중 하나 보기
-export const onedayClass = async (code) => {
+export const viewClass = async (code) => {
   return await instance.get("ClassBoard/" + code);
 };
 
 // Put방식 => 원데이 클래스 게시물 수정
-export const updateOnedayClass = async (date) => {
+export const updateClass = async (date) => {
   return await instance.put("ClassBoard", date);
 };
 
 // Delete방식 => 원데이 클래스 삭제
-export const deleOnedayClass = async (code) => {
+export const deleClass = async (code) => {
   return await instance.delete("ClassBoard/" + code);
 };

@@ -4,37 +4,96 @@ import { addOnedayClass } from "../../api/onedayClass";
 import { useNavigate } from "react-router-dom";
 import SDatePicker from "react-datepicker";
 const StyledDiv = styled.div`
-  width: 100%;
-  top: 25%;
-  margin: auto;
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  * {
+    font-family: "TAEBAEKmilkyway";
+    font-size: 1rem;
+    color: rgb(32, 61, 59);
+  }
+
   text-align: center;
-  position: fixed;
+  background-color: rgb(244, 244, 244);
+  font-weight: bold;
+  padding-top: 147px;
+
   h1 {
     font-size: 2.5rem;
     font-weight: bold;
     margin-top: 30px;
     margin-bottom: 30px;
+    position: relative;
+    /* bottom: 346px; */
   }
+
+  h2 {
+  }
+
   input {
     width: 100%;
+    height: 123px;
     margin: 5px;
     padding: 5px;
     box-sizing: border-box;
   }
 
   button {
-    width: 100%;
-    margin: 5px;
-    cursor: pointer;
-    background-color: black;
-    color: white;
-    font-weight: bold;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
     padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    /* display: flex; */
+    justify-content: center;
+    position: relative;
+    left: 20%;
+    bottom: 56px;
+    width: 10%;
   }
 
-  section {
+  button:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
+
+  .textin h2 {
     position: relative;
-    top: 600px;
+    top: 71px;
+    right: -29px;
+    text-align: justify;
+  }
+
+  .text {
+    position: relative;
+    width: 62%;
+    height: auto;
+    right: 11%;
+    top: 30px;
+  }
+
+  .content {
+    position: relative;
+  }
+
+  .regisDate {
+    position: relative;
+    bottom: 335px;
+    text-align: right;
+    right: 50px;
+  }
+
+  .date {
+    position: relative;
+    width: 9%;
+    height: 10%;
   }
 `;
 
@@ -93,43 +152,62 @@ const CreateClass = () => {
     <div>
       <StyledDiv>
         <h1>원데이 클래스 등록</h1>
-        <input
-          type="text"
-          placeholder="제목을 입력하세요"
-          value={odcTitle}
-          onChange={(e) => setOdcTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="내용을 입력하세요"
-          value={odcContent}
-          onChange={(e) => setContent(e.target.value)}
-        />
+        <div className="textin">
+          <h2>등록할 클래스 명</h2>
+          <input
+            type="text"
+            placeholder="제목을 입력하세요"
+            value={odcTitle}
+            className="text"
+            onChange={(e) => setOdcTitle(e.target.value)}
+          />
+        </div>
+        <div>
+          <h2>자세한 내용 관련</h2>
+          <input
+            type="text"
+            placeholder="내용을 입력하세요"
+            value={odcContent}
+            className="content"
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </div>
+
         {/* 파일 업로드 */}
-        <input
-          type="file"
-          // value={odcMainImage}
-          onChange={(e) => setOdcMainImage(e.target.files[0])}
-        />
-        <h1>원데이클래스 관련 날짜</h1>
-        <label>시작날짜</label>
-        <input
-          type="date"
-          value={odcStartDate}
-          onChange={(e) => setOdcStartDate(e.target.value)}
-        />
-        <label>종료날짜</label>
-        <input
-          type="date"
-          value={odcLastDate}
-          onChange={(e) => setOdcLastDate(e.target.value)}
-        />
+        <div>
+          파일업로드{" "}
+          <input
+            type="file"
+            // value={odcMainImage}
+            className="file"
+            onChange={(e) => setOdcMainImage(e.target.files[0])}
+          />
+        </div>
+
+        <div className="regisDate">
+          시작날짜
+          <input
+            type="date"
+            value={odcStartDate}
+            className="date"
+            onChange={(e) => setOdcStartDate(e.target.value)}
+          />
+          종료날짜
+          <input
+            type="date"
+            value={odcLastDate}
+            className="date"
+            onChange={(e) => setOdcLastDate(e.target.value)}
+          />
+        </div>
+
         <legend>동반 여부</legend>
         <label>
           Y
           <input
             type="checkbox"
             value="Y"
+            className="Acom"
             onChange={(e) => setOdcAccompaying(e.target.value)}
           />
         </label>
@@ -138,6 +216,7 @@ const CreateClass = () => {
           <input
             type="checkbox"
             value="N"
+            className="Acom"
             onChange={(e) => setOdcAccompaying(e.target.value)}
           />
         </label>

@@ -175,7 +175,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <ClassList /> },
           { path: "create", element: <CreateClass /> },
-          { path: "detail", element: <ClassDetail /> },
+          { path: "detail/:code", element: <ClassDetail /> },
         ],
       },
     ],
