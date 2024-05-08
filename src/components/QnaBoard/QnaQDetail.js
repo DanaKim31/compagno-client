@@ -142,11 +142,26 @@ const QnaQDetail = () => {
     formData.append("qnaQTitle", editQ.qnaQTitle);
     formData.append("qnaQContent", editQ.qnaQContent);
 
-    editQ.images?.forEach((image, index) => {
-      formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
-      formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
-      formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
+    if((editQ.images.length + images.length) <= 3){
+      editQ.images?.forEach((image, index) => {
+        formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
+        formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
+        formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
+      });
+      // 새로 추가된 이미지
+    images.forEach((image, index) => {
+      formData.append(`files[${index}]`, image);
     });
+
+    // setEditQ("images", showImages);
+    await updateQuestion(formData);
+    setImages([]);
+    setEditQ(null);
+    questionAPI();
+    } else {
+      alert("파일 업로드는 최대 3개까지만 가능합니다!");
+    }
+   
 
     //   // 새로 추가된 이미지
     //   images.forEach((image, index) => {
@@ -158,16 +173,7 @@ const QnaQDetail = () => {
     //   questionAPI();
     // }
 
-    // 새로 추가된 이미지
-    images.forEach((image, index) => {
-      formData.append(`files[${index}]`, image);
-    });
-
-    // setEditQ("images", showImages);
-    await updateQuestion(formData);
-    setImages([]);
-    setEditQ(null);
-    questionAPI();
+    
   };
 
   // 2-3. 이미지 선택 시 이미지 삭제
@@ -197,6 +203,7 @@ const QnaQDetail = () => {
   // 2-5. 수정 삭제 이미지 관리
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
+    setImages(images.filter((_, index) => index !== id));
     // fileRef.current = showImages.filter((_, index) => index !== id).length;
     // console.log(fileRef);
     console.log(showImages.filter((_, index) => index !== id));
@@ -294,7 +301,6 @@ const QnaQDetail = () => {
                       multiple
                       accept="image/*"
                       onChange={preview}
-                      ref={fileRef}
                     />
                     {/* 수정, 취소 버튼 */}
                     <Button variant="warning" onClick={questionUpdate}>
