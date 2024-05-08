@@ -13,6 +13,7 @@ import {
 import { IoSearch } from "react-icons/io5";
 import { FaLock } from "react-icons/fa";
 import styled from "styled-components";
+import { Form } from "react-bootstrap";
 
 const Div = styled.div`
   position: relative;
@@ -128,11 +129,16 @@ const QnaList = () => {
   }, [totalPage]);
 
   // ===============================
-  const [search, setSearch] = useState({
-    page: 1,
-    qnaQTitle: "",
-    qnaQContent: "",
-  });
+
+  const [select, setSelect] = useState("");
+  const [keyword, setKeyword] = useState("");
+
+  const search = async () => {
+    const response = await getQuestions(page, select, keyword);
+    console.log(response.data);
+    setQuestions(response.data);
+    setTotalPage(response.data?.totalPages);
+  };
 
   // const [counts, setCounts] = useState(1); // 데이터 총 갯수
 
@@ -198,14 +204,25 @@ const QnaList = () => {
       <CenterModal show={modalShow} onHide={() => setModalShow(false)} />
       <div id="topbar">
         <div>
-          <p>전체 {questions.totalElements}건</p>
+          <p>전체 {questions?.totalElements}건</p>
         </div>
         <div>
-          <input type="text" placeholder="검색어를 입력하세요" />
-          <button>
+          <select onChange={(e) => setSelect(e.target.value)}>
+            <option value={0}>검색 </option>
+            <option value={"title"}>제목</option>
+            <option value={"content"}>내용</option>
+            <option value={"id"}>작성자</option>
+          </select>
+          <Form.Control
+            type="text"
+            placeholder="검색어를 입력하세요"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+          <Button onClick={search}>
             <IoSearch />
             조회
-          </button>
+          </Button>
         </div>
         {Object.keys(user).length === 0 ? (
           <>
@@ -239,7 +256,7 @@ const QnaList = () => {
           </tr>
         </thead>
         <tbody>
-          {questions.content?.map((question) => {
+          {questions?.content?.map((question) => {
             return (
               <tr key={question.qnaQCode}>
                 <td>{question.qnaQCode}</td>

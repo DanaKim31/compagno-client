@@ -88,45 +88,32 @@ const QnaQDetail = () => {
     formData.append("qnaQTitle", editQ.qnaQTitle);
     formData.append("qnaQContent", editQ.qnaQContent);
 
-    // editQ.images?.forEach((image, index) => {
-    //   formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
-    //   formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
-    //   formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
-    // });
+    editQ.images?.forEach((image, index) => {
+      formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
+      formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
+      formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
+    });
 
-    if (editQ.images.length + showImages.length > 3) {
-      console.log(editQ.images);
-      console.log(images);
-      console.log(showImages);
-      alert("파일 첨부는 최대 3개까지 가능합니다!");
-      setImages([]);
-    } else {
-      editQ.images?.forEach((image, index) => {
-        formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
-        formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
-        formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
-      });
-
-      // 새로 추가된 이미지
-      images.forEach((image, index) => {
-        formData.append(`files[${index}]`, image);
-      });
-      await updateQuestion(formData);
-      setImages([]);
-      setEditQ(null);
-      questionAPI();
-    }
+    //   // 새로 추가된 이미지
+    //   images.forEach((image, index) => {
+    //     formData.append(`files[${index}]`, image);
+    //   });
+    //   await updateQuestion(formData);
+    //   setImages([]);
+    //   setEditQ(null);
+    //   questionAPI();
+    // }
 
     // 새로 추가된 이미지
-    // images.forEach((image, index) => {
-    //   formData.append(`files[${index}]`, image);
-    // });
+    images.forEach((image, index) => {
+      formData.append(`files[${index}]`, image);
+    });
 
-    // setEditQ("images", showImages);
-    // await updateQuestion(formData);
-    // setImages([]);
-    // setEditQ(null);
-    // questionAPI();
+    setEditQ("images", showImages);
+    await updateQuestion(formData);
+    setImages([]);
+    setEditQ(null);
+    questionAPI();
   };
 
   // 2-3. 이미지 선택 시 이미지 삭제
@@ -330,9 +317,9 @@ const QnaQDetail = () => {
                   <div>
                     <p>{question.qnaQTitle}</p>
                     <p>
-                        날짜 :{" "}
-                        {moment(question.qnaQDate).format("YY-MM-DD hh:mm")}
-                      </p>
+                      날짜 :{" "}
+                      {moment(question.qnaQDate).format("YY-MM-DD hh:mm")}
+                    </p>
                     <p>{question.userId}</p>
                     <p>{question.userNickname}</p>
                     <p>{question.qnaQContent}</p>
@@ -351,7 +338,9 @@ const QnaQDetail = () => {
                     ))}
                     <div>
                       <p>{question.qnaQTitle}</p>
-                      <p>{moment(question.qnaQDate).format("YY-MM-DD hh:mm")}</p>
+                      <p>
+                        {moment(question.qnaQDate).format("YY-MM-DD hh:mm")}
+                      </p>
                       <p>{question.userId}</p>
                       <p>{question.userNickname}</p>
                       <p>{question.qnaQContent}</p>
