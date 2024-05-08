@@ -253,8 +253,6 @@ const LostBoardUpdate = () => {
   const [lostAnimalRFID, setLostAnimalRFID] = useState("");
   const [images, setImages] = useState([]); // 새로 넣을 이미지
   const [existImages, setExistImages] = useState([]); // 기존 이미지
-  console.log("원래 있던 이미지");
-  console.log(existImages);
   const [lostRegiDate, setLostRegiDate] = useState("");
 
   // lostRegiDate 수정(오늘) 날짜 입력
