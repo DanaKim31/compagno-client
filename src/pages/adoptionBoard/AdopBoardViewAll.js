@@ -147,7 +147,7 @@ const Div = styled.div`
 
     .contentDetail {
       border: 1px solid black;
-
+      border-radius: 10px;
       #animalKind {
         display: flex;
         justify-content: center;
@@ -157,7 +157,7 @@ const Div = styled.div`
       }
       #imageBox {
         width: 100%;
-        height: 50%;
+        height: 260px;
         border: 0.2px solid gray;
         #mainImage {
           width: 100%;
@@ -168,19 +168,30 @@ const Div = styled.div`
         display: flex;
         justify-content: right;
         span {
-          border: 0.5px solid black;
-          border-radius: 10px;
-          padding: 5px 7px;
+          border-bottom: 0.5px dashed black;
+          padding-top: 5px;
+          margin-right: 10px;
         }
       }
       .contents {
-        margin-top: 5px;
+        padding-left: 10px;
+        margin-top: 15px;
         margin-bottom: 15px;
       }
     }
   }
   .contentDetail:hover {
     background-color: #e9efeb;
+  }
+  .paging {
+    margin-bottom: 30px;
+    button {
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-weight: bold;
+    }
   }
 `;
 

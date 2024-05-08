@@ -1,7 +1,7 @@
 import { viewOneAdopBoard, deleteAdopBoard } from "../../api/adoptionBoard";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { UseDispatch, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -27,6 +27,120 @@ const Div = styled.div`
   justify-content: center;
   position: relative;
   top: 180px;
+  /* 글 헤더 (제목+버튼)*/
+  .contentHeader {
+    width: 65%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 20px;
+    h2 {
+      font-weight: bold;
+      font-size: 2.4rem;
+    }
+    .btnChange {
+      button {
+        margin: 0px 10px;
+        width: 70px;
+        border-radius: 20px;
+        border: none;
+        font-weight: bold;
+      }
+      :nth-child(1) {
+        background-color: gray;
+        color: white;
+        &:hover {
+          color: black;
+          background-color: #94b29b;
+        }
+      }
+      :nth-child(2) {
+        background-color: black;
+        color: white;
+        &:hover {
+          border: 2px solid black;
+          color: black;
+          background-color: white;
+        }
+      }
+    }
+  }
+  /* 본문 내용-사진부터 */
+  .contentsBody {
+    width: 65%;
+    /* 사진 */
+    #mainImage {
+      margin: 30px 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 300px;
+        height: 300px;
+        margin: 0px 20px;
+      }
+    }
+    /* 작성일 */
+    #regiDate {
+      display: flex;
+      justify-content: right;
+      align-items: center;
+      width: 95%;
+    }
+    /* 기본 내용 */
+    .contentAll {
+      margin-top: 20px;
+      margin-left: 40px;
+
+      .postWriter,
+      .adopAnimal,
+      .center {
+        margin-bottom: 40px;
+        border-top: 2px dashed #94b29b;
+        padding-top: 20px;
+
+        h3 {
+          font-weight: bold;
+        }
+        .pContent {
+          .contents {
+            margin-left: 40px;
+            margin-top: 20px;
+            font-size: 1.4rem;
+            margin-top: 35px;
+            div {
+              margin-bottom: 40px;
+
+              label {
+                width: 25%;
+                border-right: 1px solid green;
+              }
+              span {
+                margin-left: 40px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .btnList {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+      button {
+        width: 100px;
+        height: 40px;
+        border-radius: 10px;
+        border: none;
+        background-color: #94b29b;
+        font-weight: bold;
+        font-size: 1.3rem;
+        &:hover {
+          background-color: white;
+          border: 3px solid #94b29b;
+        }
+      }
+    }
+  }
 `;
 
 const ViewAdopBoard = () => {
@@ -43,7 +157,7 @@ const ViewAdopBoard = () => {
 
   const { code } = useParams();
   const [adop, setAdop] = useState("");
-  const [images, setImages] = useState([]);
+
   const adopAPI = async () => {
     const response = await viewOneAdopBoard(code);
     setAdop(response.data);
@@ -98,111 +212,94 @@ const ViewAdopBoard = () => {
         <div id="regiDate">
           {moment(adop.regiDate).format("YYYY-MM-DD hh:mm")}
         </div>
-        <div className="contents">
-          <div className="postOwner">
+        <div className="contentAll">
+          <div className="postWriter">
             <div className="pContent">
-              <table>
-                <thead>
-                  <tr>
-                    <td id="userInfo">
-                      <h3>
-                        <FaUser />
-                        분실 신고자 정보
-                      </h3>
-                    </td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>신고자 닉네임</th>
-                    <td>{adop.userNickname}</td>
-                  </tr>
-                  <tr>
-                    <th>신고자 연락처</th>
-                    <td>{adop.userPhone}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div id="userInfo">
+                <h3>
+                  <FaUser />
+                  &nbsp; 입양 신고자 정보
+                </h3>
+              </div>
+              <div className="contents">
+                <div id="nickName">
+                  <label>신고자 닉네임</label>
+                  <span>{adop.userNickname}</span>
+                </div>
+                <div id="phone">
+                  <label>신고자 연락처</label>
+                  <span>{adop.userPhone}</span>
+                </div>
+              </div>
             </div>
           </div>
           <div className="adopAnimal">
             <div className="pContent">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <h3>
-                        <FaShieldDog /> 입양 동물 정보
-                      </h3>
-                    </td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>축종</th>
-                    <td>{adop.adopAnimalKind}</td>
-                  </tr>
-                  <tr>
-                    <th>색상</th>
-                    <td>{adop.adopAnimalColor}</td>
-                  </tr>
-                  <tr>
-                    <th>성별</th>
-                    <td>{adop.adopAnimalGender}</td>
-                  </tr>
-                  <tr>
-                    <th>중성화 여부</th>
-                    <td>{adop.adopAnimalNeuter}</td>
-                  </tr>
-                  <tr>
-                    <th>나이</th>
-                    <td>{adop.adopAnimalAge}</td>
-                  </tr>
-                  <tr>
-                    <th>무게(kg)</th>
-                    <td>{adop.adopAnimalKg}</td>
-                  </tr>
-                  <tr>
-                    <th>동물 특징</th>
-                    <td>{adop.adopAnimalFeature}</td>
-                  </tr>
-                  <tr>
-                    <th>발견된 장소</th>
-                    <td>{adop.adopAnimalFindplace}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div id="animalInfo">
+                <h3>
+                  <FaShieldDog />
+                  &nbsp; 입양 동물 정보
+                </h3>
+              </div>
+              <div className="contents">
+                <div id="kind">
+                  <label>축종</label>
+                  <span>{adop.adopAnimalKind}</span>
+                </div>
+                <div id="color">
+                  <label>색상</label>
+                  <span>{adop.adopAnimalColor}</span>
+                </div>
+                <div id="gender">
+                  <label>성별</label>
+                  <span>{adop.adopAnimalGender}</span>
+                </div>
+                <div id="neuter">
+                  <label>중성화 여부</label>
+                  <span>{adop.adopAnimalNeuter}</span>
+                </div>
+                <div id="age">
+                  <label>나이</label>
+                  <span>{adop.adopAnimalAge}</span>
+                </div>
+                <div id="kg">
+                  <label>무게(kg)</label>
+                  <span>{adop.adopAnimalKg}</span>
+                </div>
+                <div id="feature">
+                  <label>동물 특징</label>
+                  <span>{adop.adopAnimalFeature}</span>
+                </div>
+                <div id="findPlace">
+                  <label>발견된 장소</label>
+                  <span>{adop.adopAnimalFindplace}</span>
+                </div>
+              </div>
             </div>
           </div>
           <div className="center">
             <div className="pContent">
-              <table>
-                <thead>
-                  <tr>
-                    <td id="userInfo">
-                      <h3>
-                        <FaHouseMedical />
-                        입양 센터 정보
-                      </h3>
-                    </td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>보호센터명</th>
-                    <td>{adop.adopCenterName}</td>
-                  </tr>
-                  <tr>
-                    <th>보호센터 연락처</th>
-                    <td>{adop.adopCenterPhone}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div id="centerInfo">
+                <h3>
+                  <FaHouseMedical />
+                  &nbsp; 입양 센터 정보
+                </h3>
+              </div>
+              <div className="contents">
+                <div id="centerName">
+                  <label>보호센터명</label>
+                  <span>{adop.adopCenterName}</span>
+                </div>
+                <div id="centerPhond">
+                  <label>보호센터 연락처</label>
+                  <span>{adop.adopCenterPhone}</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="btnList">
-          <button onClick={btnList}>목록</button>
+          <div className="btnList">
+            <button onClick={btnList}>목록</button>
+          </div>
         </div>
       </div>
     </Div>

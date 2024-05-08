@@ -5,12 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import { useNavigate } from "react-router-dom";
 
-import moment from "moment";
-import "moment/locale/ko";
-
 import { FaShieldDog, FaHouseMedical } from "react-icons/fa6";
-import { FiMapPin } from "react-icons/fi";
-import { FaPray, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 
 const Div = styled.div`
   @font-face {
@@ -29,8 +25,11 @@ const Div = styled.div`
   position: relative;
   top: 180px;
 
-  .contents {
+  .allContents {
     width: 70%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     h1 {
       font-size: 3rem;
       font-weight: bold;
@@ -38,19 +37,142 @@ const Div = styled.div`
       justify-content: center;
       margin-bottom: 50px;
     }
-    .pContent {
+    .postWriter,
+    .adopAnimal,
+    .center {
+      width: 100%;
       border-top: 1px solid green;
-      display: flex;
-      flex-direction: column;
-      padding-top: 20px;
-      margin-bottom: 40px;
-      h3 {
-        font-weight: bold;
+      padding-top: 15px;
+      margin-bottom: 30px;
+    }
+    .postWriter {
+      .userInfo {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        h3 {
+          margin-left: 5px;
+          font-weight: bold;
+        }
+        span {
+          color: red;
+        }
       }
-      table {
-        #userInfo {
-          display: flex;
-          justify-content: space-evenly;
+      .contents {
+        margin-left: 20px;
+        div {
+          margin-bottom: 20px;
+          label {
+            margin-right: 20px;
+            font-size: 1.2rem;
+            border-right: 1px solid gray;
+            width: 20%;
+            margin-bottom: 20px;
+          }
+          input {
+            font-weight: bold;
+            margin-left: 35px;
+          }
+        }
+      }
+    }
+    .adopAnimal {
+      .animalInfo {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        h3 {
+          margin-left: 5px;
+          font-weight: bold;
+        }
+        span {
+          color: red;
+        }
+      }
+      .contents {
+        margin-left: 20px;
+        div {
+          margin-bottom: 20px;
+          label {
+            margin-right: 20px;
+            font-size: 1.2rem;
+            width: 20%;
+            border-right: 1px solid gray;
+            padding-right: 15px;
+            margin-bottom: 20px;
+            span {
+              color: red;
+            }
+            input {
+              margin-right: 15px;
+            }
+          }
+          select {
+            margin-left: 35px;
+            font-weight: bold;
+            height: 30px;
+            option {
+              font-weight: bold;
+            }
+          }
+          input {
+            font-weight: bold;
+            margin-left: 35px;
+            width: 20%;
+          }
+          #images {
+            margin-bottom: 0px;
+            height: 30px;
+            label {
+              border-right: none;
+              width: 30%;
+              cursor: pointer;
+            }
+            input {
+              display: none;
+            }
+            p {
+              margin-left: 35px;
+            }
+          }
+          .images {
+            display: flex;
+            img {
+              margin-right: 20px;
+              width: 250px;
+              height: 250px;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+    .center {
+      .centerInfo {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        h3 {
+          margin-left: 5px;
+          font-weight: bold;
+        }
+      }
+      .contents {
+        margin-left: 20px;
+        div {
+          margin-bottom: 20px;
+          label {
+            margin-right: 20px;
+            font-size: 1.2rem;
+            border-right: 1px solid gray;
+            width: 20%;
+            margin-bottom: 20px;
+          }
+          input {
+            font-weight: bold;
+            margin-left: 35px;
+            width: 25%;
+          }
         }
       }
     }
@@ -71,9 +193,6 @@ const CreateAdopBoard = () => {
     }
   }, []);
 
-  const [userNickname, setUserNickname] = useState("");
-  const [userPhone, setUserPhone] = useState("");
-
   const [adopAnimalKind, setAdopAnimalKind] = useState("");
   const [adopAnimalColor, setAdopAnimalColor] = useState("");
   const [adopAnimalFindplace, setAdopAnimalFindplace] = useState("");
@@ -87,9 +206,10 @@ const CreateAdopBoard = () => {
   const [images, setImages] = useState([]);
 
   // 이미지 미리보기
-  const [imgSrc, sestImgSsrc] = useState([]);
+  const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
     const files = Array.from(e.target.files);
+
     if (files.length > 3) {
       alert("최대 사진 갯수를 초과하였습니다. 다시 선택하여주세요.");
     } else {
@@ -101,7 +221,7 @@ const CreateAdopBoard = () => {
         const reader = new FileReader();
         reader.onload = () => {
           images[i] = reader.result;
-          sestImgSsrc([...images]);
+          setImgSrc([...images]);
         };
         reader.readAsDataURL(file);
       }
@@ -133,7 +253,7 @@ const CreateAdopBoard = () => {
       }
     }
   };
-  console.log(adopAnimalNeuter);
+
   const navigate = useNavigate();
   const okCreate = async () => {
     const formData = new FormData();
@@ -141,7 +261,6 @@ const CreateAdopBoard = () => {
     formData.append("userImg", user.userImg);
     formData.append("userNickname", user.userNickname);
     formData.append("userPhone", user.userPhone);
-    // formData.append("adopAnimalImage", adopAnimalImage);
     formData.append("adopAnimalKind", adopAnimalKind);
     formData.append("adopAnimalColor", adopAnimalColor);
     formData.append("adopAnimalFindplace", adopAnimalFindplace);
@@ -170,271 +289,244 @@ const CreateAdopBoard = () => {
     }
   };
 
+  const delImg = (i) => {
+    const existImages = images.filter((element) => element !== images[i]);
+    setImages(existImages);
+    const existImgSrc = imgSrc.filter((image) => image !== imgSrc[i]);
+    setImgSrc(existImgSrc);
+  };
+
   // 게시글 작성 취소
   const delCreate = () => {
     navigate("/compagno/adoptionBoard/viewAll");
   };
   return (
     <Div>
-      <div className="contents">
+      <div className="allContents">
         <h1>동물 입양 등록</h1>
-        <div className="postOwner">
-          <div className="pContent">
-            <table>
-              <thead>
-                <tr>
-                  <td id="userInfo">
-                    <h3>
-                      <FaUser />
-                      분실 신고자 정보
-                    </h3>
-                    <span>변경 불가 항목입니다.</span>
-                  </td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>신고자 닉네임</th>
-                  <td>
-                    <input type="text" value={user.userNickname} readOnly />
-                  </td>
-                </tr>
-                <tr>
-                  <th>신고자 연락처</th>
-                  <td>
-                    <input type="text" value={user.userPhone} readOnly />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        {/* 분실 신고자 정보  */}
+        <div className="postWriter">
+          <div className="userInfo">
+            <h3>
+              <FaUser />
+              &nbsp; 입양 신고자 정보
+            </h3>
+            <span>변경 불가 항목입니다.</span>
+          </div>
+          <div className="contents">
+            <div id="nickName">
+              <label>신고자 닉네임</label>
+              <input type="text" value={user.userNickname || ""} readOnly />
+            </div>
+            <div id="phoneNum">
+              <label>신고자 연락처</label>
+              <input type="text" value={user.userPhone || ""} readOnly />
+            </div>
           </div>
         </div>
+        {/* 입양 동물 정보 */}
         <div className="adopAnimal">
-          <div className="pContent">
-            <table>
-              <thead>
-                <tr>
-                  <td>
-                    <h3>
-                      <FaShieldDog /> 입양 동물 정보
-                    </h3>
-                    <span>* : 필수 입력란입니다.</span>
-                  </td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>
-                    축종<span>*</span>
-                  </th>
-                  <td>
-                    <select onChange={(e) => setAdopAnimalKind(e.target.value)}>
-                      <option value="" className="animalKind">
-                        ----------
-                      </option>
-                      <option value="개" className="animalKind">
-                        개
-                      </option>
-                      <option value="고양이" className="animalKind">
-                        고양이
-                      </option>
-                      <option value="기타" className="animalKind">
-                        기타
-                      </option>
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <th>색상</th>
-                  <td>
-                    <input
-                      type="text"
-                      value={adopAnimalColor}
-                      onChange={(e) => setAdopAnimalColor(e.target.value)}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  성별<span>*</span>
-                  <td>
-                    <label>
-                      <input
-                        type="checkbox"
-                        value="수컷"
-                        onChange={(e) => genderCheck(e.target.value)}
-                        className="gender"
-                      />
-                      수컷
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        value="암컷"
-                        onChange={(e) => genderCheck(e.target.value)}
-                        className="gender"
-                      />
-                      암컷
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        value="모름"
-                        onChange={(e) => genderCheck(e.target.value)}
-                        className="gender"
-                      />
-                      알수없음
-                    </label>
-                  </td>
-                </tr>
-                <tr>
-                  중성화 여부<span>*</span>
-                  <td>
-                    <label>
-                      <input
-                        type="checkbox"
-                        value="예"
-                        onChange={(e) => neuterCheck(e.target.value)}
-                        className="neuter"
-                      />
-                      예
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        value="아니오"
-                        onChange={(e) => neuterCheck(e.target.value)}
-                        className="neuter"
-                      />
-                      아니오
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        value="알수없음"
-                        onChange={(e) => neuterCheck(e.target.value)}
-                        className="neuter"
-                      />
-                      알수없음
-                    </label>
-                  </td>
-                </tr>
-                <tr>
-                  <th>나이</th>
-                  <td>
-                    <input
-                      type="number"
-                      min={0}
-                      value={adopAnimalAge}
-                      placeholder="숫자로 입력해주세요"
-                      onChange={(e) => setAdopAnimalAge(e.target.value)}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>무게(kg)</th>
-                  <td>
-                    <input
-                      type="number"
-                      min={0}
-                      value={adopAnimalKg}
-                      placeholder="숫자로 입력해주세요"
-                      onChange={(e) => setAdopAnimalKg(e.target.value)}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>동물 특징</th>
-                  <td>
-                    <input
-                      type="text"
-                      value={adopAnimalFeature}
-                      onChange={(e) => setAdopAnimalFeature(e.target.value)}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>발견된 장소</th>
-                  <td>
-                    <input
-                      type="text"
-                      value={adopAnimalFindplace}
-                      onChange={(e) => setAdopAnimalFindplace(e.target.value)}
-                    />
-                  </td>
-                </tr>
-                <tr id="imgContent">
-                  <th>사진첨부</th>
-                  <td id="imgContents">
-                    <label id="imgList">
-                      <div id="images">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={imageCreate}
-                        />
-                        <div className="images">
-                          {imgSrc.map((img, i) => (
-                            <div key={i}>
-                              <img src={img} />
-                            </div>
-                          ))}
-                        </div>
+          <div className="animalInfo">
+            <h3>
+              <FaShieldDog />
+              &nbsp;입양 동물 정보
+            </h3>
+            <span>* : 필수 입력란입니다.</span>
+          </div>
+          <div className="contents">
+            <div id="kind">
+              <label>
+                축종<span>*</span>
+              </label>
+              <select onChange={(e) => setAdopAnimalKind(e.target.value)}>
+                <option value="" className="animalKind">
+                  ----------
+                </option>
+                <option value="개" className="animalKind">
+                  개
+                </option>
+                <option value="고양이" className="animalKind">
+                  고양이
+                </option>
+                <option value="기타" className="animalKind">
+                  기타
+                </option>
+              </select>
+            </div>
+            <div id="color">
+              <label>색상</label>
+              <input
+                type="text"
+                value={adopAnimalColor || ""}
+                onChange={(e) => setAdopAnimalColor(e.target.value)}
+              />
+            </div>
+            <div id="gender">
+              <label>
+                성별<span>*</span>
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="수컷"
+                  onChange={(e) => genderCheck(e.target.value)}
+                  className="gender"
+                />
+                수컷
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="암컷"
+                  onChange={(e) => genderCheck(e.target.value)}
+                  className="gender"
+                />
+                암컷
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="모름"
+                  onChange={(e) => genderCheck(e.target.value)}
+                  className="gender"
+                />
+                알수없음
+              </label>
+            </div>
+            <div id="neuter">
+              <label>
+                중성화 여부<span>*</span>
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="예"
+                  onChange={(e) => neuterCheck(e.target.value)}
+                  className="neuter"
+                />
+                예
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="아니오"
+                  onChange={(e) => neuterCheck(e.target.value)}
+                  className="neuter"
+                />
+                아니오
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="알수없음"
+                  onChange={(e) => neuterCheck(e.target.value)}
+                  className="neuter"
+                />
+                알수없음
+              </label>
+            </div>
+            <div id="age">
+              <label>나이</label>
+              <input
+                type="number"
+                min={0}
+                value={adopAnimalAge || ""}
+                placeholder="숫자로 입력해주세요"
+                onChange={(e) => setAdopAnimalAge(e.target.value)}
+              />
+            </div>
+            <div id="kg">
+              <label>무게(kg)</label>
+              <input
+                type="number"
+                min={0}
+                value={adopAnimalKg || ""}
+                placeholder="숫자로 입력해주세요"
+                onChange={(e) => setAdopAnimalKg(e.target.value)}
+              />
+            </div>
+            <div id="feature">
+              <label>동물 특징</label>
+              <input
+                type="text"
+                value={adopAnimalFeature || ""}
+                onChange={(e) => setAdopAnimalFeature(e.target.value)}
+              />
+            </div>
+            <div id="findPlace">
+              <label>
+                발견된 장소<span>*</span>
+              </label>
+              <input
+                type="text"
+                value={adopAnimalFindplace || ""}
+                onChange={(e) => setAdopAnimalFindplace(e.target.value)}
+              />
+            </div>
+            <div id="imgContent">
+              <label>사진첨부</label>
+              <div id="imgContents">
+                <div id="imgList">
+                  <div className="images">
+                    {imgSrc.map((img, i) => (
+                      <div key={i}>
+                        <img src={img} onClick={() => delImg(i)} />
                       </div>
+                    ))}
+                  </div>
+                  <div id="images">
+                    <label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={imageCreate}
+                      />
                       <p>사진 업로드 추가 (최대 3장)</p>
                     </label>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        {/* 입양 센터 정보 */}
         <div className="center">
-          <div className="pContent">
-            <table>
-              <thead>
-                <tr>
-                  <td id="userInfo">
-                    <h3>
-                      <FaHouseMedical />
-                      입양 센터 정보
-                    </h3>
-                  </td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>보호센터명</th>
-                  <td>
-                    <input
-                      type="text"
-                      value={adopCenterName}
-                      onChange={(e) => setAdopCenterName(e.target.value)}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>보호센터 연락처</th>
-                  <td>
-                    <input
-                      type="text"
-                      value={adopCenterPhone}
-                      onChange={(e) => setAdopCenterPhone(e.target.value)}
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="centerInfo">
+            <h3>
+              <FaHouseMedical />
+              &nbsp;입양 센터 정보
+            </h3>
+          </div>
+          <div className="contents">
+            <div className="centerName">
+              <label>보호센터명</label>
+              <input
+                type="text"
+                value={adopCenterName || ""}
+                onChange={(e) => setAdopCenterName(e.target.value)}
+              />
+            </div>
+            <div id="centerPhone">
+              <label>보호센터 연락처</label>
+              <input
+                placeholder="하이픈(-) 포함해서 입력 요망"
+                type="text"
+                value={adopCenterPhone || ""}
+                onChange={(e) => setAdopCenterPhone(e.target.value)}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="btn">
-        <button className="okBtn" onClick={okCreate}>
-          작성 완료
-        </button>
-        <button className="delBtn" onClick={delCreate}>
-          작성 취소
-        </button>
+        {/* 버튼 */}
+        <div className="btn">
+          <button className="okBtn" onClick={okCreate}>
+            작성 완료
+          </button>
+          <button className="delBtn" onClick={delCreate}>
+            작성 취소
+          </button>
+        </div>
       </div>
     </Div>
   );
