@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "react-bootstrap/Image";
 import { PiMedalFill } from "react-icons/pi";
+import { viewRanker } from "../../api/animalBoard";
 const RankProfile = styled.div`
   width: 80%;
   padding-top: 200px;
@@ -49,16 +50,27 @@ const RankProfile = styled.div`
   }
   img {
     width: 200px;
+    height: 200px;
+    object-fit: cover;
     position: relative;
   }
 `;
-const WeeklyRank = ({ rankers }) => {
+const WeeklyRank = () => {
   // const [newRankers, setNewRankers] = useState([rankers]);
   // const checkDupl = async()=>{
   //     setNewRankers()
   // }    중복검사 찾기
   // setMovies(movies.filter((movie) => movie.no !== no));
   //   console.log(newRankers);
+  // 랭킹결과표
+  const [rankers, setRanker] = useState([]);
+  const favRankAPI = async () => {
+    const response = await viewRanker();
+    setRanker(response.data);
+  };
+  useEffect(() => {
+    favRankAPI();
+  }, []);
   return (
     <RankProfile>
       {rankers?.slice(0, 3).map((ranker) => (

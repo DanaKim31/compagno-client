@@ -14,6 +14,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import { GoTriangleDown } from "react-icons/go";
 import { BsCardList } from "react-icons/bs";
 import { FaImage } from "react-icons/fa";
+import useDidMountEffect from "../../assets/useDidMountEffect";
 const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -185,39 +186,52 @@ const AnimalHome = () => {
   };
   const [cateBoolean, setCateBoolean] = useState(false); // 카테고리 토글
   // ==============================
-  const [loading, setLoading] = useState(false);
   const [boards, setBoards] = useState([]); // 여러개 = 배열
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
-  // const [check, setCheck] = useState(false);
+  const [category2, setCategory2] = useState("");
+  const [sort2, setSort2] = useState("");
   console.log(page);
   console.log(category);
   console.log(sort);
   const animalBoardsAPI = async (check) => {
     if (check) {
-      // 더보기 버튼 눌렀을때
-      setLoading(true);
-      const response = await viewBoardList(page, category, sort);
-      console.log(response.data.content);
-      const newData = response.data.content;
-
-      setBoards((prev) => [...prev, ...newData]);
-      setPage((prev) => prev + 1);
-    } else {
-      // 검색창 눌렀을때
-      setPage("");
-      setBoards([]);
+      // 검색 클릭
       const response = await viewBoardList(page, category, sort);
       setBoards(response.data.content);
+      setCategory2(category);
+      setSort2(sort);
+      setCategory("");
+      setSort("");
+    } else {
+      const response = await viewBoardList(page, category2, sort2);
+      const newData = response.data.content;
+      setBoards((prev) => [...prev, ...newData]);
     }
+
+    // if (check) {
+    //   // 더보기 버튼 눌렀을때
+    //   setLoading(true);
+    //   const response = await viewBoardList(page, category, sort);
+    //   console.log(response.data.content);
+    //   const newData = response.data.content;
+    //   setBoards((prev) => [...prev, ...newData]);
+    //   setPage((prev) => prev + 1);
+    // } else {
+    //   // 검색창 눌렀을때
+    //   setPage("");
+    //   setBoards([]);
+    //   const response = await viewBoardList(page, category, sort);
+    //   setBoards(response.data.content);
+    // }
   };
-  // 랭킹결과표
-  const [rankers, setRanker] = useState([]);
-  const favRankAPI = async () => {
-    const response = await viewRanker();
-    setRanker(response.data);
-  };
+  // // 랭킹결과표
+  // const [rankers, setRanker] = useState([]);
+  // const favRankAPI = async () => {
+  //   const response = await viewRanker();
+  //   setRanker(response.data);
+  // };
   // 정렬 옵션바 띄우기
   const [option, setOption] = useState(false);
   const setOptionBar = () => {
@@ -246,25 +260,27 @@ const AnimalHome = () => {
       navigate("/compagno/write-board");
     }
   };
-  const count = Object.keys(boards).length;
-  console.log(count);
-  useEffect(() => {
-    if (!loading) {
-      animalBoardsAPI(true);
-    }
-  }, [page, loading]);
+  // const count = Object.keys(boards).length;
+  // console.log(count);
+  // useEffect(() => {
+  //   animalBoardsAPI();
+  // }, [page]);
+  useDidMountEffect(() => {
+    animalBoardsAPI();
+  }, [page]);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
+    animalBoardsAPI(true);
     categoryAPI();
-    favRankAPI();
+    // favRankAPI();
   }, []);
   return (
     <HomeContainer>
       <div className="main-container">
-        <WeeklyRank rankers={rankers} />
+        <WeeklyRank />
 
         <SearchBarContainer className="SearchBarContainer">
           <div className="search-container">
@@ -349,7 +365,8 @@ const AnimalHome = () => {
               className="search-filter"
               onClick={() => {
                 setOption(false);
-                animalBoardsAPI(false);
+                setPage(1);
+                animalBoardsAPI(true);
               }}
             >
               검색!
@@ -393,11 +410,11 @@ const AnimalHome = () => {
           {listBoolean ? (
             <>
               <div className="table-container">
-                {/* {boards?.map((tableBoard) => (
-                  <div key={tableBoard.animalBoardCode}> */}
-                <TableList boards={boards} />
-                {/* </div>
-                ))} */}
+                {boards?.map((tableBoard) => (
+                  <div key={tableBoard.animalBoardCode}>
+                    <TableList board={tableBoard} />
+                  </div>
+                ))}
               </div>
             </>
           ) : (
@@ -415,7 +432,7 @@ const AnimalHome = () => {
             </>
           )}
 
-          <button onClick={() => setLoading(false)} variant="dark">
+          <button onClick={() => setPage(page + 1)} variant="dark">
             더 보기
           </button>
         </Div>

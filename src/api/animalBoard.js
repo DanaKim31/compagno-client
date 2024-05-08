@@ -56,6 +56,10 @@ export const viewDetail = async (animalBoardCode) => {
 export const updateBoard = async (updatedInfo) => {
   return await authorize.put("animal-board", updatedInfo);
 };
+// 수정 이전에 기존 이미지 가져오기
+export const getPrevImages = async (animalBoardCode) => {
+  return await instance.get("animal-board/" + animalBoardCode + "/prevImages");
+};
 
 // 글 삭제
 export const delBoard = async (animalBoardCode) => {

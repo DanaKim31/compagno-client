@@ -2,7 +2,7 @@ import { Card } from "react-bootstrap";
 
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FavoriteBoard from "./FavoriteBoard";
 import { viewDetail } from "../../api/animalBoard";
 const Div = styled.div`
@@ -42,6 +42,7 @@ const CardList = ({ board, user }) => {
         {board.animalMainImage === "animalDefault.jpg" ? (
           <>
             <Card.Img
+              rounded
               className="nice-card"
               variant="top"
               src={
@@ -55,6 +56,7 @@ const CardList = ({ board, user }) => {
         ) : (
           <>
             <Card.Img
+              rounded
               className="nice-card"
               variant="top"
               src={"http://192.168.10.28:8081" + board?.animalMainImage}

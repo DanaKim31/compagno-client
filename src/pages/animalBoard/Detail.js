@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import { viewDetail } from "../../api/animalBoard";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import React from "react";
 import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
@@ -242,17 +241,7 @@ const AnimalDetail = () => {
       {/* <div className="App"> */}
       {/* <div className="container"> */}
       <div className="detail-container">
-        <DetailPageProfile author={detailInfo} />
-        <Link to="/compagno/write-board"> 글쓰기! </Link>
-        {detailInfo.user.userId === user.userId ? (
-          <>
-            <Link to={`/compagno/edit-board/${detailInfo.animalBoardCode}`}>
-              수정하기
-            </Link>
-          </>
-        ) : (
-          <></>
-        )}
+        <DetailPageProfile author={detailInfo} currentUser={user} />
 
         <div className="post__list">
           {/* <h2>
