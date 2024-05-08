@@ -4,6 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { userSave } from "../../store/user";
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 import {
   FaAnglesLeft,
   FaAngleLeft,
@@ -17,21 +18,21 @@ import { Form } from "react-bootstrap";
 
 const Div = styled.div`
   position: relative;
-  top: 200px;
+  top: 150px;
   #topbar {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     padding-top: 5px;
-    background-color: pink;
-    height: 50px;
+    height: 90px;
 
     Button {
       height: 35px;
+      background-color: gray;
+      border: 1px solid gray;
     }
   }
   Table {
-    background-color: skyblue;
     width: 70%;
     margin: 0 auto;
   }
@@ -39,13 +40,34 @@ const Div = styled.div`
     width: 100%;
     padding-top: 30px;
     text-align: center;
-    background-color: pink;
     button {
-      background-color: white;
       border-radius: 5px;
       margin: 5px;
       font-weight: bolder;
     }
+  }
+  #search{
+    display: flex;
+    height:35px;
+
+    select{
+      border-radius: 7px;
+      border: 1px solid gray;
+    }
+    input{
+      margin-left: 7px;
+      margin-right: 7px;
+      border-radius: 7px;
+      border: 1px solid gray;
+    }
+    button{
+      width: 120px;
+      background-color: gray;
+      border-radius: 5px;
+      border: 1px solid gray;
+      color: white;
+    }
+    
   }
 `;
 
@@ -71,6 +93,7 @@ const Table = styled.table`
       }
     }
   }
+
 `;
 
 const QnaList = () => {
@@ -130,7 +153,7 @@ const QnaList = () => {
 
   // ===============================
 
-  const [select, setSelect] = useState("");
+  const [select, setSelect] = useState("title");
   const [keyword, setKeyword] = useState("");
 
   const search = async () => {
@@ -206,9 +229,8 @@ const QnaList = () => {
         <div>
           <p>전체 {questions?.totalElements}건</p>
         </div>
-        <div>
+        <div id="search">
           <select onChange={(e) => setSelect(e.target.value)}>
-            <option value={0}>검색 </option>
             <option value={"title"}>제목</option>
             <option value={"content"}>내용</option>
             <option value={"id"}>작성자</option>
@@ -250,16 +272,20 @@ const QnaList = () => {
         <thead>
           <tr>
             <th>질문 번호</th>
+            <th>답변 여부</th>
             <th>제목</th>
             <th>작성자</th>
-            <th>답변 여부</th>
+            <th>작성일</th>
           </tr>
         </thead>
         <tbody>
           {questions?.content?.map((question) => {
             return (
               <tr key={question.qnaQCode}>
+
                 <td>{question.qnaQCode}</td>
+                <td>{question.qnaQStatus}</td>
+
                 <td>
                   {question.secret === "" || question.secret == null ? (
                     // 비밀번호가 걸려있지 않을 때
@@ -307,7 +333,9 @@ const QnaList = () => {
                   )}
                 </td>
                 <td>{question.userId}</td>
-                <td>{question.qnaQStatus}</td>
+                {/* qnaQDate가 null일 때 DateUpdate로 출력 */}
+                {question.qnaQDate === "" || question.qnaQDate == null ? <><td>{moment(question.qnaQDateUpdate).format("YY-MM-DD hh:mm")}</td></> : <>
+                <td>{moment(question.qnaQDate).format("YY-MM-DD hh:mm")}</td></>}
               </tr>
             );
           })}

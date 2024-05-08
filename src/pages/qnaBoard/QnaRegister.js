@@ -29,6 +29,7 @@ const QnaRegister = () => {
 
   const [userId, setUserId] = useState("");
   const [userNickname, setUserNickname] = useState("");
+  const [userImg, setUserImg] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [secret, setSecret] = useState("");
@@ -51,6 +52,9 @@ const QnaRegister = () => {
 
     formData.append("userNickname", user.userNickname);
     setUserNickname(user.userNickname);
+
+    formData.append("userImg", user.userImg);
+    setUserImg(user.userImg);
 
     formData.append("qnaQTitle", title);
 
