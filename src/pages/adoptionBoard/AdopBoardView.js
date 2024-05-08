@@ -11,6 +11,8 @@ import styled from "styled-components";
 import { FaShieldDog, FaHouseMedical } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 
+import Comments from "../../components/adoptionBoard/AdoptoinComments";
+
 const Div = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
@@ -187,122 +189,125 @@ const ViewAdopBoard = () => {
   }, []);
 
   return (
-    <Div>
-      <div className="contentHeader">
-        <h2>동물 입양</h2>
-        {user.userId == adop.userId ? (
-          <div className="btnChange">
-            <button onClick={btnUpdate}>수정</button>
-            <button onClick={btnDel}>삭제</button>
+    <>
+      <Div>
+        <div className="contentHeader">
+          <h2>동물 입양</h2>
+          {user.userId == adop.userId ? (
+            <div className="btnChange">
+              <button onClick={btnUpdate}>수정</button>
+              <button onClick={btnDel}>삭제</button>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div className="contentsBody">
+          <div id="mainImage">
+            {adop.images?.map((image) => (
+              <img
+                alt=""
+                key={image.adopImageCode}
+                src={image.adopImage?.replace("C:", "http://localhost:8081")}
+              />
+            ))}
           </div>
-        ) : (
-          <></>
-        )}
-      </div>
-      <div className="contentsBody">
-        <div id="mainImage">
-          {adop.images?.map((image) => (
-            <img
-              alt=""
-              key={image.adopImageCode}
-              src={image.adopImage?.replace("C:", "http://localhost:8081")}
-            />
-          ))}
-        </div>
-        <div id="regiDate">
-          {moment(adop.regiDate).format("YYYY-MM-DD hh:mm")}
-        </div>
-        <div className="contentAll">
-          <div className="postWriter">
-            <div className="pContent">
-              <div id="userInfo">
-                <h3>
-                  <FaUser />
-                  &nbsp; 입양 신고자 정보
-                </h3>
-              </div>
-              <div className="contents">
-                <div id="nickName">
-                  <label>신고자 닉네임</label>
-                  <span>{adop.userNickname}</span>
+          <div id="regiDate">
+            {moment(adop.regiDate).format("YYYY-MM-DD hh:mm")}
+          </div>
+          <div className="contentAll">
+            <div className="postWriter">
+              <div className="pContent">
+                <div id="userInfo">
+                  <h3>
+                    <FaUser />
+                    &nbsp; 입양 신고자 정보
+                  </h3>
                 </div>
-                <div id="phone">
-                  <label>신고자 연락처</label>
-                  <span>{adop.userPhone}</span>
+                <div className="contents">
+                  <div id="nickName">
+                    <label>신고자 닉네임</label>
+                    <span>{adop.userNickname}</span>
+                  </div>
+                  <div id="phone">
+                    <label>신고자 연락처</label>
+                    <span>{adop.userPhone}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="adopAnimal">
-            <div className="pContent">
-              <div id="animalInfo">
-                <h3>
-                  <FaShieldDog />
-                  &nbsp; 입양 동물 정보
-                </h3>
-              </div>
-              <div className="contents">
-                <div id="kind">
-                  <label>축종</label>
-                  <span>{adop.adopAnimalKind}</span>
+            <div className="adopAnimal">
+              <div className="pContent">
+                <div id="animalInfo">
+                  <h3>
+                    <FaShieldDog />
+                    &nbsp; 입양 동물 정보
+                  </h3>
                 </div>
-                <div id="color">
-                  <label>색상</label>
-                  <span>{adop.adopAnimalColor}</span>
-                </div>
-                <div id="gender">
-                  <label>성별</label>
-                  <span>{adop.adopAnimalGender}</span>
-                </div>
-                <div id="neuter">
-                  <label>중성화 여부</label>
-                  <span>{adop.adopAnimalNeuter}</span>
-                </div>
-                <div id="age">
-                  <label>나이</label>
-                  <span>{adop.adopAnimalAge}</span>
-                </div>
-                <div id="kg">
-                  <label>무게(kg)</label>
-                  <span>{adop.adopAnimalKg}</span>
-                </div>
-                <div id="feature">
-                  <label>동물 특징</label>
-                  <span>{adop.adopAnimalFeature}</span>
-                </div>
-                <div id="findPlace">
-                  <label>발견된 장소</label>
-                  <span>{adop.adopAnimalFindplace}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="center">
-            <div className="pContent">
-              <div id="centerInfo">
-                <h3>
-                  <FaHouseMedical />
-                  &nbsp; 입양 센터 정보
-                </h3>
-              </div>
-              <div className="contents">
-                <div id="centerName">
-                  <label>보호센터명</label>
-                  <span>{adop.adopCenterName}</span>
-                </div>
-                <div id="centerPhond">
-                  <label>보호센터 연락처</label>
-                  <span>{adop.adopCenterPhone}</span>
+                <div className="contents">
+                  <div id="kind">
+                    <label>축종</label>
+                    <span>{adop.adopAnimalKind}</span>
+                  </div>
+                  <div id="color">
+                    <label>색상</label>
+                    <span>{adop.adopAnimalColor}</span>
+                  </div>
+                  <div id="gender">
+                    <label>성별</label>
+                    <span>{adop.adopAnimalGender}</span>
+                  </div>
+                  <div id="neuter">
+                    <label>중성화 여부</label>
+                    <span>{adop.adopAnimalNeuter}</span>
+                  </div>
+                  <div id="age">
+                    <label>나이</label>
+                    <span>{adop.adopAnimalAge}</span>
+                  </div>
+                  <div id="kg">
+                    <label>무게(kg)</label>
+                    <span>{adop.adopAnimalKg}</span>
+                  </div>
+                  <div id="feature">
+                    <label>동물 특징</label>
+                    <span>{adop.adopAnimalFeature}</span>
+                  </div>
+                  <div id="findPlace">
+                    <label>발견된 장소</label>
+                    <span>{adop.adopAnimalFindplace}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="btnList">
-            <button onClick={btnList}>목록</button>
+            <div className="center">
+              <div className="pContent">
+                <div id="centerInfo">
+                  <h3>
+                    <FaHouseMedical />
+                    &nbsp; 입양 센터 정보
+                  </h3>
+                </div>
+                <div className="contents">
+                  <div id="centerName">
+                    <label>보호센터명</label>
+                    <span>{adop.adopCenterName}</span>
+                  </div>
+                  <div id="centerPhond">
+                    <label>보호센터 연락처</label>
+                    <span>{adop.adopCenterPhone}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="btnList">
+              <button onClick={btnList}>목록</button>
+            </div>
           </div>
         </div>
-      </div>
-    </Div>
+      </Div>
+      <Comments />
+    </>
   );
 };
 export default ViewAdopBoard;
