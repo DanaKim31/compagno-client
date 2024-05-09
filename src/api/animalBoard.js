@@ -119,3 +119,8 @@ export const addFavorite = async (boardData) => {
 export const delFavorite = async (boardData) => {
   return await authorize.post("animal-board/delFavorite", boardData);
 };
+//=====================================================================
+// 현재 추천로직 포인트 가져오기
+export const getCurrentPoint = async (user) => {
+  return await instance.get("logic-point/" + user);
+};

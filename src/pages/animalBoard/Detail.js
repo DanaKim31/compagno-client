@@ -9,6 +9,7 @@ import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
 import { viewCount } from "../../api/animalBoard";
 import AllReplies from "../../components/animalBoard/AllReplies";
 import ParentComments from "../../components/animalBoard/ParentComments";
+import AdLogic from "../../components/animalBoard/AdLogic";
 const Div = styled.div`
   padding-top: 112px;
   display: flex;
@@ -95,6 +96,7 @@ const AnimalDetail = () => {
   const user = useSelector((state) => {
     return state.user;
   });
+
   // console.log(user);
   // 현재 게시글 정보 불러오기
   const [detailInfo, setDetail] = useState({
@@ -229,7 +231,6 @@ const AnimalDetail = () => {
     animalBoardAPI();
     // animalBoardCommentAPI();
     setViewCount();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // useEffect(() => {
