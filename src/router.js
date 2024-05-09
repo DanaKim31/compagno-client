@@ -5,6 +5,9 @@ import QnaList from "./pages/qnaBoard/QnaList";
 import QnaQDetail from "./components/QnaBoard/QnaQDetail";
 import ManageQuestions from "./components/QnaBoard/ManagerQuestion";
 import MyQuestions from "./components/QnaBoard/MyQuestion";
+import UserQnaList from "./pages/userQnaBoard/UserQnaList";
+import UserQuestionRegister from "./pages/userQnaBoard/UserQuestionRegister";
+import UserQuestionDetail from "./pages/userQnaBoard/UserQuestionDetail";
 import Content from "./pages/ContentBoard/Content";
 import ContentList from "./pages/ContentBoard/ContentList";
 import ContentDetail from "./pages/ContentBoard/ContentDetail";
@@ -174,6 +177,20 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <ClassList /> },
           { path: "create", element: <CreateClass /> },
+        ],
+      },
+      {
+        path: "userQna",
+        children: [
+          {
+            index: true,
+            element: <UserQnaList />,
+          },
+          { path: "register", element: <UserQuestionRegister /> },
+          {
+            path: "detail/:userQuestionBoardCode",
+            element: <UserQuestionDetail />,
+          },
         ],
       },
     ],

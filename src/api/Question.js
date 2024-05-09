@@ -29,6 +29,7 @@ export const getQuestions = async (page, select, keyword) => {
   // 조건 검색....
   if (select !== null) {
     url += "&" + select + "=" + keyword;
+  } else {
   }
 
   return await instance.get(url);

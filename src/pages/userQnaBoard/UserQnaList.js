@@ -1,10 +1,10 @@
-import { getQuestions } from "../../api/Question";
-import { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 import { userSave } from "../../store/user";
-import { useDispatch, useSelector } from "react-redux";
-import moment from "moment";
+import { getUserQuestions } from "../../api/userQnaQuestion";
+import { Button, Form } from "react-bootstrap";
 import {
   FaAnglesLeft,
   FaAngleLeft,
@@ -12,9 +12,7 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
-import { FaLock } from "react-icons/fa";
-import styled from "styled-components";
-import { Form } from "react-bootstrap";
+import moment from "moment";
 
 const Div = styled.div`
   position: relative;
@@ -94,11 +92,10 @@ const Table = styled.table`
   }
 `;
 
-const QnaList = () => {
+const UserQnaList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // user 세팅
   const user = useSelector((state) => {
     return state.user;
   });
@@ -120,7 +117,7 @@ const QnaList = () => {
 
   // 페이지 변경될 때마다 호출!
   const questionAPI = async () => {
-    const response = await getQuestions(page);
+    const response = await getUserQuestions(page);
     setQuestions(response.data);
     setTotalPage(response.data.totalPages); // response에서 totalPages 불러와서 set으로 담기
   };
@@ -149,80 +146,18 @@ const QnaList = () => {
     setPages(pageList); // 해당 list 배열을 setPages에 담기
   }, [totalPage]);
 
-  // ===============================
-
   const [select, setSelect] = useState("title");
   const [keyword, setKeyword] = useState("");
 
   const search = async () => {
-    const response = await getQuestions(page, select, keyword);
+    const response = await getUserQuestions(page, select, keyword);
     console.log(response.data);
     setQuestions(response.data);
     setTotalPage(response.data?.totalPages);
   };
 
-  // const [counts, setCounts] = useState(1); // 데이터 총 갯수
-
-  // 입력한 비밀번호
-  const [secretPwd, setSecret] = useState("");
-  const [code, setCode] = useState("");
-
-  // 모달창 구현
-  const [modalShow, setModalShow] = useState(false);
-
-  const CenterModal = (props) => {
-    const [pwd, setPwd] = useState("");
-
-    const pwdCheck = () => {
-      console.log(secretPwd === pwd);
-      console.log(code);
-      if (secretPwd === pwd) {
-        navigate("/compagno/question/detail/" + code);
-      } else {
-        alert("비밀번호가 일치하지 않습니다!");
-        document.querySelector("#password").focus();
-      }
-    };
-
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header>
-          <Modal.Title id="contained-modal-title-vcenter">
-            비밀글 확인 !
-          </Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <p>비밀글입니다. 비밀번호를 입력하세요.</p>
-          <input
-            type="password"
-            id="password"
-            onChange={(e) => {
-              setPwd(e.target.value);
-            }}
-          />
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={props.onHide}>
-            닫기
-          </Button>
-          <Button variant="primary" onClick={pwdCheck}>
-            확인
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  };
-
   return (
     <Div>
-      <CenterModal show={modalShow} onHide={() => setModalShow(false)} />
       <div id="topbar">
         <div>
           <p>전체 {questions?.totalElements}건</p>
@@ -244,6 +179,7 @@ const QnaList = () => {
             조회
           </Button>
         </div>
+
         {Object.keys(user).length === 0 ? (
           <>
             <Button
@@ -258,7 +194,7 @@ const QnaList = () => {
           <>
             <Button
               onClick={() => {
-                navigate("/compagno/question/register");
+                navigate("/compagno/userQna/register");
               }}
             >
               질문 등록
@@ -279,68 +215,34 @@ const QnaList = () => {
         <tbody>
           {questions?.content?.map((question) => {
             return (
-              <tr key={question.qnaQCode}>
-                <td>{question.qnaQCode}</td>
-                <td>{question.qnaQStatus}</td>
+              <tr key={question.userQuestionBoardCode}>
+                <td>{question.userQuestionBoardCode}</td>
+                <td>{question.userQuestionBoardStatus}</td>
 
                 <td>
-                  {question.secret === "" || question.secret == null ? (
-                    // 비밀번호가 걸려있지 않을 때
-                    <a href={`/compagno/question/detail/${question.qnaQCode}`}>
-                      {question.qnaQTitle}
-                    </a>
-                  ) : (
-                    <>
-                      {user.userRole === "ROLE_ADMIN" ? (
-                        <>
-                          <a
-                            href={`/compagno/question/detail/${question.qnaQCode}`}
-                          >
-                            {question.qnaQTitle}
-                          </a>
-                        </>
-                      ) : (
-                        <>
-                          <a
-                            href={`/compagno/question/detail/${question.qnaQCode}`}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setModalShow(true);
-                              setSecret(question.secret);
-                              setCode(question.qnaQCode);
-                              console.log(question.secret);
-                            }}
-                          >
-                            {question.secret === "" ||
-                            question.secret == null ? (
-                              // 비밀글이 아닐 때
-                              <>{question.qnaQTitle}</>
-                            ) : (
-                              <>
-                                <p>
-                                  <FaLock />
-                                  {question.qnaQTitle}
-                                </p>
-                              </>
-                            )}
-                          </a>
-                        </>
-                      )}
-                    </>
-                  )}
+                  <a
+                    href={`/compagno/userQna/detail/${question.userQuestionBoardCode}`}
+                  >
+                    {question.userQuestionBoardTitle}
+                  </a>
                 </td>
                 <td>{question.userId}</td>
                 {/* qnaQDate가 null일 때 DateUpdate로 출력 */}
-                {question.qnaQDate === "" || question.qnaQDate == null ? (
+                {question.userQuestionBoardDate === "" ||
+                question.userQuestionBoardDate == null ? (
                   <>
                     <td>
-                      {moment(question.qnaQDateUpdate).format("YY-MM-DD hh:mm")}
+                      {moment(question.userQuestionBoardDateUpdate).format(
+                        "YY-MM-DD hh:mm"
+                      )}
                     </td>
                   </>
                 ) : (
                   <>
                     <td>
-                      {moment(question.qnaQDate).format("YY-MM-DD hh:mm")}
+                      {moment(question.userQuestionBoardDate).format(
+                        "YY-MM-DD hh:mm"
+                      )}
                     </td>
                   </>
                 )}
@@ -381,4 +283,5 @@ const QnaList = () => {
     </Div>
   );
 };
-export default QnaList;
+
+export default UserQnaList;
