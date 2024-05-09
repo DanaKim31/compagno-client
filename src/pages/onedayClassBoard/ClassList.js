@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import Pagination from "../../components/ClassBoard/Pagination";
+import { useDispatch, useSelector } from "react-redux";
+import { userSave } from "../../store/user";
 
 const StyledDiv = styled.div`
   background-color: rgb(244, 244, 244);
@@ -121,9 +123,15 @@ const StyledDiv = styled.div`
 // 원데이 클래스 리스트 페이지 !!  ==> 전체 조회 viewAllClass
 const ClassList = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
+  });
   const [onedayClasses, setOnedayClasses] = useState([]); // 내가 가저올 원데이 클래스 리스트들 관련 변수랑 함수
-  const [page, setPage] = useState(1); // 페이지 카운트 관련 !!
-  const [ClassBoardCount, setClassBoardCount] = useState(0); // 초기값 0
+  // ========== 페이징 처리 ============
+  // const [count, setCount] = useState();
+  // const [page, setPage] = useState(1);
+  // const [oneClass, setOneClass] = useState({});
 
   //   ======== 비동기처리로된 원데이 클래스 리스트 정보 =======
   const onedayClassAPI = async () => {
@@ -136,19 +144,23 @@ const ClassList = () => {
     onedayClassAPI();
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    }
+    onedayClassAPI();
+  }, []);
+
   const Detail = () => {
     navigate("/compagno/onedayClassBoard/detail");
   };
 
-  const handlePageChange = async (page) => {
-    await setPage(page);
-    const response = await viewAllClass();
-    // set;
-  };
-
-  const list = () => {
-    navigate("/compagno/onedayClassBoard");
-  };
+  // const handlePageChange = async (page) => {
+  //   await setPage(page);
+  //   const response = await viewAllClass();
+  //   // set;
+  // };
 
   const create = () => {
     navigate("/compagno/onedayClassBoard/create");
@@ -182,6 +194,8 @@ const ClassList = () => {
                   />
                 ))}
               </div>
+              <div>사용자 : {user.userNickname}</div>
+              {/* <div>사용자 : {user.userImg}</div> */}
               <div className="info">
                 {/* 나머지 클래스 정보 */}
                 <div className="title">제목 : {onedayClass.odcTitle}</div>
@@ -206,11 +220,11 @@ const ClassList = () => {
             </div>
           ))}
         </div>
-        <Pagination
+        {/* <Pagination
           page={page}
           count={onedayClasses}
           setPage={handlePageChange}
-        />
+        /> */}
       </div>
     </StyledDiv>
   );

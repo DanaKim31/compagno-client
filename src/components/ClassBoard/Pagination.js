@@ -62,15 +62,21 @@ const Div = styled.div`
 `;
 
 const Paging = ({ page, count, setPage }) => {
-  //   const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
+  // //  초기값 = 1 , 함수명
+
+  // const handlePageChange = (page) => {
+  //   setPage(page);
+  //   console.log(page);
+  // };
 
   return (
     <Div>
       <Pagination
         activePage={page}
-        itemsCountPerPage={10}
+        itemsCountPerPage={4}
         totalItemsCount={count}
-        pageRangeDisplayed={5}
+        pageRangeDisplayed={4}
         prevPageText={"‹"}
         nextPageText={"›"}
         onChange={setPage}
