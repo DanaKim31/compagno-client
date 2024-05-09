@@ -21,6 +21,8 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import MyToggleBar from "../note/MyToggleBar";
+// import OtherToggleBar from "../note/OtherToggleBar";
 
 const Div = styled.div`
   @font-face {
@@ -209,7 +211,8 @@ const Comments = () => {
         style={{
           marginTop: "30px",
           display: "block",
-          width: "70%",
+          justifyContent: "center",
+          width: "60%",
           marginBottom: "20px",
         }}
       >
@@ -229,6 +232,7 @@ const Comments = () => {
               id="user"
               style={{
                 margin: "10px 10px",
+                display: "flex",
               }}
             >
               <img
@@ -244,7 +248,8 @@ const Comments = () => {
                   marginRight: "10px",
                 }}
               />
-              {user.userNickname}
+              {/* {user.userNickname} */}
+              <MyToggleBar name={""} />
             </div>
             <div
               id="boxAndBtn"
@@ -362,7 +367,8 @@ const Comments = () => {
                             style={{ marginBottom: "5px", fontSize: "0.9rem" }}
                           >
                             {" "}
-                            {comment.user.userNickname}
+                            <MyToggleBar name={comment.user.userNickname} />
+                            {/* {comment.user.userNickname} */}
                           </p>
                           <div
                             style={{ display: "flex", alignItems: "center" }}
@@ -440,7 +446,8 @@ const Comments = () => {
                                 id="userNickname"
                                 style={{ marginBottom: "0px" }}
                               >
-                                {comment.user.userNickname}
+                                <MyToggleBar name={comment.user.userNickname} />
+                                {/* {comment.user.userNickname} */}
                               </p>
                               {comment.user.userNickname ==
                               adop.userNickname ? (
@@ -578,7 +585,10 @@ const Comments = () => {
                                       paddingTop: "5px",
                                     }}
                                   >
-                                    {bottom.user.userNickname}
+                                    <MyToggleBar
+                                      name={bottom.user.userNickname}
+                                    />
+                                    {/* {bottom.user.userNickname} */}
                                   </span>
                                   {/* 게시글 작성자와 댓글 작성자가 같을 때 -> 작성자 표시 */}
                                   {adop.userId == bottom.user.userId ? (
@@ -797,7 +807,8 @@ const Comments = () => {
                             }
                             id="userImg"
                           />
-                          {user.userNickname}
+                          <MyToggleBar name={""} />
+                          {/* {user.userNickname} */}
                         </div>
                         <div
                           id="boxAndBtn"
@@ -831,6 +842,7 @@ const Comments = () => {
                               width: "50px",
                               margin: "5px 7px",
                               borderRadius: "15px",
+                              fontWeight: "bold",
                             }}
                           >
                             등록
@@ -841,6 +853,7 @@ const Comments = () => {
                               width: "50px",
                               margin: "5px 7px",
                               borderRadius: "15px",
+                              fontWeight: "bold",
                             }}
                           >
                             취소

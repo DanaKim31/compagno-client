@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 import { FaShieldDog, FaHouseMedical } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
+import moment from "moment";
+import "moment/locale/ko";
 
 const Div = styled.div`
   @font-face {
@@ -176,6 +178,33 @@ const Div = styled.div`
         }
       }
     }
+    .btn {
+      button {
+        margin: 0px 10px;
+        margin-bottom: 40px;
+        border-radius: 10px;
+        font-weight: bold;
+        width: 100px;
+        height: 40px;
+        border: none;
+      }
+      :nth-child(1) {
+        background-color: #94b29b;
+        &:hover {
+          border: 3px solid #94b29b;
+          background-color: white;
+        }
+      }
+      :nth-child(2) {
+        background-color: black;
+        color: white;
+        &:hover {
+          border: 3px solid black;
+          background-color: white;
+          color: black;
+        }
+      }
+    }
   }
 `;
 
@@ -204,7 +233,16 @@ const CreateAdopBoard = () => {
   const [adopCenterName, setAdopCenterName] = useState("");
   const [adopCenterPhone, setAdopCenterPhone] = useState("");
   const [images, setImages] = useState([]);
+  const [adopRegiDate, setAdopRegiDate] = useState("");
 
+  const adopRegiDateAPI = () => {
+    const nowTime = moment().format("YYYY-MM-DD hh:mm:ss");
+    setAdopRegiDate(nowTime);
+  };
+
+  useEffect(() => {
+    adopRegiDateAPI();
+  }, []);
   // 이미지 미리보기
   const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
@@ -271,6 +309,7 @@ const CreateAdopBoard = () => {
     formData.append("adopAnimalFeature", adopAnimalFeature);
     formData.append("adopCenterName", adopCenterName);
     formData.append("adopCenterPhone", adopCenterPhone);
+    formData.append("adopRegiDate", adopRegiDate);
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
     });
@@ -300,6 +339,8 @@ const CreateAdopBoard = () => {
   const delCreate = () => {
     navigate("/compagno/adoptionBoard/viewAll");
   };
+
+  console.log(adopRegiDate);
   return (
     <Div>
       <div className="allContents">
@@ -312,6 +353,12 @@ const CreateAdopBoard = () => {
               &nbsp; 입양 신고자 정보
             </h3>
             <span>변경 불가 항목입니다.</span>
+            <input
+              type="text"
+              value={adopRegiDate}
+              onChange={adopRegiDateAPI}
+              hidden
+            />
           </div>
           <div className="contents">
             <div id="nickName">

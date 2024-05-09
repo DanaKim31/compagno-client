@@ -139,11 +139,11 @@ const Div = styled.div`
   .contentsBody {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 250px 250px 250px;
+    grid-template-rows: 540px 540px 540px;
     grid-row-gap: 20px;
     grid-column-gap: 30px;
     width: 67%;
-    margin-top: 50px;
+    margin-top: 40px;
 
     .contentDetail {
       border: 1px solid black;

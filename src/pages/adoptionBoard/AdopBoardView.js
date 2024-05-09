@@ -12,6 +12,7 @@ import { FaShieldDog, FaHouseMedical } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 
 import Comments from "../../components/adoptionBoard/AdoptoinComments";
+import MyToggleBar from "../../components/note/MyToggleBar";
 
 const Div = styled.div`
   @font-face {
@@ -213,16 +214,51 @@ const ViewAdopBoard = () => {
             ))}
           </div>
           <div id="regiDate">
-            {moment(adop.regiDate).format("YYYY-MM-DD hh:mm")}
+            {moment(adop.adopRegiDate).format("YYYY-MM-DD hh:mm")}
           </div>
           <div className="contentAll">
             <div className="postWriter">
               <div className="pContent">
-                <div id="userInfo">
+                <div
+                  id="userInfo"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <h3>
                     <FaUser />
                     &nbsp; 입양 신고자 정보
                   </h3>
+                  <div
+                    id="writerTag"
+                    style={{
+                      display: "flex",
+                      borderBottom: "1px dashed black",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <img
+                      style={{
+                        width: "35px",
+                        height: "35px",
+                        borderRadius: "50%",
+                        border: "0.3px solid black",
+                        marginRight: "10px",
+                        alignContent: "center",
+                      }}
+                      src={
+                        "http://localhost:8081/upload/" + adop.userImg
+                        // "http://192.168.10.28:8081/" + adop.userImg
+                      }
+                    />
+                    <span
+                      style={{
+                        alignContent: "center",
+                        color: "black",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <MyToggleBar name={adop.userNickname} />
+                    </span>
+                  </div>
                 </div>
                 <div className="contents">
                   <div id="nickName">

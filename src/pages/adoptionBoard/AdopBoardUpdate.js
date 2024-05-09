@@ -234,7 +234,7 @@ const UpdateAdopBoard = () => {
 
   // 오늘 수정 날짜
   const adopRegiDateAPI = () => {
-    const nowTime = moment().format("YYYY-MM-DD");
+    const nowTime = moment().format("YYYY-MM-DD hh:mm:ss");
     setAdopRegiDate(nowTime);
   };
   useEffect(() => {
@@ -397,6 +397,9 @@ const UpdateAdopBoard = () => {
     navigate("/compagno/adoptionBoard/view/" + code);
   };
 
+  useEffect(() => {
+    console.log(typeof adopRegiDate);
+  }, [adopRegiDate]);
   return (
     <Div>
       <div className="contentHeader">
