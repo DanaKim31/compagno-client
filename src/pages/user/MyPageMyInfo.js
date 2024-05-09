@@ -12,7 +12,6 @@ import { FaRegEdit } from "react-icons/fa";
 
 const Div = styled.div`
   display: flex;
-  /* box-sizing: border-box; */
   height: 100vh;
   padding-top: 112px;
 

@@ -42,6 +42,7 @@ import SitterUpdate from "./pages/sitterBoard/SitterUpdate";
 import MyPageMyNote from "./pages/user/MyPageMyNote";
 import AdopBoardViewAll from "./pages/adoptionBoard/AdopBoardViewAll";
 import AdopBoardCreate from "./pages/adoptionBoard/AdopBoardCreate";
+import MyPageMyQnA from "./pages/user/MyPageMyQnA";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
           { path: "myanimalfav", element: <MyPageMyActivity /> },
           { path: "myproductfav", element: <MyPageFavProduct /> },
           { path: "mynote", element: <MyPageMyNote /> },
+          { path: "myqna", element: <MyPageMyQnA /> },
         ],
       },
       {

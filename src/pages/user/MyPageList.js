@@ -28,8 +28,6 @@ const Div = styled.div`
 `;
 
 const MyPageList = () => {
-  const navigate = useNavigate();
-
   const [user, setUser] = useState({});
 
   // 유저정보 가지고 오기
@@ -54,16 +52,15 @@ const MyPageList = () => {
   // 페이징에 사용할 좋아요 갯수 가져오기
   const [animalboardFav, setAnimalBoardFav] = useState([]);
   const [page, setPage] = useState(1);
+  const [animalBoardFavCount, setAnimalBoardFavCount] = useState(0);
 
   // 페이지 변경
   const handlePageChange = async (page) => {
-    await setPage(page);
+    setPage(page);
     const response = await getAnimalboardFavList(user.userId, page);
     const favData = response.data;
     setAnimalBoardFav(favData);
   };
-
-  const [animalBoardFavCount, setAnimalBoardFavCount] = useState(0);
 
   // 좋아요 목록 불러오기
   const favListAPI = async () => {

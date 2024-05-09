@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
 import MyPageSidebar from "../../components/user/MyPageSidebar";
+import MyPageTab from "../../components/user/MyPageTab";
 
 const Div = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ const Div = styled.div`
       display: flex;
       justify-content: left;
       padding-left: 8px;
-      border-bottom: 1px dashed black;
+      border-bottom: 1px double black;
 
       a {
         width: 150px;
@@ -82,14 +83,7 @@ const MyPageFavProduct = () => {
     <Div>
       <MyPageSidebar />
       <div className="mypageMain">
-        <div className="activityHeader">
-          <a href="/compagno/mypage/myanimalfav">최애 동물</a>
-          <a href="/compagno/mypage/myproductfav">관심 제품</a>
-          <a href="">1day class</a>
-          <a href="">adoption</a>
-          <a href="">register</a>
-          <a href="">QnA</a>
-        </div>
+        <MyPageTab />
         <div className="contentZone"></div>
       </div>
     </Div>

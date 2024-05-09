@@ -39,6 +39,7 @@ const MyPageSidebar = () => {
         <a href="/compagno/mypage/myinfo">내 정보</a>
         <a href="/compagno/mypage/myanimalfav">내 활동내역</a>
         <a href="/compagno/mypage/mynote">쪽지함</a>
+        <a href="/compagno/">메인 페이지로</a>
       </div>
     </Div>
   );

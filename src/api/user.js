@@ -73,3 +73,25 @@ export const getProductBookmarkList = async (id, pageNum) => {
     "mypage/myactivity/productfav/" + id + "?page=" + pageNum
   );
 };
+
+// 내 활동내역 - 일반유저 작성한 질문 리스트 출력
+export const getMyQnaList = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/myqna/" + id + "?page=" + pageNum
+  );
+};
+
+// 내 활동내역 - 일반유저 작성한 질문 갯수 불러오기
+export const getMyQnaCount = async (id) => {
+  return await authorize.get("mypage/myactivity/myqna/count/" + id);
+};
+
+// 내 활동내역 - 매니저 미답변된 질문 리스트 출력
+export const getManageQnaList = async (pageNum) => {
+  return await authorize.get("mypage/myactivity/manageqna?page=" + pageNum);
+};
+
+// 내 활동내역 - 매니저 미답변된 질문 갯수 불러오기
+export const getManageQnaCount = async () => {
+  return await authorize.get("mypage/myactivity/manageqna/count");
+};
