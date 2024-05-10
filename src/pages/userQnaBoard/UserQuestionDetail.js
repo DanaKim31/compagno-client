@@ -10,6 +10,7 @@ import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { userSave } from "../../store/user";
 import moment from "moment";
+import UserQnaAnswer from "../../components/UserQnaAnswerBoard/UserQnaAnswer";
 
 const Div = styled.div`
   position: relative;
@@ -465,6 +466,7 @@ const UserQuestionDetail = () => {
         )}
       </>
       <hr />
+      <UserQnaAnswer />
     </Div>
   );
 };
