@@ -12,6 +12,26 @@ const Main = styled.main`
   padding-top: 120px;
   display: flex;
   flex-direction: column;
+  background-color: rgb(244, 244, 244);
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+
+  input,
+  select,
+  button,
+  option {
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+
+    font-weight: normal;
+    font-style: normal;
+  }
+
   .createDiv {
     padding: 0px 120px;
   }
@@ -196,8 +216,8 @@ const UpdateProductBoard = () => {
   const imageCreate = (e) => {
     const images = Array.from(e.target.files);
 
-    if (images.length + prevImgSrc.length > 3) {
-      alert("이미지는 최대 3장 까지 등록 가능합니다");
+    if (images.length + prevImgSrc.length > 4) {
+      alert("이미지는 최대 4장 까지 등록 가능합니다");
       e.target.value = "";
       setImgSrc([]);
     } else {

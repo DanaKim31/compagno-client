@@ -25,10 +25,31 @@ import {
 import { MdOutlineWatchLater } from "react-icons/md";
 import { BiMessageDetail } from "react-icons/bi";
 import { Form, Button } from "react-bootstrap";
+import MyToggleBar from "../../components/note/MyToggleBar";
 
 const StyledProductBoard = styled.main`
   padding-top: 120px;
   display: grid;
+  background-color: rgb(244, 244, 244);
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+
+  input,
+  select,
+  button,
+  option {
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+
+    font-weight: normal;
+    font-style: normal;
+  }
+
   h1 {
     font-size: 2.5;
     padding-left: 120px;
@@ -48,12 +69,13 @@ const StyledProductBoard = styled.main`
     position: relative;
     cursor: pointer;
     border-radius: 10px;
+    font: inherit;
   }
 
   .boardList {
     display: grid;
     grid-template-columns: repeat(4, 390px);
-    grid-template-rows: 300px;
+    grid-template-rows: 358px;
     gap: 30px;
     margin: 0px 120px;
     span {
@@ -129,10 +151,14 @@ const StyledProductBoard = styled.main`
   }
 
   .nullMainImage {
-    height: 200px;
+    height: 258px;
     width: 100%;
-    font-size: 2rem;
     border-bottom: 1px solid black;
+    text-align: center;
+    line-height: 258px;
+    svg {
+      font-size: 6rem;
+    }
   }
 
   .sortWriteNav {
@@ -623,15 +649,19 @@ const ViewAllProductBoard = () => {
                   "http://192.168.10.28:8081/" + productBoard.productMainImage
                 }
                 style={{
-                  height: "200px",
+                  height: "258px",
                   width: "100%",
                   objectFit: "fill",
                   borderBottom: "1px solid black",
                   borderRadius: "7px",
+                  borderBottomRightRadius: "0px",
+                  borderBottomLeftRadius: "0px",
                 }}
               />
             ) : (
-              <FaRegImage className="nullMainImage" />
+              <div className="nullMainImage">
+                <FaRegImage />
+              </div>
             )}
             <div className="boardInfoDiv">
               <span className="boardSpan">

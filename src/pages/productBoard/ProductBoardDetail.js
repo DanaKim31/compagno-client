@@ -17,26 +17,50 @@ import { FaThumbsUp, FaRegThumbsUp } from "react-icons/fa6";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import { FiCornerDownRight } from "react-icons/fi";
-import Pagination from "react-js-pagination";
+import MyToggleBar from "../../components/note/MyToggleBar";
+
 const Main = styled.main`
+  width: 1900px;
+  padding: 0px 300px;
   padding-top: 150px;
   height: 100%;
+  background-color: rgb(244, 244, 244);
   display: flex;
   flex-direction: column;
-  margin: 0px 20%;
   padding-bottom: 90px;
-  width: 1200px;
+
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+
+  input,
+  select,
+  button,
+  option,
+  h2,
+  textarea {
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  textarea {
+    resize: none;
+  }
+
   .boardDiv {
-    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px black solid;
   }
 
   .boardRegiDate {
     float: right;
-  }
-
-  p {
-    margin-bottom: 20px;
-    font-size: 1.5rem;
   }
 
   .viewCount {
@@ -75,6 +99,7 @@ const Main = styled.main`
     font-size: 2rem;
     cursor: pointer;
     width: 100px;
+    margin-top: 20px;
 
     .recommend {
       font-size: 3rem;
@@ -126,6 +151,14 @@ const Main = styled.main`
     img {
       margin-right: 5px;
     }
+
+    div {
+      display: inline-flex;
+      font-size: 0.8rem;
+      svg {
+        cursor: pointer;
+      }
+    }
   }
   .commentUserImage {
     width: 40px;
@@ -170,6 +203,93 @@ const Main = styled.main`
   .editGroup {
     button {
       width: 80px;
+    }
+  }
+
+  .boardUserInfo {
+    div {
+      display: inline-flex;
+      font-size: 0.8rem;
+    }
+    svg {
+      cursor: pointer;
+    }
+
+    span {
+      line-height: 40px;
+    }
+
+    border-bottom: 2px solid #dcdcdc;
+    padding: 4px 0px;
+  }
+
+  .boardTitle {
+    font-size: 1.8rem;
+    padding-bottom: 6px;
+    border-bottom: 2px solid gray;
+  }
+
+  .boardUserImage {
+    width: 40px;
+    height: 40px;
+  }
+
+  .boardImage {
+    margin-top: 20px;
+    position: relative;
+    img {
+      object-fit: "cover";
+      margin-left: 9px;
+    }
+    img:nth-child(1) {
+      width: 620px;
+      height: 405px;
+      margin-left: 31px;
+    }
+    img:nth-child(2) {
+      position: absolute;
+      top: 0px;
+    }
+    img:nth-child(3) {
+      position: absolute;
+      top: 0px;
+      right: 31px;
+    }
+    img:nth-child(4) {
+      position: absolute;
+      bottom: 0px;
+    }
+    img:nth-child(5) {
+      position: absolute;
+      bottom: 0px;
+      right: 31px;
+    }
+
+    img:not(:nth-child(1)) {
+      width: 300px;
+      height: 200px;
+    }
+  }
+
+  .boardContent {
+    padding: 20px;
+    border-top: 2px solid #dcdcdc;
+    border-bottom: 2px solid #dcdcdc;
+    background-color: whitesmoke;
+  }
+
+  .boardCommentDiv {
+    margin-top: 20px;
+  }
+
+  .boardBtnNav {
+    padding-top: 10px;
+    padding-right: 10px;
+    button {
+      margin: 0px 5px;
+      float: right;
+      width: 75px;
+      height: 45px;
     }
   }
 `;
@@ -287,57 +407,47 @@ const ProductBoardDetail = () => {
   return (
     <Main>
       <div className="boardDiv">
-        <p className="boardTitle">
-          제목 : {productBoard.productBoardTitle}{" "}
+        <div className="boardTitle">{productBoard.productBoardTitle} </div>
+        <div className="boardUserInfo">
+          {productBoard.user?.userImg !== undefined && (
+            <img
+              className="boardUserImage"
+              src={"http://192.168.10.28:8081/" + productBoard.user?.userImg}
+            />
+          )}
+          {productBoard.user?.userNickname} <MyToggleBar />
           <span className="boardRegiDate">
             작성 일 :{" "}
             {moment(productBoard.productCommentRegiDate).format(
-              "YYYY.MM.DD HH:mm"
+              "YYYY-MM-DD HH:mm"
             )}
           </span>
           <span className="viewCount">
             조회 수 : {productBoard.productBoardViewCount}
           </span>
-        </p>
-        <p>작성자 : {productBoard.user?.userNickname}</p>
+        </div>
         {productBoard.productMainImage != undefined && (
-          <img
-            src={"http://192.168.10.28:8081/" + productBoard.productMainImage}
-            style={{
-              height: "400px",
-              width: "600px",
-              objectFit: "cover",
-              margin: "20px auto",
-            }}
-          />
+          <div className="boardImage">
+            <img
+              src={"http://192.168.10.28:8081/" + productBoard.productMainImage}
+            />
+            {productBoard.images?.map((image) => (
+              <img
+                key={image.productImageCode}
+                src={"http://192.168.10.28:8081/" + image.productImage}
+              />
+            ))}
+          </div>
         )}
-        <p>상품명 : {productBoard.productName}</p>
+        <p>제품명 : {productBoard.productName}</p>
         <p>사용 동물 : {productBoard.animalCategory?.animalType}</p>
-        <p>상품 분류 : {productBoard.productCategory}</p>
-        <p>가격 : {productBoard.productPrice}</p>
+        <p>제품 품목 : {productBoard.productCategory}</p>
+        <p>가격 : {productBoard.productPrice?.toLocaleString("ko-KR")}원</p>
         <p>
           만족도 : {star(productBoard.productBoardGrade)}
           &nbsp;&nbsp;{productBoard.productBoardGrade}
         </p>
-        {productBoard.images?.map((image) => (
-          <img
-            key={image.productImageCode}
-            src={"http://192.168.10.28:8081/" + image.productImage}
-            style={{
-              height: "300px",
-              width: "500px",
-              objectFit: "cover",
-              marginRight: "60px",
-              marginBottom: "30px",
-            }}
-          />
-        ))}
-        <Form.Control
-          as="textarea"
-          rows={20}
-          readOnly
-          value={productBoard.productBoardContent}
-        />
+        <div className="boardContent">{productBoard.productBoardContent}</div>
         <div className="recommendDiv">
           {checkRecommend?.length === 0 ? (
             <FaRegThumbsUp className="recommend" onClick={() => recommend()} />
@@ -346,25 +456,35 @@ const ProductBoardDetail = () => {
           )}
           <span>{productBoard.recommend?.length}</span>
         </div>
+      </div>
+      <nav className="boardBtnNav">
+        <Button
+          variant="secondary"
+          onClick={() => navigate("/compagno/product-board")}
+        >
+          목록
+        </Button>
         {user.userId === productBoard.user?.userId && (
           <>
-            <button
-              onClick={() => {
-                removeProductBoard();
-              }}
-            >
-              삭제
-            </button>
-            <button
+            <Button
+              variant="warning"
               onClick={() => {
                 editProductBoard();
               }}
             >
               수정
-            </button>
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => {
+                removeProductBoard();
+              }}
+            >
+              삭제
+            </Button>
           </>
         )}
-      </div>
+      </nav>
       <div className="boardCommentDiv">
         <h2>
           댓글{" "}
@@ -406,7 +526,7 @@ const ProductBoardDetail = () => {
                         productBoard.user?.userImg
                       }
                     />
-                    {comment.user.userNickname}
+                    {comment.user.userNickname} <MyToggleBar />
                   </span>
                   <span className="commentRegiDate">
                     {moment(comment.productCommentRegiDate).isSame(
@@ -528,7 +648,7 @@ const ProductBoardDetail = () => {
                             productBoard.user?.userImg
                           }
                         />
-                        {reply.user.userNickname}
+                        {reply.user.userNickname} <MyToggleBar />
                       </span>
                       <span className="commentRegiDate">
                         {moment(reply.productCommentRegiDate).isSame(
@@ -666,7 +786,7 @@ const ProductBoardDetail = () => {
                             productBoard.user?.userImg
                           }
                         />
-                        {reply.user.userNickname}
+                        {reply.user.userNickname} <MyToggleBar />
                       </span>
 
                       <span className="commentRegiDate">

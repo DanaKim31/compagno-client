@@ -12,16 +12,30 @@ const Main = styled.main`
   padding-top: 120px;
   width: 1200px;
   margin: 0px auto;
+  background-color: rgb(244, 244, 244);
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+
+  input,
+  select,
+  button,
+  option {
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+
+    font-weight: normal;
+    font-style: normal;
+  }
   .createDiv {
     width: 100%;
   }
   .titleInput {
     margin-bottom: 15px;
-  }
-
-  .productInpoDiv {
-    div {
-    }
   }
 
   h1 {
@@ -156,8 +170,6 @@ const Main = styled.main`
       width: 400px;
     }
   }
-  h2 {
-  }
 `;
 
 const CreateProductBoard = () => {
@@ -180,7 +192,7 @@ const CreateProductBoard = () => {
   const [imgSrc, setImgSrc] = useState([]);
   const imageCreate = (e) => {
     const images = Array.from(e.target.files);
-    if (images.length > 3) {
+    if (images.length > 4) {
       alert("이미지는 최대 3장 까지 등록 가능합니다");
       e.target.value = "";
       setFiles([]);
