@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getInsts,
   getProvinces,
@@ -97,10 +98,17 @@ const Div = styled.div`
 
 const RegisterPetInsts = () => {
   const [insts, setInsts] = useState([]);
+  // ========================== 유저 ==========================
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
+  });
+  // ========================== 검색 조건 ==========================
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
   const [province, setProvince] = useState(0);
   const [district, setDistrict] = useState(0);
+  // ========================== 페이징 ==========================
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -136,7 +144,6 @@ const RegisterPetInsts = () => {
         !loading
       ) {
         instsAPI();
-        provinceAPI();
       }
     };
     window.addEventListener("scroll", scroll);
@@ -153,6 +160,10 @@ const RegisterPetInsts = () => {
   const handleDistrictChange = (e) => {
     setDistrict(e.target.value);
   };
+
+  useEffect(() => {
+    provinceAPI();
+  }, []);
 
   return (
     <Div>

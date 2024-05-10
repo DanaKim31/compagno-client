@@ -47,6 +47,11 @@ export const deleteNeighborBoard = async (code) => {
   return await authorize.delete("neighbor/" + code);
 };
 
+// 동물 카테고리 보기
+export const getAnimalCategories = async () => {
+  return await instance.get("neighbor/animal-category");
+};
+
 // 시도 전체보기
 export const getProvinces = async () => {
   return await instance.get("location/province");
@@ -82,5 +87,5 @@ export const updateNeighborComment = async (data) => {
 
 // 댓글 삭제
 export const deleteNeighborComment = async (code) => {
-  return await authorize.delete("neighbor/comment" + code);
+  return await authorize.delete("neighbor/comment/" + code);
 };

@@ -63,6 +63,7 @@ export const getProvinces = async () => {
 };
 
 // 시도에 따른 시군구 전체보기
+
 export const getDistricts = async (code) => {
   return await instance.get("location/district/" + code);
 };

@@ -46,6 +46,7 @@ const Header = () => {
 
     // 유저 정보 가져오기 (유저관련)
     const token = localStorage.getItem("token");
+
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
@@ -137,7 +138,7 @@ const Header = () => {
                 <span className="dropbtn">마이페이지</span>
                 <div className="dropdown-content">
                   <a href="/compagno/mypage/myinfo">계정정보 수정</a>
-                  <a href="/compagno/mypage/myactivity">활동 내역</a>
+                  <a href="/compagno/mypage/myanimalfav">활동 내역</a>
                 </div>
               </div>
               <div>

@@ -5,6 +5,7 @@ import {
   getNeighborBoards,
   getProvinces,
   getDistricts,
+  getAnimalCategories,
 } from "../../api/neighborBoard";
 import {
   FaAnglesLeft,
@@ -16,6 +17,15 @@ import { userSave } from "../../store/user";
 import styled from "styled-components";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   width: 90%;
   margin: auto;
 
@@ -24,44 +34,42 @@ const Div = styled.div`
     margin-bottom: 100px;
   }
 
-  .keyword-options {
+  .register-search-btn {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;
 
-    .keyword {
-      display: flex;
-
-      select {
-        height: 40px;
-        width: 100px;
-        padding: 5px;
-        margin-right: 5px;
-        border-radius: 5px;
-      }
-
-      input {
-        width: 300px;
-        height: 40px;
-        padding: 5px;
-        border-radius: 5px;
-        margin-right: 10px;
-      }
-    }
-    button {
+    #register-btn {
       height: 40px;
       width: 90px;
+      margin-right: 10px;
       border-radius: 5px;
-      background: black;
+      color: #455c58ff;
+      background: white;
+      border: 2px solid #455c58ff;
+    }
+    #register-btn:hover {
+      background: #455c58ff;
       color: white;
       cursor: pointer;
+    }
+
+    #search-btn {
+      width: 90px;
+      height: 39px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      background: #455c58ff;
+      border: 1px solid #455c58ff;
+      margin-right: 10px;
     }
   }
 
   .search-area {
-    background: lightgrey;
     padding: 20px 0 10px 20px;
+    border: 3px dashed #455c58ff;
     border-radius: 5px;
     display: flex;
     flex-wrap: wrap;
@@ -76,35 +84,43 @@ const Div = styled.div`
 
     select {
       height: 40px;
-      width: 300px;
+      width: 150px;
       padding: 5px;
       margin-right: 20px;
       border-radius: 5px;
     }
 
-    .location-search {
+    #province {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-
-      #province {
-        display: flex;
-        margin-bottom: 10px;
-      }
-      #district {
-        display: flex;
-        margin-bottom: 10px;
-      }
+      margin-bottom: 10px;
+    }
+    #district {
+      display: flex;
+      margin-bottom: 10px;
     }
 
-    .category-search {
+    #animal-category {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      margin-bottom: 10px;
+    }
 
-      #animal-category {
-        display: flex;
-        margin-bottom: 10px;
+    .keyword {
+      display: flex;
+      margin-bottom: 10px;
+
+      select {
+        width: 93px;
+        padding: 5px;
+        margin-right: 10px;
+        border-radius: 5px;
+      }
+
+      input {
+        width: 300px;
+        height: 40px;
+        padding: 5px;
+        border-radius: 5px;
+        margin-right: 20px;
       }
     }
   }
@@ -152,11 +168,14 @@ const Div = styled.div`
     button {
       width: 30px;
       margin: 0 5px;
+      background: white;
+      color: #455c58ff;
+      border: 2px solid #455c58ff;
       border-radius: 5px;
     }
 
     button:focus {
-      background: black;
+      background: #455c58ff;
       color: white;
     }
   }
@@ -169,6 +188,15 @@ const NeighborBoard = () => {
   const [selectedDistrict, setSelectedDistrict] = useState([]);
   const [province, setProvince] = useState(0);
   const [district, setDistrict] = useState(0);
+  const [animalCategories, setAnimalCategories] = useState([]);
+
+  const [searchProvince, setSearchProvince] = useState("");
+  const [searchDistrict, setSearchDistrict] = useState("");
+  const [searchAnimal, setSearchAnimal] = useState(0);
+  const [searchSelect, setSearchSelect] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const [sort, setSort] = useState(1);
   // ========== 페이징 ==========
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
@@ -188,9 +216,28 @@ const NeighborBoard = () => {
   }, []);
 
   const neighborBoardAPI = async () => {
-    const result = await getNeighborBoards(page);
+    const result = await getNeighborBoards(
+      page +
+        "&locationProvince=" +
+        searchProvince +
+        "&locationDistrict=" +
+        searchDistrict +
+        "&animalCategoryCode=" +
+        searchAnimal +
+        // "&searchSelect=" +
+        // searchSelect +
+        // "&searchKeyword=" +
+        // searchKeyword +
+        "&sortBy=" +
+        sort
+    );
     setNeighborBoards(result.data);
     setTotalPage(result.data.totalPages);
+  };
+
+  const animalCategoryAPI = async () => {
+    const result = await getAnimalCategories();
+    setAnimalCategories(result.data);
   };
 
   const provinceAPI = async () => {
@@ -199,18 +246,21 @@ const NeighborBoard = () => {
   };
 
   const districtAPI = async (code) => {
-    if (code !== "") {
-      const result = await getDistricts(code);
-      setSelectedDistrict(result.data);
+    let result = null;
+    if (code == "") {
+      setSelectedDistrict("전체");
+      setSearchDistrict("");
     } else {
-      setSelectedDistrict([]);
+      result = await getDistricts(code);
+      setSelectedDistrict(result.data);
     }
   };
 
   useEffect(() => {
     neighborBoardAPI();
     provinceAPI();
-  }, [page]);
+    animalCategoryAPI();
+  }, [page, sort]);
 
   let lastPage = 0;
   let firstPage = 0;
@@ -231,84 +281,114 @@ const NeighborBoard = () => {
   }, [totalPage]);
 
   const handleProvinceChange = (e) => {
-    districtAPI(e.target.value);
-    setProvince(e.target.value);
+    if (e == "") {
+      districtAPI("");
+    } else {
+      districtAPI(e);
+    }
+    setSearchProvince(e);
   };
 
-  const handleDistrictChange = (e) => {
-    setDistrict(e.target.value);
+  const navigate = useNavigate();
+  const registerBoard = async () => {
+    if (Object.keys(user).length !== 0) {
+      navigate("/compagno/neighborBoard/register");
+    } else {
+      alert("로그인 해주세요오오오옹");
+      navigate("/compagno/login");
+    }
   };
 
+  useEffect(() => {
+    console.log(searchProvince);
+  }, [searchProvince]);
   return (
     <Div>
       <h1>우리동네 게시판</h1>
 
-      <div className="keyword-options">
+      <div className="register-search-btn">
+        <button id="register-btn" onClick={registerBoard}>
+          등록
+        </button>
+        <button id="search-btn" onClick={neighborBoardAPI}>
+          조회
+        </button>
+      </div>
+
+      <div className="search-area">
+        <div id="province">
+          <span>시/도</span>
+          <select onChange={(e) => handleProvinceChange(e.target.value)}>
+            <option value="">전체</option>
+            {selectedProvince.map((province) => (
+              <option key={province.locationCode} value={province.locationCode}>
+                {province.locationName}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div id="district">
+          <span>시/군/구</span>
+          {selectedDistrict == "전체" ? (
+            <select>
+              <option>전체</option>
+            </select>
+          ) : (
+            <>
+              {selectedProvince && (
+                <select onChange={(e) => setSearchDistrict(e.target.value)}>
+                  <option value="">전체</option>
+                  {selectedDistrict.map((district) => (
+                    <option
+                      key={district.locationCode}
+                      value={district.locationCode}
+                    >
+                      {district.locationName}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </>
+          )}
+        </div>
+
+        <div id="animal-category">
+          <span>반려동물</span>
+          <select onChange={(e) => setSearchAnimal(e.target.value)}>
+            <option>전체</option>
+            {animalCategories.map((animalCategory) => (
+              <option
+                key={animalCategory.animalCategoryCode}
+                value={animalCategory.animalCategoryCode}
+              >
+                {animalCategory.animalType}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="keyword">
+          <span onChange={(e) => setSearchSelect(e.target.value)}>검색어</span>
           <select>
-            <option>제목</option>
-            <option>작성자</option>
+            <option value="제목">제목</option>
+            <option value="작성자">작성자</option>
           </select>
           <input
             type="text"
             placeholder="검색어 입력"
             className="search-input"
+            onChange={(e) => setSearchKeyword(e.target.value)}
           />
-        </div>
-
-        <div className="search-btn">
-          <button>조회</button>
-        </div>
-      </div>
-
-      <div className="search-area">
-        <div className="location-search">
-          <div id="province">
-            <span>시/도</span>
-            <select onChange={handleProvinceChange}>
-              <option value="">전체</option>
-              {selectedProvince.map((province) => (
-                <option
-                  key={province.locationCode}
-                  value={province.locationCode}
-                >
-                  {province.locationName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div id="district">
-            <span>시/군/구</span>
-            {selectedProvince && (
-              <select onChange={handleDistrictChange}>
-                <option value="">전체</option>
-                {selectedDistrict.map((district) => (
-                  <option
-                    key={district.locationCode}
-                    value={district.locationCode}
-                  >
-                    {district.locationName}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
-        </div>
-
-        <div className="category-search">
-          <div id="animal-category">
-            <span>반려동물</span>
-            <select>
-              <option>전체</option>
-            </select>
-          </div>
         </div>
       </div>
 
       <div className="sorting">
-        <select>
-          <option>최신순</option>
-          <option>조회순</option>
+        <select onChange={(e) => setSort(e.target.value)}>
+          <option value="1">작성일 내림차순</option>
+          <option value="2">작성일 오름차순</option>
+          <option value="3">조회수 내림차순</option>
+          <option value="4">조회수 오름차순</option>
         </select>
         <span>총 {neighborBoards.totalElements}건</span>
       </div>
@@ -317,7 +397,7 @@ const NeighborBoard = () => {
         <thead>
           <tr>
             <th>번호</th>
-            <th>구분</th>
+            <th>반려동물</th>
             <th>지역</th>
             <th>제목</th>
             <th>작성자</th>

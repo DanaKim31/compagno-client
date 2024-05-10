@@ -2,11 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   getSitterBoard,
-  updateSitterBoard,
   deleteSitterBoard,
-  getCategories,
-  getProvinces,
-  getDistricts,
   getSitterComments,
   registerSitterComment,
   registerSitterReply,
@@ -19,6 +15,15 @@ import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   width: 90%;
   margin: auto;
 
@@ -29,9 +34,9 @@ const Div = styled.div`
   .board-area {
     width: 100%;
     display: flex;
-    margin-bottom: 40px;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 10px;
 
     .title-btns {
       width: 100%;
@@ -39,7 +44,7 @@ const Div = styled.div`
       justify-content: space-between;
       align-items: center;
       padding: 10px;
-      border-bottom: 2px solid gray;
+      border-bottom: 2px solid #455c58ff;
 
       .category-title {
         display: flex;
@@ -47,7 +52,7 @@ const Div = styled.div`
 
         .board-category {
           font-size: 1.2rem;
-          background: purple;
+          background: #455c58ff;
           color: white;
           padding: 3px 10px;
           border-radius: 5px;
@@ -84,6 +89,10 @@ const Div = styled.div`
       .writer {
         font-weight: bold;
       }
+
+      #date {
+        margin-right: 6px;
+      }
     }
 
     .animal-location {
@@ -117,7 +126,6 @@ const Div = styled.div`
     .content-image {
       width: 100%;
       padding: 15px 20px;
-      margin-bottom: 30px;
       border: 1px solid gray;
       border-radius: 5px;
 
@@ -137,13 +145,50 @@ const Div = styled.div`
     }
   }
 
+  .back-btn-area {
+    width: 100%;
+    margin-bottom: 40px;
+
+    .back-btn {
+      width: 90px;
+      height: 40px;
+      background: black;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
   .comment-area {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 
+    .comment-input {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      margin: auto;
+      margin-bottom: 30px;
+    }
+
+    .input {
+      width: 88%;
+      height: 40px;
+    }
+    button {
+      width: 10%;
+      height: 40px;
+      background: black;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
     .comment-list {
+      height: 50vh;
+      overflow-y: auto;
       width: 95%;
       margin-bottom: 10px;
 
@@ -153,7 +198,7 @@ const Div = styled.div`
         align-items: center;
         justify-content: space-between;
         padding: 10px;
-        border-bottom: 1px solid lightgray;
+        border-top: 1px solid lightgray;
 
         .user-date {
           display: flex;
@@ -161,16 +206,24 @@ const Div = styled.div`
 
           #comment-user {
             margin-right: 10px;
-            font-weight: bold;
+            font-weight: bolder;
+            font-size: 0.9rem;
           }
           #comment-date {
-            font-size: 15px;
+            font-size: 0.8rem;
+            color: gray;
+            margin-right: 7px;
+          }
+          #comment-time {
+            font-size: 0.8rem;
             color: gray;
           }
         }
 
         #comment-content {
           margin-bottom: 0;
+          padding-top: 8px;
+          padding-left: 5px;
         }
 
         .comment-btns {
@@ -190,33 +243,11 @@ const Div = styled.div`
       }
     }
   }
-
-  .comment-input {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin: auto;
-    margin-bottom: 30px;
-  }
-
-  .input {
-    width: 88%;
-    height: 40px;
-  }
-  button {
-    width: 10%;
-    height: 40px;
-    background: black;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-  }
 `;
 
 const SitterDetail = () => {
   const { code } = useParams();
   const [sitterBoard, setSitterBoard] = useState({});
-  const [user, setUser] = useState({});
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -229,7 +260,7 @@ const SitterDetail = () => {
   const [replyContent, setReplyContent] = useState("");
 
   // ================= 유저정보 =================
-  const userInfo = useSelector((state) => {
+  const user = useSelector((state) => {
     return state.user;
   });
 
@@ -251,17 +282,35 @@ const SitterDetail = () => {
     }
     sitterBoardAPI(code);
     sitterCommentsAPI();
-    if (Object.keys(userInfo).length === 0) {
-      setUser(JSON.parse(localStorage.getItem("user")));
-    } else {
-      setUser(userInfo);
-    }
+    // if (Object.keys(user).length === 0) {
+    //   setUser(JSON.parse(localStorage.getItem("user")));
+    // } else {
+    //   setUser(user);
+    // }
   }, []);
+
+  // ================= 게시글 수정 =================
+  const updateBoard = () => {
+    navigate("/compagno/sitterBoard/edit/" + code);
+  };
+
+  // ================= 게시글 삭제 =================
+  const deleteBoard = async () => {
+    await deleteSitterBoard(code);
+    alert("게시글이 삭제됐습니다.");
+    navigate("/compagno/sitterBoard");
+  };
+
+  // ================= 목록으로 돌아가기 =================
+  const backToList = async () => {
+    navigate("/compagno/sitterBoard");
+  };
 
   // ================= 댓글 등록 =================
   const registerComment = async () => {
     if (token === null) {
       alert("로그인이 필요합니다.");
+      navigate("/compagno/login");
     } else {
       await registerSitterComment({
         sitterBoardCode: code,
@@ -303,18 +352,6 @@ const SitterDetail = () => {
     sitterCommentsAPI();
   };
 
-  // ================= 게시글 수정 =================
-  const updateBoard = () => {
-    navigate("/compagno/sitterBoard/edit/" + code);
-  };
-
-  // ================= 게시글 삭제 =================
-  const deleteBoard = async () => {
-    await deleteSitterBoard(code);
-    alert("게시글이 삭제됐습니다.");
-    navigate("/compagno/sitterBoard");
-  };
-
   return (
     <Div>
       <h1>Detail</h1>
@@ -327,31 +364,42 @@ const SitterDetail = () => {
             </div>
             <div className="board-title">{sitterBoard.sitterTitle}</div>
           </div>
-          <div className="board-btns">
-            <button
-              onClick={() => {
-                deleteBoard();
-              }}
-            >
-              삭제
-            </button>
-            <button
-              onClick={() => {
-                updateBoard();
-              }}
-            >
-              수정
-            </button>
-          </div>
+          {user.userId === sitterBoard.user?.userId && (
+            <div className="board-btns">
+              <button
+                onClick={() => {
+                  deleteBoard();
+                }}
+              >
+                삭제
+              </button>
+              <button
+                onClick={() => {
+                  updateBoard();
+                }}
+              >
+                수정
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="writer-date">
           <div className="writer">{sitterBoard.user?.userId}</div>
           <div className="register-date">
             <span>작성일 : </span>
-            {`${new Date(sitterBoard.sitterRegiDate).getFullYear()}-${new Date(
-              sitterBoard.sitterRegiDate
-            ).getMonth()}-${new Date(sitterBoard.sitterRegiDate).getDate()}`}
+            <span id="date">
+              {`${new Date(
+                sitterBoard.sitterRegiDate
+              ).getFullYear()}-${new Date(
+                sitterBoard.sitterRegiDate
+              ).getMonth()}-${new Date(sitterBoard.sitterRegiDate).getDate()}`}
+            </span>
+            <span>
+              {`${new Date(sitterBoard.sitterRegiDate).getHours()}:${new Date(
+                sitterBoard.sitterRegiDate
+              ).getMinutes()}`}
+            </span>
           </div>
         </div>
 
@@ -382,7 +430,24 @@ const SitterDetail = () => {
         </div>
       </div>
 
+      <div className="back-btn-area">
+        <button className="back-btn" onClick={backToList}>
+          목록
+        </button>
+      </div>
+
       <div className="comment-area">
+        <div className="comment-input">
+          <Form.Control
+            as="input"
+            placeholder="댓글작성"
+            value={comment}
+            className="input"
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <button onClick={registerComment}>등록</button>
+        </div>
+
         <div className="comment-list">
           {comments?.map((comment) => (
             <div key={comment.sitterCommentCode} className="each-comment">
@@ -398,9 +463,17 @@ const SitterDetail = () => {
                       comment.sitterCommentRegiDate
                     ).getDate()}`}
                   </span>
+                  <span id="comment-time">
+                    {`${new Date(
+                      comment.sitterCommentRegiDate
+                    ).getHours()}:${new Date(
+                      comment.sitterCommentRegiDate
+                    ).getMinutes()}`}
+                  </span>
                 </div>
                 <p id="comment-content">{comment.sitterCommentContent}</p>
               </div>
+
               {user.userId === comment.user?.userId && (
                 <div className="comment-btns">
                   <button
@@ -423,17 +496,6 @@ const SitterDetail = () => {
               )}
             </div>
           ))}
-        </div>
-
-        <div className="comment-input">
-          <Form.Control
-            as="input"
-            placeholder="댓글작성"
-            value={comment}
-            className="input"
-            onChange={(e) => setComment(e.target.value)}
-          />
-          <button onClick={registerComment}>등록</button>
         </div>
       </div>
     </Div>

@@ -4,9 +4,15 @@ import {
 } from "../../api/productBoard";
 import { useState, useEffect } from "react";
 import moment from "moment";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import {
+  FaStar,
+  FaStarHalfAlt,
+  FaRegStar,
+  FaRegEye,
+  FaRegThumbsUp,
+} from "react-icons/fa";
 import styled from "styled-components";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import {
@@ -16,14 +22,21 @@ import {
   FaAnglesRight,
   FaRegImage,
 } from "react-icons/fa6";
+import { MdOutlineWatchLater } from "react-icons/md";
+import { BiMessageDetail } from "react-icons/bi";
+import { Form, Button } from "react-bootstrap";
 
 const StyledProductBoard = styled.main`
-  padding-top: 130px;
+  padding-top: 120px;
   display: grid;
   h1 {
-    font-size: 3rem;
-    text-align: center;
+    font-size: 2.5;
+    padding-left: 120px;
     font-weight: bold;
+    cursor: pointer;
+  }
+  h1:hover {
+    color: mediumblue;
   }
 
   .boardSpan {
@@ -32,17 +45,20 @@ const StyledProductBoard = styled.main`
 
   .boardView {
     border: 2px solid black;
-    background-color: pink;
     position: relative;
     cursor: pointer;
+    border-radius: 10px;
   }
 
   .boardList {
     display: grid;
-    padding: 0px 120px;
     grid-template-columns: repeat(4, 390px);
     grid-template-rows: 300px;
     gap: 30px;
+    margin: 0px 120px;
+    span {
+      font-size: 0.9rem;
+    }
   }
 
   .bookmark {
@@ -53,49 +69,63 @@ const StyledProductBoard = styled.main`
     right: 5px;
   }
   .paging {
+    margin: 20px 0px;
     display: flex;
     justify-content: center;
   }
 
   .filterDiv {
-    padding: 0px 120px;
+    border: 2px solid black;
+    margin: 0px 120px;
     margin-bottom: 20px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    text-align: center;
+    input {
+      width: 200px;
+      display: inline;
+    }
+    .keywordInput {
+      width: 500px;
+    }
   }
   .starLeftSpan {
     position: absolute;
-    width: 20px;
-    height: 40px;
+    width: 16px;
+    height: 32px;
     overflow: hidden;
     left: 0px;
   }
   .starRightSpan {
     position: absolute;
-    width: 20px;
-    height: 40px;
+    width: 16px;
+    height: 32px;
     overflow: hidden;
     right: 0px;
     padding: 0px;
   }
   .starDiv {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     position: relative;
     display: flex;
     cursor: pointer;
   }
   .star {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: orangered;
   }
   .starHalf {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: orangered;
     padding-top: 3px;
-    padding: 1.8px 1.8px;
+    padding: 1px 1px;
   }
   .gradeDiv {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
+    gap: 0px;
+    width: 250px;
   }
 
   .nullMainImage {
@@ -103,6 +133,48 @@ const StyledProductBoard = styled.main`
     width: 100%;
     font-size: 2rem;
     border-bottom: 1px solid black;
+  }
+
+  .sortWriteNav {
+    margin: 0px 120px;
+    margin-bottom: 20px;
+    button {
+      float: right;
+      margin-right: 20px;
+    }
+    select {
+      width: 100px;
+      float: left;
+      margin-top: 5px;
+      margin-left: 30px;
+    }
+  }
+  .filterSelect {
+    width: 120px;
+    display: inline;
+  }
+  .animalSelect {
+    width: 200px;
+    display: inline;
+  }
+
+  .userImage {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    object-fit: fill;
+    margin: 2px;
+    display: inline;
+  }
+
+  .boardInfoDiv {
+    margin: 0px 10px;
+  }
+
+  .productPriceName {
+    .boardSpan {
+      font-size: 0.75rem;
+    }
   }
 `;
 
@@ -115,7 +187,7 @@ const ViewAllProductBoard = () => {
   const navigate = useNavigate();
   const [productBoards, setProductBoards] = useState([]);
   const [page, setPage] = useState(1); // 현재 페이지
-  const [totalPage, setTotalPage] = useState(1); // 전체 총 페이지
+  const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지
   const [prev, setPrev] = useState(false); // 앞으로 한칸 버튼
   const [next, setNext] = useState(false); // 뒤로 한칸 버튼
   const [pages, setPages] = useState([]); // 페이지들
@@ -215,60 +287,71 @@ const ViewAllProductBoard = () => {
   };
 
   useEffect(() => {
+    setPage(1);
     getProductBoards();
   }, [filter.sort]);
 
   return (
     <StyledProductBoard>
-      <h1>제품 정보 공유 게시판</h1>
-      <Link to="/compagno/product-board/create"> 글쓰기 </Link>
+      <h1 onClick={() => navigate("/compagno/product-board")}>
+        제품 정보 공유 게시판
+      </h1>
       <div className="filterDiv">
-        <input
+        <Form.Control
+          size="sm"
           type="text"
           placeholder="제품 품목"
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, productCate: e.target.value }))
           }
         />
-        <input
+        <Form.Control
+          size="sm"
           type="text"
           placeholder="제품 명"
+          style={{ margin: "0px 15px" }}
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, productName: e.target.value }))
           }
         />
-        <br />
-        <input
-          type="text"
-          placeholder="최소 금액"
-          onChange={(e) =>
-            setFilter((prev) => ({ ...prev, minPrice: e.target.value }))
-          }
-        />
-        <input
-          type="text"
-          placeholder="최대 금액"
-          onChange={(e) =>
-            setFilter((prev) => ({ ...prev, maxPrice: e.target.value }))
-          }
-        />
-        <select
-          defaultValue={filter.animal}
+        <Form.Select
+          size="sm"
+          defaultValue=""
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, animal: e.target.value }))
           }
+          className="animalSelect"
+          style={{ marginRight: "15px" }}
         >
-          <option value="default" disabled="disabled" hidden>
-            동물 선택
+          <option value="" disabled="disabled" hidden>
+            사용 동물 선택
           </option>
           <option value="1">강아지</option>
           <option value="2">고양이</option>
           <option value="3">비둘기</option>
           <option value="4">기타</option>
           <option value="0">전체</option>
-        </select>
+        </Form.Select>
+        <Form.Control
+          size="sm"
+          type="text"
+          placeholder="최소 금액"
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, minPrice: e.target.value }))
+          }
+        />
+        -
+        <Form.Control
+          size="sm"
+          type="text"
+          placeholder="최대 금액"
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, maxPrice: e.target.value }))
+          }
+          style={{ marginRight: "20px" }}
+        />
         <div className="gradeDiv">
-          최소 평점 :
+          <p style={{ lineHeight: "30px" }}>최소 평점 : &nbsp;</p>
           {filter.grade >= 1 ? (
             <div className="starDiv">
               <span
@@ -455,7 +538,10 @@ const ViewAllProductBoard = () => {
             </div>
           )}
         </div>
-        <select
+        <br />
+        <Form.Select
+          className="filterSelect"
+          size="sm"
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, select: e.target.value }))
           }
@@ -463,16 +549,31 @@ const ViewAllProductBoard = () => {
           <option value="title">제목</option>
           <option value="content">내용</option>
           <option value="nickname">작성자</option>
-          <option value="all">제목 + 내용</option>
-        </select>
-        <input
+          <option value="all">제목+내용</option>
+        </Form.Select>
+        <Form.Control
+          className="keywordInput"
+          size="sm"
           type="text"
-          placeholder="검색문장"
+          placeholder="검색어 입력"
+          style={{ marginRight: "5px" }}
           onChange={(e) => {
             setFilter((prev) => ({ ...prev, keyword: e.target.value }));
           }}
         />
-        <select
+        <Button
+          variant="dark"
+          onClick={() => {
+            setPage(1);
+            getProductBoards();
+          }}
+        >
+          검색
+        </Button>
+      </div>
+      <nav className="sortWriteNav">
+        <Form.Select
+          size="sm"
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, sort: e.target.value }))
           }
@@ -480,9 +581,14 @@ const ViewAllProductBoard = () => {
           <option value="">날짜 순</option>
           <option value="view">조회 순</option>
           <option value="recommend">추천 순</option>
-        </select>
-        <button onClick={() => getProductBoards()}>검색</button>
-      </div>
+        </Form.Select>
+        <Button
+          variant="secondary"
+          onClick={() => navigate("/compagno/product-board/create")}
+        >
+          글쓰기{" "}
+        </Button>
+      </nav>
       <div className="boardList">
         {productBoards.content?.map((productBoard) => (
           <div
@@ -521,54 +627,74 @@ const ViewAllProductBoard = () => {
                   width: "100%",
                   objectFit: "fill",
                   borderBottom: "1px solid black",
+                  borderRadius: "7px",
                 }}
               />
             ) : (
               <FaRegImage className="nullMainImage" />
             )}
-            <br />
-            <span className="boardSpan">
-              작성자 : {productBoard.user?.userNickname}
-            </span>
-            <span className="boardSpan">
-              제목 : {productBoard.productBoardTitle}
-            </span>
-            <br />
-            <span className="boardSpan">
-              추천수 : {productBoard.recommend.length}
-            </span>
-            <span className="boardSpan">
-              {" "}
-              댓글수 :{" "}
-              {
-                productBoard.comments.filter(
-                  (commentCount) => commentCount.productCommentDelete !== "Y"
-                ).length
-              }
-            </span>
-            <span className="boardSpan">
-              조회수 : {productBoard.productBoardViewCount}
-            </span>
-            <span className="boardSpan">
-              <br />
+            <div className="boardInfoDiv">
               <span className="boardSpan">
-                제품명 : {productBoard.productName}
+                {star(productBoard.productBoardGrade)}
               </span>
-              <span className="boardSpan">
-                제품가격 : {productBoard.productPrice}
+
+              <span
+                className="boardSpan"
+                style={{
+                  float: "right",
+                  height: "25px",
+                }}
+              >
+                <img
+                  className="userImage"
+                  src={"http://192.168.10.28:8081/" + productBoard.user.userImg}
+                />
+                {productBoard.user?.userNickname}
+              </span>
+
+              <br />
+              <span>
+                <span className="boardSpan" style={{ display: "inline-block" }}>
+                  {productBoard.productBoardTitle}
+                </span>
               </span>
               <br />
-              <span className="boardSpan">
-                평점 : {star(productBoard.productBoardGrade)}
-                {productBoard.productBoardGrade}
+              <span className="productPriceName">
+                <span className="boardSpan">
+                  제품명 : {productBoard.productName}
+                </span>
+                <span className="boardSpan" style={{ marginRight: "0px" }}>
+                  가격 : {productBoard.productPrice.toLocaleString("ko-KR")}원
+                </span>
               </span>
-            </span>
-            <span className="boardSpan">
-              날짜 :
-              {moment(productBoard.productBoardRegiDate).format(
-                "MM월 DD일 HH시 mm분"
-              )}
-            </span>
+              <br />
+              <span className="boardSpan">
+                <FaRegThumbsUp /> {productBoard.recommend.length}
+              </span>
+              <span className="boardSpan">
+                <BiMessageDetail />{" "}
+                {
+                  productBoard.comments.filter(
+                    (commentCount) => commentCount.productCommentDelete !== "Y"
+                  ).length
+                }
+              </span>
+              <span className="boardSpan">
+                <FaRegEye /> {productBoard.productBoardViewCount}
+              </span>
+              <span className="boardSpan" style={{ float: "right" }}>
+                <MdOutlineWatchLater />
+                &nbsp;
+                {moment(productBoard.productBoardRegiDate).isSame(
+                  moment(),
+                  "day"
+                )
+                  ? moment(productBoard.productBoardRegiDate).from(moment())
+                  : moment(productBoard.productBoardRegiDate).format(
+                      "YYYY.MM.DD"
+                    )}
+              </span>
+            </div>
           </div>
         ))}
       </div>
