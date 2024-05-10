@@ -12,6 +12,9 @@ const Main = styled.main`
   padding-top: 120px;
   display: flex;
   flex-direction: column;
+  .createDiv {
+    padding: 0px 120px;
+  }
   .starLeftSpan {
     position: absolute;
     width: 24px;
@@ -57,12 +60,23 @@ const Main = styled.main`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    cursor: pointer;
+    position: relative;
     img {
       width: 100%;
       height: 100%;
     }
   }
+
+  .mainImageDiv {
+    svg {
+      position: absolute;
+      font-size: 2rem;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+  }
+
   .nullMainImageDiv {
     cursor: pointer;
     svg {
@@ -77,7 +91,7 @@ const Main = styled.main`
     flex-wrap: wrap;
   }
 
-  .imageDiv {
+  .imageSpan {
     position: relative;
     width: 300px;
     height: 200px;
@@ -146,7 +160,6 @@ const UpdateProductBoard = () => {
     });
 
     prevImgSrc.forEach((image, index) => {
-      console.log(image);
       formData.append(`images[${index}]`, image.productImage);
     });
 
@@ -182,28 +195,32 @@ const UpdateProductBoard = () => {
 
   const imageCreate = (e) => {
     const images = Array.from(e.target.files);
-    setFiles(images);
 
-    let file;
-    for (let i = 0; i < images.length; i++) {
-      file = images[i];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        files[i] = reader.result;
-        setImgSrc([...files]);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  const mainImageCreate = (e) => {
-    if (e.target.files[0] instanceof File) {
-      setProductMainFile(e.target.files[0]);
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setMainImgSrc(reader.result);
-      };
+    if (images.length + prevImgSrc.length > 3) {
+      alert("이미지는 최대 3장 까지 등록 가능합니다");
+      e.target.value = "";
+      setImgSrc([]);
+    } else {
+      setFiles(images);
+
+      let file;
+      if (files.length > images.length) {
+        files.splice(images.length);
+      }
+      for (let i = 0; i < images.length; i++) {
+        file = images[i];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          files[i] = reader.result;
+          setImgSrc([...files]);
+        };
+        reader.readAsDataURL(file);
+      }
+
+      if (images.length === 0) {
+        setImgSrc([]);
+        setFiles([]);
+      }
     }
   };
 
@@ -216,253 +233,381 @@ const UpdateProductBoard = () => {
     setPrevImgSrc(images);
   };
 
+  const selectImage = useRef("");
   const deleteImgSrc = (no) => {
     let newImgSrc = [...imgSrc];
     newImgSrc.splice(no, 1);
     setImgSrc(newImgSrc);
   };
+
+  const imageChange = (i) => {
+    const dataTransfer = new DataTransfer();
+    files
+      .filter((file) => file != files[i])
+      .forEach((file) => {
+        dataTransfer.items.add(file);
+      });
+
+    selectImage.current.files = dataTransfer.files;
+    setFiles(Array.from(selectImage.current.files));
+  };
+
+  const mainImageCreate = (e) => {
+    if (e.target.files[0] instanceof File) {
+      setProductMainFile(e.target.files[0]);
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setMainImgSrc(reader.result);
+      };
+    }
+
+    if (mainSelectImage.current.files.length === 0) {
+      setProductMainFile({});
+      setMainImgSrc("");
+    }
+  };
+
   return (
     <Main>
-      <span>
-        제목 :{" "}
-        <input
-          value={title}
-          type="text"
-          placeholder="제목"
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
-      </span>
-      <div>
-        썸네일 이미지 :
-        <input
-          type="file"
-          accept="image/*"
-          onChange={mainImageCreate}
-          style={{ display: "none" }}
-          ref={mainSelectImage}
-        />
-        {mainImgSrc !== "" ? (
-          <div
-            className="mainImageDiv"
-            onClick={() => mainSelectImage.current.click()}
-          >
-            <img src={mainImgSrc} />
-          </div>
-        ) : (
-          <div
-            className="nullMainImageDiv"
-            onClick={() => mainSelectImage.current.click()}
-          >
-            <FaRegImage />
-            <span>썸네일로 사용할 이미지 업로드</span>
-          </div>
-        )}
-        <button
-          onClick={() => {
-            setProductMainFile({});
-            setMainImgSrc("");
-          }}
-        >
-          지우기
-        </button>
-        <button
-          onClick={() => {
-            setProductMainFile({});
-            setMainImgSrc("http://192.168.10.28:8081/" + prevMainImg);
-          }}
-        >
-          취소
-        </button>
-      </div>
-      <span>
-        상품명 :{" "}
-        <input
-          value={productName}
-          type="text"
-          placeholder="상품명"
-          onChange={(e) => {
-            setProductName(e.target.value);
-          }}
-        />
-      </span>
-      <div>
-        사용 동물 :{" "}
-        <select
-          defaultValue={animal}
-          onChange={(e) => {
-            setAnimal(e.target.value);
-          }}
-        >
-          <option value="1">강아지</option>
-          <option value="2">고양이</option>
-          <option value="3">비둘기</option>
-          <option value="4">기타</option>
-        </select>
-      </div>
-      <div>
-        상품 분류 :
-        <input
-          type="text"
-          value={productCategory}
-          onChange={(e) => setProductCategory(e.target.value)}
-          placeholder="제품 분류"
-        />
-      </div>
-      <div>
-        가격 :{" "}
-        <input
-          value={price}
-          type="text"
-          placeholder="가격"
-          onChange={(e) => {
-            setPrice(e.target.value);
-          }}
-        />
-      </div>
-      <div className="gradeDiv">
-        평점 :
-        {grade >= 1 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(0.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(1)}></span>
-            <FaStar className="star" />
-          </div>
-        ) : grade === 0.5 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(0.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(1)}></span>
-            <FaStarHalfAlt className="starHalf" />
-          </div>
-        ) : (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(0.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(1)}></span>
-            <FaRegStar className="star" />
-          </div>
-        )}
-        {grade >= 2 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(1.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(2)}></span>
-            <FaStar className="star" />
-          </div>
-        ) : grade === 1.5 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(1.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(2)}></span>
-            <FaStarHalfAlt className="starHalf" />
-          </div>
-        ) : (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(1.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(2)}></span>
-            <FaRegStar className="star" />
-          </div>
-        )}
-        {grade >= 3 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(2.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(3)}></span>
-            <FaStar className="star" />
-          </div>
-        ) : grade === 2.5 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(2.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(3)}></span>
-            <FaStarHalfAlt className="starHalf" />
-          </div>
-        ) : (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(2.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(3)}></span>
-            <FaRegStar className="star" />
-          </div>
-        )}
-        {grade >= 4 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(3.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(4)}></span>
-            <FaStar className="star" />
-          </div>
-        ) : grade === 3.5 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(3.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(4)}></span>
-            <FaStarHalfAlt className="starHalf" />
-          </div>
-        ) : (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(3.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(4)}></span>
-            <FaRegStar className="star" />
-          </div>
-        )}
-        {grade === 5 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(4.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(5)}></span>
-            <FaStar className="star" />
-          </div>
-        ) : grade === 4.5 ? (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(4.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(5)}></span>
-            <FaStarHalfAlt className="starHalf" />
-          </div>
-        ) : (
-          <div className="starDiv">
-            <span className="starLeftSpan" onClick={() => setGrade(4.5)}></span>
-            <span className="starRightSpan" onClick={() => setGrade(5)}></span>
-            <FaRegStar className="star" />
-          </div>
-        )}
-      </div>
-      <div>
-        이미지 :
-        <input type="file" accept="image/*" multiple onChange={imageCreate} />
-        <div className="imagesDiv">
-          {imgSrc.map((img, i) => (
-            <span className="imageDiv" key={i}>
-              <img src={img} key={i} />
+      <div className="createDiv">
+        <span>
+          제목 :{" "}
+          <input
+            value={title}
+            type="text"
+            placeholder="제목"
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
+        </span>
+        <div>
+          썸네일 이미지 :
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              mainImageCreate(e);
+            }}
+            style={{ display: "none" }}
+            ref={mainSelectImage}
+          />
+          {mainImgSrc !== "" ? (
+            <div className="mainImageDiv">
+              <img src={mainImgSrc} />
               <FaRegCircleXmark
-                onClick={() => {
-                  deleteImgSrc(i);
+                onClick={(e) => {
+                  setProductMainFile({});
+                  setMainImgSrc("");
+                  mainSelectImage.current.value = "";
                 }}
               />
-            </span>
-          ))}
-          {prevImgSrc.map((img, i) => (
-            <span className="imageDiv" key={img.productImageCode}>
-              <img src={"http://192.168.10.28:8081/" + img.productImage} />
-              <FaRegCircleXmark
-                onClick={() => deletePrevSrc(img.productImageCode)}
-              />
-            </span>
-          ))}
+            </div>
+          ) : (
+            <div
+              className="nullMainImageDiv"
+              onClick={() => mainSelectImage.current.click()}
+            >
+              <FaRegImage />
+              <span>썸네일로 사용할 이미지 업로드</span>
+            </div>
+          )}
+          <button
+            onClick={() => {
+              setProductMainFile({});
+              setMainImgSrc("http://192.168.10.28:8081/" + prevMainImg);
+            }}
+          >
+            취소
+          </button>
         </div>
-      </div>
-      <div>
-        글 내용 :{" "}
-        <Form.Control
-          value={content}
-          as="textarea"
-          rows={20}
-          onChange={(e) => {
-            setContent(e.target.value);
+        <span>
+          상품명 :{" "}
+          <input
+            value={productName}
+            type="text"
+            placeholder="상품명"
+            onChange={(e) => {
+              setProductName(e.target.value);
+            }}
+          />
+        </span>
+        <div>
+          사용 동물 :{" "}
+          <select
+            defaultValue={animal}
+            onChange={(e) => {
+              setAnimal(e.target.value);
+            }}
+          >
+            <option value="1">강아지</option>
+            <option value="2">고양이</option>
+            <option value="3">비둘기</option>
+            <option value="4">기타</option>
+          </select>
+        </div>
+        <div>
+          상품 분류 :
+          <input
+            type="text"
+            value={productCategory}
+            onChange={(e) => setProductCategory(e.target.value)}
+            placeholder="제품 분류"
+          />
+        </div>
+        <div>
+          가격 :{" "}
+          <input
+            value={price}
+            type="text"
+            placeholder="가격"
+            onChange={(e) => {
+              setPrice(e.target.value);
+            }}
+          />
+        </div>
+        <div className="gradeDiv">
+          평점 :
+          {grade >= 1 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(0.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(1)}
+              ></span>
+              <FaStar className="star" />
+            </div>
+          ) : grade === 0.5 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(0.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(1)}
+              ></span>
+              <FaStarHalfAlt className="starHalf" />
+            </div>
+          ) : (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(0.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(1)}
+              ></span>
+              <FaRegStar className="star" />
+            </div>
+          )}
+          {grade >= 2 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(1.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(2)}
+              ></span>
+              <FaStar className="star" />
+            </div>
+          ) : grade === 1.5 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(1.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(2)}
+              ></span>
+              <FaStarHalfAlt className="starHalf" />
+            </div>
+          ) : (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(1.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(2)}
+              ></span>
+              <FaRegStar className="star" />
+            </div>
+          )}
+          {grade >= 3 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(2.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(3)}
+              ></span>
+              <FaStar className="star" />
+            </div>
+          ) : grade === 2.5 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(2.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(3)}
+              ></span>
+              <FaStarHalfAlt className="starHalf" />
+            </div>
+          ) : (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(2.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(3)}
+              ></span>
+              <FaRegStar className="star" />
+            </div>
+          )}
+          {grade >= 4 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(3.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(4)}
+              ></span>
+              <FaStar className="star" />
+            </div>
+          ) : grade === 3.5 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(3.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(4)}
+              ></span>
+              <FaStarHalfAlt className="starHalf" />
+            </div>
+          ) : (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(3.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(4)}
+              ></span>
+              <FaRegStar className="star" />
+            </div>
+          )}
+          {grade === 5 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(4.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(5)}
+              ></span>
+              <FaStar className="star" />
+            </div>
+          ) : grade === 4.5 ? (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(4.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(5)}
+              ></span>
+              <FaStarHalfAlt className="starHalf" />
+            </div>
+          ) : (
+            <div className="starDiv">
+              <span
+                className="starLeftSpan"
+                onClick={() => setGrade(4.5)}
+              ></span>
+              <span
+                className="starRightSpan"
+                onClick={() => setGrade(5)}
+              ></span>
+              <FaRegStar className="star" />
+            </div>
+          )}
+        </div>
+        <div>
+          이미지 :
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={imageCreate}
+            ref={selectImage}
+          />
+          <div className="imagesDiv">
+            {imgSrc.map((img, i) => (
+              <span className="imageSpan" key={i}>
+                <img src={img} />
+                <FaRegCircleXmark
+                  onClick={() => {
+                    deleteImgSrc(i);
+                    imageChange(i);
+                  }}
+                />
+              </span>
+            ))}
+            {prevImgSrc.map((img, i) => (
+              <span className="imageSpan" key={img.productImageCode}>
+                <img src={"http://192.168.10.28:8081/" + img.productImage} />
+                <FaRegCircleXmark
+                  onClick={() => deletePrevSrc(img.productImageCode)}
+                />
+              </span>
+            ))}
+          </div>
+        </div>
+        <div>
+          글 내용 :{" "}
+          <Form.Control
+            value={content}
+            as="textarea"
+            rows={20}
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+          />
+        </div>
+        <button
+          onClick={() => {
+            updateBoard();
           }}
-        />
+          style={{ width: "100px" }}
+        >
+          글 작성
+        </button>
+        <Link to="/compagno/product-board">메인으로</Link>
       </div>
-      <button
-        onClick={() => {
-          updateBoard();
-        }}
-        style={{ width: "100px" }}
-      >
-        글 작성
-      </button>
-      <Link to="/compagno/product-board">메인으로</Link>
     </Main>
   );
 };
