@@ -67,11 +67,16 @@ export const getAnimalboardFavCount = async (id) => {
   return await authorize.get("mypage/myactivity/countanimalfav/" + id);
 };
 
-// 내 활동내역 - productboard 북마크 목록 출력
+// 내 활동내역 - 북마크한 상품 목록 출력
 export const getProductBookmarkList = async (id, pageNum) => {
   return await authorize.get(
     "mypage/myactivity/productfav/" + id + "?page=" + pageNum
   );
+};
+
+// 내 활동내역 - 북마크한 상품 갯수 불러오기
+export const getProductBookmarkCount = async (id) => {
+  return await authorize.get("mypage/myactivity/productfav/count/" + id);
 };
 
 // 내 활동내역 - 일반유저 작성한 질문 리스트 출력

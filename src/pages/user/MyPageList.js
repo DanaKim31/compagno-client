@@ -5,8 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
+import moment from "moment";
+import "moment/locale/ko";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+
   .myPageList {
     thead th {
       background-color: rgb(85, 96, 143);
@@ -23,6 +35,11 @@ const Div = styled.div`
       height: 50px;
       text-align: left;
       line-height: 50px;
+
+      a {
+        color: white;
+        text-decoration-line: none;
+      }
     }
   }
 `;
@@ -101,7 +118,9 @@ const MyPageList = () => {
                 </a>
               </td>
               <td>{favContent.animalBoard.user.userNickname}</td>
-              <td>{favContent.animalFavoriteDate}</td>
+              <td>
+                {moment(favContent.animalFavoriteDate).format("YYYY-MM-DD")}
+              </td>
               <td>안녕1</td>
             </tr>
           ))}
