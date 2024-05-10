@@ -26,8 +26,9 @@ export const createNote = async (data) => {
 };
 
 // 쪽지 전체 보기(검색+페이징+정렬)
-export const viewAllNote = async (page) => {
-  return await authorize.get("note?page=" + page);
+// @GetMapping("/note/viewAll/{nickName}")
+export const viewAllNote = async (nickName) => {
+  return await authorize.get("note/viewAll/" + nickName);
 };
 
 // 쪽지 1개 보기

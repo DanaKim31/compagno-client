@@ -5,19 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import moment from "moment";
 import "moment/locale/ko";
-import { useNavigate } from "react-router-dom";
+
 import { BsEnvelopePaper } from "react-icons/bs";
+import { IoSearch } from "react-icons/io5";
+import {
+  FaAngleLeft,
+  FaAnglesLeft,
+  FaAngleRight,
+  FaAnglesRight,
+} from "react-icons/fa6";
 
 const NoteViewAll = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => {
+  const [user, setUser] = useState({});
+  // 유저정보 가지고 오기
+  const info = useSelector((state) => {
     return state.user;
   });
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token !== null) {
-      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    if (Object.keys(info).length === 0) {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    } else {
+      setUser(info);
     }
   }, []);
 
@@ -25,7 +34,6 @@ const NoteViewAll = () => {
   const [sender, setSender] = useState("");
   const [receiver, setReceiver] = useState("");
   const [noteTitle, setNoteTitle] = useState("");
-  const [noteContent, setNoteContent] = useState("");
   const [noteRegiDate, setNoteRegiDate] = useState("");
 
   const [notes, setNotes] = useState([]); // 전체 리스트 확인
@@ -33,18 +41,18 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-
+  console.log(user.userNickname);
   const notesAPI = async () => {
     let response = await viewAllNote(
-      page +
+      user.userNickname +
+        "?page=" +
+        page +
         "&sender=" +
         sender +
         "&receiver=" +
         receiver +
         "&noteTitle=" +
         noteTitle +
-        "&noteContent=" +
-        noteContent +
         "&noteRegiDate=" +
         noteRegiDate
     );
@@ -59,7 +67,7 @@ const NoteViewAll = () => {
 
   useEffect(() => {
     notesAPI();
-  }, [page]);
+  }, [user, page]);
 
   useEffect(() => {
     lastPage = Math.ceil(page / 5) * 5;
@@ -76,7 +84,45 @@ const NoteViewAll = () => {
 
   return (
     <div style={{ border: "1px solid black", width: "100%" }}>
+      <div className="search">
+        <div id="searchSender">
+          <label>
+            보내는 사람
+            <input type="text" onChange={(e) => setSender(e.target.value)} />
+          </label>
+        </div>
+        <div id="searchReceiver">
+          <label>
+            받는 사람
+            <input type="text" onChange={(e) => setReceiver(e.target.value)} />
+          </label>
+        </div>
+        <div id="searchTitle">
+          <label>
+            제목
+            <input type="text" onChange={(e) => setNoteTitle(e.target.value)} />
+          </label>
+        </div>
+
+        <div id="searchNoteRegiDate">
+          <label>
+            작성 일자
+            <input
+              type="date"
+              max={moment().format("YYYY-MM-DD")}
+              onChange={(e) => setNoteRegiDate(e.target.value)}
+            />
+          </label>
+        </div>
+        <div id="searchBtn">
+          <button onClick={notesAPI}>
+            <IoSearch />
+            <span>조회</span>
+          </button>
+        </div>
+      </div>
       <BsEnvelopePaper />
+      <span>총 {allCount}개</span>
       <table style={{ width: "100%" }}>
         <thead>
           <tr>
@@ -94,11 +140,39 @@ const NoteViewAll = () => {
               <td>{note.noteTitle}</td>
               <td>{note.noteContent}</td>
               <td>{note.receiver}</td>
-              <td>{note.noteRegiDate}</td>
+              <td>{moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <div className="paging">
+        <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
+        <FaAngleLeft
+          className="iconPaging"
+          onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
+        />
+        {pages.map((num, index) => (
+          <button
+            key={index}
+            value={num}
+            onClick={(e) => setPage(Number(e.target.value))}
+          >
+            {num}
+          </button>
+        ))}
+
+        <FaAngleRight
+          className="iconPaging"
+          onClick={
+            () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
+          }
+        />
+        <FaAnglesRight
+          className="iconPaging"
+          onClick={() => setPage(totalPage)}
+        />
+      </div>
     </div>
   );
 };
