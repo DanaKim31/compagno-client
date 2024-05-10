@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCategories,
+  getAnimalCategories,
   getSitterBoards,
   getProvinces,
   getDistricts,
@@ -17,6 +18,15 @@ import { userSave } from "../../store/user";
 import styled from "styled-components";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   width: 90%;
   margin: auto;
 
@@ -25,7 +35,7 @@ const Div = styled.div`
     margin-bottom: 100px;
   }
 
-  .register {
+  .register-search-btn {
     width: 100%;
     display: flex;
     justify-content: flex-end;
@@ -34,47 +44,33 @@ const Div = styled.div`
     #register-btn {
       height: 40px;
       width: 90px;
+      margin-right: 10px;
       border-radius: 5px;
-      color: navy;
+      color: #455c58ff;
       background: white;
-      border: 2px solid navy;
+      border: 2px solid #455c58ff;
     }
     #register-btn:hover {
-      background: navy;
+      background: #455c58ff;
       color: white;
       cursor: pointer;
     }
-  }
-  .keyword-options {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
 
-    .keyword {
-      display: flex;
-
-      select {
-        height: 40px;
-        width: 100px;
-        padding: 5px;
-        margin-right: 5px;
-        border-radius: 5px;
-      }
-
-      input {
-        width: 300px;
-        height: 40px;
-        padding: 5px;
-        border-radius: 5px;
-        margin-right: 5px;
-      }
+    #search-btn {
+      width: 90px;
+      height: 39px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      background: #455c58ff;
+      border: 1px solid #455c58ff;
+      margin-right: 10px;
     }
   }
 
   .search-area {
-    background: lightgrey;
     padding: 20px 0 10px 20px;
+    border: 3px dashed #455c58ff;
     border-radius: 5px;
     display: flex;
     flex-wrap: wrap;
@@ -89,53 +85,47 @@ const Div = styled.div`
 
     select {
       height: 40px;
-      width: 300px;
+      width: 150px;
       padding: 5px;
       margin-right: 20px;
       border-radius: 5px;
     }
 
-    .location-search {
+    #province {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-
-      #province {
-        display: flex;
-        margin-bottom: 10px;
-      }
-      #district {
-        display: flex;
-        margin-bottom: 10px;
-      }
+      margin-bottom: 10px;
+    }
+    #district {
+      display: flex;
+      margin-bottom: 10px;
     }
 
-    .category-search {
+    #sitter-category {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-
-      #sitter-category {
-        display: flex;
-        margin-bottom: 10px;
-      }
-      #animal-category {
-        display: flex;
-        margin-bottom: 10px;
-      }
+      margin-bottom: 10px;
+    }
+    #animal-category {
+      display: flex;
+      margin-bottom: 10px;
     }
 
-    .btn {
-      width: 90%;
+    .keyword {
+      display: flex;
+      margin-bottom: 10px;
 
-      #search-btn {
-        width: 100%;
-        height: 40px;
-        border-radius: 5px;
-        color: white;
-        cursor: pointer;
-        background: black;
+      select {
+        width: 93px;
+        padding: 5px;
         margin-right: 10px;
+        border-radius: 5px;
+      }
+
+      input {
+        width: 300px;
+        height: 40px;
+        padding: 5px;
+        border-radius: 5px;
+        margin-right: 20px;
       }
     }
   }
@@ -163,13 +153,17 @@ const Div = styled.div`
       border-bottom: 2px solid black;
     }
     td {
-      padding: 10px;
+      padding: 15px;
     }
     .list:hover {
       background: lightgray;
     }
-    .list :nth-child(4) {
+    .list :nth-child(5) {
       text-align: left;
+    }
+
+    #sitter-date {
+      margin-right: 10px;
     }
   }
 
@@ -183,11 +177,14 @@ const Div = styled.div`
     button {
       width: 30px;
       margin: 0 5px;
+      background: white;
+      color: #455c58ff;
+      border: 2px solid #455c58ff;
       border-radius: 5px;
     }
 
     button:focus {
-      background: black;
+      background: #455c58ff;
       color: white;
     }
   }
@@ -196,11 +193,21 @@ const Div = styled.div`
 const SitterBoard = () => {
   const [sitterBoards, setSitterBoards] = useState({});
   // ========== 검색조건 ==========
-  const [sitterCategories, setSitterCategories] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
   const [province, setProvince] = useState(0);
   const [district, setDistrict] = useState(0);
+  const [sitterCategories, setSitterCategories] = useState([]);
+  const [animalCategories, setAnimalCategories] = useState([]);
+
+  const [searchProvince, setSearchProvince] = useState("");
+  const [searchDistrict, setSearchDistrict] = useState("");
+  const [searchCategory, setSearchCategory] = useState(0);
+  const [searchAnimal, setSearchAnimal] = useState(0);
+  const [searchSelect, setSearchSelect] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const [sort, setSort] = useState(1);
   // ========== 페이징 ==========
   const [page, setPage] = useState(1); // 현재 페이지
   const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지
@@ -220,7 +227,23 @@ const SitterBoard = () => {
   }, []);
 
   const sitterBoardAPI = async () => {
-    const result = await getSitterBoards(page);
+    const result = await getSitterBoards(
+      page +
+        "&locationProvince=" +
+        searchProvince +
+        "&locationDistrict=" +
+        searchDistrict +
+        "&sitterCategoryCode=" +
+        searchCategory +
+        "&animalCategoryCode=" +
+        searchAnimal +
+        "&searchSelect=" +
+        // searchSelect +
+        // "&searchKeyword=" +
+        // searchKeyword +
+        "&sortBy=" +
+        sort
+    );
     console.log(result.data);
     setSitterBoards(result.data);
     setTotalPage(result.data.totalPages); // result에서 totalPages 불러와서 set으로 담기
@@ -231,32 +254,40 @@ const SitterBoard = () => {
     setSitterCategories(result.data);
   };
 
+  const animalCategoryAPI = async () => {
+    const result = await getAnimalCategories();
+    setAnimalCategories(result.data);
+  };
+
   const provinceAPI = async () => {
     const result = await getProvinces();
     setSelectedProvince(result.data);
   };
 
   const districtAPI = async (code) => {
-    if (code !== "") {
-      const result = await getDistricts(code);
-      setSelectedDistrict(result.data);
+    console.log(code);
+    let result = null;
+    if (code == "") {
+      setSelectedDistrict("전체");
+      setSearchDistrict("");
     } else {
-      setSelectedDistrict([]);
+      result = await getDistricts(code);
+      setSelectedDistrict(result.data);
     }
   };
 
   useEffect(() => {
     sitterBoardAPI();
     categoryAPI();
+    animalCategoryAPI();
     provinceAPI();
-  }, [page]);
+  }, [page, sort]);
 
   let lastPage = 0;
   let firstPage = 0;
   let pageList = [];
 
   useEffect(() => {
-    // totalPage가 바뀔 때 마다 실행
     lastPage = Math.ceil(page / 10) * 10;
     firstPage = lastPage - 9;
     if (totalPage < lastPage) {
@@ -267,17 +298,24 @@ const SitterBoard = () => {
     for (let i = firstPage; i <= lastPage; i++) {
       pageList.push(i); // 처음 i는 firstPage, 범위는 lastPage로 반복문 돌려서 i값을 넣은 list 만들기
     }
-    setPages(pageList); // 해당 list 배열을 setPages에 담기
+    setPages(pageList); // 해당 lißst 배열을 setPages에 담기
   }, [totalPage]);
 
   const handleProvinceChange = (e) => {
-    districtAPI(e.target.value);
-    setProvince(e.target.value);
+    // districtAPI(e.target.value);
+    // setProvince(e.target.value);
+    console.log(e);
+    if (e == "") {
+      districtAPI("");
+    } else {
+      districtAPI(e);
+    }
+    setSearchProvince(e);
   };
 
-  const handleDistrictChange = (e) => {
-    setDistrict(e.target.value);
-  };
+  // const handleDistrictChange = (e) => {
+  //   setDistrict(e.target.value);
+  // };
 
   const navigate = useNavigate();
   const registerBoard = async () => {
@@ -289,97 +327,112 @@ const SitterBoard = () => {
     }
   };
 
+  // useEffect(() => {
+  //   console.log(searchDistrict);
+  // }, [searchDistrict]);
+
   return (
     <Div>
       <h1>시터 게시판</h1>
 
-      <div className="register">
+      <div className="register-search-btn">
         <button id="register-btn" onClick={registerBoard}>
           등록
+        </button>
+        <button id="search-btn" onClick={sitterBoardAPI}>
+          조회
         </button>
       </div>
 
       <div className="search-area">
-        <div className="location-search">
-          <div id="province">
-            <span>시/도</span>
-            <select onChange={handleProvinceChange}>
-              <option value="">전체</option>
-              {selectedProvince.map((province) => (
-                <option
-                  key={province.locationCode}
-                  value={province.locationCode}
-                >
-                  {province.locationName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div id="district">
-            <span>시/군/구</span>
-            {selectedProvince && (
-              <select onChange={handleDistrictChange}>
-                <option value="">전체</option>
-                {selectedDistrict.map((district) => (
-                  <option
-                    key={district.locationCode}
-                    value={district.locationCode}
-                  >
-                    {district.locationName}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
+        <div id="province">
+          <span>시/도</span>
+          <select onChange={(e) => handleProvinceChange(e.target.value)}>
+            <option value="">전체</option>
+            {selectedProvince.map((province) => (
+              <option key={province.locationCode} value={province.locationCode}>
+                {province.locationName}
+              </option>
+            ))}
+          </select>
         </div>
 
-        <div className="category-search">
-          <div id="sitter-category">
-            <span>카테고리</span>
-            <select>
-              <option>전체</option>
-              {sitterCategories.map((category) => (
-                <option
-                  key={category.sitterCategoryCode}
-                  value={category.sitterCategoryCode}
-                >
-                  {category.sitterCategoryType}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div id="animal-category">
-            <span>반려동물</span>
+        <div id="district">
+          <span>시/군/구</span>
+          {selectedDistrict == "전체" ? (
             <select>
               <option>전체</option>
             </select>
-          </div>
+          ) : (
+            <>
+              {selectedProvince && (
+                <select onChange={(e) => setSearchDistrict(e.target.value)}>
+                  <option value="">전체</option>
+                  {selectedDistrict.map((district) => (
+                    <option
+                      key={district.locationCode}
+                      value={district.locationCode}
+                    >
+                      {district.locationName}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </>
+          )}
         </div>
 
-        <div className="keyword-options">
-          <div className="keyword">
-            <select>
-              <option>제목</option>
-              <option>작성자</option>
-            </select>
-            <input
-              type="text"
-              placeholder="검색어 입력"
-              className="search-input"
-            />
-          </div>
+        <div id="sitter-category">
+          <span>카테고리</span>
+          <select onChange={(e) => setSearchCategory(e.target.value)}>
+            <option>전체</option>
+            {sitterCategories.map((category) => (
+              <option
+                key={category.sitterCategoryCode}
+                value={category.sitterCategoryCode}
+              >
+                {category.sitterCategoryType}
+              </option>
+            ))}
+          </select>
         </div>
 
-        <div className="btn">
-          <button id="search-btn">조회</button>
+        <div id="animal-category">
+          <span>반려동물</span>
+          <select onChange={(e) => setSearchAnimal(e.target.value)}>
+            <option>전체</option>
+            {animalCategories.map((animalCategory) => (
+              <option
+                key={animalCategory.animalCategoryCode}
+                value={animalCategory.animalCategoryCode}
+              >
+                {animalCategory.animalType}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="keyword">
+          <span onChange={(e) => setSearchSelect(e.target.value)}>검색어</span>
+          <select>
+            <option value="제목">제목</option>
+            <option value="작성자">작성자</option>
+          </select>
+          <input
+            type="text"
+            placeholder="검색어 입력"
+            className="search-input"
+            onChange={(e) => setSearchKeyword(e.target.value)}
+          />
         </div>
       </div>
 
       <div className="sorting">
-        <select>
-          <option>최신순</option>
-          <option>조회순</option>
+        <select onChange={(e) => setSort(e.target.value)}>
+          <option value="1">작성일 내림차순</option>
+          <option value="2">작성일 오름차순</option>
+          <option value="3">조회수 내림차순</option>
+          <option value="4">조회수 오름차순</option>
         </select>
         <span>총 {sitterBoards.totalElements}건</span>
       </div>
@@ -389,6 +442,7 @@ const SitterBoard = () => {
           <tr>
             <th>번호</th>
             <th>구분</th>
+            <th>반려동물</th>
             <th>지역</th>
             <th>제목</th>
             <th>작성자</th>
@@ -401,10 +455,11 @@ const SitterBoard = () => {
             <tr key={sitter.sitterBoardCode} className="list">
               <td>{sitter.sitterBoardCode}</td>
               <td>{sitter.sitterCategory.sitterCategoryType}</td>
+              <td>{sitter.animalCategoryCode.animalType}</td>
               <td>
-                {sitter.location.parent.locationName +
+                {sitter.location.parent?.locationName +
                   " " +
-                  sitter.location.locationName}
+                  sitter.location?.locationName}
               </td>
               <td>
                 <a
@@ -414,9 +469,20 @@ const SitterBoard = () => {
                 </a>
               </td>
               <td>{sitter.user.userId}</td>
-              <td>{`${new Date(sitter.sitterRegiDate).getFullYear()}-${new Date(
-                sitter.sitterRegiDate
-              ).getMonth()}-${new Date(sitter.sitterRegiDate).getDate()}`}</td>
+              <td>
+                <span id="sitter-date">{`${new Date(
+                  sitter.sitterRegiDate
+                ).getFullYear()}-${new Date(
+                  sitter.sitterRegiDate
+                ).getMonth()}-${new Date(
+                  sitter.sitterRegiDate
+                ).getDate()}`}</span>
+                <span>{`${new Date(
+                  sitter.sitterRegiDate
+                ).getHours()}:${new Date(
+                  sitter.sitterRegiDate
+                ).getMinutes()}`}</span>
+              </td>
               <td>{sitter.sitterViewCount}</td>
             </tr>
           ))}
@@ -425,11 +491,9 @@ const SitterBoard = () => {
 
       <div className="paging">
         <FaAnglesLeft onClick={() => setPage(1)} />
-        {/* 가장 첫 페이지로 */}
         <FaAngleLeft
           onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
         />
-        {/* 배열 담은 pages를 map으로 만들어서 반복문 페이지번호 생성 */}
         {pages.map((num, index) => (
           <button
             key={index}
@@ -445,7 +509,6 @@ const SitterBoard = () => {
           }
         />
         <FaAnglesRight onClick={() => setPage(totalPage)} />
-        {/* 가장 마지막 페이지로 */}
       </div>
     </Div>
   );
