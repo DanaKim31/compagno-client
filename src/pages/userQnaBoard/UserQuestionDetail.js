@@ -466,7 +466,7 @@ const UserQuestionDetail = () => {
         )}
       </>
       <hr />
-      <UserQnaAnswer />
+      <UserQnaAnswer question={question} />
     </Div>
   );
 };

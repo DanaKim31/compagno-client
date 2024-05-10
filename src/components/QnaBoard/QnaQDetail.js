@@ -7,8 +7,33 @@ import styled from "styled-components";
 import { userSave } from "../../store/user";
 import QnaADetail from "./QnaADetail";
 import moment from "moment";
+import MyToggleBar from "../../components/note/MyToggleBar";
 
 const Div = styled.div`
+  /* // ======== 폰트 관련
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  } */
+
   position: relative;
   width: 80%;
   margin: 0 auto;
@@ -315,7 +340,9 @@ const QnaQDetail = () => {
                             }
                           />
                           <div>
-                            <p>작성자 : {question.userNickname}</p>
+                            <p>
+                              <MyToggleBar name={question.userNickname} />
+                            </p>
                             <p>아이디 : {question.userId}</p>
                           </div>
                         </div>
@@ -444,7 +471,9 @@ const QnaQDetail = () => {
                             }
                           />
                           <div>
-                            <p>작성자 : {question.userNickname}</p>
+                            <p>
+                              <MyToggleBar name={question.userNickname} />
+                            </p>
                             <p>아이디 : {question.userId}</p>
                           </div>
                         </div>
