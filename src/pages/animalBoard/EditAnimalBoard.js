@@ -3,7 +3,7 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "quill-image-resize";
 import ImageUploader from "quill-image-uploader";
-import { viewDetail, updateBoard } from "../../api/animalBoard"; // 기존 addWrite에서 원래 있던걸로 변경
+import { viewDetail, updateBoard, getPrevImages } from "../../api/animalBoard"; // 기존 addWrite에서 원래 있던걸로 변경
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // 유저
@@ -38,18 +38,35 @@ const EditAnimalBoard = () => {
   });
   const animalBoardAPI = async () => {
     const response = await viewDetail(animalBoardCode);
-    // console.log(response.data);
+    console.log(response.data);
     setDetail(response.data);
   };
-  // ==============================
-  //   const [boardInfo, setBoardInfo] = useState({
-  //     animalBoardTitle: "",
-  //     animalBoardContent: "",
-  //     animalCategoryCode: "0",
-  //     user: {
-  //       userId: user.userId,
-  //     },
-  //   }); // quill 제외 부분
+  // 기존 글 이미지 정보
+  const [prevImages, setPrevImages] = useState([]);
+  const prevImageAPI = async () => {
+    const response = await getPrevImages(animalBoardCode);
+    console.log(response.data);
+    setPrevImages(response.data);
+  };
+
+  // const uploadPrevImages = async()=>{
+  //   const
+  // }
+
+  /*
+  const uploadImages = async () => {
+  const updatedImages = [];
+  for (const image of detailInfo.images) {
+    try {
+      const uploadedImage = await imageUploader.upload(image); // 이미지 업로드 함수 호출
+      updatedImages.push(uploadedImage);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  }
+  return updatedImages;
+};
+  */
 
   const addEdit = async () => {
     console.log(detailInfo.animalCategoryCode);
@@ -163,6 +180,7 @@ const EditAnimalBoard = () => {
   ];
   useEffect(() => {
     animalBoardAPI();
+    prevImageAPI();
   }, []);
   useEffect(() => {
     const token = localStorage.getItem("token");

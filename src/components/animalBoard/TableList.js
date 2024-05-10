@@ -67,9 +67,8 @@ const TableList = ({ board }) => {
   }, [board.animalBoardCode]);
   return (
     <>
-      {/* {tableboards?.map((board) => ( */}
       <TableParticle
-        // key={board.animalBoardCode}
+        key={board.animalBoardCode}
         onClick={() => goDetail(board.animalBoardCode)}
       >
         <div className="basic-info-container">
@@ -105,7 +104,6 @@ const TableList = ({ board }) => {
           <div>댓글 수 : {count}</div>
         </div>
       </TableParticle>
-      {/*  */}
     </>
   );
 };
