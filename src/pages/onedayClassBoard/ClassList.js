@@ -194,7 +194,6 @@ const ClassList = () => {
                   />
                 ))}
               </div>
-              <div>사용자 : {user.userNickname}</div>
               {/* <div>사용자 : {user.userImg}</div> */}
               <div className="info">
                 {/* 나머지 클래스 정보 */}

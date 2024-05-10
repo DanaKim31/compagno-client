@@ -7,6 +7,7 @@ import { userSave } from "../../store/user";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import styled from "styled-components";
+import MyToggleBar from "../../components/note/MyToggleBar";
 
 const StyledDiv = styled.div`
   background-color: rgb(244, 244, 244);
@@ -15,8 +16,10 @@ const StyledDiv = styled.div`
   position: relative;
   font-weight: bold;
   top: 88px;
-  height: 89.5vh;
+  height: 127.7vh;
+
   img {
+    object-fit: fill;
   }
 
   @font-face {
@@ -32,6 +35,14 @@ const StyledDiv = styled.div`
     font-size: 1rem;
   }
 
+  .photoBack {
+    width: 100%;
+    height: 415px;
+    position: absolute;
+    background-color: black;
+    z-index: 1;
+    opacity: 0.4;
+  }
   #photo {
     width: 100vh;
   }
@@ -53,9 +64,22 @@ const StyledDiv = styled.div`
 
   .userinfo {
     position: relative;
-    bottom: 62px;
-    left: 111px;
     text-align: justify;
+  }
+
+  button {
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
   }
 `;
 
@@ -64,6 +88,7 @@ const ClassDetail = () => {
   const dispatch = useDispatch();
   const { code } = useParams();
   const [odcClass, setOdcClass] = useState([]); // 하나의 정보만 가져와야하니깐 !
+  const [edit, setEdit] = useState(null);
 
   // const [odcTitle, setOdcTitle] = useState("");
   // const [odcContent, setContent] = useState("");
@@ -71,7 +96,7 @@ const ClassDetail = () => {
   // const [odcMainImage, setOdcMainImage] = useState([]);
   // const [odcStartDate, setOdcStartDate] = useState("");
   // const [odcLastDate, setOdcLastDate] = useState("");
-  const [edit, setEdit] = useState(null);
+
   const user = useSelector((state) => {
     return state.user;
   });
@@ -91,13 +116,19 @@ const ClassDetail = () => {
   }, []);
 
   // 삭제 관련 로직
-  const onDelete = async (code) => {
+  const onDelete = async () => {
     await deleClass(code);
     navigate("/compagno/onedayClassBoard");
   };
 
   // 수정 관련 로직
   const onUpdate = async () => {
+    setEdit(Class);
+  };
+
+  // 수정후 => 1개보기로 이동
+  const onSubmit = async () => {
+    await updateClass(edit);
     navigate("/compagno/onedayClassBoard/update/" + code);
   };
 
@@ -107,12 +138,20 @@ const ClassDetail = () => {
 
   return (
     <StyledDiv>
+      {/* {edit == null ? ():()} */}
+      <div className="photoBack"></div>
       <div className="oneClass">
-        <div id="photo-back" style={{ width: "100%", height: "300px" }}>
+        <div style={{ width: "100%", height: "300px" }}>
           {odcClass.images?.map((image) => (
             <img
               id="photo"
-              style={{ width: "25%", height: "60%" }}
+              style={{
+                width: "100%",
+                height: "139%",
+                position: "relative",
+                bottom: "131px",
+                objectFit: "fill",
+              }}
               src={image.odcMainImage?.replace(
                 "\\\\DESKTOP-U0CNG13\\upload\\ClassBoard",
                 "http://192.168.10.28:8081/ClassBoard"
@@ -120,48 +159,83 @@ const ClassDetail = () => {
             />
           ))}
         </div>
-
-        <div className="user">
-          <img
-            src={"http://192.168.10.28:8081/" + user.userImg}
+        <div className="context" style={{ position: "relative", top: "50px" }}>
+          <div
+            className="user"
             style={{
-              width: "25vh",
-              position: "relative",
-              bottom: "64px",
-              left: "79px",
+              border: "1px solid",
+              borderRadius: "25px",
+              width: "90%",
+              display: "flex",
+              left: "92px",
+              justifyContent: "space-around",
             }}
-          />
-          <div className="userinfo">
-            <p> 유저 닉네임 : {user.userNickname}</p>
-            <p> 유저 이메일 : {user.userEmail}</p>
-          </div>
-          <p className="regidate">
-            등록 날짜 : {moment(odcClass.odcRegiDate).format("YY-MM-DD")}
-          </p>
-          <div>
-            <p className="startdate">
-              클래스 시작 날짜 :
-              {moment(odcClass.odcStartDate).format("YY-MM-DD")}
+          >
+            <img
+              src={"http://192.168.10.28:8081/" + user.userImg}
+              style={{
+                width: "25vh",
+                position: "relative",
+              }}
+            />
+            <div className="userinfo">
+              유저 닉네임 :
+              <div className="toggle">
+                <MyToggleBar
+                  name={odcClass.user?.userNickname}
+                  style={{ width: "78px" }}
+                />
+              </div>
+              {/* {odcClass.user.userNickname} */}
+              <p> 이메일 : {user.userEmail}</p>
+            </div>
+            <p className="regidate">
+              등록 날짜 : {moment(odcClass.odcRegiDate).format("YY-MM-DD")}
             </p>
-            <p className="lastdate">
-              클래스 마지막 날짜 :
-              {moment(odcClass.odcLastDate).format("YY-MM-DD")}
+            <div>
+              <p className="startdate">
+                클래스 시작 날짜 :
+                {moment(odcClass.odcStartDate).format("YY-MM-DD")}
+              </p>
+              <p className="lastdate">
+                클래스 마지막 날짜 :
+                {moment(odcClass.odcLastDate).format("YY-MM-DD")}
+              </p>
+            </div>
+            <p className="Accompaying">
+              동반 가능 여부 : {odcClass.odcAccompaying}
             </p>
           </div>
-          <p className="Accompaying">
-            동반 가능 여부 : {odcClass.odcAccompaying}
-          </p>
-        </div>
-        <div>
-          {/* <div>사용자 : {user.userImg}</div> */}
-          <div className="info">
-            <p className="title">제목 : {odcClass.odcTitle}</p>
-            <p className="Content">내용 : {odcClass.odcContent}</p>
+          <div
+            className="info"
+            style={{
+              display: "block",
+              textAlign: "center",
+              top: "32px",
+              position: "relative",
+            }}
+          >
+            {/* <div>사용자 : {user.userImg}</div> */}
+            <div>
+              <p className="title" style={{}}>
+                제목 <br /> <br />
+                {odcClass.odcTitle}
+              </p>
+
+              <p
+                className="Content"
+                style={{ width: "100%", position: "relative" }}
+              >
+                상세 내용
+                <br /> <br />
+                {odcClass.odcContent}
+              </p>
+            </div>
+            <button onClick={onUpdate}>수정</button>
+            <button onClick={onDelete}>삭제</button>
+            <button onClick={onBack}>취소</button>
           </div>
         </div>
-        <button onClick={onUpdate}>수정</button>
-        <button onClick={onDelete}>삭제</button>
-        <button onClick={onBack}>취소</button>
       </div>
     </StyledDiv>
   );

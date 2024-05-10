@@ -112,7 +112,7 @@ const Header = () => {
               <a href="/compagno/animal-board">콘테스트</a>
               <a href="/compagno/product-board">제품정보 공유</a>
               <a href="/compagno/content">반려동물 동반</a>
-              <a href="/compagno/neighborBoard">우리동네 게시판</a>
+              <a href="/compagno/neighborBoard">우리동네</a>
               <a href="/compagno/userQna">질문 게시판</a>
             </div>
           </div>

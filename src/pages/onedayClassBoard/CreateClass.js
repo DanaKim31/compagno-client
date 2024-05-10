@@ -249,7 +249,7 @@ const CreateClass = () => {
           <div className="contentin">
             <h2>자세한 내용 관련</h2>
             <textarea
-              type="textarea"
+              type="text"
               placeholder="내용을 입력하세요"
               value={odcContent}
               className="content"
