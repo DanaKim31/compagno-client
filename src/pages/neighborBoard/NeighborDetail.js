@@ -270,7 +270,7 @@ const NeighborDetail = () => {
 
   // ================= 게시글 수정 =================
   const updateBoard = () => {
-    navigate("/compagno/sitterBoard/edit/" + code);
+    navigate("/compagno/neighborBoard/edit/" + code);
   };
 
   // ================= 게시글 삭제 =================
