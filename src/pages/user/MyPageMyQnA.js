@@ -127,9 +127,6 @@ const MyPageMyQnA = () => {
   const [managePage, setManagePage] = useState(0);
   const [manageQnaCount, setManageQnaCount] = useState(0);
 
-  // 매니저용 페이지 변경
-  const handlePageChange2 = async () => {};
-
   // -----------------------------------------------------------------------------------
 
   return (
