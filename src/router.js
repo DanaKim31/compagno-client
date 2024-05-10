@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import Login from "./pages/user/Login";
 import MyPageMyInfo from "./pages/user/MyPageMyInfo";
 import MyPageMyActivity from "./pages/user/MyPageMyActivity";
+import MyPageFavProduct from "./pages/user/MyPageFavProduct";
 import LostBoardViewAll from "./pages/lostBoard/LostBoardViewAll";
 import LostBoardCreate from "./pages/lostBoard/LostBoardCreate";
 import LostBoardView from "./pages/lostBoard/LostBoardView";
@@ -41,6 +42,7 @@ import SitterUpdate from "./pages/sitterBoard/SitterUpdate";
 import MyPageMyNote from "./pages/user/MyPageMyNote";
 import AdopBoardViewAll from "./pages/adoptionBoard/AdopBoardViewAll";
 import AdopBoardCreate from "./pages/adoptionBoard/AdopBoardCreate";
+import MyPageMyQnA from "./pages/user/MyPageMyQnA";
 
 const router = createBrowserRouter([
   {
@@ -61,8 +63,10 @@ const router = createBrowserRouter([
         path: "mypage",
         children: [
           { path: "myinfo", element: <MyPageMyInfo /> },
-          { path: "myactivity", element: <MyPageMyActivity /> },
+          { path: "myanimalfav", element: <MyPageMyActivity /> },
+          { path: "myproductfav", element: <MyPageFavProduct /> },
           { path: "mynote", element: <MyPageMyNote /> },
+          { path: "myqna", element: <MyPageMyQnA /> },
         ],
       },
       {

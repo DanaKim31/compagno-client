@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { getAnimalboardFavList, getAnimalboardFavCount } from "../../api/user";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { userSave } from "../../store/user";
+import { useSelector } from "react-redux";
+import useDidMountEffect from "../../components/user/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
 
 const Div = styled.div`
@@ -28,57 +28,49 @@ const Div = styled.div`
 `;
 
 const MyPageList = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [user, setUser] = useState({});
 
-  // 유저정보 가지고온다
+  // 유저정보 가지고 오기
   const info = useSelector((state) => {
     return state.user;
   });
 
-  // 유저정보 로컬스토리지에 저장
   useEffect(() => {
-    if (localStorage.length === 0) {
-      alert("로그인 시 접근 가능합니다.");
-      navigate("/compagno/login");
+    if (Object.keys(info).length === 0) {
+      setUser(JSON.parse(localStorage.getItem("user")));
     } else {
-      const token = localStorage.getItem("token");
-      if (token !== null) {
-        dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
-      }
+      setUser(info);
     }
   }, []);
 
   // 유저정보 담겨질때 실행
-  useEffect(() => {
-    userAPI();
-  }, [info]);
+  useDidMountEffect(() => {
+    favListAPI();
+  }, [user]);
 
   // 좋아요 목록과 페이징 기초값 세팅
   // 페이징에 사용할 좋아요 갯수 가져오기
   const [animalboardFav, setAnimalBoardFav] = useState([]);
   const [page, setPage] = useState(1);
+  const [animalBoardFavCount, setAnimalBoardFavCount] = useState(0);
 
   // 페이지 변경
   const handlePageChange = async (page) => {
-    await setPage(page);
-    const response = await getAnimalboardFavList(info.userId, page);
+    setPage(page);
+    const response = await getAnimalboardFavList(user.userId, page);
     const favData = response.data;
     setAnimalBoardFav(favData);
   };
 
-  const [animalBoardFavCount, setAnimalBoardFavCount] = useState(0);
-
-  const userAPI = async () => {
-    const response = await getAnimalboardFavList(info.userId, page);
+  // 좋아요 목록 불러오기
+  const favListAPI = async () => {
+    const response = await getAnimalboardFavList(user.userId, page);
     const favData = response.data;
 
-    const countResponse = await getAnimalboardFavCount(info.userId);
+    const countResponse = await getAnimalboardFavCount(user.userId);
     const countFavData = countResponse.data;
 
     setAnimalBoardFav(favData);
-    console.log(favData);
-
     setAnimalBoardFavCount(countFavData);
   };
 
