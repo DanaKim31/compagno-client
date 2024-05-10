@@ -12,11 +12,10 @@ const StyledDiv = styled.div`
   background-color: rgb(244, 244, 244);
   width: 100%;
   margin: auto;
-  /* text-align: center; */
   position: relative;
-  top: 113px;
   font-weight: bold;
-
+  top: 88px;
+  height: 89.5vh;
   img {
   }
 
@@ -31,6 +30,32 @@ const StyledDiv = styled.div`
   * {
     font-family: "TAEBAEKmilkyway";
     font-size: 1rem;
+  }
+
+  #photo {
+    width: 100vh;
+  }
+
+  .oneClass {
+    position: relative;
+    top: 130px;
+  }
+  .user {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    position: relative;
+    top: -7px;
+    right: 10px;
+    width: 141.5vh;
+  }
+
+  .userinfo {
+    position: relative;
+    bottom: 62px;
+    left: 111px;
+    text-align: justify;
   }
 `;
 
@@ -83,18 +108,10 @@ const ClassDetail = () => {
   return (
     <StyledDiv>
       <div className="oneClass">
-        <img
-          src={"http://192.168.10.28:8081/" + user.userImg}
-          style={{
-            width: "15%",
-            position: "relative",
-            top: "50px",
-            left: "50px",
-          }}
-        />
-        <div id="photo" style={{ width: "100%", height: "300px" }}>
+        <div id="photo-back" style={{ width: "100%", height: "300px" }}>
           {odcClass.images?.map((image) => (
             <img
+              id="photo"
               style={{ width: "25%", height: "60%" }}
               src={image.odcMainImage?.replace(
                 "\\\\DESKTOP-U0CNG13\\upload\\ClassBoard",
@@ -103,20 +120,25 @@ const ClassDetail = () => {
             />
           ))}
         </div>
-        <div>
-          <p> 유저 닉네임 : {user.userNickname}</p>
-          <p> 유저 이메일 : {user.userEmail}</p>
-          {/* <div>사용자 : {user.userImg}</div> */}
-          <div className="info">
-            <p className="title">제목 : {odcClass.odcTitle}</p>
-            <p className="Content">내용 : {odcClass.odcContent}</p>
-            <p className="Accompaying">
-              동반 가능 여부 : {odcClass.odcAccompaying}
-            </p>
-            <p className="regidate">
-              등록 날짜 : {moment(odcClass.odcRegiDate).format("YY-MM-DD")}
-            </p>
 
+        <div className="user">
+          <img
+            src={"http://192.168.10.28:8081/" + user.userImg}
+            style={{
+              width: "25vh",
+              position: "relative",
+              bottom: "64px",
+              left: "79px",
+            }}
+          />
+          <div className="userinfo">
+            <p> 유저 닉네임 : {user.userNickname}</p>
+            <p> 유저 이메일 : {user.userEmail}</p>
+          </div>
+          <p className="regidate">
+            등록 날짜 : {moment(odcClass.odcRegiDate).format("YY-MM-DD")}
+          </p>
+          <div>
             <p className="startdate">
               클래스 시작 날짜 :
               {moment(odcClass.odcStartDate).format("YY-MM-DD")}
@@ -126,11 +148,21 @@ const ClassDetail = () => {
               {moment(odcClass.odcLastDate).format("YY-MM-DD")}
             </p>
           </div>
+          <p className="Accompaying">
+            동반 가능 여부 : {odcClass.odcAccompaying}
+          </p>
         </div>
+        <div>
+          {/* <div>사용자 : {user.userImg}</div> */}
+          <div className="info">
+            <p className="title">제목 : {odcClass.odcTitle}</p>
+            <p className="Content">내용 : {odcClass.odcContent}</p>
+          </div>
+        </div>
+        <button onClick={onUpdate}>수정</button>
+        <button onClick={onDelete}>삭제</button>
+        <button onClick={onBack}>취소</button>
       </div>
-      <button onClick={onUpdate}>수정</button>
-      <button onClick={onDelete}>삭제</button>
-      <button onClick={onBack}>취소</button>
     </StyledDiv>
   );
 };
