@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { addQuestion } from "../../api/Question";
 import { useNavigate } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
-import { userSave } from "../../store/user";
+import { addUserQuestion } from "../../api/userQnaQuestion";
 import { useSelector, useDispatch } from "react-redux";
+import { userSave } from "../../store/user";
+import { Form, Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -11,11 +11,11 @@ const Div = styled.div`
   top: 200px;
 `;
 
-const QnaRegister = () => {
+const UserQuestionRegister = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // user 세팅
+  // 1. user 세팅
   const user = useSelector((state) => {
     return state.user;
   });
@@ -27,23 +27,29 @@ const QnaRegister = () => {
     }
   }, []);
 
+  // 2. 정보 담을 곳 세팅
+  // user 에서 가져온 유저 정보 저장
   const [userId, setUserId] = useState("");
   const [userNickname, setUserNickname] = useState("");
   const [userImg, setUserImg] = useState("");
+
+  // form을 통해 사용자에게 입력받을 곳
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [secret, setSecret] = useState("");
   const [images, setImages] = useState([]);
 
+  // 파일 변환 시 담긴 파일 재배치
   const imageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
   };
 
+  // 등록 취소 시 리스트로 되돌아오기
   const cancel = () => {
-    navigate("/compagno/question");
+    navigate("/compagno/userQna");
   };
 
+  // 등록할 폼 정보 폼데이터 형식에 담아서 추가하는 api 호출
   const add = async () => {
     const formData = new FormData();
 
@@ -56,11 +62,9 @@ const QnaRegister = () => {
     formData.append("userImg", user.userImg);
     setUserImg(user.userImg);
 
-    formData.append("qnaQTitle", title);
+    formData.append("userQuestionBoardTitle", title);
 
-    formData.append("qnaQContent", content);
-
-    formData.append("secret", secret);
+    formData.append("userQuestionBoardContent", content);
 
     if (images.length > 3) {
       alert("파일 업로드는 최대 3개까지 가능합니다!");
@@ -68,14 +72,14 @@ const QnaRegister = () => {
       images.forEach((image, index) => {
         formData.append(`files[${index}]`, image);
       });
-      await addQuestion(formData);
-      navigate("/compagno/question");
+      await addUserQuestion(formData);
+      navigate("/compagno/userQna");
     }
   };
 
   return (
     <Div>
-      <h1>Question?</h1>
+      <h1>Question!</h1>
 
       <div>
         <Form.Control
@@ -83,12 +87,6 @@ const QnaRegister = () => {
           placeholder="제목"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-        />
-        <Form.Control
-          type="text"
-          placeholder="비밀글 비밀번호"
-          value={secret}
-          onChange={(e) => setSecret(e.target.value)}
         />
         <Form.Control
           type="textarea"
@@ -113,4 +111,4 @@ const QnaRegister = () => {
   );
 };
 
-export default QnaRegister;
+export default UserQuestionRegister;

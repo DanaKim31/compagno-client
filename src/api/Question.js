@@ -23,17 +23,25 @@ const instance = axios.create({
 });
 
 // 목록 보기
-export const getQuestions = async (page) => {
-  return await instance.get("question?page=" + page);
+export const getQuestions = async (page, select, keyword) => {
+  let url = "question?page=" + page;
+
+  // 조건 검색....
+  if (select !== null) {
+    url += "&" + select + "=" + keyword;
+  } else {
+  }
+
+  return await instance.get(url);
 };
 
 // 매니저 목록 가져오기
-export const manageQuestions = async(page) => {
+export const manageQuestions = async (page) => {
   return await authorize.get("question/manage?page=" + page);
 };
 
 // 마이페이지 질문 목록 가져오기
-export const myQuestions = async(page) => {
+export const myQuestions = async (page) => {
   return await authorize.get("question/mypage?page=" + page);
 };
 

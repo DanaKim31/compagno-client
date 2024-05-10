@@ -12,7 +12,7 @@ import MapList from "./MapList";
 
 const Div = styled.div`
   position: relative;
-  top: 200px;
+  top: 120px;
 
   #content {
     display: flex;
