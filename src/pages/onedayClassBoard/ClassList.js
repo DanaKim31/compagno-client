@@ -152,10 +152,6 @@ const ClassList = () => {
     onedayClassAPI();
   }, []);
 
-  const Detail = () => {
-    navigate("/compagno/onedayClassBoard/detail");
-  };
-
   // const handlePageChange = async (page) => {
   //   await setPage(page);
   //   const response = await viewAllClass();
@@ -164,6 +160,10 @@ const ClassList = () => {
 
   const create = () => {
     navigate("/compagno/onedayClassBoard/create");
+  };
+
+  const Detail = (code) => {
+    navigate("/compagno/onedayClassBoard/detail/" + code);
   };
 
   //  ================================================== Pagination
@@ -179,9 +179,9 @@ const ClassList = () => {
         <div className="viewAll">
           {onedayClasses.map((onedayClass) => (
             <div
-              key={onedayClass.odcCode}
+              // key={onedayClass.odcCode}
               className="oneClass"
-              onClick={() => Detail()}
+              onClick={() => Detail(onedayClass.odcCode)}
             >
               <div id="photo" style={{ width: "100%", height: "300px" }}>
                 {onedayClass.images?.map((image) => (

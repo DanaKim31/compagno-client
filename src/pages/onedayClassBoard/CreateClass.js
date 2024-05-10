@@ -168,7 +168,7 @@ const CreateClass = () => {
 
   const onCreate = async () => {
     const formData = new FormData();
-    // formData.append("userId", user.userId);
+    formData.append("userId", user.userId);
     formData.append("odcTitle", odcTitle);
     formData.append("odcContent", odcContent);
     formData.append("odcAccompaying", odcAccompaying);
