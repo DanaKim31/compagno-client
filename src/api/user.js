@@ -100,3 +100,15 @@ export const getManageQnaList = async (pageNum) => {
 export const getManageQnaCount = async () => {
   return await authorize.get("mypage/myactivity/manageqna/count");
 };
+
+// 내 활동내역 - 입양공고 리스트 출력
+export const getAdoptionList = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/myadoption/" + id + "?page=" + pageNum
+  );
+};
+
+// 내 활동내역 - 입양공고 갯수 불러오기
+export const getAdoptionCount = async (id) => {
+  return await authorize.get("mypage/myactivity/myadoption/count/" + id);
+};
