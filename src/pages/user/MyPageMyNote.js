@@ -4,6 +4,8 @@ import { useState } from "react";
 import NoteViewAll from "../../components/note/NoteViewAll";
 import NoteCreate from "../../components/note/NoteCreate";
 import { FaRegPaperPlane } from "react-icons/fa6";
+import { BsEnvelopePaper } from "react-icons/bs";
+import { RiFolderSharedLine, RiFolderReceivedLine } from "react-icons/ri";
 
 const Div = styled.div`
   display: flex;
@@ -86,13 +88,45 @@ const Desc = styled.div`
 const MyPageMyNote = () => {
   const [currentTab, clickTab] = useState(0);
   const noteBar = [
-    { name: "전체 쪽지함", content: <NoteViewAll /> },
-    { name: "받은 쪽지함", content: "받은 쪽지함" },
-    { name: "보낸 쪽지함", content: "보낸 쪽지함" },
     {
       name: (
         <>
-          <FaRegPaperPlane style={{ marginRight: "15px" }} />
+          <BsEnvelopePaper
+            style={{ marginRight: "15px", fontSize: "1.3rem" }}
+          />
+          전체 쪽지함
+        </>
+      ),
+      content: <NoteViewAll />,
+    },
+    {
+      name: (
+        <>
+          <RiFolderReceivedLine
+            style={{ marginRight: "15px", fontSize: "1.3rem" }}
+          />
+          받은 쪽지함
+        </>
+      ),
+      content: "받은 쪽지함",
+    },
+    {
+      name: (
+        <>
+          <RiFolderSharedLine
+            style={{ marginRight: "15px", fontSize: "1.3rem" }}
+          />
+          보낸 쪽지함
+        </>
+      ),
+      content: "보낸 쪽지함",
+    },
+    {
+      name: (
+        <>
+          <FaRegPaperPlane
+            style={{ marginRight: "15px", fontSize: "1.3rem" }}
+          />
           쪽지 보내기
         </>
       ),
