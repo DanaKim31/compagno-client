@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { getCurrentPoint } from "../../api/animalBoard";
+import { useEffect, useState } from "react";
+import { getCurrentPoint } from "../../api/ad";
 
 // 받는 값. animalCategoryCode userId
-const AdLogic = ({ user }) => {
+export const AdLogic = (userId, categoryCode) => {
   /*
     포인트 증감이 일어나는 경우
     사용자가
@@ -39,12 +39,20 @@ const AdLogic = ({ user }) => {
   const hitLikePoint = 0.5;
   const hitLikeLostPoint = -0.25;
 
-  // 기존 포인트 점수 가져오기
-  const [point, setPoint] = useState({});
+  // 현재 카테고리 포인트 가져오기
+  const [points, setPoints] = useState([]);
   const currentPointAPI = async () => {
-    const response = await getCurrentPoint(user);
-    console.log(response.data);
-    setPoint(response.data);
+    if (Object.keys(userId).length !== 0) {
+      const response = await getCurrentPoint(userId);
+      setPoints(response.data); // 현재 포인트값 잘 담기는거 확인
+      console.log("함수쪽 포인트 들어옴");
+    } else {
+      setPoints(null);
+      console.log("함수쪽 포인트 유저없음");
+    }
   };
+  useEffect(() => {
+    currentPointAPI();
+  }, []);
+  return null;
 };
-export default AdLogic;

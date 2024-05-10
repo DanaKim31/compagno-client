@@ -1,5 +1,6 @@
 import "../../assets/style.css";
 import { GoArrowUpRight } from "react-icons/go";
+import AdReveal from "../animalBoard/AdReveal";
 const Section5 = () => {
   return (
     <>
@@ -13,7 +14,8 @@ const Section5 = () => {
             더 많은 사용후기 보기
           </a>
           <div>
-            <span>
+            <AdReveal />
+            {/* <span>
               <img src="/img/김현수.png" alt="logo image" />
             </span>
             <span>
@@ -60,7 +62,7 @@ const Section5 = () => {
             </span>
             <span>
               <img src="/img/김현수.png" alt="logo image" />
-            </span>
+            </span> */}
           </div>
         </div>
         <div className="marquee">

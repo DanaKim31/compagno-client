@@ -15,6 +15,7 @@ import moment from "moment";
 import { FaPencilAlt, FaReply } from "react-icons/fa";
 // import { FaReply } from "react-icons/fa";
 import styled from "styled-components";
+import MyToggleBar from "../note/MyToggleBar";
 const Comment = styled.div`
   /* background-color: red; */
   display: flex;
@@ -350,6 +351,7 @@ const ParentComments = ({
                           ) : (
                             <></>
                           )}
+                          <MyToggleBar name={comment.user.userId} />
                         </div>
                         <div>{comment.animalCommentContent}</div>
                       </div>

@@ -9,7 +9,7 @@ import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
 import { viewCount } from "../../api/animalBoard";
 import AllReplies from "../../components/animalBoard/AllReplies";
 import ParentComments from "../../components/animalBoard/ParentComments";
-import AdLogic from "../../components/animalBoard/AdLogic";
+import { AdLogic } from "../../components/animalBoard/AdLogic";
 const Div = styled.div`
   padding-top: 112px;
   display: flex;
@@ -220,6 +220,14 @@ const AnimalDetail = () => {
   //     }}
   //   />
   // ));
+  //========================================
+  // 카테고리 포인트 증감
+  // useEffect(() => {
+  //   AdLogic(user.userId, detailInfo.animalCategory.animalCategoryCode);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [animalBoardCode]);
+
+  //========================================
 
   useEffect(() => {
     if (token !== null) {
