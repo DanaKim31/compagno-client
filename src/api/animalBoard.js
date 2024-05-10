@@ -56,6 +56,10 @@ export const viewDetail = async (animalBoardCode) => {
 export const updateBoard = async (updatedInfo) => {
   return await authorize.put("animal-board", updatedInfo);
 };
+// 수정 이전에 기존 이미지 가져오기
+export const getPrevImages = async (animalBoardCode) => {
+  return await instance.get("animal-board/" + animalBoardCode + "/prevImages");
+};
 
 // 글 삭제
 export const delBoard = async (animalBoardCode) => {
@@ -114,4 +118,9 @@ export const addFavorite = async (boardData) => {
 // 게시글 좋아요 취소
 export const delFavorite = async (boardData) => {
   return await authorize.post("animal-board/delFavorite", boardData);
+};
+//=====================================================================
+// 현재 추천로직 포인트 가져오기
+export const getCurrentPoint = async (user) => {
+  return await instance.get("logic-point/" + user);
 };

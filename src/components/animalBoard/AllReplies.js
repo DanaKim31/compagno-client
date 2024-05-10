@@ -54,7 +54,7 @@ const AllReplies = ({
             animalBoardCode={animalBoardCode}
             detailInfo={detailInfo}
             animalBoardAPI={() => animalBoardAPI()}
-            countCommentAPI={() => countCommentAPI()}
+            // countCommentAPI={() => countCommentAPI()}
           />
         </Modal.Body>
       </Modal>

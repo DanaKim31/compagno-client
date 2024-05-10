@@ -1,63 +1,62 @@
 import axios from "axios";
 
+const getToken = () => {
+  return localStorage.getItem("token");
+};
+
 // 공통 경로 지정
 const instance = axios.create({
-  baseURL: "http://localhost:8080/compagno/note",
+  baseURL: "http://localhost:8080/compagno/public/",
+});
+
+// 인증 경로
+const authorize = axios.create({ baseURL: "http://localhost:8080/compagno/" });
+
+authorize.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // 쪽지 등록
 export const createNote = async (data) => {
-  return await instance.post(data);
+  return await authorize.post("note", data);
 };
 
-// 쪽지 전체 보기
-export const viewAllNote = async () => {
-  return await instance.get();
+// 쪽지 전체 보기(검색+페이징+정렬)
+export const viewAllNote = async (page) => {
+  return await authorize.get("note?page=" + page);
 };
 
 // 쪽지 1개 보기
 export const viewOnteNote = async (code) => {
-  return await instance.get("/" + code);
+  return await authorize.get("note/" + code);
 };
 
 // 보낸 편지함
 export const sendBox = async (name) => {
-  return await instance.get("/sendBox/" + name);
+  return await authorize.get("note/sendBox/" + name);
 };
 
 // 받은 편지함
 export const receiverBox = async (name) => {
-  return await instance.get("/receiveBox/" + name);
+  return await authorize.get("note/receiveBox/" + name);
 };
 
 // 검색
 // http://localhost:8080/compagno/note/search?noteRegiDate=2024-04-11&page=2
-export const searchNote = async (option, content) => {
-  let url="/search?";
-  if(option=="page"){
-    url+="page="+content;
-  }
-  if(option=="sender"){
-    url+="sender=" + content;
-  }
-  if(option=="receiver"){
-    url+="receiver="+content;
-  }
-  if(option=="noteTitle"){
-    url+="noteTitle="+content;
-  }
-  if(option=="noteRegiDate"){
-    url+="noteRegiDate="+content;
-  }
-  return await instance.get(url);
-};
+// export const searchNote = async (option) => {
+//   return await instance.get(url);
+// };
 
 // 보내는 이 삭제
 export const deleteSender = async (code) => {
-  return await instance.delete("/sender/" + code);
+  return await authorize.delete("note/sender/" + code);
 };
 
 // 받는 이 삭제
 export const deleteReceiver = async (code) => {
-  return await instance.delete("/receiver/" + code);
+  return await authorize.delete("note/receiver/" + code);
 };

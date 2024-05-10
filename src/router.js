@@ -46,6 +46,9 @@ import MyPageMyNote from "./pages/user/MyPageMyNote";
 import AdopBoardViewAll from "./pages/adoptionBoard/AdopBoardViewAll";
 import AdopBoardCreate from "./pages/adoptionBoard/AdopBoardCreate";
 import MyPageMyQnA from "./pages/user/MyPageMyQnA";
+import AdopBoardView from "./pages/adoptionBoard/AdopBoardView";
+import AdopBoardUpdate from "./pages/adoptionBoard/AdopBoardUpdate";
+import ClassDetail from "./pages/onedayClassBoard/ClassDetail";
 
 const router = createBrowserRouter([
   {
@@ -123,8 +126,8 @@ const router = createBrowserRouter([
             element: <AdopBoardViewAll />,
           },
           { path: "create", element: <AdopBoardCreate /> },
-          // { path: "view/:code", element: <LostBoardView /> },
-          // { path: "update/:code", element: <LostBoardUpdate /> },
+          { path: "view/:code", element: <AdopBoardView /> },
+          { path: "update/:code", element: <AdopBoardUpdate /> },
         ],
       },
 
@@ -181,6 +184,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <ClassList /> },
           { path: "create", element: <CreateClass /> },
+          { path: "detail/:code", element: <ClassDetail /> },
         ],
       },
       {
