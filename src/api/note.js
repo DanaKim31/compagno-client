@@ -37,11 +37,13 @@ export const viewOnteNote = async (code) => {
 };
 
 // 보낸 편지함
+//    @GetMapping("/note/sendBox/{sender}")
 export const sendBox = async (name) => {
   return await authorize.get("note/sendBox/" + name);
 };
 
 // 받은 편지함
+//   @GetMapping("/note/receiveBox/{receiver}")
 export const receiverBox = async (name) => {
   return await authorize.get("note/receiveBox/" + name);
 };
