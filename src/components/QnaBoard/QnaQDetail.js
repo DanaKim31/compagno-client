@@ -483,8 +483,9 @@ const QnaQDetail = () => {
                             {moment(question.qnaQDate).format("YY-MM-DD hh:mm")}
                           </p>
 
-                          {question.qnaQStatus === "N" ||
-                          question.qnaQStatus == null ? (
+                          {(question.qnaQStatus === "N" ||
+                            question.qnaQStatus == null) &&
+                          question.userId === user.userId ? (
                             <>
                               {/* 상태가 N: 수정, 삭제 버튼 */}
                               <div id="status">

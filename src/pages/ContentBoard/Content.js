@@ -5,12 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
   position: relative;
-  top: 200px;
+  top: 120px;
   height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: skyblue;
   span {
     font-weight: bolder;
     padding-top: 10px;
@@ -31,12 +30,6 @@ const Div = styled.div`
     }
   }
 
-  #selecttwo {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    height: 50px;
-  }
   #keyword {
     padding-left: 20px;
     padding-right: 20px;
@@ -157,7 +150,8 @@ const Content = () => {
                 );
               })}
             </select>
-
+          </div>
+          <div id="select">
             {mainCate !== 0 ? (
               <>
                 <span>서브 카테고리</span>
@@ -179,7 +173,7 @@ const Content = () => {
               <></>
             )}
           </div>
-          <div id="selecttwo">
+          <div id="select">
             {subCate !== 0 ? (
               <>
                 <span>지역</span>
@@ -196,7 +190,8 @@ const Content = () => {
             ) : (
               <></>
             )}
-
+          </div>
+          <div id="select">
             {mainReg !== 0 ? (
               <>
                 <div id="keyword">

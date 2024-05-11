@@ -19,8 +19,12 @@ const Div = styled.div`
   }
 
   #contents {
-    height: 300px;
+    width: 80%;
+    margin: 0 auto;
     padding-top: 50px;
+    padding-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
 
     p {
       margin-left: 50px;
@@ -29,7 +33,8 @@ const Div = styled.div`
 
   #map {
     height: 500px;
-    width: 100%;
+    width: 80%;
+    margin: 0 auto;
   }
 `;
 
@@ -60,11 +65,18 @@ const ContentDetail = () => {
           <p>{content.subCate}</p>
         </div>
         <div id="contents">
-          <p>주소 : {content.roadAddr}</p>
-          <p>전화번호 : {content.phone}</p>
-          <p>휴무일 : {content.holiday}</p>
-          <p>운영시간 : {content.operatingHours}</p>
-          <p>주차 가능 여부 : {content.parking}</p>
+          <div>
+            <p>주소 : {content.roadAddr}</p>
+            <p>전화번호 : {content.phone}</p>
+            <p>
+              홈페이지 : <a href={content.url}>{content.url}</a>
+            </p>
+          </div>
+          <div>
+            <p>휴무일 : {content.holiday}</p>
+            <p>운영시간 : {content.operatingHours}</p>
+            <p>주차 가능 여부 : {content.parking}</p>
+          </div>
         </div>
       </div>
       <Map latitude={latitude} longtitude={longtitude} />

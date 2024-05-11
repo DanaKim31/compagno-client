@@ -12,6 +12,21 @@ import moment from "moment";
 import useDidMountEffect from "../../assets/useDidMountEffect";
 import MyToggleBar from "../../components/note/MyToggleBar";
 import { Form, Button } from "react-bootstrap";
+import styled from "styled-components";
+
+const Div = styled.div`
+  #answer {
+    background-color: gray;
+    border: 1px solid;
+    margin-bottom: 20px;
+
+    #reanswer {
+      background-color: lightgray;
+      margin-left: 50px;
+      border: 1px solid;
+    }
+  }
+`;
 
 const UserQnaAnswer = ({ question }) => {
   const navigate = useNavigate();
@@ -151,7 +166,7 @@ const UserQnaAnswer = ({ question }) => {
   };
 
   return (
-    <>
+    <Div>
       <div>
         {userAnswers?.length === 0 ? (
           <>
@@ -169,7 +184,7 @@ const UserQnaAnswer = ({ question }) => {
           <>
             {/* 답변이 있는 경우 */}
             {userAnswers.map((answer) => (
-              <div key={answer.userAnswerBoardCode}>
+              <div key={answer.userAnswerBoardCode} id="answer">
                 <div>
                   <p>상위 답변=====================================</p>
                   <p>
@@ -246,7 +261,7 @@ const UserQnaAnswer = ({ question }) => {
                 )}
 
                 {answer.answers.map((reanswer) => (
-                  <div key={reanswer.userAnswerBoardCode}>
+                  <div key={reanswer.userAnswerBoardCode} id="reanswer">
                     <p>!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~하위답변</p>
                     {user.userId === reanswer.user.userId ? (
                       <>
@@ -345,7 +360,7 @@ const UserQnaAnswer = ({ question }) => {
           </>
         )}
       </div>
-    </>
+    </Div>
   );
 };
 

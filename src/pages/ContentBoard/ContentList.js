@@ -12,16 +12,24 @@ import MapList from "./MapList";
 
 const Div = styled.div`
   position: relative;
-  top: 120px;
+  top: 130px;
 
+  #category {
+    margin-left: 100px;
+    display: flex;
+    p {
+      margin-top: 15px;
+      margin-left: 5px;
+    }
+  }
   #content {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     width: 80%;
     margin: 0 auto;
+    padding: 30px;
 
-    background-color: pink;
     th {
       font-weight: bolder;
       font-size: 20px;
@@ -31,13 +39,16 @@ const Div = styled.div`
       text-decoration: none;
       color: black;
     }
+    td {
+      padding: 10px;
+    }
     #map {
       display: flex;
       justify-content: center;
       width: 600px;
       height: 500px;
       margin-top: 150px;
-      background-color: skyblue;
+      margin-left: 50px;
     }
   }
   .paging {
@@ -58,12 +69,12 @@ const ContentList = () => {
   const [content, setContent] = useState([]);
   const [contents, setContents] = useState([]);
 
-  const location = useLocation();
-
   const [mainCate, setMainCate] = useState(0);
   const [subCate, setSubCate] = useState(0);
   const [mainReg, setMainReg] = useState(0);
   const [keyword, setKeyword] = useState("");
+
+  const [category, setCategory] = useState("");
 
   // useLocation, useSearchParams
   function useQuery() {
@@ -85,9 +96,68 @@ const ContentList = () => {
     }
   }, []);
 
+  const cateAPI = (subCate) => {
+    switch (subCate) {
+      case "1":
+        setCategory("동물약국");
+        break;
+
+      case "2":
+        setCategory("동물병원");
+        break;
+
+      case "3":
+        setCategory("미술관");
+        break;
+
+      case "4":
+        setCategory("문예회관");
+        break;
+
+      case "5":
+        setCategory("펜션");
+        break;
+
+      case "6":
+        setCategory("여행지");
+        break;
+
+      case "7":
+        setCategory("박물관");
+        break;
+
+      case "8":
+        setCategory("카페");
+        break;
+
+      case "9":
+        setCategory("식당");
+        break;
+
+      case "10":
+        setCategory("반려동물 용품");
+        break;
+
+      case "11":
+        setCategory("미용");
+        break;
+
+      case "12":
+        setCategory("위탁 관리");
+        break;
+
+      default:
+        setCategory("동물약국");
+    }
+  };
+
   useEffect(() => {
     if (mainCate !== 0) {
       ContentAPI();
+    }
+
+    if (subCate !== 0) {
+      cateAPI(subCate);
     }
   }, [mainCate, subCate, mainReg, keyword, page]);
 
@@ -134,12 +204,16 @@ const ContentList = () => {
   return (
     <Div>
       <>
-        <p>전체 {contents.totalElements}건</p>
+        <div id="category">
+          <h1>{category}</h1>
+          <p>전체 {contents.totalElements}건</p>
+        </div>
         <div id="content">
           <table>
             <thead>
               <tr>
-                <th>이름</th>
+                <th>기관명</th>
+                <th>주소</th>
               </tr>
             </thead>
             <tbody>
@@ -151,6 +225,7 @@ const ContentList = () => {
                         {item.name}
                       </a>
                     </td>
+                    <td>{item.addr}</td>
                   </tr>
                 );
               })}
