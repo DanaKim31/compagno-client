@@ -597,6 +597,18 @@ header a {
   width: 64vh;
   height: 31vh;
 }
+
+.btn {
+  text-decoration: none;
+  border-radius: 5px;
+  border: 2px solid;
+  color: rgb(32, 61, 59);
+  text-decoration: none;
+  padding: 10px;
+  font-size: 1rem;
+  align-items: center;
+}
+
 /* =================== 가로로 움직이는 =================== */
 
 #section5 {
