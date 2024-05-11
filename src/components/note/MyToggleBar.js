@@ -61,18 +61,16 @@ const MyToggleBar = (props) => {
       >
         {props.name == "" || user.userNickname == props.name ? (
           <>
-            <a href="/compagno/mypage/myanimalfav">쪽지함</a>
+            <a href="/compagno/mypage/mynote">쪽지함</a>
             <a href="/compagno/mypage/myanimalfav">활동 내역</a>
           </>
         ) : (
           <>
-            <a href="/compagno/mypage/myanimalfav" style={{ width: "62px" }}>
+            <a href="/compagno/mypage/mynote" style={{ width: "62px" }}>
               쪽지 보내기
             </a>
           </>
         )}
-        {/* <a href="/compagno/mypage/myactivity">쪽지 보내기</a> */}
-        {/* <a href="/compagno/mypage/myactivity">활동 내역</a> */}
       </div>
     </Div>
   );

@@ -22,7 +22,6 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import MyToggleBar from "../note/MyToggleBar";
-// import OtherToggleBar from "../note/OtherToggleBar";
 
 const Div = styled.div`
   @font-face {
@@ -150,7 +149,6 @@ const Comments = () => {
       },
     });
   };
-
   const updateComment = async () => {
     await updateCommentAdop(edit);
     setEdit({});
@@ -236,9 +234,8 @@ const Comments = () => {
               }}
             >
               <img
-                src={"http://localhost:8081/upload/" + user.userImg}
-                // src={"http://192.168.10.28:8081/" + user.userImg}
-
+                // src={"http://localhost:8081/upload/" + user.userImg}
+                src={"http://192.168.10.28:8081/" + user.userImg}
                 id="userImg"
                 style={{
                   width: "35px",
@@ -249,7 +246,7 @@ const Comments = () => {
                 }}
               />
               {/* {user.userNickname} */}
-              <MyToggleBar name={""} />
+              <MyToggleBar name={user.userNickname} />
             </div>
             <div
               id="boxAndBtn"
@@ -340,10 +337,10 @@ const Comments = () => {
                         marginRight: "10px",
                         alignContent: "center",
                       }}
-                      src={
-                        "http://localhost:8081/upload/" + comment.user.userImg
-                        // "http://192.168.10.28:8081/" + comment.user.userImg
-                      }
+                      // src={
+                      //   "http://localhost:8081/upload/" + comment.user.userImg
+                      // }
+                      src={"http://192.168.10.28:8081/" + comment.user.userImg}
                     />
                   </div>
                   <div
@@ -556,9 +553,12 @@ const Comments = () => {
                                     height: "25px",
                                     borderRadius: "50%",
                                   }}
+                                  // src={
+                                  //   "http://localhost:8081/upload/" +
+                                  //   bottom.user.userImg
+                                  // }
                                   src={
-                                    "http://localhost:8081/upload/" +
-                                    // "http://192.168.10.28:8081/" +
+                                    "http://192.168.10.28:8081/" +
                                     bottom.user.userImg
                                   }
                                 />
@@ -791,7 +791,11 @@ const Comments = () => {
                       >
                         <div
                           id="user"
-                          style={{ height: "15px", margin: "8px 10px" }}
+                          style={{
+                            height: "15px",
+                            margin: "8px 10px",
+                            display: "flex",
+                          }}
                         >
                           <img
                             style={{
@@ -801,13 +805,16 @@ const Comments = () => {
                               border: "0.3px solid black",
                               marginRight: "10px",
                             }}
-                            src={
-                              "http://localhost:8081/upload/" + user.userImg
-                              //   "http://192.168.10.28:8081/" + user.userImg
-                            }
+                            // src={
+                            //   "http://localhost:8081/upload/" + user.userImg
+                            // }
+                            src={"http://192.168.10.28:8081/" + user.userImg}
                             id="userImg"
                           />
-                          <MyToggleBar name={""} />
+                          <MyToggleBar
+                            name={user.userNickname}
+                            style={{ zIndex: "1" }}
+                          />
                           {/* {user.userNickname} */}
                         </div>
                         <div
