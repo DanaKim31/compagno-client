@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import moment from "moment";
 import "moment/locale/ko";
+import { useNavigate } from "react-router-dom";
 
 import { BsEnvelopePaper } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
@@ -96,6 +97,10 @@ const NoteViewAll = () => {
 
   useEffect(() => {
     notesAPI();
+  }, []);
+
+  useEffect(() => {
+    notesAPI();
   }, [user, page]);
 
   useEffect(() => {
@@ -110,6 +115,12 @@ const NoteViewAll = () => {
     }
     setPages(pageList);
   }, [totalPage]);
+
+  //1개 보기
+  const navigate = useNavigate();
+  const onDetail = () => {
+    navigate("/lostBoard/viewAll");
+  };
 
   return (
     <Div>
@@ -155,7 +166,6 @@ const NoteViewAll = () => {
       <table style={{ width: "100%" }}>
         <thead>
           <tr>
-            <th>삭제</th>
             <th>보내는 사람</th>
             <th>제목</th>
             <th>내용</th>
@@ -165,10 +175,11 @@ const NoteViewAll = () => {
         </thead>
         <tbody>
           {notes.map((note) => (
-            <tr key={note.noteCode}>
-              <td>
-                <input type="checkbox" />
-              </td>
+            <tr
+              key={note.noteCode}
+              onClick={onDetail}
+              style={{ cursor: "pointer" }}
+            >
               <td>{note.sender}</td>
               <td>{note.noteTitle}</td>
               <td>{note.noteContent}</td>

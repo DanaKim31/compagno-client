@@ -19,8 +19,8 @@ const Div = styled.div`
   }
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
-  border: 1px solid black;
   width: 100%;
+  height: 100%;
   .notePerson {
     display: flex;
     justify-content: space-around;
@@ -33,7 +33,7 @@ const Div = styled.div`
   }
 `;
 
-const NoteCreate = () => {
+const NoteCreate = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => {
@@ -76,14 +76,14 @@ const NoteCreate = () => {
     formData.append("noteTitle", noteTitle);
     formData.append("noteContent", noteContent);
     formData.append("sender", user.userNickname);
-    formData.append("receiver", receiver);
+    formData.append("receiver", props.nickName);
     formData.append("noteRegiDate", noteRegiDate);
     files.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
 
-    if (receiver == "" || noteTitle == "") {
-      alert("보내는 이와 제목을 필수 작성입니다.");
+    if (noteTitle == "") {
+      alert("제목은 필수입니다.");
     } else {
       createNote(formData);
       navigate("/compagno/mypage/mynote");
@@ -92,9 +92,11 @@ const NoteCreate = () => {
 
   // 전송 취소
   const delCreate = () => {
-    navigate(<MyPageMyNote />);
+    // navigate("/");
+    window.location.reload();
   };
-
+  console.log(props.nickName);
+  console.log(receiver);
   return (
     <Div className="noteCreate">
       <FaRegPaperPlane style={{ fontSize: "2.3rem", marginTop: "30px" }} />
@@ -105,11 +107,7 @@ const NoteCreate = () => {
         </div>
         <div id="receiver">
           <span>받는 사람</span>
-          <input
-            type="text"
-            value={receiver}
-            onChange={(e) => setReceiver(e.target.value)}
-          />
+          <input type="text" value={props.nickName} readOnly />
         </div>
       </div>
       <div className="contents">
