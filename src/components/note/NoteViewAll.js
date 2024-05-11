@@ -15,6 +15,35 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 
+const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  border: 1px solid black;
+  width: 100%;
+  font-weight: bold;
+  input {
+    font-weight: bold;
+  }
+  span {
+    font-weight: bold;
+  }
+  #pageBtn {
+    font-weight: bold;
+    border-radius: 50%;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    width: 30px;
+    font-size: 1rem;
+    align-items: center;
+  }
+`;
+
 const NoteViewAll = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
@@ -41,7 +70,7 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-  console.log(user.userNickname);
+
   const notesAPI = async () => {
     let response = await viewAllNote(
       user.userNickname +
@@ -83,7 +112,7 @@ const NoteViewAll = () => {
   }, [totalPage]);
 
   return (
-    <div style={{ border: "1px solid black", width: "100%" }}>
+    <Div>
       <div className="search">
         <div id="searchSender">
           <label>
@@ -106,7 +135,7 @@ const NoteViewAll = () => {
 
         <div id="searchNoteRegiDate">
           <label>
-            작성 일자
+            날짜
             <input
               type="date"
               max={moment().format("YYYY-MM-DD")}
@@ -126,16 +155,20 @@ const NoteViewAll = () => {
       <table style={{ width: "100%" }}>
         <thead>
           <tr>
+            <th>삭제</th>
             <th>보내는 사람</th>
             <th>제목</th>
             <th>내용</th>
             <th>받는 사람</th>
-            <th>보낸 날짜</th>
+            <th>날짜</th>
           </tr>
         </thead>
         <tbody>
           {notes.map((note) => (
             <tr key={note.noteCode}>
+              <td>
+                <input type="checkbox" />
+              </td>
               <td>{note.sender}</td>
               <td>{note.noteTitle}</td>
               <td>{note.noteContent}</td>
@@ -157,6 +190,7 @@ const NoteViewAll = () => {
             key={index}
             value={num}
             onClick={(e) => setPage(Number(e.target.value))}
+            id="pageBtn"
           >
             {num}
           </button>
@@ -173,7 +207,7 @@ const NoteViewAll = () => {
           onClick={() => setPage(totalPage)}
         />
       </div>
-    </div>
+    </Div>
   );
 };
 export default NoteViewAll;

@@ -6,6 +6,8 @@ import NoteCreate from "../../components/note/NoteCreate";
 import { FaRegPaperPlane } from "react-icons/fa6";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { RiFolderSharedLine, RiFolderReceivedLine } from "react-icons/ri";
+import NoteViewSendBox from "../../components/note/NoteViewSendBox";
+import NoteViewReceiveBox from "../../components/note/NoteViewReceiveBox";
 
 const Div = styled.div`
   display: flex;
@@ -108,7 +110,7 @@ const MyPageMyNote = () => {
           받은 쪽지함
         </>
       ),
-      content: "받은 쪽지함",
+      content: <NoteViewReceiveBox />,
     },
     {
       name: (
@@ -119,7 +121,7 @@ const MyPageMyNote = () => {
           보낸 쪽지함
         </>
       ),
-      content: "보낸 쪽지함",
+      content: <NoteViewSendBox />,
     },
     {
       name: (

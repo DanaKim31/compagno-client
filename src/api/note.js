@@ -44,7 +44,7 @@ export const sendBox = async (name) => {
 
 // 받은 편지함
 //   @GetMapping("/note/receiveBox/{receiver}")
-export const receiverBox = async (name) => {
+export const receivBox = async (name) => {
   return await authorize.get("note/receiveBox/" + name);
 };
 
