@@ -21,6 +21,7 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import MyToggleBar from "../note/MyToggleBar";
 
 const Div = styled.div`
   @font-face {
@@ -246,15 +247,12 @@ const Comments = () => {
               id="user"
               style={{
                 margin: "10px 10px",
+                display: "flex",
               }}
             >
               <img
-                src={"http://localhost:8081/upload/" + user.userImg}
-                // src={"http://192.168.10.28:8081/" + user.userImg}
-                // src={image.lostImage?.replace(
-                //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                //   "http://192.168.10.28:8081/lostBoard/"
-                // )}
+                // src={"http://localhost:8081/upload/" + user.userImg}
+                src={"http://192.168.10.28:8081/" + user.userImg}
                 id="userImg"
                 style={{
                   width: "35px",
@@ -264,7 +262,7 @@ const Comments = () => {
                   marginRight: "10px",
                 }}
               />
-              {user.userNickname}
+              <MyToggleBar name={user.userNickname} />
             </div>
             <div
               id="boxAndBtn"
@@ -356,8 +354,8 @@ const Comments = () => {
                         alignContent: "center",
                       }}
                       src={
-                        "http://localhost:8081/upload/" + comment.user.userImg
-                        // "http://192.168.10.28:8081/" + comment.user.userImg
+                        // "http://localhost:8081/upload/" + comment.user.userImg
+                        "http://192.168.10.28:8081/" + comment.user.userImg
                       }
                     />
                   </div>
@@ -382,7 +380,8 @@ const Comments = () => {
                             style={{ marginBottom: "5px", fontSize: "0.9rem" }}
                           >
                             {" "}
-                            {comment.user.userNickname}
+                            {/* {comment.user.userNickname} */}
+                            <MyToggleBar name={comment.user.userNickname} />
                           </p>
                           <div
                             style={{ display: "flex", alignItems: "center" }}
@@ -460,7 +459,8 @@ const Comments = () => {
                                 id="userNickname"
                                 style={{ marginBottom: "0px" }}
                               >
-                                {comment.user.userNickname}
+                                {/* {comment.user.userNickname} */}
+                                <MyToggleBar name={comment.user.userNickname} />
                               </p>
                               {comment.user.userNickname ==
                               lost.userNickname ? (
@@ -570,8 +570,8 @@ const Comments = () => {
                                     borderRadius: "50%",
                                   }}
                                   src={
-                                    "http://localhost:8081/upload/" +
-                                    // "http://192.168.10.28:8081/" +
+                                    // "http://localhost:8081/upload/" +
+                                    "http://192.168.10.28:8081/" +
                                     bottom.user.userImg
                                   }
                                 />
@@ -598,7 +598,10 @@ const Comments = () => {
                                       paddingTop: "5px",
                                     }}
                                   >
-                                    {bottom.user.userNickname}
+                                    {/* {bottom.user.userNickname} */}
+                                    <MyToggleBar
+                                      name={bottom.user.userNickname}
+                                    />
                                   </span>
                                   {/* 게시글 작성자와 댓글 작성자가 같을 때 -> 작성자 표시 */}
                                   {lost.userId == bottom.user.userId ? (
@@ -801,7 +804,11 @@ const Comments = () => {
                       >
                         <div
                           id="user"
-                          style={{ height: "15px", margin: "8px 10px" }}
+                          style={{
+                            height: "15px",
+                            margin: "8px 10px",
+                            display: "flex",
+                          }}
                         >
                           <img
                             style={{
@@ -812,12 +819,13 @@ const Comments = () => {
                               marginRight: "10px",
                             }}
                             src={
-                              "http://localhost:8081/upload/" + user.userImg
-                              //   "http://192.168.10.28:8081/" + user.userImg
+                              // "http://localhost:8081/upload/" + user.userImg
+                              "http://192.168.10.28:8081/" + user.userImg
                             }
                             id="userImg"
                           />
-                          {user.userNickname}
+                          {/* {user.userNickname} */}
+                          <MyToggleBar name={user.userNickname} />
                         </div>
                         <div
                           id="boxAndBtn"

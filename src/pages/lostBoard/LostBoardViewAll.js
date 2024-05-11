@@ -257,14 +257,6 @@ const ViewAllLostBoard = () => {
     setPages(pageList); // 해당 list 배열을 setPages에 담기
   }, [totalPage]);
 
-  // const [mainImg, setMainImg] = useState({});
-  // const mainImgAPI = () => {
-  //   setMainImg(losts)
-  // };
-  // useEffect(() => {
-  //   mainImgAPI();
-  // }, []);
-
   const navigate = useNavigate();
   const onCreate = async () => {
     if (Object.keys(user).length !== 0) {
@@ -378,14 +370,14 @@ const ViewAllLostBoard = () => {
               <div id="imageBox">
                 <img
                   id="mainImage"
-                  src={lost.lostAnimalImage?.replace(
-                    "C:",
-                    "http://localhost:8081"
-                  )}
                   // src={lost.lostAnimalImage?.replace(
-                  //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                  //   "http://192.168.10.28:8081/lostBoard/"
+                  //   "C:",
+                  //   "http://localhost:8081"
                   // )}
+                  src={lost.lostAnimalImage?.replace(
+                    "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                    "http://192.168.10.28:8081/lostBoard/"
+                  )}
                 />
               </div>
               <div id="regiDate">
@@ -410,7 +402,6 @@ const ViewAllLostBoard = () => {
       </div>
       <div className="paging">
         <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
-        {/* 가장 첫 페이지로 */}
         <FaAngleLeft
           className="iconPaging"
           onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
