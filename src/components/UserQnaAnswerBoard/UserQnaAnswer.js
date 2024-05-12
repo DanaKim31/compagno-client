@@ -36,11 +36,14 @@ const Div = styled.div`
       button {
         margin: 5px;
       }
+      #reanswertopbar {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 10px;
+      }
     }
 
     #reanswerregister {
-      padding-top: 30px;
-      padding-left: 30px;
       margin-left: 50px;
       margin-right: 50px;
       margin-bottom: 10px;
@@ -73,9 +76,9 @@ const Div = styled.div`
   }
 
   #topmenu {
-    background-color: skyblue;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
   }
 `;
 
@@ -221,17 +224,23 @@ const UserQnaAnswer = ({ question }) => {
       <div>
         {userAnswers?.length === 0 ? (
           <>
-            {/* 답변이 없는 경우 */}
-            <p>답변 없는디요</p>
-            <div id="answerregister">
-              <Form.Control
-                type="textarea"
-                placeholder="답변 작성"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-              <Button onClick={UseranswerSubmit}>등록</Button>
-            </div>
+            {user.userId !== undefined ? (
+              <>
+                {/* 답변이 없는 경우 */}
+                <p>답변 없는디요</p>
+                <div id="answerregister">
+                  <Form.Control
+                    type="textarea"
+                    placeholder="답변 작성"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                  />
+                  <Button onClick={UseranswerSubmit}>등록</Button>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </>
         ) : (
           <>
@@ -239,69 +248,64 @@ const UserQnaAnswer = ({ question }) => {
             {userAnswers.map((answer) => (
               <div key={answer.userAnswerBoardCode} id="answer">
                 <div id="topmenu">
-                  <div>
-                    <p>상위 답변=====================================</p>
+                  <div id="default">
                     <p>
-                      <MyToggleBar name={question.userNickname} />
+                      <MyToggleBar name={answer.user.userNickname} />
                     </p>
                     <p>
                       날짜 :
                       {moment(answer.userAnswerDate).format("YY-MM-DD HH:mm")}
                     </p>
-
-                    {user.userId === undefined ? (
-                      <>
-                        <p>비회원인데용</p>
-                      </>
-                    ) : (
-                      <div id="editdeletebutton">
-                        {user.userId === question.userId ? (
-                          <>
-                            {/* 접속 유저 = 질문 작성자 */}
-                            <p>접속 유저 = 질문 작성자!</p>
-
-                            <div>
+                  </div>
+                  {user.userId === undefined ? (
+                    <>
+                      <p>비회원인데용</p>
+                    </>
+                  ) : (
+                    <div id="editdeletebutton">
+                      {user.userId === question.userId ? (
+                        <>
+                          {/* 접속 유저 = 질문 작성자 */}
+                          <p>접속 유저 = 질문 작성자!</p>
+                          <div>
+                            <Button
+                              variant="dark"
+                              onClick={() => onUpdateUserAnswer(answer)}
+                            >
+                              수정
+                            </Button>
+                            <Button variant="dark"> 삭제</Button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {user.userId === answer.user.userId ? (
+                            <>
+                              {/* 접속 유저 = 댓글 작성자 */}
+                              <p> 접속 유저 = 해당 댓글 작성자</p>
                               <Button
                                 variant="dark"
                                 onClick={() => onUpdateUserAnswer(answer)}
                               >
                                 수정
                               </Button>
-                              <Button variant="dark"> 삭제</Button>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            {user.userId === answer.user.userId ? (
-                              <>
-                                {/* 접속 유저 = 댓글 작성자 */}
-                                <p> 접속 유저 = 해당 댓글 작성자</p>
-                                <Button
-                                  variant="dark"
-                                  onClick={() => onUpdateUserAnswer(answer)}
-                                >
-                                  수정
-                                </Button>
-                                <Button
-                                  onClick={() =>
-                                    onDeleteUserAnswer(
-                                      answer.userAnswerBoardCode
-                                    )
-                                  }
-                                >
-                                  삭제
-                                </Button>
-                              </>
-                            ) : (
-                              <>
-                                <p>남의 글이니까 보기만하세요</p>
-                              </>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                              <Button
+                                onClick={() =>
+                                  onDeleteUserAnswer(answer.userAnswerBoardCode)
+                                }
+                              >
+                                삭제
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <p>남의 글이니까 보기만하세요</p>
+                            </>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
                 {editA !== null &&
                 editA?.userAnswerBoardCode === answer.userAnswerBoardCode ? (
@@ -331,41 +335,53 @@ const UserQnaAnswer = ({ question }) => {
 
                 {answer.answers.map((reanswer) => (
                   <div key={reanswer.userAnswerBoardCode} id="reanswer">
-                    {user.userId === reanswer.user.userId ? (
-                      <>
-                        {/* 접속 유저 = 댓글 작성자 */}
-                        <p>{reanswer.user.userId}</p>
-                        <Button
-                          variant="dark"
-                          onClick={() => onUpdateUserReAnswer(reanswer)}
-                        >
-                          수정
-                        </Button>
-                        <Button
-                          variant="dark"
-                          onClick={() =>
-                            onDeleteUserAnswer(reanswer.userAnswerBoardCode)
-                          }
-                        >
-                          삭제
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        {reanswer.user.userId === question.userId ? (
-                          <>
-                            {/* 글 작성자 본인! */}
-                            <p>{reanswer.user.userId}</p>
-                            <p>{question.userId}</p>
-                            <p>유저 이름 옆에 작성자 달려있으면 좋겠군</p>
-                          </>
-                        ) : (
-                          <>
-                            <p>남의 글이니까 보기만하세요</p>
-                          </>
-                        )}
-                      </>
-                    )}
+                    <div id="reanswertopbar">
+                      {user.userId === reanswer.user.userId ? (
+                        <>
+                          {/* 접속 유저 = 댓글 작성자 */}
+                          <p>
+                            <MyToggleBar name={reanswer.user.userNickname} />
+                          </p>
+                          <div>
+                            <Button
+                              variant="dark"
+                              onClick={() => onUpdateUserReAnswer(reanswer)}
+                            >
+                              수정
+                            </Button>
+                            <Button
+                              variant="dark"
+                              onClick={() =>
+                                onDeleteUserAnswer(reanswer.userAnswerBoardCode)
+                              }
+                            >
+                              삭제
+                            </Button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {reanswer.user.userId === question.userId ? (
+                            <>
+                              {/* 글 작성자 본인! */}
+                              <p>
+                                {reanswer.user.userId}
+                                <span
+                                  id="writer"
+                                  style={{ border: "2px solid" }}
+                                >
+                                  작성자
+                                </span>
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p>남의 글이니까 보기만하세요</p>
+                            </>
+                          )}
+                        </>
+                      )}
+                    </div>
                     {editA !== null &&
                     editA?.userAnswerBoardCode ===
                       reanswer.userAnswerBoardCode ? (
@@ -395,12 +411,19 @@ const UserQnaAnswer = ({ question }) => {
                   </div>
                 ))}
                 <div id="reanswerregister">
-                  <Button
-                    variant="dark"
-                    onClick={(e) => setCode(answer.userAnswerBoardCode)}
-                  >
-                    답변 달기
-                  </Button>
+                  {user.userId === undefined ? (
+                    <></>
+                  ) : (
+                    <>
+                      <Button
+                        variant="dark"
+                        onClick={(e) => setCode(answer.userAnswerBoardCode)}
+                      >
+                        답변 달기
+                      </Button>
+                    </>
+                  )}
+
                   {code === answer.userAnswerBoardCode ? (
                     <>
                       <div id="reanswerregistercontent">
@@ -416,9 +439,7 @@ const UserQnaAnswer = ({ question }) => {
                       </div>
                     </>
                   ) : (
-                    <>
-                      <p>여기답변달타이밍아닌디요</p>
-                    </>
+                    <></>
                   )}
                 </div>
 
@@ -431,19 +452,25 @@ const UserQnaAnswer = ({ question }) => {
           <></>
         ) : (
           <>
-            {/* 상위 답변 작성 */}
-            <div id="answerregister">
-              <Form.Control
-                type="textarea"
-                placeholder="답변 작성"
-                variant="dark"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-              <Button variant="dark" onClick={UseranswerSubmit}>
-                등록
-              </Button>
-            </div>
+            {user.userId === undefined ? (
+              <></>
+            ) : (
+              <>
+                {/* 상위 답변 작성 */}
+                <div id="answerregister">
+                  <Form.Control
+                    type="textarea"
+                    placeholder="답변 작성"
+                    variant="dark"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                  />
+                  <Button variant="dark" onClick={UseranswerSubmit}>
+                    등록
+                  </Button>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>

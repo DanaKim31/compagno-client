@@ -34,6 +34,7 @@ const UserQuestionRegister = () => {
   const [userImg, setUserImg] = useState("");
 
   // form을 통해 사용자에게 입력받을 곳
+  const [animalCatecode, setAnimalCateCode] = useState(0);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
@@ -42,6 +43,10 @@ const UserQuestionRegister = () => {
   const imageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
+  };
+
+  const handleselectaniCate = (e) => {
+    setAnimalCateCode(e.target.value);
   };
 
   // 등록 취소 시 리스트로 되돌아오기
@@ -61,6 +66,8 @@ const UserQuestionRegister = () => {
 
     formData.append("userImg", user.userImg);
     setUserImg(user.userImg);
+
+    formData.append("animalCategoryCode", animalCatecode);
 
     formData.append("userQuestionBoardTitle", title);
 
@@ -82,6 +89,11 @@ const UserQuestionRegister = () => {
       <h1>Question!</h1>
 
       <div>
+        <select onChange={handleselectaniCate} value={animalCatecode}>
+          <option value={1}>개</option>
+          <option value={2}>고양이</option>
+          <option value={3}>기타</option>
+        </select>
         <Form.Control
           type="text"
           placeholder="제목"

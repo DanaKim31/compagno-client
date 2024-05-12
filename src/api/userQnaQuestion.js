@@ -28,11 +28,15 @@ export const addUserQuestion = (data) => {
 };
 
 // 2. 리스트 출력
-export const getUserQuestions = async (page, select, keyword) => {
+export const getUserQuestions = async (page, select, keyword, category) => {
   let url = "userQuestion?page=" + page;
 
   if (select !== "") {
     url += "&" + select + "=" + keyword;
+  }
+
+  if (category !== 0) {
+    url += "&category=" + category;
   }
 
   return await instance.get(url);

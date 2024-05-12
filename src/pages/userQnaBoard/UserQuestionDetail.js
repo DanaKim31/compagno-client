@@ -111,6 +111,7 @@ const UserQuestionDetail = () => {
   // 1. 상세보기
   const questionAPI = async () => {
     const response = await getUserQuestion(userQuestionBoardCode);
+    console.log(response.data);
     setQuestion(response.data);
   };
 
@@ -363,6 +364,7 @@ const UserQuestionDetail = () => {
                   <hr />
                   {/* 상세 정보 */}
                   <div>
+                    <p>{question.animalCategoryCode}</p>
                     <p>{question.userQuestionBoardContent}</p>
                   </div>
                   <div id="images">

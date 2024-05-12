@@ -147,12 +147,13 @@ const UserQnaList = () => {
   }, [totalPage]);
 
   const [select, setSelect] = useState("title");
+  const [category, setCategory] = useState(0);
   const [keyword, setKeyword] = useState("");
 
   const search = async () => {
-    const response = await getUserQuestions(page, select, keyword);
-    console.log(response.data);
+    const response = await getUserQuestions(page, select, keyword, category);
     setQuestions(response.data);
+    console.log(response.data);
     setTotalPage(response.data?.totalPages);
   };
 
@@ -167,6 +168,12 @@ const UserQnaList = () => {
             <option value={"title"}>제목</option>
             <option value={"content"}>내용</option>
             <option value={"id"}>작성자</option>
+          </select>
+          <select onChange={(e) => setCategory(e.target.value)}>
+            <option value={0}>카테고리</option>
+            <option value={1}>개</option>
+            <option value={2}>고양이</option>
+            <option value={3}>기타</option>
           </select>
           <Form.Control
             type="text"
