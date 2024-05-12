@@ -1,4 +1,4 @@
-import { viewAllNote } from "../../api/note";
+import { viewAllNote, deleteReceiver, deleteSender } from "../../api/note";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,7 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import NoteViewDetail from "./NoteViewDetail";
 
 const Div = styled.div`
   @font-face {
@@ -44,6 +45,20 @@ const Div = styled.div`
     align-items: center;
   }
 `;
+const ModalContariner = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  border: 1px solid black;
+  width: 100%;
+  font-weight: bold;
+  height: 300px;
+`;
 
 const NoteViewAll = () => {
   const dispatch = useDispatch();
@@ -71,7 +86,7 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-
+  console.log(user.userNickname);
   const notesAPI = async () => {
     let response = await viewAllNote(
       user.userNickname +
@@ -118,107 +133,140 @@ const NoteViewAll = () => {
 
   //1개 보기
   const navigate = useNavigate();
-  const onDetail = () => {
-    navigate("/lostBoard/viewAll");
+  const [code, setCode] = useState(0);
+  const [openDetail, setOpenDetail] = useState(false);
+  const onDetail = (e) => {
+    setCode(e);
+    setOpenDetail(true);
   };
 
+  // 삭제하기
+  const delNote = () => {};
+
   return (
-    <Div>
-      <div className="search">
-        <div id="searchSender">
-          <label>
-            보내는 사람
-            <input type="text" onChange={(e) => setSender(e.target.value)} />
-          </label>
-        </div>
-        <div id="searchReceiver">
-          <label>
-            받는 사람
-            <input type="text" onChange={(e) => setReceiver(e.target.value)} />
-          </label>
-        </div>
-        <div id="searchTitle">
-          <label>
-            제목
-            <input type="text" onChange={(e) => setNoteTitle(e.target.value)} />
-          </label>
-        </div>
+    <>
+      {!openDetail ? (
+        <>
+          <Div>
+            <div className="search">
+              <div id="searchSender">
+                <label>
+                  보내는 사람
+                  <input
+                    type="text"
+                    onChange={(e) => setSender(e.target.value)}
+                  />
+                </label>
+              </div>
+              <div id="searchReceiver">
+                <label>
+                  받는 사람
+                  <input
+                    type="text"
+                    onChange={(e) => setReceiver(e.target.value)}
+                  />
+                </label>
+              </div>
+              <div id="searchTitle">
+                <label>
+                  제목
+                  <input
+                    type="text"
+                    onChange={(e) => setNoteTitle(e.target.value)}
+                  />
+                </label>
+              </div>
 
-        <div id="searchNoteRegiDate">
-          <label>
-            날짜
-            <input
-              type="date"
-              max={moment().format("YYYY-MM-DD")}
-              onChange={(e) => setNoteRegiDate(e.target.value)}
-            />
-          </label>
-        </div>
-        <div id="searchBtn">
-          <button onClick={notesAPI}>
-            <IoSearch />
-            <span>조회</span>
-          </button>
-        </div>
-      </div>
-      <BsEnvelopePaper />
-      <span>총 {allCount}개</span>
-      <table style={{ width: "100%" }}>
-        <thead>
-          <tr>
-            <th>보내는 사람</th>
-            <th>제목</th>
-            <th>내용</th>
-            <th>받는 사람</th>
-            <th>날짜</th>
-          </tr>
-        </thead>
-        <tbody>
-          {notes.map((note) => (
-            <tr
-              key={note.noteCode}
-              onClick={onDetail}
-              style={{ cursor: "pointer" }}
-            >
-              <td>{note.sender}</td>
-              <td>{note.noteTitle}</td>
-              <td>{note.noteContent}</td>
-              <td>{note.receiver}</td>
-              <td>{moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              <div id="searchNoteRegiDate">
+                <label>
+                  날짜
+                  <input
+                    type="date"
+                    max={moment().format("YYYY-MM-DD")}
+                    onChange={(e) => setNoteRegiDate(e.target.value)}
+                  />
+                </label>
+              </div>
+              <div id="searchBtn">
+                <button onClick={notesAPI}>
+                  <IoSearch />
+                  <span>조회</span>
+                </button>
+              </div>
+            </div>
+            <BsEnvelopePaper />
+            <span>총 {allCount}개</span>
+            <table style={{ width: "100%" }}>
+              <thead>
+                <tr>
+                  <th>보내는 사람</th>
+                  <th>제목</th>
+                  <th>내용</th>
+                  <th>받는 사람</th>
+                  <th>날짜</th>
+                </tr>
+              </thead>
+              <tbody>
+                {notes.map((note) => (
+                  <tr
+                    key={note.noteCode}
+                    onClick={() => onDetail(note.noteCode)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <td>{note.sender}</td>
+                    <td>{note.noteTitle}</td>
+                    <td>{note.noteContent}</td>
+                    <td>{note.receiver}</td>
+                    <td>
+                      {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-      <div className="paging">
-        <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
-        <FaAngleLeft
-          className="iconPaging"
-          onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
-        />
-        {pages.map((num, index) => (
-          <button
-            key={index}
-            value={num}
-            onClick={(e) => setPage(Number(e.target.value))}
-            id="pageBtn"
-          >
-            {num}
-          </button>
-        ))}
+            <div className="paging">
+              <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
+              <FaAngleLeft
+                className="iconPaging"
+                onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
+              />
+              {pages.map((num, index) => (
+                <button
+                  key={index}
+                  value={num}
+                  onClick={(e) => setPage(Number(e.target.value))}
+                  id="pageBtn"
+                >
+                  {num}
+                </button>
+              ))}
 
-        <FaAngleRight
-          className="iconPaging"
-          onClick={
-            () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
-          }
-        />
-        <FaAnglesRight
-          className="iconPaging"
-          onClick={() => setPage(totalPage)}
-        />
-      </div>
-    </Div>
+              <FaAngleRight
+                className="iconPaging"
+                onClick={
+                  () =>
+                    page < totalPage ? setPage(page + 1) : setPage(totalPage) // 현재 페이지에서 한칸 뒤로
+                }
+              />
+              <FaAnglesRight
+                className="iconPaging"
+                onClick={() => setPage(totalPage)}
+              />
+            </div>
+          </Div>
+        </>
+      ) : (
+        <>
+          {" "}
+          <ModalContariner>
+            <NoteViewDetail name={code} /> <button>답장</button>
+            <button onClick={() => delNote()}>삭제</button>
+            <button onClick={() => setOpenDetail(false)}>목록보기</button>
+          </ModalContariner>
+        </>
+      )}
+    </>
   );
 };
 export default NoteViewAll;

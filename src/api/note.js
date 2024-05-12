@@ -32,7 +32,8 @@ export const viewAllNote = async (nickName) => {
 };
 
 // 쪽지 1개 보기
-export const viewOnteNote = async (code) => {
+// http://localhost:8080/compagno/note/18
+export const viewOneNote = async (code) => {
   return await authorize.get("note/" + code);
 };
 
