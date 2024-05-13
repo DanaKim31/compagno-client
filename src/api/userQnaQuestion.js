@@ -56,3 +56,18 @@ export const updateUserQuestion = async (data) => {
 export const deleteUserQuestion = async (no) => {
   return await authorize.delete("userQuestion/" + no);
 };
+
+// 6. 채택하기
+export const ChooseAnswer = async (data) => {
+  return await authorize.post("userQuestion/answerChoose", data);
+};
+
+// 7. 채택 취소하기
+export const deleteChoose = async (no) => {
+  return await authorize.delete("userQuestion/answerChoose/" + no);
+};
+
+// 8. 채택 보기
+export const getChoose = async (no) => {
+  return await instance.get("userQuestion/answerChoose/" + no);
+};
