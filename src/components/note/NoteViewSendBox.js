@@ -289,7 +289,7 @@ const NoteViewSendBox = () => {
         <>
           {" "}
           <ModalContariner>
-            <div style={{ position: "absolute", top: "25.5%", left: "32%" }}>
+            <div style={{ position: "absolute", top: "25.5%", left: "25%" }}>
               <button
                 onClick={() => setOpenDetail(false)}
                 style={{

@@ -1,4 +1,4 @@
-import { viewAllNote, deleteReceiver, deleteSender } from "../../api/note";
+import { viewAllNote } from "../../api/note";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -158,9 +158,6 @@ const NoteViewAll = () => {
     setCode(e);
     setOpenDetail(true);
   };
-
-  // 삭제하기
-  const delNote = () => {};
 
   // 답장
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -351,7 +348,7 @@ const NoteViewAll = () => {
         <>
           {" "}
           <ModalContariner>
-            <div style={{ position: "absolute", top: "25.5%", left: "32%" }}>
+            <div style={{ position: "absolute", top: "25.5%", left: "25%" }}>
               <button
                 onClick={() => setOpenDetail(false)}
                 style={{
@@ -371,15 +368,6 @@ const NoteViewAll = () => {
           </ModalContariner>
         </>
       )}
-      {/* {modalIsOpen ? (
-        <ModalNoteWrite
-          isOpen={true}
-          araiHideApp={false}
-          onRequestClose={() => setModalIsOpen(false)}
-        >
-          <NoteCreate nickName={sender} />
-        </ModalNoteWrite>
-      ) : null} */}
     </>
   );
 };

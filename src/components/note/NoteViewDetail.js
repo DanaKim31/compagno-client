@@ -1,4 +1,4 @@
-import { viewOneNote } from "../../api/note";
+import { viewOneNote, deleteReceiver, deleteSender } from "../../api/note";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
@@ -7,6 +7,7 @@ import styled from "styled-components";
 import moment from "moment";
 import "moment/locale/ko";
 import NoteCreate from "./NoteCreate";
+import { useNavigate } from "react-router-dom";
 
 const ModalNoteWrite = styled.div`
   position: fixed;
@@ -54,8 +55,19 @@ const NoteViewDetail = (props) => {
     noteAPI();
   }, []);
 
+  console.log(note);
+  const navigate = useNavigate();
   // 삭제하기
-  const delNote = () => {};
+  const delNote = async (data) => {
+    if (note.sender == user.userNickname) {
+      await deleteSender(data);
+    }
+    if (note.receiver == user.userNickname) {
+      await deleteReceiver(data);
+    }
+    setModalIsOpen(!modalIsOpen);
+  };
+
   // 답장
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const sendNote = () => {
@@ -79,11 +91,27 @@ const NoteViewDetail = (props) => {
             marginBottom: "15px",
             width: "70%",
             position: "relative",
-            left: "8%",
+            left: "5%",
           }}
         >
           {note.sender == user.userNickname ? (
-            <> </>
+            <>
+              {" "}
+              <button
+                onClick={() => delNote(note.noteCode)}
+                style={{
+                  border: "none",
+                  borderRadius: "10px",
+                  margin: "0px 10px",
+                  width: "50px",
+                  fontWeight: "bold",
+                  backgroundColor: "black",
+                  color: "white",
+                }}
+              >
+                삭제
+              </button>{" "}
+            </>
           ) : (
             <>
               <button
@@ -99,23 +127,22 @@ const NoteViewDetail = (props) => {
               >
                 답장
               </button>
+              <button
+                onClick={() => delNote(note.noteCode)}
+                style={{
+                  border: "none",
+                  borderRadius: "10px",
+                  margin: "0px 10px",
+                  width: "50px",
+                  fontWeight: "bold",
+                  backgroundColor: "black",
+                  color: "white",
+                }}
+              >
+                삭제
+              </button>
             </>
           )}
-
-          <button
-            onClick={() => delNote()}
-            style={{
-              border: "none",
-              borderRadius: "10px",
-              margin: "0px 10px",
-              width: "50px",
-              fontWeight: "bold",
-              backgroundColor: "black",
-              color: "white",
-            }}
-          >
-            삭제
-          </button>
         </div>
         <div id="noteSender">
           <span>보낸 사람</span>
