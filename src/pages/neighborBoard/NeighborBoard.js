@@ -422,7 +422,7 @@ const NeighborBoard = () => {
                   {neighbor.neighborBoardTitle}
                 </a>
               </td>
-              <td>{neighbor.user.userId}</td>
+              <td>{neighbor.user.userNickname}</td>
               <td>{`${new Date(
                 neighbor.neighborBoardRegiDate
               ).getFullYear()}-${new Date(

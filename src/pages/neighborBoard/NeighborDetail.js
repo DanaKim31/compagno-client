@@ -9,6 +9,7 @@ import {
   updateNeighborComment,
   deleteNeighborComment,
 } from "../../api/neighborBoard";
+import MyToggleBar from "../../components/note/MyToggleBar";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import { Form, Button } from "react-bootstrap";
@@ -257,6 +258,7 @@ const NeighborDetail = () => {
 
   const neighborCommentAPI = async () => {
     const result = await getNeighborComments(code);
+    console.log(result.data);
     setComments(result.data);
   };
 
@@ -295,7 +297,7 @@ const NeighborDetail = () => {
         neighborBoardCode: code,
         neighborCommentContent: comment,
         user: {
-          userId: user.userId,
+          userNickname: user.userNickname,
         },
       });
       setComment("");
@@ -320,6 +322,7 @@ const NeighborDetail = () => {
   };
 
   const commentUpdate = async () => {};
+  console.log(comments);
 
   return (
     <Div>
@@ -328,7 +331,7 @@ const NeighborDetail = () => {
       <div className="board-area" key={neighborBoard.neighborBoardCode}>
         <div className="title-btns">
           <div className="board-title">{neighborBoard.neighborBoardTitle}</div>
-          {user.userId === neighborBoard.user?.userId && (
+          {user.userNickname === neighborBoard.user?.userNickname && (
             <div className="board-btns">
               <button
                 onClick={() => {
@@ -349,7 +352,9 @@ const NeighborDetail = () => {
         </div>
 
         <div className="writer-date">
-          <div className="writer">{neighborBoard.user?.userId}</div>
+          <div className="writer">
+            <MyToggleBar name={neighborBoard.user?.userNickname} />
+          </div>
           <div className="register-date">
             <span>작성일 : </span>
             <span id="date">
@@ -394,7 +399,7 @@ const NeighborDetail = () => {
           <div className="image">
             {neighborBoard.images?.map((image) => (
               <img
-                key={neighborBoard.neighborImageCode}
+                key={image.neighborImageCode}
                 src={"http://localhost:8081" + image.neighborImage}
               ></img>
             ))}
@@ -425,7 +430,10 @@ const NeighborDetail = () => {
             <div key={comment.neighborCommentCode} className="each-comment">
               <div className="user-date-content">
                 <div className="user-date">
-                  <span id="comment-user">{comment.user?.userId}</span>
+                  <span id="comment-user">
+                    {/* {comment.user?.userId} */}
+                    <MyToggleBar name={comment.user?.userNickname} />
+                  </span>
                   <span id="comment-date">
                     {`${new Date(
                       comment.neighborCommentRegiDate
@@ -446,7 +454,7 @@ const NeighborDetail = () => {
                 <p id="comment-content">{comment.neighborCommentContent}</p>
               </div>
 
-              {user.userId === comment.user?.userId && (
+              {user.userNickname === comment.user?.userNickname && (
                 <div className="comment-btns">
                   <button
                     onClick={(e) => {
