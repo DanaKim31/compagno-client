@@ -9,6 +9,7 @@ import {
   updateSitterComment,
   deleteSitterComment,
 } from "../../api/sitterBoard";
+import MyToggleBar from "../../components/note/MyToggleBar";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import { Form, Button } from "react-bootstrap";
@@ -200,6 +201,9 @@ const Div = styled.div`
         padding: 10px;
         border-top: 1px solid lightgray;
 
+        .user-date-content {
+          width: 100%;
+        }
         .user-date {
           display: flex;
           align-items: center;
@@ -221,6 +225,8 @@ const Div = styled.div`
         }
 
         #comment-content {
+          display: flex;
+          justify-content: space-between;
           margin-bottom: 0;
           padding-top: 8px;
           padding-left: 5px;
@@ -316,7 +322,7 @@ const SitterDetail = () => {
         sitterBoardCode: code,
         sitterCommentContent: comment,
         user: {
-          userId: user.userId,
+          userNickname: user.userNickname,
         },
       });
       setComment("");
@@ -331,32 +337,30 @@ const SitterDetail = () => {
   };
 
   // ================= 댓글 수정 =================
-  // // 목록에서 수정버튼 선택
-  // const updateComment = async (comment) => {
-  //   setCommentEdit(comment);
-  // };
+  // 목록에서 수정버튼 선택
+  const editComment = (comment) => {
+    setCommentEdit(comment);
+  };
+  useEffect(() => {
+    console.log(commentEdit);
+  }, [commentEdit]);
 
-  // // 수정화면에서 취소버튼 선택
-  // const cancelEdit = () => {
-  //   setCommentEdit(null);
-  // };
+  // 수정화면에서 취소버튼 선택
+  const cancelEdit = () => {
+    setCommentEdit(null);
+  };
 
   // 수정화면에서 완료버튼 선택
   const commentUpdate = async () => {
-    await updateSitterComment({
-      sitterCommentCode: commentEditCode,
-      sitterCommentContent: commentEditContent,
-    });
-    // setReplyContent("");
-    setCommentEditCode(0);
-    sitterCommentsAPI();
+    await updateSitterComment(commentEdit);
+    navigate("compagno/sitterBoard/detail/" + code);
   };
 
   return (
     <Div>
       <h1>Detail</h1>
 
-      <div className="board-area" key={sitterBoard.sitterBoardCode}>
+      <div className="board-area">
         <div className="title-btns">
           <div className="category-title">
             <div className="board-category">
@@ -364,7 +368,8 @@ const SitterDetail = () => {
             </div>
             <div className="board-title">{sitterBoard.sitterTitle}</div>
           </div>
-          {user.userId === sitterBoard.user?.userId && (
+
+          {user.userNickname === sitterBoard.user?.userNickname && (
             <div className="board-btns">
               <button
                 onClick={() => {
@@ -385,7 +390,10 @@ const SitterDetail = () => {
         </div>
 
         <div className="writer-date">
-          <div className="writer">{sitterBoard.user?.userId}</div>
+          <div className="writer">
+            <MyToggleBar name={sitterBoard.user?.userNickname} />
+          </div>
+
           <div className="register-date">
             <span>작성일 : </span>
             <span id="date">
@@ -408,6 +416,7 @@ const SitterDetail = () => {
             <div id="title">반려동물 종류</div>
             <div id="content">{sitterBoard.animalCategoryCode?.animalType}</div>
           </div>
+
           <div className="location">
             <div id="title">장소</div>
             <div id="content">
@@ -422,7 +431,7 @@ const SitterDetail = () => {
           <div className="image">
             {sitterBoard.images?.map((image) => (
               <img
-                key={sitterBoard.sitterImgCode}
+                key={image.sitterImgCode}
                 src={"http://localhost:8081" + image.sitterImg}
               ></img>
             ))}
@@ -453,7 +462,9 @@ const SitterDetail = () => {
             <div key={comment.sitterCommentCode} className="each-comment">
               <div className="user-date-content">
                 <div className="user-date">
-                  <span id="comment-user">{comment.user?.userId}</span>
+                  <span id="comment-user">
+                    <MyToggleBar name={comment.user?.userNickname} />
+                  </span>
                   <span id="comment-date">
                     {`${new Date(
                       comment.sitterCommentRegiDate
@@ -471,29 +482,57 @@ const SitterDetail = () => {
                     ).getMinutes()}`}
                   </span>
                 </div>
-                <p id="comment-content">{comment.sitterCommentContent}</p>
-              </div>
 
-              {user.userId === comment.user?.userId && (
-                <div className="comment-btns">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      commentUpdate();
-                    }}
-                  >
-                    수정
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteComment(comment.sitterCommentCode);
-                    }}
-                  >
-                    삭제
-                  </button>
-                </div>
-              )}
+                {/* ㅕㅇ기가 댓글 수정 시도 버튼 - 수정 완료 버튼*/}
+                {commentEdit == null ||
+                commentEdit?.sitterCommentCode !== comment.sitterCommentCode ? (
+                  <div id="comment-content">
+                    <p>{comment.sitterCommentContent}</p>
+                    <div>
+                      {user.userNickname === comment.user?.userNickname && (
+                        <div className="comment-btns">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              editComment(comment);
+                            }}
+                          >
+                            수정
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteComment(comment.sitterCommentCode);
+                            }}
+                          >
+                            삭제
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <input
+                      type="text"
+                      value={commentEdit.sitterCommentContent}
+                      onChange={(e) =>
+                        setCommentEdit((prev) => ({
+                          ...prev,
+                          sitterCommentContent: e.target.value,
+                        }))
+                      }
+                    />
+                    <button onClick={cancelEdit}>취소</button>
+                    <button onClick={commentUpdate}>완료</button>
+                  </>
+                )}
+                {/* {comment.sitterCommentCode !== commentEditCode ? (
+                  <p id="comment-content">{comment.sitterCommentContent}</p>
+                ) : (
+                  <textarea>{commentEditContent}</textarea>
+                )} */}
+              </div>
             </div>
           ))}
         </div>

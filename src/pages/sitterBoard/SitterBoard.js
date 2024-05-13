@@ -53,7 +53,6 @@ const Div = styled.div`
     #register-btn:hover {
       background: #455c58ff;
       color: white;
-      cursor: pointer;
     }
 
     #search-btn {
@@ -61,7 +60,6 @@ const Div = styled.div`
       height: 39px;
       border-radius: 5px;
       color: white;
-      cursor: pointer;
       background: #455c58ff;
       border: 1px solid #455c58ff;
       margin-right: 10px;
