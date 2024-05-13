@@ -5,12 +5,32 @@ import styled from "styled-components";
 import { Button } from "react-bootstrap";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   width: 90%;
   margin: auto;
 
   h1 {
     font-size: 2.5rem;
     margin-bottom: 100px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    line-height: 80px;
+    font-size: 2rem;
+    color: #455c58ff;
+    border: 3px solid #455c58ff;
+    border-radius: 15px;
+    margin-bottom: 50px;
   }
 
   .register {
@@ -50,9 +70,12 @@ const RegisterPetFaq = () => {
   return (
     <Div>
       <h1>동물등록 FAQ</h1>
-      <Button variant="dark" className="register">
+
+      <div className="header">동물등록 FAQ</div>
+
+      {/* <Button variant="dark" className="register">
         등록
-      </Button>
+      </Button> */}
       {faqs?.map((faq) => (
         <Accordion>
           <Accordion.Item
@@ -65,10 +88,10 @@ const RegisterPetFaq = () => {
             </Accordion.Header>
             <Accordion.Body className="faq-answer">
               <div>{faq.regiFaqAnswer}</div>
-              <div className="btns">
+              {/* <div className="btns">
                 <button>수정</button>
                 <button>삭제</button>
-              </div>
+              </div> */}
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
