@@ -9,9 +9,7 @@ const Footer = () => {
         <section id="section7">
           <div className="text">
             <div>
-              <span>
-                You spin me right round, baby. Like a record, hello yes
-              </span>
+              <span>You spin me right round, baby. Like a record, hello y</span>
             </div>
           </div>
           <div className="footer">

@@ -1,5 +1,5 @@
 // 디테일 페이지 => 수정 삭제
-import { viewClass, deleClass, updateClass } from "../../api/onedayClass";
+import { viewClass } from "../../api/onedayClass";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -88,14 +88,6 @@ const ClassDetail = () => {
   const dispatch = useDispatch();
   const { code } = useParams();
   const [odcClass, setOdcClass] = useState([]); // 하나의 정보만 가져와야하니깐 !
-  const [edit, setEdit] = useState(null);
-
-  // const [odcTitle, setOdcTitle] = useState("");
-  // const [odcContent, setContent] = useState("");
-  // const [odcAccompaying, setOdcAccompaying] = useState("");
-  // const [odcMainImage, setOdcMainImage] = useState([]);
-  // const [odcStartDate, setOdcStartDate] = useState("");
-  // const [odcLastDate, setOdcLastDate] = useState("");
 
   const user = useSelector((state) => {
     return state.user;
@@ -115,20 +107,8 @@ const ClassDetail = () => {
     oneClassAPI();
   }, []);
 
-  // 삭제 관련 로직
-  const onDelete = async () => {
-    await deleClass(code);
-    navigate("/compagno/onedayClassBoard");
-  };
-
-  // 수정 관련 로직
+  // 수정 페이지로 이동 !
   const onUpdate = async () => {
-    setEdit(Class);
-  };
-
-  // 수정후 => 1개보기로 이동
-  const onSubmit = async () => {
-    await updateClass(edit);
     navigate("/compagno/onedayClassBoard/update/" + code);
   };
 
@@ -232,7 +212,6 @@ const ClassDetail = () => {
               </p>
             </div>
             <button onClick={onUpdate}>수정</button>
-            <button onClick={onDelete}>삭제</button>
             <button onClick={onBack}>취소</button>
           </div>
         </div>
