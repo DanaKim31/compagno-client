@@ -24,8 +24,8 @@ const Div = styled.div`
 
     /* 여기서부터 */
     #noteAll {
-      border: 1px solid black;
       height: 100%;
+      background-color: white;
     }
   }
 `;
