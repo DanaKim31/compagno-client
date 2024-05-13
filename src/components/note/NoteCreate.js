@@ -152,7 +152,7 @@ const NoteCreate = (props) => {
             placeholder="제목을 입력해주세요"
             value={noteTitle}
             onChange={(e) => setNoteTitle(e.target.value)}
-            style={{ resize: "none", height: "70px" }}
+            style={{ resize: "none", height: "70px", fontWeight: "bold" }}
           />
         </div>
         <div
@@ -165,7 +165,7 @@ const NoteCreate = (props) => {
             placeholder="내용을 입력해주세요"
             value={noteContent}
             onChange={(e) => setNoteContent(e.target.value)}
-            style={{ resize: "none", height: "150px" }}
+            style={{ resize: "none", height: "150px", fontWeight: "bold" }}
           />
         </div>
         <div id="files" style={{ marginTop: "30px", width: "70%" }}>

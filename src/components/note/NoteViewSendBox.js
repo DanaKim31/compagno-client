@@ -224,6 +224,7 @@ const NoteViewSendBox = () => {
                   <th>제목</th>
                   <th>내용</th>
                   <th>보낸 날짜</th>
+                  <th>첨부파일 유무</th>
                 </tr>
               </thead>
               <tbody>
@@ -238,6 +239,13 @@ const NoteViewSendBox = () => {
                     <td>{note.noteContent}</td>
                     <td>
                       {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
+                    </td>
+                    <td>
+                      {note.files.map((note) => (
+                        <div key={note.noteFileCode}>
+                          {note.noteFileUrl != "" ? <>Y</> : <>N</>}
+                        </div>
+                      ))}
                     </td>
                   </tr>
                 ))}
@@ -279,7 +287,8 @@ const NoteViewSendBox = () => {
         <>
           {" "}
           <ModalContariner>
-            <NoteViewDetail name={code} /> <button>답장</button>
+            <NoteViewDetail name={code} />
+            <button>답장</button>
             <button onClick={() => delNote()}>삭제</button>
             <button onClick={() => setOpenDetail(false)}>목록보기</button>
           </ModalContariner>

@@ -13,6 +13,7 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import styled from "styled-components";
+
 const ModalContariner = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";

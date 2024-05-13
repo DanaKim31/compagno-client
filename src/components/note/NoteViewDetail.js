@@ -40,28 +40,31 @@ const NoteViewDetail = (props) => {
   }, []);
 
   return (
-    <>
-      {note.noteCode}
-      {note.noteTitle}
-      {note.noteContent}
-      {note.sender}
-      {note.receiver}
-      {note.noteRegiDate}
-      {note.files?.map((file) => (
-        <Div key={file.noteFileCode}>
-          <a
-            href={file.noteFileUrl?.replace(
-              "\\\\DESKTOP-U0CNG13\\upload\\note",
-              "http://192.168.10.28:8081/note/"
-            )}
-            download
-          >
-            <MdOutlineFileDownload style={{ fontSize: "1.5rem;" }} />
-            첨부 파일 다운로드
-          </a>
-        </Div>
-      ))}
-    </>
+    <div style={{ height: "70%", marginTop: "20px" }}>
+      {/* {note.noteCode} */}
+      <div id="noteTitle">{note.noteTitle}</div>
+      <div id="noteContent">{note.noteContent}</div>
+      <div id="noteSender">{note.sender}</div>
+      <div id="noteReceiver">{note.receiver}</div>
+      <div id="noteTitle">{note.noteTitle}</div>
+      <div id="noteRegiDate">{note.noteRegiDate}</div>
+      <div id="noteFiles">
+        {note.files?.map((file) => (
+          <Div key={file.noteFileCode}>
+            <a
+              href={file.noteFileUrl?.replace(
+                "\\\\DESKTOP-U0CNG13\\upload\\note",
+                "http://192.168.10.28:8081/note/"
+              )}
+              download
+            >
+              <MdOutlineFileDownload style={{ fontSize: "1.5rem;" }} />
+              첨부 파일 다운로드
+            </a>
+          </Div>
+        ))}
+      </div>
+    </div>
   );
 };
 export default NoteViewDetail;
