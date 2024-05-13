@@ -39,11 +39,16 @@ const Div = styled.div`
 `;
 
 const ModalContariner = styled.div`
-  position: absolute;
-  left: 30%;
+  position: fixed;
+  left: 50%;
   width: 40%;
-  height: 40%;
-  background-color: yellow;
+  top: 50%;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0 0 9999px;
+  z-index: 100;
+  transform: translate(-50%, -50%);
 `;
 
 const DivNote = styled.div`
@@ -93,39 +98,60 @@ const MyToggleBar = (props) => {
     setModalIsOpen(!modalIsOpen);
   };
   return (
-    <Div>
-      <div style={{ display: "flex" }}>
-        {props.name == "" || user.userNickname == props.name ? (
-          <>{user.userNickname}</>
-        ) : (
-          <>{props.name}</>
-        )}
-        {isOpen ? (
-          <BsCaretUpFill onClick={handleToggle} />
-        ) : (
-          <BsCaretDownFill onClick={handleToggle} />
-        )}
-      </div>
-      <div
-        id="noteToggle"
-        style={{
-          display: isOpen ? "flex" : "none",
-        }}
-      >
-        {props.name == "" || user.userNickname == props.name ? (
-          <>
-            <a href="/compagno/mypage/mynote">쪽지함</a>
-            <a href="/compagno/mypage/myanimalfav">활동 내역</a>
-          </>
-        ) : (
-          <>
-            {/* <a href="/compagno/mypage/mynote" style={{ width: "62px" }}>
-              쪽지 보내기
-            </a> */}
-            <button onClick={sendNote}>쪽지 보내기</button>
-          </>
-        )}
-      </div>
+    <>
+      <Div>
+        <div style={{ display: "flex" }}>
+          {props.name == "" || user.userNickname == props.name ? (
+            <>{user.userNickname}</>
+          ) : (
+            <>{props.name}</>
+          )}
+          {isOpen ? (
+            <BsCaretUpFill onClick={handleToggle} />
+          ) : (
+            <BsCaretDownFill onClick={handleToggle} />
+          )}
+        </div>
+        <div
+          id="noteToggle"
+          style={{
+            display: isOpen ? "flex" : "none",
+          }}
+        >
+          {props.name == "" || user.userNickname == props.name ? (
+            <>
+              <a
+                href="/compagno/mypage/mynote"
+                style={{ color: "#94b29b", fontWeight: "bold" }}
+              >
+                쪽지함
+              </a>
+              <a
+                href="/compagno/mypage/myanimalfav"
+                style={{ color: "#94b29b", fontWeight: "bold" }}
+              >
+                활동 내역
+              </a>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={sendNote}
+                style={{
+                  border: "none",
+                  borderRadius: "10px",
+                  color: "black",
+                  fontWeight: "bold",
+                  backgroundColor: "#94b29b",
+                  fontSize: "0.7rem",
+                }}
+              >
+                쪽지 보내기
+              </button>
+            </>
+          )}
+        </div>
+      </Div>
       {modalIsOpen ? (
         <ModalContariner
           isOpen={true}
@@ -135,7 +161,7 @@ const MyToggleBar = (props) => {
           <NoteCreate nickName={props.name} />
         </ModalContariner>
       ) : null}
-    </Div>
+    </>
   );
 };
 export default MyToggleBar;

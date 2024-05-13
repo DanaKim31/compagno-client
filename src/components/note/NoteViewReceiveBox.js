@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import "moment/locale/ko";
-
+import NoteViewDetail from "./NoteViewDetail";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
 import {
@@ -13,8 +13,7 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import styled from "styled-components";
-
-const Div = styled.div`
+const ModalContariner = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
     src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
@@ -26,6 +25,20 @@ const Div = styled.div`
   border: 1px solid black;
   width: 100%;
   font-weight: bold;
+  height: 300px;
+`;
+const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
   input {
     font-weight: bold;
   }
@@ -35,11 +48,14 @@ const Div = styled.div`
   #pageBtn {
     font-weight: bold;
     border-radius: 50%;
-    border: 2px solid;
+    /* border: 1px solid; */
+    border: none;
     color: rgb(32, 61, 59);
-    width: 30px;
-    font-size: 1rem;
-    align-items: center;
+    width: 25px;
+    height: 25px;
+    font-size: 0.8rem;
+    margin: 0px 5px;
+    background-color: #cbd6ce;
   }
 `;
 const NoteViewReceiveBox = () => {
@@ -105,91 +121,179 @@ const NoteViewReceiveBox = () => {
     setPages(pageList);
   }, [totalPage]);
 
+  //1개 보기
+  const [code, setCode] = useState(0);
+  const [openDetail, setOpenDetail] = useState(false);
+  const onDetail = (e) => {
+    setCode(e);
+    setOpenDetail(true);
+  };
+  // 삭제하기
+  const delNote = () => {};
   return (
-    <Div>
-      <div className="search">
-        <div id="searchSender">
-          <label>
-            보낸 사람
-            <input type="text" onChange={(e) => setSender(e.target.value)} />
-          </label>
-        </div>
-        <div id="searchTitle">
-          <label>
-            제목
-            <input type="text" onChange={(e) => setNoteTitle(e.target.value)} />
-          </label>
-        </div>
+    <>
+      {!openDetail ? (
+        <>
+          <Div>
+            <div
+              className="search"
+              style={{
+                border: "1px dashed green",
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
 
-        <div id="searchNoteRegiDate">
-          <label>
-            받은 날짜
-            <input
-              type="date"
-              max={moment().format("YYYY-MM-DD")}
-              onChange={(e) => setNoteRegiDate(e.target.value)}
-            />
-          </label>
-        </div>
-        <div id="searchBtn">
-          <button onClick={notesAPI}>
-            <IoSearch />
-            <span>조회</span>
-          </button>
-        </div>
-      </div>
-      <BsEnvelopePaper />
-      <span>총 {allCount}개</span>
-      <table style={{ width: "100%" }}>
-        <thead>
-          <tr>
-            <th>보낸 사람</th>
-            <th>제목</th>
-            <th>내용</th>
-            <th>받은 날짜</th>
-          </tr>
-        </thead>
-        <tbody>
-          {notes.map((note) => (
-            <tr key={note.noteCode}>
-              <td>{note.sender}</td>
-              <td>{note.noteTitle}</td>
-              <td>{note.noteContent}</td>
-              <td>{moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                borderRadius: "20px",
+                paddingBottom: "20px",
+                paddingTop: "30px",
+              }}
+            >
+              <div
+                id="searchItems"
+                style={{ display: "flex", justifyContent: "space-evenly" }}
+              >
+                <div id="searchSender">
+                  <label>
+                    보낸 사람
+                    <input
+                      type="text"
+                      onChange={(e) => setSender(e.target.value)}
+                      style={{ marginLeft: "15px" }}
+                    />
+                  </label>
+                </div>
+                <div id="searchTitle">
+                  <label>
+                    제목
+                    <input
+                      type="text"
+                      onChange={(e) => setNoteTitle(e.target.value)}
+                      style={{ marginLeft: "15px" }}
+                    />
+                  </label>
+                </div>
 
-      <div className="paging">
-        <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
-        <FaAngleLeft
-          className="iconPaging"
-          onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
-        />
-        {pages.map((num, index) => (
-          <button
-            key={index}
-            value={num}
-            onClick={(e) => setPage(Number(e.target.value))}
-            id="pageBtn"
-          >
-            {num}
-          </button>
-        ))}
+                <div id="searchNoteRegiDate">
+                  <label>
+                    받은 날짜
+                    <input
+                      type="date"
+                      max={moment().format("YYYY-MM-DD")}
+                      onChange={(e) => setNoteRegiDate(e.target.value)}
+                      style={{ marginLeft: "15px" }}
+                    />
+                  </label>
+                </div>
+              </div>
+              <div id="searchBtn" style={{ marginTop: "20px" }}>
+                <button
+                  onClick={notesAPI}
+                  style={{
+                    border: "none",
+                    borderRadius: "10px",
+                    width: "75px",
+                    height: "30px",
+                    backgroundColor: "#94b29b",
+                  }}
+                >
+                  <IoSearch />
+                  <span>조회</span>
+                </button>
+              </div>
+            </div>
+            <div
+              id="totalNotes"
+              style={{
+                display: "flex",
+                paddingTop: "15px",
+                marginLeft: "15px",
+                marginBottom: "15px",
+                alignItems: "center",
+              }}
+            >
+              <BsEnvelopePaper />
+              <span style={{ marginLeft: "10px" }}>총 {allCount}개</span>
+            </div>
 
-        <FaAngleRight
-          className="iconPaging"
-          onClick={
-            () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
-          }
-        />
-        <FaAnglesRight
-          className="iconPaging"
-          onClick={() => setPage(totalPage)}
-        />
-      </div>
-    </Div>
+            <table style={{ width: "100%", height: "60%" }}>
+              <thead
+                style={{ height: "30px", borderBottom: "1px dashed black" }}
+              >
+                <tr>
+                  <th>보낸 사람</th>
+                  <th>제목</th>
+                  <th>내용</th>
+                  <th>받은 날짜</th>
+                  <th>첨부파일 유무</th>
+                </tr>
+              </thead>
+              <tbody>
+                {notes.map((note) => (
+                  <tr
+                    key={note.noteCode}
+                    onClick={() => onDetail(note.noteCode)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <td>{note.sender}</td>
+                    <td>{note.noteTitle}</td>
+                    <td>{note.noteContent}</td>
+                    <td>
+                      {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
+                    </td>
+                    <td>
+                      {note.files.map((note) => (
+                        <div key={note.noteFileCode}>
+                          {note.noteFileUrl != "" ? <>Y</> : <>N</>}
+                        </div>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="paging" style={{ marginTop: "15px" }}>
+              <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
+              <FaAngleLeft
+                className="iconPaging"
+                onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
+              />
+              {pages.map((num, index) => (
+                <button
+                  key={index}
+                  value={num}
+                  onClick={(e) => setPage(Number(e.target.value))}
+                  id="pageBtn"
+                >
+                  {num}
+                </button>
+              ))}
+
+              <FaAngleRight
+                className="iconPaging"
+                onClick={
+                  () =>
+                    page < totalPage ? setPage(page + 1) : setPage(totalPage) // 현재 페이지에서 한칸 뒤로
+                }
+              />
+              <FaAnglesRight
+                className="iconPaging"
+                onClick={() => setPage(totalPage)}
+              />
+            </div>
+          </Div>
+        </>
+      ) : (
+        <>
+          {" "}
+          <ModalContariner>
+            <NoteViewDetail name={code} /> <button>답장</button>
+            <button onClick={() => delNote()}>삭제</button>
+            <button onClick={() => setOpenDetail(false)}>목록보기</button>
+          </ModalContariner>
+        </>
+      )}
+    </>
   );
 };
 export default NoteViewReceiveBox;

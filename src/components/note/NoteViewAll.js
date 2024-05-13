@@ -26,8 +26,9 @@ const Div = styled.div`
     font-style: normal;
   }
   font-family: "TAEBAEKmilkyway";
-  border: 1px solid black;
+  /* border: 1px solid black; */
   width: 100%;
+  height: 100%;
   font-weight: bold;
   input {
     font-weight: bold;
@@ -38,11 +39,14 @@ const Div = styled.div`
   #pageBtn {
     font-weight: bold;
     border-radius: 50%;
-    border: 2px solid;
+    /* border: 1px solid; */
+    border: none;
     color: rgb(32, 61, 59);
-    width: 30px;
-    font-size: 1rem;
-    align-items: center;
+    width: 25px;
+    height: 25px;
+    font-size: 0.8rem;
+    margin: 0px 5px;
+    background-color: #cbd6ce;
   }
 `;
 const ModalContariner = styled.div`
@@ -148,62 +152,120 @@ const NoteViewAll = () => {
       {!openDetail ? (
         <>
           <Div>
-            <div className="search">
-              <div id="searchSender">
-                <label>
-                  보내는 사람
-                  <input
-                    type="text"
-                    onChange={(e) => setSender(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div id="searchReceiver">
-                <label>
-                  받는 사람
-                  <input
-                    type="text"
-                    onChange={(e) => setReceiver(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div id="searchTitle">
-                <label>
-                  제목
-                  <input
-                    type="text"
-                    onChange={(e) => setNoteTitle(e.target.value)}
-                  />
-                </label>
+            <div
+              className="search"
+              style={{
+                border: "1px dashed green",
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+                borderRadius: "20px",
+                paddingBottom: "20px",
+              }}
+            >
+              <div
+                id="searchPerson"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  width: "100%",
+                  paddingTop: "20px",
+                }}
+              >
+                <div id="searchSender">
+                  <label>
+                    보내는 사람
+                    <input
+                      type="text"
+                      onChange={(e) => setSender(e.target.value)}
+                      style={{ marginLeft: "15px" }}
+                    />
+                  </label>
+                </div>
+                <div id="searchReceiver">
+                  <label>
+                    받는 사람
+                    <input
+                      type="text"
+                      onChange={(e) => setReceiver(e.target.value)}
+                      style={{ marginLeft: "15px" }}
+                    />
+                  </label>
+                </div>
               </div>
 
-              <div id="searchNoteRegiDate">
-                <label>
-                  날짜
-                  <input
-                    type="date"
-                    max={moment().format("YYYY-MM-DD")}
-                    onChange={(e) => setNoteRegiDate(e.target.value)}
-                  />
-                </label>
+              <div
+                id="searchTitleDate"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  width: "100%",
+                  paddingTop: "20px",
+                }}
+              >
+                <div id="searchTitle">
+                  <label>
+                    제목
+                    <input
+                      type="text"
+                      onChange={(e) => setNoteTitle(e.target.value)}
+                      style={{ marginLeft: "15px" }}
+                    />
+                  </label>
+                </div>
+
+                <div id="searchNoteRegiDate">
+                  <label>
+                    날짜
+                    <input
+                      type="date"
+                      max={moment().format("YYYY-MM-DD")}
+                      onChange={(e) => setNoteRegiDate(e.target.value)}
+                      style={{ marginLeft: "15px" }}
+                    />
+                  </label>
+                </div>
               </div>
-              <div id="searchBtn">
-                <button onClick={notesAPI}>
+              <div id="searchBtn" style={{ marginTop: "20px" }}>
+                <button
+                  onClick={notesAPI}
+                  style={{
+                    border: "none",
+                    borderRadius: "10px",
+                    width: "75px",
+                    height: "30px",
+                    backgroundColor: "#94b29b",
+                  }}
+                >
                   <IoSearch />
                   <span>조회</span>
                 </button>
               </div>
             </div>
-            <BsEnvelopePaper />
-            <span>총 {allCount}개</span>
-            <table style={{ width: "100%" }}>
-              <thead>
+            <div
+              id="totalNotes"
+              style={{
+                display: "flex",
+                paddingTop: "15px",
+                marginLeft: "15px",
+                marginBottom: "15px",
+                alignItems: "center",
+              }}
+            >
+              <BsEnvelopePaper />
+              <span style={{ marginLeft: "10px" }}>총 {allCount}개</span>
+            </div>
+            <table style={{ width: "100%", height: "60%" }}>
+              <thead
+                style={{ height: "30px", borderBottom: "1px dashed black" }}
+              >
                 <tr>
                   <th>보내는 사람</th>
                   <th>제목</th>
                   <th>내용</th>
                   <th>받는 사람</th>
                   <th>날짜</th>
+                  <th>첨부파일 유무</th>
                 </tr>
               </thead>
               <tbody>
@@ -220,12 +282,20 @@ const NoteViewAll = () => {
                     <td>
                       {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
                     </td>
+                    {/* <td>{note.files == null ? <>얌</> : <>욥</>}</td> */}
+                    <td>
+                      {note.files.map((note) => (
+                        <div key={note.noteFileCode}>
+                          {note.noteFileUrl != "" ? <>Y</> : <>N</>}
+                        </div>
+                      ))}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            <div className="paging">
+            <div className="paging" style={{ marginTop: "15px" }}>
               <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
               <FaAngleLeft
                 className="iconPaging"

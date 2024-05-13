@@ -46,8 +46,8 @@ const TabMenu = styled.ul`
   flex-direction: row;
   align-items: center;
   list-style: none;
-  margin-bottom: 3rem;
-  margin-top: 30px;
+  margin-bottom: 1.6rem;
+  margin-top: 2rem;
   width: 90%;
   border-radius: 10px;
   padding-left: 0px;
@@ -55,7 +55,7 @@ const TabMenu = styled.ul`
   .submenu {
     // 기본 Tabmenu 에 대한 CSS를 구현
     display: flex;
-    width: calc(100% / 4);
+    width: calc(100% / 3);
     padding: 10px;
     font-size: 15px;
     transition: 0.5s;
@@ -84,7 +84,8 @@ const TabMenu = styled.ul`
 `;
 const Desc = styled.div`
   text-align: center;
-  width: "80%";
+  height: 80%;
+  width: 80%;
 `;
 
 const MyPageMyNote = () => {
@@ -123,17 +124,17 @@ const MyPageMyNote = () => {
       ),
       content: <NoteViewSendBox />,
     },
-    {
-      name: (
-        <>
-          <FaRegPaperPlane
-            style={{ marginRight: "15px", fontSize: "1.3rem" }}
-          />
-          쪽지 보내기
-        </>
-      ),
-      content: <NoteCreate />,
-    },
+    // {
+    //   name: (
+    //     <>
+    //       <FaRegPaperPlane
+    //         style={{ marginRight: "15px", fontSize: "1.3rem" }}
+    //       />
+    //       쪽지 보내기
+    //     </>
+    //   ),
+    //   content: <NoteCreate />,
+    // },
   ];
   const selectMenuHandler = (index) => {
     clickTab(index);
