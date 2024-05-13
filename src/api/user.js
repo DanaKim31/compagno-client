@@ -124,3 +124,27 @@ export const getUserQnaList = async (id, pageNum) => {
 export const getUserQnaCount = async (id) => {
   return await authorize.get("mypage/myactivity/myuserqna/count/" + id);
 };
+
+// 내 활동내역 - 우리동네 게시글 리스트 가져오기
+export const getNeighborPostList = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/myneighborpost/" + id + "?postPage=" + pageNum
+  );
+};
+
+// 내 활동내역 - 우리동네 게시글 갯수 가져오기
+export const getNeighborPostCount = async (id) => {
+  return await authorize.get("mypage/myactivity/myneighborpost/count/" + id);
+};
+
+// 내 활동내역 - 우리동네 댓글 리스트 가져오기
+export const getNeighborComList = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/myneighborCom/" + id + "?comPage=" + pageNum
+  );
+};
+
+// 내 활동내역 - 우리동네 댓글 갯수 가져오기
+export const getNeighborComCount = async (id) => {
+  return await authorize.get("mypage/myactivity/myneighborCom/count/" + id);
+};

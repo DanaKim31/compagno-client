@@ -97,7 +97,6 @@ const MyPageFavProduct = () => {
 
     setProductBoardFav(favData);
     setProductBookmarkCount(countFavData);
-    console.log(favData);
   };
 
   // 페이지 변경

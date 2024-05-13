@@ -51,6 +51,7 @@ import AdopBoardUpdate from "./pages/adoptionBoard/AdopBoardUpdate";
 import ClassDetail from "./pages/onedayClassBoard/ClassDetail";
 import MyPageAdoption from "./pages/user/MyPageAdoption";
 import MyPageUserQna from "./pages/user/MyPageUserQna";
+import MyPageNeighbor from "./pages/user/MyPageNeighbor";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,7 @@ const router = createBrowserRouter([
           { path: "myqna", element: <MyPageMyQnA /> },
           { path: "myadoption", element: <MyPageAdoption /> },
           { path: "myuserqna", element: <MyPageUserQna /> },
+          { path: "myneighbor", element: <MyPageNeighbor /> },
         ],
       },
       {

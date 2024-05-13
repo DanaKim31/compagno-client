@@ -6,6 +6,9 @@ import { useSelector } from "react-redux";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import { getAdoptionList, getAdoptionCount } from "../../api/user";
 import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import moment from "moment";
 
 const Div = styled.div`
   @font-face {
@@ -30,14 +33,20 @@ const Div = styled.div`
 
     .contentZone {
       height: calc(100vh - 66px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+
+      background-color: skyblue;
+      width: 100%;
 
       .myAdopList {
-        display: flex;
-        flex-direction: column;
+        width: 90%;
+
+        img {
+          width: 100%;
+          height: 200px;
+        }
       }
     }
   }
@@ -76,7 +85,7 @@ const MyPageAdoption = () => {
     const countAdopData = countResponse.data;
     setAdopCount(countAdopData);
 
-    console.log(adopData);
+    console.log();
   };
 
   // 페이지 변경
@@ -96,14 +105,20 @@ const MyPageAdoption = () => {
           <Card style={{ width: "18rem" }}>
             {adopList?.map((adopInfo) => (
               <div className="myAdopList">
-                <Card.Img variant="top" src={adopInfo.adopAnimalImage} />
+                <Card.Img
+                  variant="top"
+                  src={adopInfo.adopAnimalImage?.replace(
+                    "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
+                    "http://192.168.10.28:8081/adoptionBoard/"
+                  )}
+                />
                 <Card.Body>
                   <Card.Title>{adopInfo.adopAnimalKind}</Card.Title>
                   <Card.Text>
                     <p>{adopInfo.adopAnimalGender}</p>
                     <p>{adopInfo.adopAnimalNeuter}</p>
                     <p>{adopInfo.adopAnimalFindplace}</p>
-                    <p>{adopInfo.adopRegiDate}</p>
+                    <p>{moment(adopInfo.adopRegiDate).format("YY-MM-DD")}</p>
                   </Card.Text>
                 </Card.Body>
               </div>
