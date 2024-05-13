@@ -1,10 +1,25 @@
 import { viewOneNote } from "../../api/note";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import { MdOutlineFileDownload } from "react-icons/md";
 import styled from "styled-components";
+import moment from "moment";
+import "moment/locale/ko";
+import NoteCreate from "./NoteCreate";
+
+const ModalNoteWrite = styled.div`
+  position: fixed;
+  left: 50%;
+  width: 40%;
+  top: 50%;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0 0 9999px;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+`;
 
 const Div = styled.div`
   a {
@@ -39,31 +54,130 @@ const NoteViewDetail = (props) => {
     noteAPI();
   }, []);
 
+  // 삭제하기
+  const delNote = () => {};
+  // 답장
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const sendNote = () => {
+    setModalIsOpen(!modalIsOpen);
+  };
   return (
-    <div style={{ height: "70%", marginTop: "20px" }}>
+    <div style={{ height: "75%", marginTop: "20px" }}>
       {/* {note.noteCode} */}
-      <div id="noteTitle">{note.noteTitle}</div>
-      <div id="noteContent">{note.noteContent}</div>
-      <div id="noteSender">{note.sender}</div>
-      <div id="noteReceiver">{note.receiver}</div>
-      <div id="noteTitle">{note.noteTitle}</div>
-      <div id="noteRegiDate">{note.noteRegiDate}</div>
-      <div id="noteFiles">
-        {note.files?.map((file) => (
-          <Div key={file.noteFileCode}>
-            <a
-              href={file.noteFileUrl?.replace(
-                "\\\\DESKTOP-U0CNG13\\upload\\note",
-                "http://192.168.10.28:8081/note/"
-              )}
-              download
-            >
-              <MdOutlineFileDownload style={{ fontSize: "1.5rem;" }} />
-              첨부 파일 다운로드
-            </a>
-          </Div>
-        ))}
+      <div
+        className="noteTop"
+        style={{
+          textAlign: "start",
+          marginLeft: "20px",
+          borderBottom: "1px solid gray",
+          paddingBottom: "10px",
+        }}
+      >
+        <div
+          className="detailBtn"
+          style={{
+            marginBottom: "15px",
+            width: "70%",
+            position: "relative",
+            left: "8%",
+          }}
+        >
+          {note.sender == user.userNickname ? (
+            <> </>
+          ) : (
+            <>
+              <button
+                style={{
+                  border: "none",
+                  borderRadius: "10px",
+                  margin: "0px 10px",
+                  width: "50px",
+                  fontWeight: "bold",
+                  backgroundColor: "#CBD9CE",
+                }}
+                onClick={sendNote}
+              >
+                답장
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={() => delNote()}
+            style={{
+              border: "none",
+              borderRadius: "10px",
+              margin: "0px 10px",
+              width: "50px",
+              fontWeight: "bold",
+              backgroundColor: "black",
+              color: "white",
+            }}
+          >
+            삭제
+          </button>
+        </div>
+        <div id="noteSender">
+          <span>보낸 사람</span>
+          &nbsp;
+          <span>{note.sender}</span>
+        </div>
+        <div id="noteReceiver">
+          <span>받은 사람</span> &nbsp;<span>{note.receiver}</span>
+        </div>
+        <div id="noteRegiDate">
+          <span>날짜</span>
+          &nbsp;
+          <span> {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}</span>
+        </div>
       </div>
+      <div
+        className="noteText"
+        style={{
+          textAlign: "start",
+          marginLeft: "20px",
+          marginTop: "10px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <div id="noteTitle">
+          <span>제목 : </span>
+          <span> {note.noteTitle}</span>
+        </div>
+        <div id="noteFiles" style={{ marginRight: "20px" }}>
+          {note.files?.map((file) => (
+            <Div key={file.noteFileCode}>
+              <a
+                href={file.noteFileUrl?.replace(
+                  "\\\\DESKTOP-U0CNG13\\upload\\note",
+                  "http://192.168.10.28:8081/note/"
+                )}
+                download
+              >
+                <MdOutlineFileDownload style={{ fontSize: "1.5rem;" }} />
+                첨부 파일 다운로드
+              </a>
+            </Div>
+          ))}
+        </div>
+      </div>
+
+      <div
+        id="noteContent"
+        style={{ marginTop: "40px", marginBottom: "40px", height: "70%" }}
+      >
+        {note.noteContent}
+      </div>
+      {modalIsOpen ? (
+        <ModalNoteWrite
+          isOpen={true}
+          araiHideApp={false}
+          onRequestClose={() => setModalIsOpen(false)}
+        >
+          <NoteCreate nickName={note.sender} />
+        </ModalNoteWrite>
+      ) : null}
     </div>
   );
 };

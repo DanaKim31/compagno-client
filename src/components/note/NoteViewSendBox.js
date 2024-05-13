@@ -13,6 +13,7 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import styled from "styled-components";
+import NoteCreate from "./NoteCreate";
 const ModalContariner = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
@@ -25,7 +26,8 @@ const ModalContariner = styled.div`
   border: 1px solid black;
   width: 100%;
   font-weight: bold;
-  height: 300px;
+  /* height: 300px; */
+  height: 80%;
 `;
 const Div = styled.div`
   @font-face {
@@ -287,10 +289,23 @@ const NoteViewSendBox = () => {
         <>
           {" "}
           <ModalContariner>
+            <div style={{ position: "absolute", top: "25.5%", left: "32%" }}>
+              <button
+                onClick={() => setOpenDetail(false)}
+                style={{
+                  border: "none",
+                  borderRadius: "10px",
+                  margin: "0px 10px",
+                  width: "50px",
+                  fontWeight: "bold",
+                  backgroundColor: "gray",
+                  color: "white",
+                }}
+              >
+                목록
+              </button>
+            </div>
             <NoteViewDetail name={code} />
-            <button>답장</button>
-            <button onClick={() => delNote()}>삭제</button>
-            <button onClick={() => setOpenDetail(false)}>목록보기</button>
           </ModalContariner>
         </>
       )}

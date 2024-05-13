@@ -16,6 +16,7 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import NoteViewDetail from "./NoteViewDetail";
+import NoteCreate from "./NoteCreate";
 
 const Div = styled.div`
   @font-face {
@@ -61,7 +62,21 @@ const ModalContariner = styled.div`
   border: 1px solid black;
   width: 100%;
   font-weight: bold;
-  height: 300px;
+  /* height: 300px; */
+  height: 80%;
+`;
+
+const ModalNoteWrite = styled.div`
+  position: fixed;
+  left: 50%;
+  width: 40%;
+  top: 50%;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0 0 9999px;
+  z-index: 100;
+  transform: translate(-50%, -50%);
 `;
 
 const NoteViewAll = () => {
@@ -90,7 +105,7 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-  console.log(user.userNickname);
+
   const notesAPI = async () => {
     let response = await viewAllNote(
       user.userNickname +
@@ -146,6 +161,12 @@ const NoteViewAll = () => {
 
   // 삭제하기
   const delNote = () => {};
+
+  // 답장
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const sendNote = () => {
+    setModalIsOpen(!modalIsOpen);
+  };
 
   return (
     <>
@@ -282,7 +303,7 @@ const NoteViewAll = () => {
                     <td>
                       {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
                     </td>
-                    {/* <td>{note.files == null ? <>얌</> : <>욥</>}</td> */}
+
                     <td>
                       {note.files.map((note) => (
                         <div key={note.noteFileCode}>
@@ -330,12 +351,35 @@ const NoteViewAll = () => {
         <>
           {" "}
           <ModalContariner>
-            <NoteViewDetail name={code} /> <button>답장</button>
-            <button onClick={() => delNote()}>삭제</button>
-            <button onClick={() => setOpenDetail(false)}>목록보기</button>
+            <div style={{ position: "absolute", top: "25.5%", left: "32%" }}>
+              <button
+                onClick={() => setOpenDetail(false)}
+                style={{
+                  border: "none",
+                  borderRadius: "10px",
+                  margin: "0px 10px",
+                  width: "50px",
+                  fontWeight: "bold",
+                  backgroundColor: "gray",
+                  color: "white",
+                }}
+              >
+                목록
+              </button>
+            </div>
+            <NoteViewDetail name={code} />
           </ModalContariner>
         </>
       )}
+      {/* {modalIsOpen ? (
+        <ModalNoteWrite
+          isOpen={true}
+          araiHideApp={false}
+          onRequestClose={() => setModalIsOpen(false)}
+        >
+          <NoteCreate nickName={sender} />
+        </ModalNoteWrite>
+      ) : null} */}
     </>
   );
 };

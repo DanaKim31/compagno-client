@@ -91,17 +91,16 @@ const NoteCreate = (props) => {
       alert("제목은 필수입니다.");
     } else {
       createNote(formData);
-      navigate("/compagno/mypage/mynote");
+      // navigate("/compagno/mypage/mynote");
+      window.location.reload();
     }
   };
 
   // 전송 취소
   const delCreate = () => {
-    // navigate("/");
     window.location.reload();
   };
-  console.log(props.nickName);
-  console.log(receiver);
+
   return (
     <Div className="noteCreate">
       <FaRegPaperPlane
