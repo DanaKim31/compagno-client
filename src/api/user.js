@@ -112,3 +112,15 @@ export const getAdoptionList = async (id, pageNum) => {
 export const getAdoptionCount = async (id) => {
   return await authorize.get("mypage/myactivity/myadoption/count/" + id);
 };
+
+// 내 활동내역 - 유저간 질문 리스트 출력
+export const getUserQnaList = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/myuserqna/" + id + "?page=" + pageNum
+  );
+};
+
+// 내 활동내역 - 유저간 질문 리스트 갯수 불러오기
+export const getUserQnaCount = async (id) => {
+  return await authorize.get("mypage/myactivity/myuserqna/count/" + id);
+};

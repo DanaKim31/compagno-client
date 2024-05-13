@@ -44,7 +44,7 @@ const MyPageTab = () => {
         <a href="/compagno/mypage/myanimalfav">최애 동물</a>
         <a href="/compagno/mypage/myproductfav">제품 정보</a>
         <a href="">우리 동네</a>
-        <a href="">질문</a>
+        <a href="/compagno/mypage/myuserqna">질문</a>
         <a href="">펫 시터</a>
         <a href="">원데이</a>
         <a href="/compagno/mypage/myqna">QnA</a>
