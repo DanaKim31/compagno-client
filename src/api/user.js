@@ -128,7 +128,7 @@ export const getUserQnaCount = async (id) => {
 // 내 활동내역 - 우리동네 게시글 리스트 가져오기
 export const getNeighborPostList = async (id, pageNum) => {
   return await authorize.get(
-    "mypage/myactivity/myneighborpost/" + id + "?postPage=" + pageNum
+    "mypage/myactivity/myneighborpost/" + id + "?page=" + pageNum
   );
 };
 
@@ -140,11 +140,23 @@ export const getNeighborPostCount = async (id) => {
 // 내 활동내역 - 우리동네 댓글 리스트 가져오기
 export const getNeighborComList = async (id, pageNum) => {
   return await authorize.get(
-    "mypage/myactivity/myneighborCom/" + id + "?comPage=" + pageNum
+    "mypage/myactivity/myneighborcom/" + id + "?page=" + pageNum
   );
 };
 
 // 내 활동내역 - 우리동네 댓글 갯수 가져오기
 export const getNeighborComCount = async (id) => {
-  return await authorize.get("mypage/myactivity/myneighborCom/count/" + id);
+  return await authorize.get("mypage/myactivity/myneighborcom/count/" + id);
+};
+
+// 내 활동내역 - 원데이클래스 개설 내역 가져오기
+export const getOnedayClass = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/myodc/" + id + "?page=" + pageNum
+  );
+};
+
+// 내 활동내역 = 원데이클래스 개설 갯수 가져오기
+export const getOnedayClassCount = async (id) => {
+  return await authorize.get("mypage/myactivity/myodc/count/" + id);
 };

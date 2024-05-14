@@ -5,9 +5,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import { getAdoptionList, getAdoptionCount } from "../../api/user";
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import moment from "moment";
 
 const Div = styled.div`
@@ -32,20 +29,45 @@ const Div = styled.div`
     padding-top: 20px;
 
     .contentZone {
-      height: calc(100vh - 66px);
-
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-
-      background-color: skyblue;
       width: 100%;
+      height: calc(100vh - 66px);
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
 
-      .myAdopList {
-        width: 90%;
+      .cardZone {
+        padding-top: 20px;
+        width: fit-content;
+        display: grid;
+        grid-template-rows: repeat(3, 200px);
+        grid-template-columns: repeat(2, 600px);
+        gap: 30px 20px;
 
-        img {
-          width: 100%;
-          height: 200px;
+        .adopCard {
+          display: flex;
+          flex-direction: row;
+          border: 1px dashed black;
+          border-radius: 15px;
+          padding: 10px 10px;
+
+          .adopCardImg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+              width: 250px;
+              height: 170px;
+              object-fit: cover;
+              border-radius: 15px;
+            }
+          }
+
+          .adopCardText {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
         }
       }
     }
@@ -85,7 +107,7 @@ const MyPageAdoption = () => {
     const countAdopData = countResponse.data;
     setAdopCount(countAdopData);
 
-    console.log();
+    console.log(adopData);
   };
 
   // 페이지 변경
@@ -102,28 +124,46 @@ const MyPageAdoption = () => {
       <div className="myAdopMain">
         <MyPageTab />
         <div className="contentZone">
-          <Card style={{ width: "18rem" }}>
-            {adopList?.map((adopInfo) => (
-              <div className="myAdopList">
-                <Card.Img
-                  variant="top"
-                  src={adopInfo.adopAnimalImage?.replace(
-                    "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
-                    "http://192.168.10.28:8081/adoptionBoard/"
-                  )}
-                />
-                <Card.Body>
-                  <Card.Title>{adopInfo.adopAnimalKind}</Card.Title>
-                  <Card.Text>
-                    <p>{adopInfo.adopAnimalGender}</p>
-                    <p>{adopInfo.adopAnimalNeuter}</p>
-                    <p>{adopInfo.adopAnimalFindplace}</p>
-                    <p>{moment(adopInfo.adopRegiDate).format("YY-MM-DD")}</p>
-                  </Card.Text>
-                </Card.Body>
+          <div className="cardZone">
+            {adopList?.map((adop) => (
+              <div className="adopCard" key={adop.adopBoardCode}>
+                <div className="adopCardImg">
+                  <img
+                    src={adop.adopAnimalImage?.replace(
+                      "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
+                      "http://192.168.10.28:8081/adoptionBoard/"
+                    )}
+                  />
+                </div>
+                <div className="adopCardText">
+                  <ul>
+                    <li>
+                      <h2>&lt;{adop.adopAnimalKind}&gt;</h2>
+                    </li>
+                    <li>
+                      <span>- 성별 : </span>
+                      {adop.adopAnimalGender}
+                    </li>
+                    <li>
+                      {" "}
+                      <span>- 중성화 여부 : </span>
+                      {adop.adopAnimalNeuter}
+                    </li>
+                    <li>
+                      {" "}
+                      <span>- 발견 장소 : </span>
+                      {adop.adopAnimalFindplace}
+                    </li>
+                    <li>
+                      {" "}
+                      <span>- 등록 날짜 : </span>
+                      {moment(adop.adopRegiDate).format("YYYY-MM-DD")}
+                    </li>
+                  </ul>
+                </div>
               </div>
             ))}
-          </Card>
+          </div>
         </div>
       </div>
     </Div>

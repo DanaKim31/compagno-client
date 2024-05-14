@@ -52,6 +52,7 @@ import ClassDetail from "./pages/onedayClassBoard/ClassDetail";
 import MyPageAdoption from "./pages/user/MyPageAdoption";
 import MyPageUserQna from "./pages/user/MyPageUserQna";
 import MyPageNeighbor from "./pages/user/MyPageNeighbor";
+import MyPageOneday from "./pages/user/MyPageOneday";
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,7 @@ const router = createBrowserRouter([
           { path: "myadoption", element: <MyPageAdoption /> },
           { path: "myuserqna", element: <MyPageUserQna /> },
           { path: "myneighbor", element: <MyPageNeighbor /> },
+          { path: "myonedayclass", element: <MyPageOneday /> },
         ],
       },
       {

@@ -11,6 +11,7 @@ import {
   getNeighborComCount,
 } from "../../api/user";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
+import Paging from "../../components/user/MyPagePagination";
 
 const Div = styled.div`
   @font-face {
@@ -44,13 +45,15 @@ const Div = styled.div`
         background-color: yellow;
         display: flex;
         justify-content: center;
+        flex-direction: column;
       }
 
       .content-com {
         width: 50%;
-        background-color: lightblue;
+
         display: flex;
         justify-content: center;
+        flex-direction: column;
       }
     }
   }
@@ -72,63 +75,65 @@ const MyPageNeighbor = () => {
     }
   }, []);
 
-  // 펫시터 게시판 작성글 기초값 세팅
-  const [neighborPost, setNeighborPost] = useState([]);
-  const [countNeighborPost, setCountNeighborPost] = useState(0);
-
-  // 펫시터 게시판 작성댓글 기초값 세팅
-  const [neighborCom, setNeighborCom] = useState([]);
-  const [countNeighborCom, setCountNeighborCom] = useState(0);
-
-  // 페이징 기초값 설정
+  useDidMountEffect(() => {
+    neighborPostAPI();
+    neighborComAPI();
+  }, [user]);
+  // --------------------------------- 게시글 ---------------------------------
+  // 작성 게시글 기초값 세팅
+  const [postList, setPostList] = useState([]);
   const [postPage, setPostPage] = useState(1);
-  const [comPage, setComPage] = useState(1);
+  const [countPost, setCountPost] = useState(0);
 
-  // 작성글 + 작성댓글 불러오기
-  const sitterListAPI = async () => {
-    // 게시글 관련
+  // 작성 게시글 불러오기
+  const neighborPostAPI = async () => {
     const postResponse = await getNeighborPostList(user.userId, postPage);
     const postData = postResponse.data;
+    setPostList(postData);
 
-    const countPostResponse = await getNeighborPostCount(user.userId);
-    const countPostData = countPostResponse.data;
-
-    // 댓글 관련
-    // const comResponse = await getNeighborComList(user.userId, comPage);
-    // const comData = comResponse.data;
-
-    // const countComResponse = await getNeighborComCount(user.userId);
-    // const countComData = countComResponse.data;
-
-    setNeighborPost(postData);
-    setCountNeighborPost(countPostData);
-
-    // setNeighborCom(comData);
-    // setCountNeighborCom(countComData);
-
-    console.log(neighborPost);
-    // console.log(neighborCom);
+    const countPost = await getNeighborPostCount(user.userId);
+    const countPostData = countPost.data;
+    setCountPost(countPostData);
   };
 
-  useDidMountEffect(() => {
-    sitterListAPI();
-  }, [user]);
-
-  // 작성글 페이지 변경
-  const handlePostPageChange = async (pPage) => {
-    setPostPage(pPage);
-    const postResponse = await getNeighborPostList(user.userId, pPage);
+  // 게시글 페이지 변경
+  const handlePostPageChange = async (page) => {
+    setPostPage(page);
+    const postResponse = await getNeighborPostList(user.userId, page);
     const postData = postResponse.data;
-    setNeighborPost(postData);
+    setPostList(postData);
+  };
+  // -------------------------------------------------------------------------
+
+  // --------------------------------- 댓글 ---------------------------------
+  // 작성 댓글 기초값 세팅
+  const [comList, setComList] = useState([]);
+  const [comPage, setComPage] = useState(1);
+  const [countCom, setCountCom] = useState(0);
+
+  // 작성 댓글 불러오기
+  const neighborComAPI = async () => {
+    const comResponse = await getNeighborComList(user.userId, comPage);
+    const comData = comResponse.data;
+    setComList(comData);
+
+    const countCom = await getNeighborComCount(user.userId);
+    const countComData = countCom.data;
+    setCountCom(countComData);
+
+    console.log(comData);
+    console.log(countComData);
   };
 
-  // 작성댓글 페이지 변경
-  //   const handlePostComChange = async (cPage) => {
-  //     setComPage(cPage);
-  //     const comResponse = await getNeighborComList(user.userId, cPage);
-  //     const comData = comResponse.data;
-  //     setNeighborCom(comData);
-  //   };
+  // 댓글 페이지 변경
+  const handleComPageChange = async (page) => {
+    setComPage(page);
+    const comResponse = await getNeighborComList(user.userId, page);
+    const comData = comResponse.data;
+    setComList(comData);
+  };
+
+  // ------------------------------------------------------------------------
 
   return (
     <Div>
@@ -138,41 +143,59 @@ const MyPageNeighbor = () => {
         <div className="contentZone">
           <div className="content-post">
             <table>
-              <tr>
-                <th>구분</th>
-                <th>반려동물</th>
-                <th>지역</th>
-                <th>제목</th>
-                <th>작성일</th>
-              </tr>
+              <thead>
+                <tr>
+                  <th>반려동물</th>
+                  <th>지역</th>
+                  <th>제목</th>
+                  <th>작성일</th>
+                </tr>
+              </thead>
+              <tbody>
+                {postList?.map((post) => (
+                  <tr key={post.neighborBoardCode}>
+                    <td>{post.animalCategoryCode.animalType}</td>
+                    <td>{post.location.locationName}</td>
+                    <td>{post.neighborBoardTitle}</td>
+                    <td>
+                      {moment(post.neighborBoardRegiDate).format("YYYY-MM-DD")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
+            <Paging
+              page={postPage}
+              count={countPost}
+              setPage={handlePostPageChange}
+            />
           </div>
           <div className="content-com">
             <table>
-              <tr>
-                <th>반려동물</th>
-                <th>지역</th>
-                <th>제목</th>
-                <th>작성일</th>
-              </tr>
+              <thead>
+                <tr>
+                  <th>게시글 번호</th>
+                  <th>댓글 내용</th>
+                  <th>작성일</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comList?.map((com) => (
+                  <tr key={com.neighborCommentCode}>
+                    <td>{com.neighborBoardCode}</td>
+                    <td>{com.neighborCommentContent}</td>
+                    <td>
+                      {moment(com.neighborCommentRegiDate).format("YYYY-MM-DD")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
+            <Paging
+              page={comPage}
+              count={countCom}
+              setPage={handleComPageChange}
+            />
           </div>
         </div>
       </div>
