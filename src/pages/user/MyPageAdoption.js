@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import { getAdoptionList, getAdoptionCount } from "../../api/user";
 import moment from "moment";
+import AdopLostPaging from "../../components/user/AdopLostPagination";
 
 const Div = styled.div`
   @font-face {
@@ -33,7 +34,8 @@ const Div = styled.div`
       height: calc(100vh - 66px);
       display: flex;
       justify-content: center;
-      flex-direction: row;
+      flex-direction: column;
+      align-items: center;
 
       .cardZone {
         padding-top: 20px;
@@ -164,6 +166,11 @@ const MyPageAdoption = () => {
               </div>
             ))}
           </div>
+          <AdopLostPaging
+            page={page}
+            count={adopCount}
+            setPage={handlePageChange}
+          />
         </div>
       </div>
     </Div>
