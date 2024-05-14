@@ -319,7 +319,8 @@ const CreateAdopBoard = () => {
       adopAnimalKind == "" ||
       adopAnimalGender == "" ||
       adopAnimalNeuter == "" ||
-      adopAnimalFindplace == ""
+      adopAnimalFindplace == "" ||
+      adopAnimalFeature == ""
     ) {
       alert("필수 입력란을 확인해주세요.");
     } else {
@@ -493,7 +494,9 @@ const CreateAdopBoard = () => {
               />
             </div>
             <div id="feature">
-              <label>동물 특징</label>
+              <label>
+                동물 특징<span>*</span>
+              </label>
               <input
                 type="text"
                 value={adopAnimalFeature || ""}

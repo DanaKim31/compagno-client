@@ -596,9 +596,10 @@ const Comments = () => {
                                       id="bottomWriterBtn"
                                       style={{
                                         display: "flex",
-                                        alignItems: "center",
+                                        height: "27px",
                                         width: "79%",
                                         justifyContent: "space-between",
+                                        paddingTop: "6px",
                                       }}
                                     >
                                       <span
@@ -631,7 +632,11 @@ const Comments = () => {
                                     >
                                       <div
                                         id="bottomBtn"
-                                        style={{ fontSize: "0.6rem" }}
+                                        style={{
+                                          fontSize: "0.6rem",
+                                          display: "flex",
+                                          width: "70px",
+                                        }}
                                       >
                                         <button
                                           style={{
@@ -782,7 +787,7 @@ const Comments = () => {
                           marginTop: "10px",
                           width: "580px",
                           fontSize: "0.8rem",
-                          height: "80px",
+
                           border: "1px solid black",
                           borderRadius: "10px",
                           display: "flex",
@@ -792,7 +797,6 @@ const Comments = () => {
                         <div
                           id="user"
                           style={{
-                            height: "15px",
                             margin: "8px 10px",
                             display: "flex",
                           }}
@@ -950,6 +954,14 @@ const Comments = () => {
                 key={index}
                 value={num}
                 onClick={(e) => setPage(Number(e.target.value))}
+                style={{
+                  borderRadius: "50%",
+                  width: "30px",
+                  height: "30px",
+                  border: "none",
+                  fontWeight: "bold",
+                  backgroundColor: "#cbd6ce",
+                }}
               >
                 {num}
               </button>

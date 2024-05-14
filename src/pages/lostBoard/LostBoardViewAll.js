@@ -1,4 +1,4 @@
-import { viewAllLostBoard } from "../../api/lostBoard";
+import { viewAllLostBoard, viewCountLostBoard } from "../../api/lostBoard";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -60,19 +60,26 @@ const Div = styled.div`
     #searchBtn {
       height: 40px;
       button {
-        width: 20%;
-        border: 1px solid green;
-        border-radius: 30px;
+        width: 100px;
+        border-radius: 10px;
+        border: none;
+        background-color: gray;
+        color: white;
+        height: 40px;
         span {
+          margin-left: 10px;
           font-weight: bold;
         }
+      }
+      button:hover {
+        background-color: #94b29b;
       }
     }
   }
   #contentsOption {
     margin-top: 18px;
     display: flex;
-    width: 75%;
+    width: 67%;
     justify-content: space-between;
     #allCount {
       display: flex;
@@ -83,7 +90,6 @@ const Div = styled.div`
     #sorting {
       display: flex;
       justify-content: right;
-
       select {
         font-weight: bold;
         option {
@@ -98,19 +104,25 @@ const Div = styled.div`
     font-weight: bold;
   }
   .addBtn {
-    width: 90px;
-    height: 35px;
-    font-size: 0.8rem;
-    font-family: "TAEBAEKmilkyway";
     font-weight: bold;
-    border-radius: 30px;
+    border-radius: 15px;
+    background-color: black;
+    color: white;
+    font-size: 0.8rem;
+    width: 90px;
+    height: 50px;
+  }
+  .addBtn:hover {
+    background-color: #94b29b;
+    border: none;
+    color: black;
   }
   .contentsBody {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 550px 550px 550px;
+    grid-template-rows: 540px 540px 540px;
     grid-row-gap: 20px;
-    width: 80%;
+    width: 67%;
     #imageBox {
       width: 100%;
       height: 50%;
@@ -121,12 +133,12 @@ const Div = styled.div`
       height: 100%;
     }
     #regiDate {
-      display: flex;
-      justify-content: right;
-      width: 100%;
+      /* display: flex; */
+      /* justify-content: right; */
+      /* width: 100%; */
       span {
-        border: 1px solid black;
-        border-radius: 13px;
+        /* border: 1px solid black;
+        border-radius: 13px; */
         width: 75px;
         display: flex;
         justify-content: center;
@@ -136,9 +148,8 @@ const Div = styled.div`
       }
     }
     .contentDetail {
-      height: 85%;
+      height: 100%;
       margin: 20px;
-
       #animalName {
         font-weight: bold;
         text-align: center;
@@ -150,26 +161,29 @@ const Div = styled.div`
         height: 40px;
       }
       .text {
-        height: 40%;
-        border-top: 1px dashed green;
+        height: 34%;
+        border-top: 1px dashed black;
+        border-bottom: 1px dashed green;
         display: flex;
         align-items: center;
         margin-top: 10px;
       }
     }
     .contentDetail:hover {
-      background-color: yellow;
+      background-color: #e9efeb;
       cursor: pointer;
     }
   }
   .paging {
     margin-bottom: 100px;
-    width: 80%;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
+    button {
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-weight: bold;
+      background-color: #cbd6ce;
+    }
     .iconPaging {
       cursor: pointer;
     }
@@ -266,7 +280,8 @@ const ViewAllLostBoard = () => {
     }
   };
 
-  const view = (code) => {
+  const view = async (code) => {
+    await viewCountLostBoard(code);
     navigate("/compagno/lostBoard/view/" + code);
   };
   return (
@@ -356,6 +371,8 @@ const ViewAllLostBoard = () => {
             <option value="1">작성일 오래된순</option>
             <option value="2">분실 날짜 최신순</option>
             <option value="3">분실 날짜 오래된순</option>
+            <option value="4">조회수 낮은순</option>
+            <option value="5">조회수 높은순</option>
           </select>
         </div>
       </div>
@@ -380,9 +397,22 @@ const ViewAllLostBoard = () => {
                   )}
                 />
               </div>
-              <div id="regiDate">
-                <span>{moment(lost.lostRegiDate).format("YY-MM-DD")}</span>
+              <div
+                className="topContents"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <div
+                  id="viewCount"
+                  style={{ display: "flex", marginTop: "10px" }}
+                >
+                  <span>조회수</span>&nbsp;
+                  <span>{lost.lostViewCount}</span>
+                </div>
+                <div id="regiDate">
+                  <span>{moment(lost.lostRegiDate).format("YY-MM-DD")}</span>
+                </div>
               </div>
+
               <div className="text">
                 신고자 닉네임 : {lost.userNickname}
                 <br />

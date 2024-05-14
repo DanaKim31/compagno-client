@@ -151,7 +151,7 @@ const Div = styled.div`
         border: none;
         background-color: #94b29b;
         font-weight: bold;
-        font-size: 1.3rem;
+        font-size: 1rem;
         margin: 0px 10px;
         &:hover {
           background-color: white;

@@ -164,14 +164,30 @@ const Div = styled.div`
   .btn {
     display: flex;
     margin: 30px 0;
-    .okBtn,
-    .delBtn {
-      margin: 0 20px;
-      width: 80px;
-      height: 35px;
-      font-size: 0.8rem;
-      font-family: "TAEBAEKmilkyway";
+    button {
+      margin: 0px 10px;
+      margin-bottom: 40px;
+      border-radius: 10px;
       font-weight: bold;
+      width: 100px;
+      height: 40px;
+      border: none;
+    }
+    :nth-child(1) {
+      background-color: #94b29b;
+      &:hover {
+        border: 3px solid #94b29b;
+        background-color: white;
+      }
+    }
+    :nth-child(2) {
+      background-color: black;
+      color: white;
+      &:hover {
+        border: 3px solid black;
+        background-color: white;
+        color: black;
+      }
     }
   }
 `;

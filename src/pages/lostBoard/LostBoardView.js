@@ -44,11 +44,25 @@ const Div = styled.div`
         margin: 0px 10px;
         width: 70px;
         border-radius: 20px;
-        border: 2px solid green;
+        border: none;
         font-weight: bold;
       }
-      button:hover {
-        background-color: yellow;
+      :nth-child(1) {
+        background-color: gray;
+        color: white;
+        &:hover {
+          color: black;
+          background-color: #94b29b;
+        }
+      }
+      :nth-child(2) {
+        background-color: black;
+        color: white;
+        &:hover {
+          border: 2px solid black;
+          color: black;
+          background-color: white;
+        }
       }
     }
   }
