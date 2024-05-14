@@ -310,6 +310,7 @@ const ProductBoardDetail = () => {
   const [editNo, setEditNo] = useState(0);
   const [editContent, setEditContent] = useState("");
   const [page, setPage] = useState("");
+  const token = localStorage.getItem("token");
 
   const viewProductBoard = async () => {
     const response = await getProductBoard(code);
@@ -322,6 +323,10 @@ const ProductBoardDetail = () => {
   };
 
   const recommend = async () => {
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      return false;
+    }
     await productBoardRecommend({
       productBoardCode: code,
       userId: user.userId,
@@ -346,7 +351,6 @@ const ProductBoardDetail = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
@@ -365,6 +369,14 @@ const ProductBoardDetail = () => {
   };
 
   const addComment = async () => {
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      return false;
+    }
+    if (comment === "") {
+      alert("내용을 입력해주세요.");
+      return false;
+    }
     await addProductBoardComment({
       productBoardCode: code,
       productCommentContent: comment,
@@ -374,6 +386,14 @@ const ProductBoardDetail = () => {
   };
 
   const addReply = async () => {
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      return false;
+    }
+    if (replyContent === "") {
+      alert("내용을 입력해주세요.");
+      return false;
+    }
     await addProductBoardComment({
       productBoardCode: code,
       productParentCode: replyNo,
@@ -386,6 +406,10 @@ const ProductBoardDetail = () => {
   };
 
   const editComment = async () => {
+    if (editContent === "") {
+      alert("내용을 입력해주세요.");
+      return false;
+    }
     await editProductBoardComment({
       productCommentCode: editNo,
       productCommentContent: editContent,
@@ -418,7 +442,7 @@ const ProductBoardDetail = () => {
           {productBoard.user?.userNickname} <MyToggleBar />
           <span className="boardRegiDate">
             작성 일 :{" "}
-            {moment(productBoard.productCommentRegiDate).format(
+            {moment(productBoard.productBoardRegiDate).format(
               "YYYY-MM-DD HH:mm"
             )}
           </span>
@@ -501,7 +525,10 @@ const ProductBoardDetail = () => {
               rows={3}
               className="writeComment"
               onChange={(e) => {
-                setComment(e.target.value);
+                if (e.target.value.length > 250) {
+                  e.target.value = e.target.value.slice(0, 250);
+                }
+                setComment(e.target.value.trim());
               }}
             />
             <Button
@@ -572,7 +599,10 @@ const ProductBoardDetail = () => {
                             e.stopPropagation();
                           }}
                           onChange={(e) => {
-                            setEditContent(e.target.value);
+                            if (e.target.value.length > 250) {
+                              e.target.value = e.target.value.slice(0, 250);
+                            }
+                            setEditContent(e.target.value.trim());
                           }}
                         />
                         <Button
@@ -620,7 +650,10 @@ const ProductBoardDetail = () => {
                         rows={3}
                         className="writeReply"
                         onChange={(e) => {
-                          setReplyContent(e.target.value);
+                          if (e.target.value.length > 250) {
+                            e.target.value = e.target.value.slice(0, 250);
+                          }
+                          setReplyContent(e.target.value.trim());
                         }}
                       />
                       <Button onClick={() => addReply()}>작성</Button>
@@ -657,7 +690,7 @@ const ProductBoardDetail = () => {
                         )
                           ? moment(reply.productCommentRegiDate).from(moment())
                           : moment(reply.productCommentRegiDate).format(
-                              "YYYY.MM.DD"
+                              "YYYY.MM.DD. HH:mm"
                             )}
                         {user.userId === reply.user?.userId && (
                           <span className="commentChangeSpan">
@@ -694,7 +727,10 @@ const ProductBoardDetail = () => {
                                 e.stopPropagation();
                               }}
                               onChange={(e) => {
-                                setEditContent(e.target.value);
+                                if (e.target.value.length > 250) {
+                                  e.target.value = e.target.value.slice(0, 250);
+                                }
+                                setEditContent(e.target.value.trim());
                               }}
                             />
                             <Button
@@ -758,7 +794,10 @@ const ProductBoardDetail = () => {
                         rows={3}
                         className="writeReply"
                         onChange={(e) => {
-                          setReplyContent(e.target.value);
+                          if (e.target.value.length > 250) {
+                            e.target.value = e.target.value.slice(0, 250);
+                          }
+                          setReplyContent(e.target.value.trim());
                         }}
                       />
                       <Button onClick={() => addReply()}>작성</Button>
@@ -796,7 +835,7 @@ const ProductBoardDetail = () => {
                         )
                           ? moment(reply.productCommentRegiDate).from(moment())
                           : moment(reply.productCommentRegiDate).format(
-                              "YYYY.MM.DD"
+                              "YYYY.MM.DD. HH:mm"
                             )}
                         {user.userId === reply.user?.userId && (
                           <span className="commentChangeSpan">
@@ -833,7 +872,10 @@ const ProductBoardDetail = () => {
                                 e.stopPropagation();
                               }}
                               onChange={(e) => {
-                                setEditContent(e.target.value);
+                                if (e.target.value.length > 250) {
+                                  e.target.value = e.target.value.slice(0, 250);
+                                }
+                                setEditContent(e.target.value.trim());
                               }}
                             />
                             <Button

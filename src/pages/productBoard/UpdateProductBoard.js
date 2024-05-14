@@ -2,24 +2,30 @@ import styled from "styled-components";
 import { FaStar, FaStarHalfAlt, FaRegStar, FaRegImage } from "react-icons/fa";
 import { FaRegCircleXmark } from "react-icons/fa6";
 import { useState, useEffect, useRef } from "react";
-import Form from "react-bootstrap/Form";
+import { Form, Button } from "react-bootstrap";
 import { userSave } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { editProductBoard, getProductBoard } from "../../api/productBoard";
+import {
+  editProductBoard,
+  getProductBoard,
+  getAnimalCategories,
+} from "../../api/productBoard";
 
 const Main = styled.main`
+  width: 1900px;
+  padding: 0px 300px;
   padding-top: 120px;
-  display: flex;
-  flex-direction: column;
   background-color: rgb(244, 244, 244);
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
+  padding-bottom: 100px;
 
   input,
   select,
   button,
-  option {
+  option,
+  textarea {
     font-weight: bold;
   }
 
@@ -32,8 +38,25 @@ const Main = styled.main`
     font-style: normal;
   }
 
+  textarea {
+    resize: none;
+  }
+
+  .linkLogo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 30px;
+    color: black;
+    text-decoration: none;
+  }
+
+  .titleInput {
+    margin-bottom: 15px;
+  }
+
   .createDiv {
-    padding: 0px 120px;
+    width: 100%;
   }
   .starLeftSpan {
     position: absolute;
@@ -69,21 +92,25 @@ const Main = styled.main`
   .gradeDiv {
     display: flex;
     flex-direction: row;
+    line-height: 50px;
+    margin-left: 15px;
   }
   .mainImageDiv,
   .nullMainImageDiv {
-    width: 400px;
-    height: 300px;
+    width: 560px;
+    height: 420px;
     border: 1px solid black;
     margin-left: 20px;
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     position: relative;
+    border-radius: 10px;
     img {
       width: 100%;
       height: 100%;
+      border-radius: 8px;
     }
   }
 
@@ -117,10 +144,13 @@ const Main = styled.main`
     height: 200px;
     margin: 0px 10px;
     margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
 
     img {
       width: 100%;
       height: 100%;
+      border-radius: 10px;
     }
     svg {
       position: absolute;
@@ -130,6 +160,55 @@ const Main = styled.main`
       color: #212121;
       cursor: pointer;
     }
+  }
+
+  .imageSpan:nth-child(1) {
+    margin-left: 20px;
+  }
+  .productInpoDiv {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    height: 420px;
+  }
+
+  .inpoInputDiv {
+    width: 700px;
+    float: right;
+    padding-top: 110px;
+    input,
+    select {
+      display: inline;
+      width: 200px;
+      margin: 10px;
+    }
+    .nameInput {
+      width: 400px;
+    }
+  }
+
+  .mainImageCancle {
+    position: absolute;
+    right: -104px;
+    bottom: 0px;
+  }
+
+  .productImage {
+    margin-top: 10px;
+  }
+
+  .writeCancle,
+  .boardWrite {
+    float: right;
+    width: 100px;
+    height: 40px;
+  }
+
+  .writeCancle {
+    margin-right: 15px;
+  }
+
+  .prevImgBtn {
+    margin-left: 20px;
   }
 `;
 
@@ -155,8 +234,44 @@ const UpdateProductBoard = () => {
   const [prevMainImg, setPrevMainImg] = useState("");
   const [prevImg, setPrevImg] = useState([]);
   const [prevImgSrc, setPrevImgSrc] = useState([]);
+  const [animalCategories, setAnimalCategories] = useState([]);
+
+  const viewAnimalCategory = async () => {
+    const response = await getAnimalCategories();
+    setAnimalCategories(response.data);
+  };
 
   const updateBoard = async () => {
+    if (title === "") {
+      alert("제목을 입력해주세요");
+      return false;
+    } else if (productName == "") {
+      alert("제품명을 입력해주세요");
+      return false;
+    } else if (productCategory == "") {
+      alert("제품 분류를 입력해주세요");
+      return false;
+    } else if (animal == "") {
+      alert("사용 동물을 선택해주세요");
+      return false;
+    } else if (price == "") {
+      alert("가격을 입력해주세요");
+      return false;
+    } else if (grade == "") {
+      alert("평점을 입력해주세요");
+      return false;
+    } else if (content == "") {
+      alert("내용을 입력해주세요");
+      return false;
+    } else if (
+      (files.length !== 0 || prevImgSrc.length !== 0) &&
+      JSON.stringify(productMainFile) === "{}" &&
+      mainImgSrc === ""
+    ) {
+      alert("썸네일로 사용할 이미지를 선택해주세요");
+      return false;
+    }
+
     const formData = new FormData();
     formData.append("productBoardCode", code);
     formData.append("productBoardTitle", title);
@@ -211,6 +326,7 @@ const UpdateProductBoard = () => {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
     viewProductBoard();
+    viewAnimalCategory();
   }, []);
 
   const imageCreate = (e) => {
@@ -289,22 +405,35 @@ const UpdateProductBoard = () => {
     }
   };
 
+  const imgCancle = () => {
+    console.log(prevImgSrc);
+    console.log(prevImg);
+    selectImage.current.value = "";
+    setFiles([]);
+    setImgSrc([]);
+    setPrevImgSrc(prevImg);
+  };
+
   return (
     <Main>
       <div className="createDiv">
-        <span>
-          제목 :{" "}
-          <input
-            value={title}
-            type="text"
-            placeholder="제목"
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-        </span>
-        <div>
-          썸네일 이미지 :
+        <Link to={"/compagno/product-board"} className="linkLogo">
+          제품 정보 공유 게시판
+        </Link>
+        <Form.Control
+          className="titleInput"
+          value={title}
+          type="text"
+          placeholder="제목"
+          size="lg"
+          onChange={(e) => {
+            if (e.target.value.length > 30) {
+              e.target.value = e.target.value.slice(0, 30);
+            }
+            setTitle(e.target.value.trim());
+          }}
+        />
+        <div className="productInpoDiv">
           <input
             type="file"
             accept="image/*"
@@ -324,6 +453,16 @@ const UpdateProductBoard = () => {
                   mainSelectImage.current.value = "";
                 }}
               />
+              <Button
+                variant="secondary"
+                className="mainImageCancle"
+                onClick={() => {
+                  setProductMainFile({});
+                  setMainImgSrc("http://192.168.10.28:8081/" + prevMainImg);
+                }}
+              >
+                기존 이미지
+              </Button>
             </div>
           ) : (
             <div
@@ -332,259 +471,289 @@ const UpdateProductBoard = () => {
             >
               <FaRegImage />
               <span>썸네일로 사용할 이미지 업로드</span>
+              <Button
+                variant="secondary"
+                className="mainImageCancle"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setProductMainFile({});
+                  setMainImgSrc("http://192.168.10.28:8081/" + prevMainImg);
+                }}
+              >
+                기존 이미지
+              </Button>
             </div>
           )}
-          <button
-            onClick={() => {
-              setProductMainFile({});
-              setMainImgSrc("http://192.168.10.28:8081/" + prevMainImg);
-            }}
-          >
-            취소
-          </button>
+
+          <div className="inpoInputDiv">
+            <Form.Control
+              className="nameInput"
+              value={productName}
+              type="text"
+              placeholder="제품명"
+              onChange={(e) => {
+                if (e.target.value.length > 20) {
+                  e.target.value = e.target.value.slice(0, 20);
+                }
+                setProductName(e.target.value.trim());
+              }}
+            />
+            <Form.Control
+              className="cateInput"
+              type="text"
+              onChange={(e) => {
+                if (e.target.value.length > 12) {
+                  e.target.value = e.target.value.slice(0, 12);
+                }
+                setProductCategory(e.target.value);
+              }}
+              placeholder="제품 분류"
+            />
+            <Form.Select
+              className="animalInput"
+              defaultValue={animal}
+              onChange={(e) => {
+                setAnimal(e.target.value);
+              }}
+            >
+              {animalCategories.map((animalCategory) => (
+                <option
+                  value={animalCategory.animalCategoryCode}
+                  key={animalCategory.animalCategoryCode}
+                >
+                  {animalCategory.animalType}
+                </option>
+              ))}
+            </Form.Select>
+
+            <Form.Control
+              className="priceInput"
+              value={price}
+              type="text"
+              placeholder="가격"
+              onChange={(e) => {
+                if (e.target.value.length > 9) {
+                  e.target.value = e.target.value.slice(0, 9);
+                }
+                setPrice(e.target.value.trim());
+              }}
+            />
+            <div className="gradeDiv">
+              평점 :
+              {grade >= 1 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(0.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(1)}
+                  ></span>
+                  <FaStar className="star" />
+                </div>
+              ) : grade === 0.5 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(0.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(1)}
+                  ></span>
+                  <FaStarHalfAlt className="starHalf" />
+                </div>
+              ) : (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(0.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(1)}
+                  ></span>
+                  <FaRegStar className="star" />
+                </div>
+              )}
+              {grade >= 2 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(1.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(2)}
+                  ></span>
+                  <FaStar className="star" />
+                </div>
+              ) : grade === 1.5 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(1.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(2)}
+                  ></span>
+                  <FaStarHalfAlt className="starHalf" />
+                </div>
+              ) : (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(1.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(2)}
+                  ></span>
+                  <FaRegStar className="star" />
+                </div>
+              )}
+              {grade >= 3 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(2.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(3)}
+                  ></span>
+                  <FaStar className="star" />
+                </div>
+              ) : grade === 2.5 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(2.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(3)}
+                  ></span>
+                  <FaStarHalfAlt className="starHalf" />
+                </div>
+              ) : (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(2.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(3)}
+                  ></span>
+                  <FaRegStar className="star" />
+                </div>
+              )}
+              {grade >= 4 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(3.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(4)}
+                  ></span>
+                  <FaStar className="star" />
+                </div>
+              ) : grade === 3.5 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(3.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(4)}
+                  ></span>
+                  <FaStarHalfAlt className="starHalf" />
+                </div>
+              ) : (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(3.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(4)}
+                  ></span>
+                  <FaRegStar className="star" />
+                </div>
+              )}
+              {grade === 5 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(4.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(5)}
+                  ></span>
+                  <FaStar className="star" />
+                </div>
+              ) : grade === 4.5 ? (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(4.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(5)}
+                  ></span>
+                  <FaStarHalfAlt className="starHalf" />
+                </div>
+              ) : (
+                <div className="starDiv">
+                  <span
+                    className="starLeftSpan"
+                    onClick={() => setGrade(4.5)}
+                  ></span>
+                  <span
+                    className="starRightSpan"
+                    onClick={() => setGrade(5)}
+                  ></span>
+                  <FaRegStar className="star" />
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <span>
-          상품명 :{" "}
-          <input
-            value={productName}
-            type="text"
-            placeholder="상품명"
+
+        <div>
+          <Form.Control
+            value={content}
+            placeholder="내용 입력"
+            as="textarea"
+            rows={20}
             onChange={(e) => {
-              setProductName(e.target.value);
-            }}
-          />
-        </span>
-        <div>
-          사용 동물 :{" "}
-          <select
-            defaultValue={animal}
-            onChange={(e) => {
-              setAnimal(e.target.value);
-            }}
-          >
-            <option value="1">강아지</option>
-            <option value="2">고양이</option>
-            <option value="3">비둘기</option>
-            <option value="4">기타</option>
-          </select>
-        </div>
-        <div>
-          상품 분류 :
-          <input
-            type="text"
-            value={productCategory}
-            onChange={(e) => setProductCategory(e.target.value)}
-            placeholder="제품 분류"
-          />
-        </div>
-        <div>
-          가격 :{" "}
-          <input
-            value={price}
-            type="text"
-            placeholder="가격"
-            onChange={(e) => {
-              setPrice(e.target.value);
+              if (e.target.value.length > 1900) {
+                e.target.value = e.target.value.slice(0, 1900);
+              }
+              setContent(e.target.value.trim());
             }}
           />
         </div>
-        <div className="gradeDiv">
-          평점 :
-          {grade >= 1 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(0.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(1)}
-              ></span>
-              <FaStar className="star" />
-            </div>
-          ) : grade === 0.5 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(0.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(1)}
-              ></span>
-              <FaStarHalfAlt className="starHalf" />
-            </div>
-          ) : (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(0.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(1)}
-              ></span>
-              <FaRegStar className="star" />
-            </div>
-          )}
-          {grade >= 2 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(1.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(2)}
-              ></span>
-              <FaStar className="star" />
-            </div>
-          ) : grade === 1.5 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(1.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(2)}
-              ></span>
-              <FaStarHalfAlt className="starHalf" />
-            </div>
-          ) : (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(1.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(2)}
-              ></span>
-              <FaRegStar className="star" />
-            </div>
-          )}
-          {grade >= 3 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(2.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(3)}
-              ></span>
-              <FaStar className="star" />
-            </div>
-          ) : grade === 2.5 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(2.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(3)}
-              ></span>
-              <FaStarHalfAlt className="starHalf" />
-            </div>
-          ) : (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(2.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(3)}
-              ></span>
-              <FaRegStar className="star" />
-            </div>
-          )}
-          {grade >= 4 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(3.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(4)}
-              ></span>
-              <FaStar className="star" />
-            </div>
-          ) : grade === 3.5 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(3.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(4)}
-              ></span>
-              <FaStarHalfAlt className="starHalf" />
-            </div>
-          ) : (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(3.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(4)}
-              ></span>
-              <FaRegStar className="star" />
-            </div>
-          )}
-          {grade === 5 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(4.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(5)}
-              ></span>
-              <FaStar className="star" />
-            </div>
-          ) : grade === 4.5 ? (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(4.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(5)}
-              ></span>
-              <FaStarHalfAlt className="starHalf" />
-            </div>
-          ) : (
-            <div className="starDiv">
-              <span
-                className="starLeftSpan"
-                onClick={() => setGrade(4.5)}
-              ></span>
-              <span
-                className="starRightSpan"
-                onClick={() => setGrade(5)}
-              ></span>
-              <FaRegStar className="star" />
-            </div>
-          )}
-        </div>
-        <div>
-          이미지 :
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={imageCreate}
-            ref={selectImage}
-          />
+        <div className="productImage">
+          이미지 업로드
+          <Form.Group controlId="formFileMultiple" className="mb-3">
+            <Form.Control
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={imageCreate}
+              ref={selectImage}
+            />
+          </Form.Group>
           <div className="imagesDiv">
             {imgSrc.map((img, i) => (
               <span className="imageSpan" key={i}>
@@ -606,27 +775,32 @@ const UpdateProductBoard = () => {
               </span>
             ))}
           </div>
-        </div>
-        <div>
-          글 내용 :{" "}
-          <Form.Control
-            value={content}
-            as="textarea"
-            rows={20}
-            onChange={(e) => {
-              setContent(e.target.value);
+          <Button
+            className="prevImgBtn"
+            variant="secondary"
+            onClick={() => {
+              imgCancle();
             }}
-          />
+          >
+            기존 이미지
+          </Button>
         </div>
-        <button
+
+        <Button
+          className="boardWrite"
           onClick={() => {
             updateBoard();
           }}
-          style={{ width: "100px" }}
         >
           글 작성
-        </button>
-        <Link to="/compagno/product-board">메인으로</Link>
+        </Button>
+        <Button
+          className="writeCancle"
+          onClick={() => navigate("/compagno/product-board")}
+          variant="secondary"
+        >
+          메인으로
+        </Button>
       </div>
     </Main>
   );
