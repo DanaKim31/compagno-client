@@ -127,7 +127,6 @@ const MyPageMyQnA = () => {
 
       setManageQnaList(mQnaData);
       setManageQnaCount(countMQnaData);
-      console.log(mQnaData);
     }
   };
   // -----------------------------------------------------------------------------------

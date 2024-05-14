@@ -4,8 +4,8 @@ import MyPageTab from "../../components/user/MyPageTab";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
-import { getAdoptionList, getAdoptionCount } from "../../api/user";
 import moment from "moment";
+import { getLostList, getLostCount } from "../../api/user";
 import AdopLostPaging from "../../components/user/AdopLostPagination";
 
 const Div = styled.div`
@@ -23,7 +23,7 @@ const Div = styled.div`
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
 
-  .myAdopMain {
+  .myLostMain {
     width: calc(100vw - 300px);
     display: flex;
     flex-direction: column;
@@ -45,14 +45,14 @@ const Div = styled.div`
         grid-template-columns: repeat(2, 600px);
         gap: 30px 20px;
 
-        .adopCard {
+        .lostCard {
           display: flex;
           flex-direction: row;
           border: 1px dashed black;
           border-radius: 15px;
           padding: 10px 10px;
 
-          .adopCardImg {
+          .lostCardImg {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -65,7 +65,7 @@ const Div = styled.div`
             }
           }
 
-          .adopCardText {
+          .lostCardText {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -76,7 +76,7 @@ const Div = styled.div`
   }
 `;
 
-const MyPageAdoption = () => {
+const MyPageLost = () => {
   const [user, setUser] = useState({});
   // 유저정보 가지고 오기
   const info = useSelector((state) => {
@@ -92,73 +92,76 @@ const MyPageAdoption = () => {
   }, []);
 
   useDidMountEffect(() => {
-    adopListAPI();
+    lostListAPI();
   }, [user]);
 
-  // 입양 리스트 + 갯수 초기값 세팅
-  const [adopList, setAdopList] = useState([]);
+  // 실종 리스트 + 갯수 초기값 세팅
+  const [lostList, setLostList] = useState([]);
   const [page, setPage] = useState(1);
-  const [adopCount, setAdopCount] = useState(0);
+  const [countLost, setCountLost] = useState(0);
 
-  // 입양 리스트 + 갯수 가져오기
-  const adopListAPI = async () => {
-    const response = await getAdoptionList(user.userId, page);
-    const adopData = response.data;
-    setAdopList(adopData);
+  // 실종 리스트 + 갯수 가져오기
+  const lostListAPI = async () => {
+    const response = await getLostList(user.userId, page);
+    const lostData = response.data;
 
-    const countResponse = await getAdoptionCount(user.userId);
-    const countAdopData = countResponse.data;
-    setAdopCount(countAdopData);
+    const countResponse = await getLostCount(user.userId);
+    const countLostData = countResponse.data;
+
+    setLostList(lostData);
+    setCountLost(countLostData);
   };
 
   // 페이지 변경
   const handlePageChange = async (page) => {
     setPage(page);
-    const response = await getAdoptionList(user.userId, page);
-    const adopData = response.data;
-    setAdopList(adopData);
+    const response = await getLostList(user.userId, page);
+    const lostData = response.data;
+    setLostList(lostData);
   };
 
   return (
     <Div>
       <MyPageSidebar />
-      <div className="myAdopMain">
+      <div className="myLostMain">
         <MyPageTab />
         <div className="contentZone">
           <div className="cardZone">
-            {adopList?.map((adop) => (
-              <div className="adopCard" key={adop.adopBoardCode}>
-                <div className="adopCardImg">
+            {lostList?.map((lost) => (
+              <div className="lostCard" key={lost.lostBoardCode}>
+                <div className="lostCardImg">
                   <img
-                    src={adop.adopAnimalImage?.replace(
-                      "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
-                      "http://192.168.10.28:8081/adoptionBoard/"
+                    src={lost.lostAnimalImage?.replace(
+                      "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                      "http://192.168.10.28:8081/lostBoard/"
                     )}
                   />
                 </div>
-                <div className="adopCardText">
+                <div className="lostCardtext">
                   <ul>
                     <li>
-                      <h2>&lt;{adop.adopAnimalKind}&gt;</h2>
+                      <h2>&lt;{lost.lostAnimalName}&gt;</h2>
                     </li>
                     <li>
-                      <span>- 성별 : </span>
-                      {adop.adopAnimalGender}
+                      <h5>{lost.lostAnimalKind}</h5>
                     </li>
                     <li>
-                      {" "}
-                      <span>- 중성화 여부 : </span>
-                      {adop.adopAnimalNeuter}
+                      <span> - 성별 : {lost.lostAnimalGender}</span>
                     </li>
                     <li>
-                      {" "}
-                      <span>- 발견 장소 : </span>
-                      {adop.adopAnimalFindplace}
+                      <span>- 실종 장소 : {lost.lostLocation}</span>
                     </li>
                     <li>
-                      {" "}
-                      <span>- 등록 날짜 : </span>
-                      {moment(adop.adopRegiDate).format("YYYY-MM-DD")}
+                      <span>
+                        - 실종 날짜 :{" "}
+                        {moment(lost.lostDate).format("YYYY-MM-DD")}
+                      </span>
+                    </li>
+                    <li>
+                      <span>
+                        - 작성일 :{" "}
+                        {moment(lost.lostRegiDate).format("YYYY-MM-DD")}
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -167,7 +170,7 @@ const MyPageAdoption = () => {
           </div>
           <AdopLostPaging
             page={page}
-            count={adopCount}
+            count={countLost}
             setPage={handlePageChange}
           />
         </div>
@@ -176,4 +179,4 @@ const MyPageAdoption = () => {
   );
 };
 
-export default MyPageAdoption;
+export default MyPageLost;

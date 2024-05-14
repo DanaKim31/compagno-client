@@ -33,7 +33,6 @@ const Div = styled.div`
       width: 100%;
       height: calc(100vh - 66px);
       display: flex;
-
       align-items: center;
       flex-direction: column;
 
@@ -93,9 +92,6 @@ const MyPageOneday = () => {
     const countOdc = await getOnedayClassCount(user.userId);
     const countData = countOdc.data;
     setCountOdc(countData);
-
-    console.log(odcData);
-    console.log(countData);
   };
 
   // 페이지 변경

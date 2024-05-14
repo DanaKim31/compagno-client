@@ -120,9 +120,6 @@ const MyPageNeighbor = () => {
     const countCom = await getNeighborComCount(user.userId);
     const countComData = countCom.data;
     setCountCom(countComData);
-
-    console.log(comData);
-    console.log(countComData);
   };
 
   // 댓글 페이지 변경

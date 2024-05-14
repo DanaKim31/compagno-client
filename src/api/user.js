@@ -156,7 +156,19 @@ export const getOnedayClass = async (id, pageNum) => {
   );
 };
 
-// 내 활동내역 = 원데이클래스 개설 갯수 가져오기
+// 내 활동내역 - 원데이클래스 개설 갯수 가져오기
 export const getOnedayClassCount = async (id) => {
   return await authorize.get("mypage/myactivity/myodc/count/" + id);
+};
+
+// 내 활동내역 - 실종 공고 리스트 불러오기
+export const getLostList = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/mylost/" + id + "?page=" + pageNum
+  );
+};
+
+// 내 활동내역 - 실종 공고 갯수 불러오기
+export const getLostCount = async (id) => {
+  return await authorize.get("mypage/myactivity/mylost/count/" + id);
 };
