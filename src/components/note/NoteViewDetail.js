@@ -65,7 +65,7 @@ const NoteViewDetail = (props) => {
     if (note.receiver == user.userNickname) {
       await deleteReceiver(data);
     }
-    setModalIsOpen(!modalIsOpen);
+    window.location.reload();
   };
 
   // 답장
@@ -95,23 +95,7 @@ const NoteViewDetail = (props) => {
           }}
         >
           {note.sender == user.userNickname ? (
-            <>
-              {" "}
-              <button
-                onClick={() => delNote(note.noteCode)}
-                style={{
-                  border: "none",
-                  borderRadius: "10px",
-                  margin: "0px 10px",
-                  width: "50px",
-                  fontWeight: "bold",
-                  backgroundColor: "black",
-                  color: "white",
-                }}
-              >
-                삭제
-              </button>{" "}
-            </>
+            <></>
           ) : (
             <>
               <button
@@ -127,22 +111,22 @@ const NoteViewDetail = (props) => {
               >
                 답장
               </button>
-              <button
-                onClick={() => delNote(note.noteCode)}
-                style={{
-                  border: "none",
-                  borderRadius: "10px",
-                  margin: "0px 10px",
-                  width: "50px",
-                  fontWeight: "bold",
-                  backgroundColor: "black",
-                  color: "white",
-                }}
-              >
-                삭제
-              </button>
             </>
           )}
+          <button
+            onClick={() => delNote(note.noteCode)}
+            style={{
+              border: "none",
+              borderRadius: "10px",
+              margin: "0px 10px",
+              width: "50px",
+              fontWeight: "bold",
+              backgroundColor: "black",
+              color: "white",
+            }}
+          >
+            삭제
+          </button>
         </div>
         <div id="noteSender">
           <span>보낸 사람</span>

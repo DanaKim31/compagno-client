@@ -16,7 +16,7 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import NoteViewDetail from "./NoteViewDetail";
-import NoteCreate from "./NoteCreate";
+import { FaRegFileLines } from "react-icons/fa6";
 
 const Div = styled.div`
   @font-face {
@@ -293,21 +293,25 @@ const NoteViewAll = () => {
                     onClick={() => onDetail(note.noteCode)}
                     style={{ cursor: "pointer" }}
                   >
-                    <td>{note.sender}</td>
-                    <td>{note.noteTitle}</td>
-                    <td>{note.noteContent}</td>
-                    <td>{note.receiver}</td>
-                    <td>
-                      {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
-                    </td>
-
-                    <td>
-                      {note.files.map((note) => (
-                        <div key={note.noteFileCode}>
-                          {note.noteFileUrl != "" ? <>Y</> : <>N</>}
-                        </div>
-                      ))}
-                    </td>
+                    {(note.deletedBySender == 1 &&
+                      note.sender == user.userNickname) ||
+                    (note.deletedByReceiver == 1 &&
+                      note.receiver == user.userNickname) ? (
+                      <></>
+                    ) : (
+                      <>
+                        <td>{note.sender}</td>
+                        <td>{note.noteTitle}</td>
+                        <td>{note.noteContent}</td>
+                        <td>{note.receiver}</td>
+                        <td>
+                          {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
+                        </td>
+                        <td>
+                          {note.files.length !== 0 ? <FaRegFileLines /> : <></>}
+                        </td>{" "}
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>

@@ -9,6 +9,7 @@ import NoteCreate from "./NoteCreate";
 const Div = styled.div`
   display: flex;
   #noteToggle {
+    width: 72px;
     flex-direction: column;
     margin-left: 10px;
     border-right: 1px dashed green;

@@ -255,19 +255,25 @@ const NoteViewReceiveBox = () => {
                     onClick={() => onDetail(note.noteCode)}
                     style={{ cursor: "pointer" }}
                   >
-                    <td>{note.sender}</td>
-                    <td>{note.noteTitle}</td>
-                    <td>{note.noteContent}</td>
-                    <td>
-                      {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
-                    </td>
-                    <td>
-                      {note.files.map((note) => (
-                        <div key={note.noteFileCode}>
-                          {note.noteFileUrl != "" ? <>Y</> : <>N</>}
-                        </div>
-                      ))}
-                    </td>
+                    {note.deletedByReceiver == 0 ? (
+                      <>
+                        <td>{note.sender}</td>
+                        <td>{note.noteTitle}</td>
+                        <td>{note.noteContent}</td>
+                        <td>
+                          {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
+                        </td>
+                        <td>
+                          {note.files.map((note) => (
+                            <div key={note.noteFileCode}>
+                              {note.noteFileUrl != "" ? <>Y</> : <>N</>}
+                            </div>
+                          ))}
+                        </td>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </tr>
                 ))}
               </tbody>

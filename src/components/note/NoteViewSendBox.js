@@ -145,7 +145,6 @@ const NoteViewSendBox = () => {
                 display: "flex",
                 justifyContent: "center",
                 flexDirection: "column",
-
                 borderRadius: "20px",
                 paddingBottom: "20px",
                 paddingTop: "30px",
@@ -236,19 +235,25 @@ const NoteViewSendBox = () => {
                     onClick={() => onDetail(note.noteCode)}
                     style={{ cursor: "pointer" }}
                   >
-                    <td>{note.receiver}</td>
-                    <td>{note.noteTitle}</td>
-                    <td>{note.noteContent}</td>
-                    <td>
-                      {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
-                    </td>
-                    <td>
-                      {note.files.map((note) => (
-                        <div key={note.noteFileCode}>
-                          {note.noteFileUrl != "" ? <>Y</> : <>N</>}
-                        </div>
-                      ))}
-                    </td>
+                    {note.deletedBySender == 0 ? (
+                      <>
+                        <td>{note.receiver}</td>
+                        <td>{note.noteTitle}</td>
+                        <td>{note.noteContent}</td>
+                        <td>
+                          {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
+                        </td>
+                        <td>
+                          {note.files.map((note) => (
+                            <div key={note.noteFileCode}>
+                              {note.noteFileUrl != "" ? <>Y</> : <>N</>}
+                            </div>
+                          ))}
+                        </td>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </tr>
                 ))}
               </tbody>
