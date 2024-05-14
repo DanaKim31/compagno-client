@@ -7,6 +7,7 @@ import useDidMountEffect from "../../components/user/useDidMountEffect";
 import moment from "moment";
 import { getLostList, getLostCount } from "../../api/user";
 import AdopLostPaging from "../../components/user/AdopLostPagination";
+import { useLocation } from "react-router-dom";
 
 const Div = styled.div`
   @font-face {
@@ -48,7 +49,7 @@ const Div = styled.div`
         .lostCard {
           display: flex;
           flex-direction: row;
-          border: 1px dashed black;
+          border: 2px dashed black;
           border-radius: 15px;
           padding: 10px 10px;
 
@@ -119,6 +120,14 @@ const MyPageLost = () => {
     const lostData = response.data;
     setLostList(lostData);
   };
+
+  // 페이지 경로에서 정보 따오기
+  const location = useLocation();
+  const nowLoca = location.pathname.substring(17);
+
+  useEffect(() => {
+    console.log(nowLoca);
+  }, [location]);
 
   return (
     <Div>

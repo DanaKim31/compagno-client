@@ -35,8 +35,8 @@ const Div = styled.div`
 
   .mypage-menu a {
     cursor: pointer;
-    text-decoration: 1px dashed underline;
-    text-underline-offset: 5px;
+    text-decoration: 2px dashed underline;
+    text-underline-offset: 12px;
     color: white;
     font-weight: bold;
     font-size: 1.5rem;

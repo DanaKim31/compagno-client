@@ -25,12 +25,9 @@ const Div = styled.div`
       height: fit-content;
       text-decoration-line: none;
       color: black;
-      border-top: 1px dashed black;
-      border-left: 1px dashed black;
-      border-right: 1px dashed black;
-      border-top-right-radius: 10px;
-      border-top-left-radius: 10px;
+      background-color: rgb(241, 239, 239);
       text-align: center;
+      border-radius: 10px;
     }
   }
 `;
