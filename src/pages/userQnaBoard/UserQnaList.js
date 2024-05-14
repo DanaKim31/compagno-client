@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { userSave } from "../../store/user";
 import { getUserQuestions } from "../../api/userQnaQuestion";
+import { getUserAnswers } from "../../api/userQnaAnswer";
 import { Button, Form } from "react-bootstrap";
 import {
   FaAnglesLeft,
@@ -120,7 +121,16 @@ const UserQnaList = () => {
     const response = await getUserQuestions(page);
     setQuestions(response.data);
     setTotalPage(response.data.totalPages); // response에서 totalPages 불러와서 set으로 담기
+    console.log(response.data);
   };
+
+  const [answercount, setAnswerCount] = useState(0);
+
+  const answersAPI = async (code) => {
+    const response = await getUserAnswers(code);
+    setAnswerCount(response.data.length);
+  };
+
   // 첫페이지, 마지막 페이지, 페이지 리스트 초기 셋팅
   let lastPage = 0;
   let firstPage = 0;
@@ -146,14 +156,24 @@ const UserQnaList = () => {
     setPages(pageList); // 해당 list 배열을 setPages에 담기
   }, [totalPage]);
 
-  const [select, setSelect] = useState("title");
+  const [select, setSelect] = useState("");
+  const [status, setStatus] = useState(0);
   const [category, setCategory] = useState(0);
   const [keyword, setKeyword] = useState("");
+  const [sort, setSort] = useState(0);
 
   const search = async () => {
-    const response = await getUserQuestions(page, select, keyword, category);
+    const response = await getUserQuestions(
+      page,
+      select,
+      keyword,
+      category,
+      status,
+      sort
+    );
     setQuestions(response.data);
     console.log(response.data);
+    console.log(sort);
     setTotalPage(response.data?.totalPages);
   };
 
@@ -164,7 +184,15 @@ const UserQnaList = () => {
           <p>전체 {questions?.totalElements}건</p>
         </div>
         <div id="search">
+          <select onChange={(e) => setSort(e.target.value)}>
+            <option value={0}>정렬</option>
+            <option value={1}>작성일 최신순</option>
+            <option value={2}>작성일 오래된순</option>
+            <option value={3}>답변 많은순</option>
+            {/* <option value={3}>조회순</option> */}
+          </select>
           <select onChange={(e) => setSelect(e.target.value)}>
+            <option value={""}>검색 조건</option>
             <option value={"title"}>제목</option>
             <option value={"content"}>내용</option>
             <option value={"id"}>작성자</option>
@@ -174,6 +202,11 @@ const UserQnaList = () => {
             <option value={1}>개</option>
             <option value={2}>고양이</option>
             <option value={3}>기타</option>
+          </select>
+          <select onChange={(e) => setStatus(e.target.value)}>
+            <option value={0}>채택 답변 유무</option>
+            <option value={1}>Y</option>
+            <option value={2}>N</option>
           </select>
           <Form.Control
             type="text"
@@ -213,7 +246,7 @@ const UserQnaList = () => {
         <thead>
           <tr>
             <th>질문 번호</th>
-            <th>답변 여부</th>
+            <th>채택 여부</th>
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
@@ -232,6 +265,7 @@ const UserQnaList = () => {
                   >
                     {question.userQuestionBoardTitle}
                   </a>
+                  <span>[{question.userQuestionBoardCount}]</span>
                 </td>
                 <td>{question.userId}</td>
                 {/* qnaQDate가 null일 때 DateUpdate로 출력 */}

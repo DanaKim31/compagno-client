@@ -111,6 +111,7 @@ const UserQnaAnswer = ({ question }) => {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
     chooseAPI();
+    answersAPI();
   }, []);
 
   useDidMountEffect(() => {
@@ -131,7 +132,6 @@ const UserQnaAnswer = ({ question }) => {
   const [editA, setEditA] = useState(null);
 
   const [userAnswers, setUserAnswers] = useState([]);
-  const [answercount, setAnswerCount] = useState(0);
 
   const answersAPI = async () => {
     const response = await getUserAnswers(userQuestionBoardCode);
@@ -230,8 +230,7 @@ const UserQnaAnswer = ({ question }) => {
   const onDeleteUserAnswer = async (no) => {
     await deleteUserAnswer(no);
     answersAPI();
-    setEditA(null);
-    answersAPI();
+    navigate("/compagno/userQna/detail/" + userQuestionBoardCode);
   };
 
   // 4-1. 답변 채택하기=========================
@@ -388,7 +387,13 @@ const UserQnaAnswer = ({ question }) => {
                               >
                                 수정
                               </Button>
-                              <Button variant="dark"> 삭제</Button>
+                              <Button
+                                onClick={() =>
+                                  onDeleteUserAnswer(answer.userAnswerBoardCode)
+                                }
+                              >
+                                삭제
+                              </Button>
                             </div>
                           </>
                         ) : (

@@ -28,15 +28,29 @@ export const addUserQuestion = (data) => {
 };
 
 // 2. 리스트 출력
-export const getUserQuestions = async (page, select, keyword, category) => {
+export const getUserQuestions = async (
+  page,
+  select,
+  keyword,
+  category,
+  status,
+  sort
+) => {
   let url = "userQuestion?page=" + page;
 
-  if (select !== "") {
+  if (sort !== undefined && sort !== 0) {
+    url += "&sort=" + sort;
+  }
+  if (select !== undefined && select !== "") {
     url += "&" + select + "=" + keyword;
   }
 
-  if (category !== 0) {
+  if (category !== undefined && category !== 0) {
     url += "&category=" + category;
+  }
+
+  if (status !== undefined && status !== 0) {
+    url += "&status=" + status;
   }
 
   return await instance.get(url);
