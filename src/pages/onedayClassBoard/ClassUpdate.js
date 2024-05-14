@@ -1,5 +1,10 @@
 // 디테일 페이지 => 수정 삭제
-import { viewClass, deleClass, updateClass } from "../../api/onedayClass";
+import {
+  viewClass,
+  deleClass,
+  updateClass,
+  addOnedayClass,
+} from "../../api/onedayClass";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +22,7 @@ const StyledDiv = styled.div`
   position: relative;
   font-weight: bold;
   top: 88px;
-  height: 127.7vh;
+  height: 170vh;
 
   img {
     object-fit: fill;
@@ -34,6 +39,7 @@ const StyledDiv = styled.div`
   * {
     font-family: "TAEBAEKmilkyway";
     font-size: 1rem;
+    font-weight: bold;
   }
 
   .photoBack {
@@ -88,26 +94,21 @@ const ClassUpdate = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { code } = useParams();
-  const [odcClass, setOdcClass] = useState({
-    odcTitle: "",
-    odcContent: "",
-    odcAccompaying: "",
-    odcMainImage: "",
-    odcStartDate: "",
-    odcLastDate: "",
-  }); // 하나의 정보만 가져와야하니깐 !
-  const [edit, setEdit] = useState(null);
+  const [odcClass, setOdcClass] = useState({}); // 하나의 정보만 가져와야하니깐 !
+  const [file, setFile] = useState(null);
+  // const [images, setImages] = useState([]);
 
   const user = useSelector((state) => {
     return state.user;
   });
 
-  // 클래스 한개 정보 가져오고 난다음 다 초기값 ""하겠다 !!
+  // 1. 처음 클래스 한개에대한 정보 가져오고 !
   const oneClassAPI = async () => {
     const response = await viewClass(code); // get
     setOdcClass(response.data);
   };
 
+  // 1 - 1 : 클래스 useEffect
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null) {
@@ -116,28 +117,63 @@ const ClassUpdate = () => {
     oneClassAPI();
   }, []);
 
-  // 삭제 관련 로직
+  // 1 . 기존에 있던 정보들 먼저 삭제 하고 !!
   const onDelete = async () => {
     await deleClass(code);
     navigate("/compagno/onedayClassBoard");
   };
 
-  // 수정 관련 필요한 로직 ====================
+  const imageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setFile(files[0]);
+  };
 
-  // const [odcTitle, setOdcTitle] = useState("");
-  // const [odcContent, setContent] = useState("");
-  // const [odcAccompaying, setOdcAccompaying] = useState("");
-  // const [odcMainImage, setOdcMainImage] = useState(null);
-  // const [odcStartDate, setOdcStartDate] = useState("");
-  // const [odcLastDate, setOdcLastDate] = useState("");
+  // const deleteImage = () => {
+  //   setOdcClass((prev) => {
+  //     const images = prev.images.filter((image) => image.odcCode !== code);
+  //     return { ...prev, images: images };
+  //   });
+  // };
 
-  // 수정 페이지로 이동
-  const onSubmit = () => {
+  // 수정하는 부분 수정후 => 저장시켜서 보내기
+  const onSubmit = async () => {
     const formData = new FormData();
+    formData.append("odcCode", odcClass.odcCode);
+    formData.append("odcTitle", odcClass.odcTitle);
+    formData.append("odcContent", odcClass.odcContent);
+    formData.append("odcStartDate", odcClass.odcStartDate);
+    formData.append("odcLastDate", odcClass.odcLastDate);
+    formData.append("odcAccompaying", odcClass.odcAccompaying);
+    formData.append("imageCode", odcClass.images[0].odcImageCode);
+    formData.append("imageURL", odcClass.images[0].odcMainImage);
+    if (file !== null) {
+      formData.append("file", file);
+    }
 
-    formData.append();
+    if (odcClass.odcTitle == "" || odcClass.odcTitle == undefined) {
+      alert("등록할 클래스명을 적어주세요");
+    } else if (odcClass.odcContent == "" || odcClass.odcContent == undefined) {
+      alert("자세한 클래스 내용을 적어주세요");
+    } else if (
+      odcClass.odcStartDate == "" ||
+      odcClass.odcStartDate == undefined
+    ) {
+      alert("시작 날짜를 정해주세요");
+    } else if (
+      odcClass.odcLastDate == "" ||
+      odcClass.odcLastDate == undefined
+    ) {
+      alert("마지막 날짜를 정해주세요");
+    } else if (
+      odcClass.odcAccompaying == "" ||
+      odcClass.odcAccompaying == undefined
+    ) {
+      alert("동반여부에 관련 체크를 정해주세요");
+    } else {
+      await updateClass(formData);
 
-    navigate("/compagno/onedayClassBoard/update/" + code);
+      navigate("/compagno/onedayClassBoard/detail/" + code);
+    }
   };
 
   // 수정페이지에서 디테일 페이지로 이동
@@ -152,6 +188,7 @@ const ClassUpdate = () => {
         <div style={{ width: "100%", height: "300px" }}>
           {odcClass.images?.map((image) => (
             <img
+              key={image.odcCode}
               id="photo"
               style={{
                 width: "100%",
@@ -166,6 +203,18 @@ const ClassUpdate = () => {
               )}
             />
           ))}
+
+          <input
+            type="file"
+            onChange={imageChange}
+            style={{
+              position: "relative",
+              zIndex: "1",
+              bottom: "116px",
+              width: "298px",
+              left: "1592px",
+            }}
+          />
         </div>
         <div className="context" style={{ position: "relative", top: "50px" }}>
           <div
@@ -197,24 +246,72 @@ const ClassUpdate = () => {
               {/* {odcClass.user.userNickname} */}
               <p> 이메일 : {user.userEmail}</p>
             </div>
-            <p className="regidate">
+            <p
+              className="regidate"
+              style={{ position: "relative", top: "8px" }}
+            >
               등록 날짜 : {moment(odcClass.odcRegiDate).format("YY-MM-DD")}
             </p>
             <div>
-              <p className="startdate">
-                클래스 시작 날짜 :
-                {moment(odcClass.odcStartDate).format("YY-MM-DD")}
-              </p>
-              <p className="lastdate">
-                클래스 마지막 날짜 :
-                {moment(odcClass.odcLastDate).format("YY-MM-DD")}
-              </p>
+              클래스 시작 날짜 :
+              <input
+                type="date"
+                className="startdate"
+                value={odcClass.odcStartDate}
+                onChange={(e) =>
+                  setOdcClass((prev) => ({
+                    ...prev,
+                    odcStartDate: e.target.value,
+                  }))
+                }
+              />
+              클래스 마지막 날짜 :
+              <input
+                type="date"
+                className="lastdate"
+                value={odcClass.OdcLastDate}
+                onChange={(e) =>
+                  setOdcClass((prev) => ({
+                    ...prev,
+                    odcLastDate: e.target.value,
+                  }))
+                }
+              />
             </div>
-            <p className="Accompaying">
-              동반 가능 여부 : {odcClass.odcAccompaying}
-            </p>
+            <div className="Accompaying">
+              동반 가능여부 :
+              <label>
+                Y
+                <input
+                  type="radio"
+                  value="Y"
+                  className="Acom"
+                  name="Acc"
+                  onChange={(e) =>
+                    setOdcClass((prev) => ({
+                      ...prev,
+                      odcAccompaying: e.target.value,
+                    }))
+                  }
+                />
+              </label>
+              <label>
+                N
+                <input
+                  type="radio"
+                  value="N"
+                  name="Acc"
+                  className="Acom"
+                  onChange={(e) =>
+                    setOdcClass((prev) => ({
+                      ...prev,
+                      odcAccompaying: e.target.value,
+                    }))
+                  }
+                />
+              </label>
+            </div>
           </div>
-
           <div
             className="info"
             style={{
@@ -225,19 +322,44 @@ const ClassUpdate = () => {
             }}
           >
             <div>
-              <p className="title" style={{}}>
-                제목 <br /> <br />
-                {odcClass.odcTitle}
-                {/* <input type="text" value={edit.odcTitle} /> */}
-              </p>
-
+              제목 : <br /> <br />
+              <input
+                type="text"
+                className="title"
+                value={odcClass.odcTitle}
+                style={{
+                  width: "50%",
+                  height: "80px",
+                  textAlign: "center",
+                  fontSize: "1.5rem",
+                }}
+                onChange={(e) =>
+                  setOdcClass((prev) => ({ ...prev, odcTitle: e.target.value }))
+                }
+              />
+              <br /> <br />
               <p
                 className="Content"
                 style={{ width: "100%", position: "relative" }}
               >
-                상세 내용
+                상세 내용 :
                 <br /> <br />
-                {odcClass.odcContent}
+                <input
+                  type="text"
+                  style={{
+                    width: "50%",
+                    height: "50vh",
+                    textAlign: "center",
+                    fontSize: "1.5rem",
+                  }}
+                  value={odcClass.odcContent}
+                  onChange={(e) =>
+                    setOdcClass((prev) => ({
+                      ...prev,
+                      odcContent: e.target.value,
+                    }))
+                  }
+                ></input>
               </p>
             </div>
             <button onClick={onSubmit}>완료</button>

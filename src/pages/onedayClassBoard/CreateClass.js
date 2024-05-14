@@ -183,15 +183,6 @@ const CreateClass = () => {
     navigate("/compagno/onedayClassBoard");
   };
 
-  // ============================================================== 날짜
-  // const [startDate, setStartDate] = useState(new Date());
-  // const [endDate, setEndDate] = useState(new Date());
-
-  // ========== OnCreate 함수에다가 비동기 처리된 클래스 추가관련 로직들 =============
-
-  // const []
-
-  // =======================================
   return (
     <div>
       <StyledDiv>

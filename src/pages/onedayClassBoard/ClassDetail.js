@@ -97,6 +97,7 @@ const ClassDetail = () => {
   const oneClassAPI = async () => {
     const response = await viewClass(code); // get
     setOdcClass(response.data);
+    console.log(response.data);
   };
 
   useEffect(() => {
@@ -118,7 +119,6 @@ const ClassDetail = () => {
 
   return (
     <StyledDiv>
-      {/* {edit == null ? ():()} */}
       <div className="photoBack"></div>
       <div className="oneClass">
         <div style={{ width: "100%", height: "300px" }}>
