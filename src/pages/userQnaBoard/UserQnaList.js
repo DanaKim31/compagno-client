@@ -20,63 +20,99 @@ const Div = styled.div`
   top: 150px;
   #topbar {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding-top: 5px;
-    height: 90px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 30px;
 
-    Button {
+    height: 200px;
+    width: 80%;
+    margin: 0 auto;
+    border: 2px dashed gray;
+    border-radius: 15px;
+
+    select {
+      width: 200px;
+      height: 35px;
+      border: 1px solid gray;
+      border-radius: 7px;
+    }
+
+    #filter {
+      display: flex;
+      justify-content: space-between;
+      div {
+        span {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    #search {
+      display: flex;
+      justify-content: space-between;
+      height: 35px;
+      width: 70%;
+      margin: 0 auto;
+
+      select {
+        margin-left: 10px;
+        width: 80px;
+      }
+
+      input {
+        width: 40%;
+      }
+    }
+
+    button {
+      width: 100px;
+      border-radius: 5px;
+      color: white;
       height: 35px;
       background-color: gray;
       border: 1px solid gray;
     }
   }
-  Table {
-    width: 70%;
-    margin: 0 auto;
+
+  #topbarsecond {
+    width: 80%;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    span {
+      margin-left: 30px;
+      margin-top: 5px;
+    }
+    button {
+      margin-right: 20px;
+    }
   }
+
   .paging {
     width: 100%;
     padding-top: 30px;
     text-align: center;
     button {
       border-radius: 5px;
+      border: 1px solid gray;
+      color: black;
       margin: 5px;
       font-weight: bolder;
-    }
-  }
-  #search {
-    display: flex;
-    height: 35px;
-
-    select {
-      border-radius: 7px;
-      border: 1px solid gray;
-    }
-    input {
-      margin-left: 7px;
-      margin-right: 7px;
-      border-radius: 7px;
-      border: 1px solid gray;
-    }
-    button {
-      width: 120px;
-      background-color: gray;
-      border-radius: 5px;
-      border: 1px solid gray;
-      color: white;
     }
   }
 `;
 
 const Table = styled.table`
+  width: 80%;
+  margin: 0 auto;
   thead {
     text-align: center;
     font-weight: bolder;
     th {
       height: 70px;
       padding-top: 20px;
-      border: 1px solid;
+      border-bottom: 2px solid;
     }
   }
   tbody {
@@ -178,34 +214,47 @@ const UserQnaList = () => {
   return (
     <Div>
       <div id="topbar">
-        <div>
-          <p>전체 {questions?.totalElements}건</p>
+        <div id="filter">
+          <div id="sort">
+            <span>정렬</span>
+            <select onChange={(e) => setSort(e.target.value)}>
+              <option value={1}>작성일 최신순</option>
+              <option value={2}>작성일 오래된순</option>
+              <option value={3}>답변 많은순</option>
+              <option value={4}>조회순</option>
+            </select>
+          </div>
+
+          <div id="category">
+            <span>동물</span>
+            <select onChange={(e) => setCategory(e.target.value)}>
+              <option value={0}>전체</option>
+              <option value={1}>개</option>
+              <option value={2}>고양이</option>
+              <option value={3}>기타</option>
+            </select>
+          </div>
+
+          <div id="status">
+            <span>채택 답변 유무</span>
+            <select onChange={(e) => setStatus(e.target.value)}>
+              <option value={0}>전체</option>
+              <option value={1}>Y</option>
+              <option value={2}>N</option>
+            </select>
+          </div>
         </div>
+
         <div id="search">
-          <select onChange={(e) => setSort(e.target.value)}>
-            <option value={0}>정렬</option>
-            <option value={1}>작성일 최신순</option>
-            <option value={2}>작성일 오래된순</option>
-            <option value={3}>답변 많은순</option>
-            <option value={4}>조회순</option>
-          </select>
-          <select onChange={(e) => setSelect(e.target.value)}>
-            <option value={""}>검색 조건</option>
-            <option value={"title"}>제목</option>
-            <option value={"content"}>내용</option>
-            <option value={"id"}>작성자</option>
-          </select>
-          <select onChange={(e) => setCategory(e.target.value)}>
-            <option value={0}>카테고리</option>
-            <option value={1}>개</option>
-            <option value={2}>고양이</option>
-            <option value={3}>기타</option>
-          </select>
-          <select onChange={(e) => setStatus(e.target.value)}>
-            <option value={0}>채택 답변 유무</option>
-            <option value={1}>Y</option>
-            <option value={2}>N</option>
-          </select>
+          <div id="option">
+            <span>검색 조건</span>
+            <select onChange={(e) => setSelect(e.target.value)}>
+              <option value={""}>전체</option>
+              <option value={"title"}>제목</option>
+              <option value={"content"}>내용</option>
+              <option value={"id"}>작성자</option>
+            </select>
+          </div>
           <Form.Control
             type="text"
             placeholder="검색어를 입력하세요"
@@ -217,28 +266,35 @@ const UserQnaList = () => {
             조회
           </Button>
         </div>
+      </div>
+      <div id="topbarsecond">
+        <span>전체 {questions?.totalElements}건</span>
 
-        {Object.keys(user).length === 0 ? (
-          <>
-            <Button
-              onClick={() => {
-                navigate("/compagno/login");
-              }}
-            >
-              질문 등록
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              onClick={() => {
-                navigate("/compagno/userQna/register");
-              }}
-            >
-              질문 등록
-            </Button>
-          </>
-        )}
+        <div>
+          {Object.keys(user).length === 0 ? (
+            <>
+              <Button
+                variant="dark"
+                onClick={() => {
+                  navigate("/compagno/login");
+                }}
+              >
+                질문 등록
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant="dark"
+                onClick={() => {
+                  navigate("/compagno/userQna/register");
+                }}
+              >
+                질문 등록
+              </Button>
+            </>
+          )}
+        </div>
       </div>
       <Table>
         <thead>

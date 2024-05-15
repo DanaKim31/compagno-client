@@ -7,8 +7,64 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const Div = styled.div`
+  width: 70%;
+  margin: 0 auto;
   position: relative;
   top: 200px;
+  h1 {
+    border: 3px dashed gray;
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 50px;
+  }
+
+  #register {
+    border: 1px solid gray;
+    border-radius: 15px;
+    padding: 20px;
+  }
+
+  #select {
+    font-size: 1.2rem;
+    height: 50px;
+    width: 300px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    select {
+      height: 35px;
+      font-size: 1.1rem;
+    }
+    span {
+      margin-top: 5px;
+      margin-left: 15px;
+      height: 35px;
+      width: 50px;
+    }
+  }
+
+  #input {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    p {
+      font-size: 1.2rem;
+      margin-left: 10px;
+    }
+    div {
+      margin-left: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+  #buttons {
+    display: flex;
+    justify-content: center;
+    button {
+      margin: 10px;
+    }
+  }
 `;
 
 const UserQuestionRegister = () => {
@@ -86,38 +142,58 @@ const UserQuestionRegister = () => {
 
   return (
     <Div>
-      <h1>Question!</h1>
+      <h1>질문 등록하기!</h1>
 
-      <div>
-        <select onChange={handleselectaniCate} value={animalCatecode}>
-          <option value={1}>개</option>
-          <option value={2}>고양이</option>
-          <option value={3}>기타</option>
-        </select>
-        <Form.Control
-          type="text"
-          placeholder="제목"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <Form.Control
-          type="textarea"
-          placeholder="내용"
-          value={content}
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
-        />
-        <Form.Control
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={imageChange}
-        />
-        <Button variant="warning" onClick={add}>
-          등록
-        </Button>
-        <Button onClick={cancel}>취소</Button>
+      <div id="register">
+        <div id="select">
+          <span>동물</span>
+          <select onChange={handleselectaniCate} value={animalCatecode}>
+            <option value={1}>개</option>
+            <option value={2}>고양이</option>
+            <option value={3}>기타</option>
+          </select>
+        </div>
+
+        <div id="input">
+          <div>
+            <p>제목</p>
+            <Form.Control
+              type="text"
+              placeholder="제목"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div>
+            <p>내용</p>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="내용"
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value);
+              }}
+            />
+          </div>
+          <div>
+            <p>이미지</p>
+            <Form.Control
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={imageChange}
+            />
+          </div>
+        </div>
+        <div id="buttons">
+          <Button variant="dark" onClick={add}>
+            등록
+          </Button>
+          <Button variant="secondary" onClick={cancel}>
+            취소
+          </Button>
+        </div>
       </div>
     </Div>
   );
