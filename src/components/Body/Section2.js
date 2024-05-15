@@ -1,51 +1,62 @@
 import "../../assets/style.css";
 import { useRef, useState, useEffect } from "react";
+
 // 화면 노출 관련 js
 const Section2 = () => {
   // const [loop, setLoop] = useState(false); // boolean 처리로 참거짓을 나눈다
-  // const scrollRef = useRef(null);
+  const scrollRef1 = useRef(null);
+  // const scrollRef2 = useRef(null);
+  // const scrollRef3 = useRef(null);
+  const [container1, setContainer1] = useState(false);
+  // const [container2, setContainer2] = useState(false);
+  // const [container3, setContainer3] = useState(false);
+
   // // const counters = scrollRef;
 
-  // const handleScroll = () => {
-  //   // 클래스 scroll_on인 집합들을 각각을 매개변수 counter로 잡아서 각각에 이벤트를 시키기위해서 하는 방법
-  //   const scrollEvent = counters.map((counter) => {
-  //     // 각각의 요소들의 위치
-  //     const rect = counter.getBoundingClientRect();
-  //     // 네비게이션 부분을 제외한 높이
-  //     const winHeight = window.innerHeight;
-  //     // 각가의 요소들의 높이
-  //     const contentHeight = rect.bottom - rect.top; //실제 높이 !! .scroll_on의 부분의 높이값
-  //     if (
-  //       rect.top <= winHeight - contentHeight &&
-  //       rect.bottom >= contentHeight
-  //     ) {
-  //       window.addEventListener("scroll", scrollEvent); // css에 있는 .active의 생각대로 추가하겠다
-  //     }
+  const handleScroll = () => {
+    // 각각의 요소들의 위치
+    const rect = scrollRef1.current.getBoundingClientRect();
+    // const rect = scrollRef2.current.getBoundingClientRect();
+    // 네비게이션 부분을 제외한 높이
+    const winHeight = window.innerHeight;
+    // 각가의 요소들의 높이
+    const contentHeight = rect.bottom - rect.top; //실제 높이 !! .scroll_on의 부분의 높이값
 
-  //     if (loop && (rect.bottom <= 0 || rect.top >= winHeight)) {
-  //       window.removeEventListener("scroll", scrollEvent); // css에 있는 .active의 생각대로 제거하겠다
-  //     }
-  //   });
-  // };
+    if (
+      rect.top <= winHeight - contentHeight &&
+      rect.bottom >= contentHeight // 역역의 위치가 다들어와서 커질때
+    ) {
+      setContainer1(true); // css에 있는 .active의 생각대로 추가하겠다
+      // setContainer2(true);
+      // setContainer3(true);
+    } else {
+      setContainer1(false); // css에 있는 .active의 생각대로 제거하겠다
+      // setContainer2(false);
+      // setContainer3(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   handleScroll();
+  // 직접 접근하기위한 Ref 사용관련
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
 
-  //   window.addEventListener("scroll", handleScroll());
-  // }, []);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
       <section id="section2">
         <div className="scroll_wrap">
           <div
-          // ref={scrollRef}
-          // className={`scroll_on type_bottom ${container1 ? "active" : ""}`}
+            ref={scrollRef1}
+            className={`scroll_on type_bottom ${container1 ? "active" : ""}`}
           >
             <p>안 녕 하 세 요 꼼 빠 뇨 에 이 전 시 입 니 다</p>
           </div>
           <div
-          // ref={scrollRef}
+          // ref={scrollRef2}
           // className={`scroll_on type_bottom ${container2 ? "active" : ""}`}
           >
             <h1>
@@ -55,7 +66,7 @@ const Section2 = () => {
             </h1>
           </div>
           <div
-          // ref={scrollRef}
+          // ref={scrollRef3}
           // className={`scroll_on type_bottom ${container3 ? "active" : ""}`}
           >
             <h4>
