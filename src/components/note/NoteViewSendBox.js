@@ -1,4 +1,4 @@
-import { sendBox } from "../../api/note";
+import { sendBox, starSenderUpdate } from "../../api/note";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -13,7 +13,8 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import styled from "styled-components";
-import NoteCreate from "./NoteCreate";
+import { FaStar, FaRegStar } from "react-icons/fa";
+import { FaRegFileLines } from "react-icons/fa6";
 const ModalContariner = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
@@ -131,8 +132,14 @@ const NoteViewSendBox = () => {
     setCode(e);
     setOpenDetail(true);
   };
-  // 삭제하기
-  const delNote = () => {};
+
+  // 중요 표시
+  // sender
+  const starSenderCheck = (code) => {
+    window.location.reload();
+    starSenderUpdate(code);
+  };
+
   return (
     <>
       {!openDetail ? (
@@ -221,6 +228,7 @@ const NoteViewSendBox = () => {
                 style={{ height: "30px", borderBottom: "1px dashed black" }}
               >
                 <tr>
+                  <th>중요</th>
                   <th>받는 사람</th>
                   <th>제목</th>
                   <th>내용</th>
@@ -232,23 +240,52 @@ const NoteViewSendBox = () => {
                 {notes.map((note) => (
                   <tr
                     key={note.noteCode}
-                    onClick={() => onDetail(note.noteCode)}
-                    style={{ cursor: "pointer" }}
+                    // onClick={() => onDetail(note.noteCode)}
+                    // style={{ cursor: "pointer" }}
                   >
                     {note.deletedBySender == 0 ? (
                       <>
+                        <td>
+                          {note.starSender == 1 ? (
+                            <FaStar
+                              onClick={() => starSenderCheck(note.noteCode)}
+                              style={{
+                                color: "yellow",
+                                cursor: "pointer",
+                              }}
+                            />
+                          ) : (
+                            <FaRegStar
+                              onClick={() => starSenderCheck(note.noteCode)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          )}
+                        </td>
                         <td>{note.receiver}</td>
-                        <td>{note.noteTitle}</td>
-                        <td>{note.noteContent}</td>
+                        <td
+                          onClick={() => onDetail(note.noteCode)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {note.noteTitle}
+                        </td>
+                        <td
+                          onClick={() => onDetail(note.noteCode)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {note.noteContent}
+                        </td>
                         <td>
                           {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
                         </td>
                         <td>
-                          {note.files.map((note) => (
-                            <div key={note.noteFileCode}>
-                              {note.noteFileUrl != "" ? <>Y</> : <>N</>}
-                            </div>
-                          ))}
+                          {note.files.length !== 0 ? (
+                            <FaRegFileLines
+                              onClick={() => onDetail(note.noteCode)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          ) : (
+                            <></>
+                          )}
                         </td>
                       </>
                     ) : (

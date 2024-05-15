@@ -49,11 +49,15 @@ export const receivBox = async (name) => {
   return await authorize.get("note/receiveBox/" + name);
 };
 
-// 검색
-// http://localhost:8080/compagno/note/search?noteRegiDate=2024-04-11&page=2
-// export const searchNote = async (option) => {
-//   return await instance.get(url);
-// };
+// 중요 쪽지
+// http://localhost:8080/compagno/note/star?noteCode=2
+export const starSenderUpdate = async (code) => {
+  return await authorize.put("note/starSender?noteCode=" + code);
+};
+
+export const starReceiverUpdate = async (code) => {
+  return await authorize.put("note/starReceiver?noteCode=" + code);
+};
 
 // 보내는 이 삭제
 export const deleteSender = async (code) => {

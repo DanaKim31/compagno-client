@@ -1,11 +1,13 @@
-import { viewAllNote } from "../../api/note";
+import {
+  viewAllNote,
+  starSenderUpdate,
+  starReceiverUpdate,
+} from "../../api/note";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { userSave } from "../../store/user";
 import moment from "moment";
 import "moment/locale/ko";
-import { useNavigate } from "react-router-dom";
 
 import { BsEnvelopePaper } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
@@ -17,6 +19,7 @@ import {
 } from "react-icons/fa6";
 import NoteViewDetail from "./NoteViewDetail";
 import { FaRegFileLines } from "react-icons/fa6";
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 const Div = styled.div`
   @font-face {
@@ -105,7 +108,7 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-
+  // const [num, setNum] = useState(0);
   const notesAPI = async () => {
     let response = await viewAllNote(
       user.userNickname +
@@ -123,6 +126,26 @@ const NoteViewAll = () => {
     setNotes(response.data.content);
     setAllCount(response.data.totalElements);
     setTotalPage(response.data.totalPages);
+    // console.log(response.data);
+
+    // for (let i = 0; i < response.data.content.length; i++) {
+    //   console.log(response.data);
+    //   console.log(response.data.content[i]);
+    //   console.log(response.data.content[i].deletedBySender);
+    //   console.log(response.data[i].starSender);
+
+    //   {
+    //     response.data.count[i]?.deletedBySender == true ? (
+    //       setNum(num + 1)
+    //     ) : (
+    //       <></>
+    //     );
+    //   }
+    //   if (response?.data?.conent[i]?.deletedBySender == true || undefined) {
+    //     setNum(num + 1);
+    //   }
+    // }
+    // console.log(num);
   };
 
   let lastPage = 0;
@@ -151,7 +174,6 @@ const NoteViewAll = () => {
   }, [totalPage]);
 
   //1개 보기
-  const navigate = useNavigate();
   const [code, setCode] = useState(0);
   const [openDetail, setOpenDetail] = useState(false);
   const onDetail = (e) => {
@@ -159,10 +181,17 @@ const NoteViewAll = () => {
     setOpenDetail(true);
   };
 
-  // 답장
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const sendNote = () => {
-    setModalIsOpen(!modalIsOpen);
+  // 중요 표시
+  // sender
+  const starSenderCheck = (code) => {
+    window.location.reload();
+    starSenderUpdate(code);
+  };
+
+  // receiver
+  const starReceiverCheck = (code) => {
+    window.location.reload();
+    starReceiverUpdate(code);
   };
 
   return (
@@ -278,6 +307,7 @@ const NoteViewAll = () => {
                 style={{ height: "30px", borderBottom: "1px dashed black" }}
               >
                 <tr>
+                  <th>중요</th>
                   <th>보내는 사람</th>
                   <th>제목</th>
                   <th>내용</th>
@@ -288,11 +318,7 @@ const NoteViewAll = () => {
               </thead>
               <tbody>
                 {notes.map((note) => (
-                  <tr
-                    key={note.noteCode}
-                    onClick={() => onDetail(note.noteCode)}
-                    style={{ cursor: "pointer" }}
-                  >
+                  <tr key={note.noteCode}>
                     {(note.deletedBySender == 1 &&
                       note.sender == user.userNickname) ||
                     (note.deletedByReceiver == 1 &&
@@ -300,16 +326,77 @@ const NoteViewAll = () => {
                       <></>
                     ) : (
                       <>
+                        <td>
+                          {/* 보낸 이 일 때 */}
+                          {note.sender == user.userNickname ? (
+                            <>
+                              {note.starSender == 1 ? (
+                                <FaStar
+                                  onClick={() => starSenderCheck(note.noteCode)}
+                                  style={{
+                                    color: "yellow",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                              ) : (
+                                <FaRegStar
+                                  onClick={() => starSenderCheck(note.noteCode)}
+                                  style={{ cursor: "pointer" }}
+                                />
+                              )}
+                            </>
+                          ) : (
+                            //  받는 이 일 때
+                            <>
+                              {note.starReceiver == 1 ? (
+                                <FaStar
+                                  onClick={() =>
+                                    starReceiverCheck(note.noteCode)
+                                  }
+                                  style={{
+                                    color: "yellow",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                              ) : (
+                                <FaRegStar
+                                  onClick={() =>
+                                    starReceiverCheck(note.noteCode)
+                                  }
+                                  style={{ cursor: "pointer" }}
+                                />
+                              )}
+                            </>
+                          )}
+                        </td>
+
                         <td>{note.sender}</td>
-                        <td>{note.noteTitle}</td>
-                        <td>{note.noteContent}</td>
+                        <td
+                          onClick={() => onDetail(note.noteCode)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {note.noteTitle}
+                        </td>
+                        <td
+                          onClick={() => onDetail(note.noteCode)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {note.noteContent}
+                        </td>
                         <td>{note.receiver}</td>
                         <td>
                           {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
                         </td>
                         <td>
-                          {note.files.length !== 0 ? <FaRegFileLines /> : <></>}
-                        </td>{" "}
+                          {note.files.length !== 0 ? (
+                            <FaRegFileLines
+                              onClick={() => onDetail(note.noteCode)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          ) : (
+                            <></>
+                          )}
+                        </td>
                       </>
                     )}
                   </tr>

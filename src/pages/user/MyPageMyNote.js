@@ -8,6 +8,8 @@ import { BsEnvelopePaper } from "react-icons/bs";
 import { RiFolderSharedLine, RiFolderReceivedLine } from "react-icons/ri";
 import NoteViewSendBox from "../../components/note/NoteViewSendBox";
 import NoteViewReceiveBox from "../../components/note/NoteViewReceiveBox";
+import { FaStar } from "react-icons/fa";
+import NoteViewStar from "../../components/note/NoteViewStar";
 
 const Div = styled.div`
   display: flex;
@@ -55,7 +57,7 @@ const TabMenu = styled.ul`
   .submenu {
     // 기본 Tabmenu 에 대한 CSS를 구현
     display: flex;
-    width: calc(100% / 3);
+    width: calc(100% / 4);
     padding: 10px;
     font-size: 15px;
     transition: 0.5s;
@@ -124,17 +126,15 @@ const MyPageMyNote = () => {
       ),
       content: <NoteViewSendBox />,
     },
-    // {
-    //   name: (
-    //     <>
-    //       <FaRegPaperPlane
-    //         style={{ marginRight: "15px", fontSize: "1.3rem" }}
-    //       />
-    //       쪽지 보내기
-    //     </>
-    //   ),
-    //   content: <NoteCreate />,
-    // },
+    {
+      name: (
+        <>
+          <FaStar style={{ marginRight: "15px", fontSize: "1.3rem" }} />
+          중요 쪽지함
+        </>
+      ),
+      content: <NoteViewStar />,
+    },
   ];
   const selectMenuHandler = (index) => {
     clickTab(index);
