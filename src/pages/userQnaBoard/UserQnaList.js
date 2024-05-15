@@ -172,8 +172,6 @@ const UserQnaList = () => {
       sort
     );
     setQuestions(response.data);
-    console.log(response.data);
-    console.log(sort);
     setTotalPage(response.data?.totalPages);
   };
 
@@ -189,7 +187,7 @@ const UserQnaList = () => {
             <option value={1}>작성일 최신순</option>
             <option value={2}>작성일 오래된순</option>
             <option value={3}>답변 많은순</option>
-            {/* <option value={3}>조회순</option> */}
+            <option value={4}>조회순</option>
           </select>
           <select onChange={(e) => setSelect(e.target.value)}>
             <option value={""}>검색 조건</option>
@@ -250,6 +248,7 @@ const UserQnaList = () => {
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
+            <th>조회수</th>
           </tr>
         </thead>
         <tbody>
@@ -287,6 +286,7 @@ const UserQnaList = () => {
                     </td>
                   </>
                 )}
+                <td>{question.viewcount}</td>
               </tr>
             );
           })}

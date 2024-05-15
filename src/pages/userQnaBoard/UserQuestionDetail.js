@@ -331,7 +331,7 @@ const UserQuestionDetail = () => {
                             "YY-MM-DD hh:mm"
                           )}
                         </p>
-
+                        <p>조회수 : {question.viewcount}</p>
                         {question.userQuestionBoardStatus === "N" ||
                         question.userQuestionBoardStatus == null ? (
                           <>
@@ -432,8 +432,8 @@ const UserQuestionDetail = () => {
                           src={"http://192.168.10.28.8081/" + question.userImg}
                         />
                         <div>
-                          <p>작성자 : {question.userId}</p>
-                          <p>아이디 : {question.userNickname}</p>
+                          <span>작성자 : {question.userId}</span>
+                          <span>아이디 : {question.userNickname}</span>
                         </div>
                       </div>
                       <p>
@@ -442,6 +442,7 @@ const UserQuestionDetail = () => {
                           "YY-MM-DD hh:mm"
                         )}
                       </p>
+                      <p>조회수 : {question.viewcount}</p>
                     </div>
                   </div>
                 </div>
