@@ -214,6 +214,7 @@ const ContentList = () => {
               <tr>
                 <th>기관명</th>
                 <th>주소</th>
+                <th>조회수</th>
               </tr>
             </thead>
             <tbody>
@@ -226,6 +227,7 @@ const ContentList = () => {
                       </a>
                     </td>
                     <td>{item.addr}</td>
+                    <td>{item.viewcount}</td>
                   </tr>
                 );
               })}

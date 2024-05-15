@@ -21,10 +21,19 @@ import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 
 const Div = styled.div`
+  padding-bottom: 100px;
+  #topanswer {
+    background-color: lightgray;
+    border: 2px dashed;
+    border-radius: 15px;
+    padding-top: 30px;
+    padding-left: 30px;
+    margin-bottom: 20px;
+  }
   #answer {
-    background-color: gray;
+    background-color: lightgray;
     border: 1px solid;
-    border-radius: 25px;
+    border-radius: 15px;
     padding-top: 30px;
     padding-left: 30px;
     margin-bottom: 20px;
@@ -32,13 +41,13 @@ const Div = styled.div`
     #reanswer {
       margin-top: 20px;
       margin-bottom: 10px;
-      background-color: lightgray;
+      background-color: white;
       padding-top: 10px;
-      padding-left: 30px;
-      margin-right: 50px;
-      margin-left: 50px;
+      padding-left: 20px;
+      margin-right: 80px;
+      margin-left: 20px;
       border: 1px solid;
-      border-radius: 25px;
+      border-radius: 15px;
       button {
         margin: 5px;
       }
@@ -46,11 +55,23 @@ const Div = styled.div`
         display: flex;
         justify-content: space-between;
         margin-right: 10px;
+        background-color: gray;
       }
+    }
+    #reansweredit {
+      margin-top: 10px;
+      margin-left: 25px;
+      margin-right: 25px;
+      margin-bottom: 10px;
+      button {
+        margin: 5px;
+        width: 70px;
+      }
+      display: flex;
     }
 
     #reanswerregister {
-      margin-left: 50px;
+      margin-left: 25px;
       margin-right: 50px;
       margin-bottom: 10px;
       button {
@@ -175,8 +196,13 @@ const UserQnaAnswer = ({ question }) => {
     await addUserAnswer(formData);
     answersAPI();
     setReanswerContent("");
+    setCode(0);
   };
 
+  // 1-3. 하위 답변 취소
+  const UserReanswerCancel = async () => {
+    setCode(0);
+  };
   // 2. UPDATE ==========================
   // 2-1. 답변 수정 클릭 시 정보를 담은 폼 화면!
   const onUpdateUserAnswer = async (answer) => {
@@ -226,6 +252,11 @@ const UserQnaAnswer = ({ question }) => {
     answersAPI();
   };
 
+  // 2-3. 하위 답변 수정 취소
+  const userReAnswerUpdateCancel = () => {
+    setEditA(null);
+  };
+
   // 3. DELETE ==========================
   const onDeleteUserAnswer = async (no) => {
     await deleteUserAnswer(no);
@@ -265,11 +296,6 @@ const UserQnaAnswer = ({ question }) => {
   const chooseAPI = async () => {
     const response = await getChoose(userQuestionBoardCode);
     setTopChoose(response.data);
-    // if (topChoose.length !== 0) {
-    //   setCheckChoose(1);
-    // } else {
-    //   setCheckChoose(0);
-    // }
   };
 
   return (
@@ -302,7 +328,7 @@ const UserQnaAnswer = ({ question }) => {
             {topChoose.length !== 0 ? (
               <>
                 <div key={topChoose.userAnswerBoardCode}>
-                  <div id="answer">
+                  <div id="topanswer">
                     <div id="choosetopbar">
                       <div id="default">
                         <h3>채택된 답변</h3>
@@ -335,6 +361,7 @@ const UserQnaAnswer = ({ question }) => {
                     <p>{topChoose.userAnswerContent}</p>
                   </div>
                 </div>
+                <hr />
               </>
             ) : (
               <>
@@ -509,23 +536,33 @@ const UserQnaAnswer = ({ question }) => {
                       editA?.userAnswerBoardCode ===
                         reanswer.userAnswerBoardCode ? (
                         <>
-                          <p>대댓글 수정하자고</p>
-
-                          <div id="answerregister">
-                            <Form.Control
-                              type="textarea"
-                              placeholder="답변 작성"
-                              value={editA.userAnswerContent}
-                              onChange={(e) =>
-                                setEditA((prev) => ({
-                                  ...prev,
-                                  userAnswerContent: e.target.value,
-                                }))
-                              }
-                            />
-                            <Button variant="dark" onClick={userReAnswerUpdate}>
-                              수정
-                            </Button>
+                          <div>
+                            <p>대댓글 수정하자고</p>
+                            <div id="reansweredit">
+                              <Form.Control
+                                type="textarea"
+                                placeholder="답변 작성"
+                                value={editA.userAnswerContent}
+                                onChange={(e) =>
+                                  setEditA((prev) => ({
+                                    ...prev,
+                                    userAnswerContent: e.target.value,
+                                  }))
+                                }
+                              />
+                              <Button
+                                variant="dark"
+                                onClick={userReAnswerUpdate}
+                              >
+                                수정
+                              </Button>
+                              <Button
+                                variant="dark"
+                                onClick={userReAnswerUpdateCancel}
+                              >
+                                취소
+                              </Button>
+                            </div>
                           </div>
                         </>
                       ) : (
@@ -538,12 +575,20 @@ const UserQnaAnswer = ({ question }) => {
                       <></>
                     ) : (
                       <>
-                        <Button
-                          variant="dark"
-                          onClick={(e) => setCode(answer.userAnswerBoardCode)}
-                        >
-                          답변 달기
-                        </Button>
+                        {code !== 0 ? (
+                          <></>
+                        ) : (
+                          <>
+                            <Button
+                              variant="dark"
+                              onClick={(e) =>
+                                setCode(answer.userAnswerBoardCode)
+                              }
+                            >
+                              답변 달기
+                            </Button>
+                          </>
+                        )}
                       </>
                     )}
 
@@ -558,6 +603,9 @@ const UserQnaAnswer = ({ question }) => {
                           />
                           <Button variant="dark" onClick={UserReanswerSubmit}>
                             등록
+                          </Button>
+                          <Button variant="dark" onClick={UserReanswerCancel}>
+                            취소
                           </Button>
                         </div>
                       </>

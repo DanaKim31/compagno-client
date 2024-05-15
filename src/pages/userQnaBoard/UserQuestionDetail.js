@@ -2,6 +2,9 @@ import {
   getUserQuestion,
   updateUserQuestion,
   deleteUserQuestion,
+  addLike,
+  selectLike,
+  deletelike,
 } from "../../api/userQnaQuestion";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -11,6 +14,7 @@ import styled from "styled-components";
 import { userSave } from "../../store/user";
 import moment from "moment";
 import UserQnaAnswer from "../../components/UserQnaAnswerBoard/UserQnaAnswer";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 
 const Div = styled.div`
   position: relative;
@@ -91,6 +95,7 @@ const UserQuestionDetail = () => {
     const token = localStorage.getItem("token");
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+      checklikeAPI();
     }
   }, []);
 
@@ -108,10 +113,11 @@ const UserQuestionDetail = () => {
   const [content, setContent] = useState("");
   const [editA, setEditA] = useState(null);
 
+  const [checklike, setCheckLike] = useState(0);
+
   // 1. 상세보기
   const questionAPI = async () => {
     const response = await getUserQuestion(userQuestionBoardCode);
-    console.log(response.data);
     setQuestion(response.data);
   };
 
@@ -218,6 +224,31 @@ const UserQuestionDetail = () => {
     deleteUserQuestion(userQuestionBoardCode);
     questionAPI();
     navigate("/compagno/userQna");
+  };
+
+  // 5.-1 좋아요 추가하기
+  const [likedesc, setLikedesc] = useState({});
+  const like = async () => {
+    const formData = new FormData();
+
+    formData.append("userId", user.userId);
+    formData.append("userQuestionBoardCode", userQuestionBoardCode);
+    setCheckLike(1);
+    await addLike(formData);
+    questionAPI();
+  };
+
+  // 5-2. 좋아요 확인하기
+  const checklikeAPI = async () => {
+    const response = await selectLike(userQuestionBoardCode);
+    setCheckLike(response.data);
+  };
+
+  // 5-3. 좋아요 취소하기
+  const unlike = async () => {
+    setCheckLike(0);
+    await deletelike(userQuestionBoardCode);
+    questionAPI();
   };
 
   return (
@@ -443,6 +474,21 @@ const UserQuestionDetail = () => {
                         )}
                       </p>
                       <p>조회수 : {question.viewcount}</p>
+                      {user.userId !== undefined ? (
+                        <>
+                          {checklike === 1 ? (
+                            <>
+                              <FaHeart onClick={() => unlike()} />
+                            </>
+                          ) : (
+                            <>
+                              <FaRegHeart onClick={() => like()} />
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                 </div>

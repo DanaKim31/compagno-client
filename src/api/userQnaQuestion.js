@@ -56,6 +56,16 @@ export const getUserQuestions = async (
   return await instance.get(url);
 };
 
+// 2-1. 좋아요한 글만 보기 출력
+export const getliked = async (page, liked) => {
+  let url = "userQuestion?page=" + page;
+  console.log(liked);
+  if (liked !== undefined && liked === true) {
+    url += "&liked=true";
+  }
+  return await authorize.get(url);
+};
+
 // 3. 상세보기 출력
 export const getUserQuestion = async (no) => {
   return await instance.get("userQuestion/" + no);
@@ -84,4 +94,19 @@ export const deleteChoose = async (no) => {
 // 8. 채택 보기
 export const getChoose = async (no) => {
   return await instance.get("userQuestion/answerChoose/" + no);
+};
+
+// 9. 좋아요 등록하기
+export const addLike = async (data) => {
+  return await authorize.post("userQuestion/like", data);
+};
+
+// 10. 좋아요 확인하기
+// (로그인된 상황에서만..)
+export const selectLike = async (no) => {
+  return await authorize.get("userQuestion/like/" + no);
+};
+
+export const deletelike = async (no) => {
+  return await authorize.delete("userQuestion/like/" + no);
 };

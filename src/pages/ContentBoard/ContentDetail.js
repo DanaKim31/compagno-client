@@ -77,6 +77,9 @@ const ContentDetail = () => {
             <p>운영시간 : {content.operatingHours}</p>
             <p>주차 가능 여부 : {content.parking}</p>
           </div>
+          <div>
+            <p>조회수 : {content.viewcount}</p>
+          </div>
         </div>
       </div>
       <Map latitude={latitude} longtitude={longtitude} />

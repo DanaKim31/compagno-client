@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { userSave } from "../../store/user";
-import { getUserQuestions } from "../../api/userQnaQuestion";
+import { getUserQuestions, getliked } from "../../api/userQnaQuestion";
 import { getUserAnswers } from "../../api/userQnaAnswer";
 import { Button, Form } from "react-bootstrap";
 import {
@@ -197,6 +197,7 @@ const UserQnaList = () => {
   const [category, setCategory] = useState(0);
   const [keyword, setKeyword] = useState("");
   const [sort, setSort] = useState(0);
+  const [liked, setLiked] = useState(true);
 
   const search = async () => {
     const response = await getUserQuestions(
@@ -209,6 +210,20 @@ const UserQnaList = () => {
     );
     setQuestions(response.data);
     setTotalPage(response.data?.totalPages);
+  };
+
+  const filtering = async (e) => {
+    const isChecked = e.target.checked;
+    setLiked(isChecked);
+    if (isChecked) {
+      const response = await getliked(page, true);
+      setQuestions(response.data);
+      setTotalPage(response.data?.totalPages);
+    } else {
+      const response = await getliked(page, false); // 체크 해제 시에도 데이터를 가져올 필요가 있는지 확인해야 합니다.
+      setQuestions(response.data);
+      setTotalPage(response.data?.totalPages);
+    }
   };
 
   return (
@@ -269,7 +284,18 @@ const UserQnaList = () => {
       </div>
       <div id="topbarsecond">
         <span>전체 {questions?.totalElements}건</span>
-
+        {user.userId !== undefined ? (
+          <>
+            <span>
+              <label>
+                <input type="checkbox" onChange={(e) => filtering(e)} />
+                좋아요한 글만 보기
+              </label>
+            </span>
+          </>
+        ) : (
+          <></>
+        )}
         <div>
           {Object.keys(user).length === 0 ? (
             <>
