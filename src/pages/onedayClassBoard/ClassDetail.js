@@ -212,7 +212,8 @@ const ClassDetail = () => {
               </p>
             </div>
             {/* {user} */}
-            {user.userId == odcClass.user.userId ? (
+            {user.userId == odcClass.user?.userId ? (
+              //&& user.userId !== undefined
               <button onClick={onUpdate}>수정</button>
             ) : (
               <></>

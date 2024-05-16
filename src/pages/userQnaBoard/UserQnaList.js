@@ -16,8 +16,8 @@ import { IoSearch } from "react-icons/io5";
 import moment from "moment";
 
 const Div = styled.div`
-// ======== 폰트 관련
-@font-face {
+  // ======== 폰트 관련
+  @font-face {
     font-family: "TAEBAEKmilkyway";
     src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
       format("woff2");
@@ -64,7 +64,7 @@ const Div = styled.div`
       height: 30px;
       border: 1px solid gray;
       border-radius: 7px;
-      option{
+      option {
         font-family: "TAEBAEKmilkyway";
         font-weight: bold;
       }
@@ -75,45 +75,45 @@ const Div = styled.div`
       margin: auto auto;
       display: flex;
       justify-content: space-between;
-      div{
+      div {
         display: flex;
       }
-        span {
-          margin: auto 10px;
-        }
+      span {
+        margin: auto 10px;
       }
     }
+  }
 
-    #search {
-      display: flex;
-      justify-content: space-between;
-      width: 600px;
-      height: 35px;
-      margin: 0 auto;
+  #search {
+    display: flex;
+    justify-content: space-between;
+    width: 600px;
+    height: 35px;
+    margin: 0 auto;
 
-      select {
-        margin-left: 10px;
-        margin-top: 2px;
-        width: 80px;
-      }
-
-      input {
-        font-weight: bold;
-        width: 300px;
-        margin-top: 2px;
-        height: 30px;
-        border: 1px solid gray;
-      }
+    select {
+      margin-left: 10px;
+      margin-top: 2px;
+      width: 80px;
     }
 
-    button {
-      width: 100px;
-      border-radius: 5px;
-      color: white;
-      height: 35px;
-      background-color: gray;
+    input {
+      font-weight: bold;
+      width: 300px;
+      margin-top: 2px;
+      height: 30px;
       border: 1px solid gray;
-      font-family: "TAEBAEKmilkyway";
+    }
+  }
+
+  button {
+    width: 100px;
+    border-radius: 5px;
+    color: white;
+    height: 35px;
+    background-color: gray;
+    border: 1px solid gray;
+    font-family: "TAEBAEKmilkyway";
   }
 
   #topbarsecond {
@@ -135,13 +135,13 @@ const Div = styled.div`
       margin-right: 20px;
     }
   }
-  #like{
-      display: flex;
-      flex-direction: row;
-      span{
-        margin-left: 10px;
-      }
+  #like {
+    display: flex;
+    flex-direction: row;
+    span {
+      margin-left: 10px;
     }
+  }
 
   .paging {
     width: 100%;
@@ -293,8 +293,8 @@ const UserQnaList = () => {
           <div id="sort">
             <span>정렬</span>
             <select onChange={(e) => setSort(e.target.value)}>
-              <option value={2}>작성일 오래된순</option>
               <option value={1}>작성일 최신순</option>
+              <option value={2}>작성일 오래된순</option>
               <option value={3}>답변 많은순</option>
               <option value={5}>좋아요순</option>
               <option value={4}>조회순</option>
@@ -348,8 +348,15 @@ const UserQnaList = () => {
         {user.userId !== undefined ? (
           <div id="like">
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={(e) => filtering(e)}/>
-              <label class="form-check-label" for="flexSwitchCheckDefault">좋아요한 글만 보기</label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="flexSwitchCheckDefault"
+                onChange={(e) => filtering(e)}
+              />
+              <label class="form-check-label" for="flexSwitchCheckDefault">
+                좋아요한 글만 보기
+              </label>
             </div>
           </div>
         ) : (

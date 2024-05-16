@@ -818,7 +818,7 @@ const ViewAllProductBoard = () => {
               key={index}
               value={num}
               onClick={(e) => setPage(Number(e.target.value))}
-              // style={num === page && { color: "#78e150" }}
+              style={num === page ? { backgroundColor: "#78e150" } : {}}
             >
               {num}
             </button>

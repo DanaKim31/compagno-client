@@ -18,9 +18,8 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import MyToggleBar from "../../components/note/MyToggleBar";
 
 const Div = styled.div`
-
-// ======== 폰트 관련
-@font-face {
+  // ======== 폰트 관련
+  @font-face {
     font-family: "TAEBAEKmilkyway";
     src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
       format("woff2");
@@ -43,8 +42,6 @@ const Div = styled.div`
     background-color: rgb(32, 61, 59);
     color: white;
   }
-
-
 
   position: relative;
   width: 80%;
@@ -91,30 +88,28 @@ const Div = styled.div`
     }
   }
 
-  #edit{
+  #edit {
     #prevImages {
-    width: 500px;
+      width: 500px;
 
-    img {
-      width: 100px;
-      height: 100px;
+      img {
+        width: 100px;
+        height: 100px;
+      }
     }
-  }
 
-  /* 편집 이미지들 */
-  #editImage {
-    width: 500px;
-    margin: 0 auto;
-    display: flex;
-    background-color: pink;
+    /* 편집 이미지들 */
+    #editImage {
+      width: 500px;
+      margin: 0 auto;
+      display: flex;
+      background-color: pink;
 
-    img {
-      width: 100px;
-      height: 100px;
+      img {
+        width: 100px;
+        height: 100px;
+      }
     }
-  }
-
-
   }
 
   #input {
@@ -123,7 +118,7 @@ const Div = styled.div`
     height: 350px;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
-    input{
+    input {
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
@@ -140,7 +135,7 @@ const Div = styled.div`
   #buttons {
     display: flex;
     justify-content: center;
-    
+
     button {
       margin: 10px;
       font-family: "TAEBAEKmilkyway";
@@ -148,10 +143,8 @@ const Div = styled.div`
     }
   }
 
-  
-
-  #desc{
-    p{
+  #desc {
+    p {
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
@@ -300,7 +293,6 @@ const UserQuestionDetail = () => {
   const onDeleteQuestion = (userQuestionBoardCode) => {
     deleteUserQuestion(userQuestionBoardCode);
     questionAPI();
-    navigate("/compagno/userQna");
   };
 
   // 5.-1 좋아요 추가하기
@@ -350,7 +342,10 @@ const UserQuestionDetail = () => {
                           // src={
                           //   "http://localhost:8081" + image.userQuestionImgUrl
                           // }
-                          src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
+                          src={
+                            "http://192.168.10.28:8081/userQuestion/" +
+                            image.userQuestionImgUrl
+                          }
                           onClick={() => deleteImage(image.userQuestionImgCode)}
                         />
                       ))}
@@ -372,59 +367,58 @@ const UserQuestionDetail = () => {
                     </div>
                   </div>
                   <div id="input">
-                  {/* 수정 폼 */}
-                  <div id="title">
-                    <p>제목</p>
-                    <Form.Control
-                    type="text"
-                    placeholder="제목"
-                    value={editQ.userQuestionBoardTitle}
-                    onChange={(e) =>
-                      setEditQ((prev) => ({
-                        ...prev,
-                        userQuestionBoardTitle: e.target.value,
-                      }))
-                    }
-                  />
-                  </div>
-                  <div>
-                    <p>내용</p>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    style={{fontWeight:"bold"}}
-                    value={editQ.userQuestionBoardContent}
-                    onChange={(e) => {
-                      setEditQ((prev) => ({
-                        ...prev,
-                        userQuestionBoardContent: e.target.value,
-                      }));
-                    }}
-                  />
-                  </div>
-                  <div>
-                    <p>이미지</p>
-                    <Form.Control
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={preview}
-                  />
-                  </div>
-                  
+                    {/* 수정 폼 */}
+                    <div id="title">
+                      <p>제목</p>
+                      <Form.Control
+                        type="text"
+                        placeholder="제목"
+                        value={editQ.userQuestionBoardTitle}
+                        onChange={(e) =>
+                          setEditQ((prev) => ({
+                            ...prev,
+                            userQuestionBoardTitle: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div>
+                      <p>내용</p>
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        style={{ fontWeight: "bold" }}
+                        value={editQ.userQuestionBoardContent}
+                        onChange={(e) => {
+                          setEditQ((prev) => ({
+                            ...prev,
+                            userQuestionBoardContent: e.target.value,
+                          }));
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <p>이미지</p>
+                      <Form.Control
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={preview}
+                      />
+                    </div>
                   </div>
                   {/* 수정, 취소 버튼 */}
                   <div id="buttons">
-                  <Button variant="warning" onClick={questionUpdate}>
-                    수정
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      navigate("/compagno/userQna");
-                    }}
-                  >
-                    취소
-                  </Button>
+                    <Button variant="warning" onClick={questionUpdate}>
+                      수정
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        navigate("/compagno/userQna");
+                      }}
+                    >
+                      취소
+                    </Button>
                   </div>
                 </>
               ) : (
@@ -440,7 +434,7 @@ const UserQuestionDetail = () => {
                           alt=""
                           key={question.userQuestionBoardCode}
                           // src={"http://localhost:8081/" + question.userImg}
-                            src={"http://192.168.10.28:8081/" + question.userImg}
+                          src={"http://192.168.10.28:8081/" + question.userImg}
                         />
                         <div>
                           <p>작성자 : {question.userNickname}</p>
@@ -496,11 +490,14 @@ const UserQuestionDetail = () => {
                         alt=""
                         key={image.userQuestionImgCode}
                         // src={"http://localhost:8081" + image.userQuestionImgUrl}
-                        src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
+                        src={
+                          "http://192.168.10.28:8081/userQuestion/" +
+                          image.userQuestionImgUrl
+                        }
                       />
                     ))}
                   </div>
-                  <hr/>
+                  <hr />
                   <UserQnaAnswer question={question} />
                 </>
               )}
@@ -525,7 +522,10 @@ const UserQuestionDetail = () => {
                     alt=""
                     key={image.userQuestionImgCode}
                     // src={"http://localhost:8081" + image.userQuestionImgUrl}
-                    src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
+                    src={
+                      "http://192.168.10.28:8081/userQuestion/" +
+                      image.userQuestionImgUrl
+                    }
                   />
                 ))}
                 <div id="desc">
@@ -540,7 +540,7 @@ const UserQuestionDetail = () => {
                   <p>{question.userNickname}</p>
                   <p>{question.userQuestionBoardContent}</p>
                 </div>
-                <hr/>
+                <hr />
                 <UserQnaAnswer question={question} />
               </>
             ) : (
@@ -560,8 +560,8 @@ const UserQuestionDetail = () => {
                         />
                         <div>
                           <p>
-                              <MyToggleBar name={question.userNickname} />
-                            </p>
+                            <MyToggleBar name={question.userNickname} />
+                          </p>
                           <p>아이디 : {question.userNickname}</p>
                         </div>
                       </div>
@@ -601,16 +601,15 @@ const UserQuestionDetail = () => {
                       alt=""
                       key={image.userQuestionImgCode}
                       // src={"http://localhost:8081" + image.userQuestionImgUrl}
-                        src={
-                          "http://192.168.10.28:8081/userQuestion/" +
-                          image.userQuestionImgUrl
-                        }
+                      src={
+                        "http://192.168.10.28:8081/userQuestion/" +
+                        image.userQuestionImgUrl
+                      }
                     />
                   ))}
-
                 </div>
-                <hr/>
-                  <UserQnaAnswer question={question} />
+                <hr />
+                <UserQnaAnswer question={question} />
               </>
             )}
           </>
