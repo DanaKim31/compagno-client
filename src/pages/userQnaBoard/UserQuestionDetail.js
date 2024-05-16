@@ -44,14 +44,22 @@ const Div = styled.div`
   }
 
   position: relative;
-  width: 80%;
+  width: 60%;
   margin: 0 auto;
   top: 150px;
+
   #qtopbar {
+    // 제목
     h1 {
       text-align: center;
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
+    }
+
+    // 날짜
+    #date{
+      display: flex;
+      justify-content: end;
     }
 
     /* 프로필, 작성일, 수정/삭제 or 상태보기 */
@@ -61,6 +69,9 @@ const Div = styled.div`
       justify-content: space-between;
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
+      #like{
+        text-align: right;
+      }
     }
 
     /* 프로필 */
@@ -80,7 +91,7 @@ const Div = styled.div`
 
   /* 질문 이미지들 */
   #images {
-    width: 80%;
+    width: 70%;
     margin: 0 auto;
     img {
       width: 30%;
@@ -88,6 +99,7 @@ const Div = styled.div`
     }
   }
 
+  /* 편집 폼!!!!---------------------------------------------------------------------------------- */
   #edit {
     #prevImages {
       width: 500px;
@@ -112,6 +124,7 @@ const Div = styled.div`
     }
   }
 
+  // input 
   #input {
     display: flex;
     flex-direction: column;
@@ -132,6 +145,8 @@ const Div = styled.div`
       margin-bottom: 10px;
     }
   }
+
+  // 수정, 취소, 삭제 버튼 등
   #buttons {
     display: flex;
     justify-content: center;
@@ -143,6 +158,7 @@ const Div = styled.div`
     }
   }
 
+  // content
   #desc {
     p {
       font-family: "TAEBAEKmilkyway";
@@ -426,6 +442,14 @@ const UserQuestionDetail = () => {
                   {/* 그냥 보는 페이지 */}
                   <div id="qtopbar">
                     <h1>{question.userQuestionBoardTitle}</h1>
+                    <div id="date">
+                    <p>
+                          작성일 :{" "}
+                          {moment(question.userQuestionBoardDate).format(
+                            "YY-MM-DD hh:mm"
+                          )}
+                        </p>
+                    </div>
                     <hr />
                     <div id="quserbar">
                       {/* 프로필 + 작성자 이름, 아이디 */}
@@ -443,12 +467,7 @@ const UserQuestionDetail = () => {
                       </div>
 
                       <div id="desc">
-                        <p>
-                          작성일 :{" "}
-                          {moment(question.userQuestionBoardDate).format(
-                            "YY-MM-DD hh:mm"
-                          )}
-                        </p>
+                        
                         <p>조회수 : {question.viewcount}</p>
                         {question.userQuestionBoardStatus === "N" ||
                         question.userQuestionBoardStatus == null ? (
@@ -549,6 +568,14 @@ const UserQuestionDetail = () => {
                   <h1>public</h1>
                   <div id="qtopbar">
                     <h1>{question.userQuestionBoardTitle}</h1>
+                    <div id="date">
+                      <p>
+                        작성일 :
+                        {moment(question.userQuestionBoardDate).format(
+                          "YY-MM-DD hh:mm"
+                        )}
+                      </p>
+                      </div>
                     <hr />
                     <div id="quserbar">
                       {/* 프로필 + 작성자 이름, 아이디 */}
@@ -565,29 +592,29 @@ const UserQuestionDetail = () => {
                           <p>아이디 : {question.userNickname}</p>
                         </div>
                       </div>
-                      <p>
-                        작성일 :
-                        {moment(question.userQuestionBoardDate).format(
-                          "YY-MM-DD hh:mm"
-                        )}
-                      </p>
+
+                      <div>
                       <p>조회수 : {question.viewcount}</p>
+
                       {/* 좋아요 */}
-                      {user.userId !== undefined ? (
-                        <>
-                          {checklike === 1 ? (
+                        <div id="like">
+                          {user.userId !== undefined ? (
                             <>
-                              <FaHeart onClick={() => unlike()} />
+                              {checklike === 1 ? (
+                                <>
+                                  <FaHeart onClick={() => unlike()} />
+                                </>
+                              ) : (
+                                <>
+                                  <FaRegHeart onClick={() => like()} />
+                                </>
+                              )}
                             </>
                           ) : (
-                            <>
-                              <FaRegHeart onClick={() => like()} />
-                            </>
+                            <></>
                           )}
-                        </>
-                      ) : (
-                        <></>
-                      )}
+                      </div>
+                      </div>
                     </div>
                   </div>
                 </div>

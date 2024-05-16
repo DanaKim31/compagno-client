@@ -436,7 +436,6 @@ const UserQnaList = () => {
                   </>
                 )}
                 <td>{question.likecount}</td>
-                <td>{question.viewcount}</td>
               </tr>
             );
           })}
