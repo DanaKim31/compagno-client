@@ -36,11 +36,12 @@ const Div = styled.div`
       color: white;
     }
     button:hover {
-      background-color: pink;
+      background-color: white;
       color: black;
     }
     .select {
-      background-color: pink;
+      background-color: white;
+      color: black;
     }
     a {
       width: 25%;

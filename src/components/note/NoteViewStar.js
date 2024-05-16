@@ -95,7 +95,7 @@ const ModalContariner = styled.div`
   }
   font-family: "TAEBAEKmilkyway";
   border: 1px solid black;
-  width: 100%;
+  width: 80%;
   font-weight: bold;
   /* height: 300px; */
   height: 80%;
@@ -489,7 +489,7 @@ const NoteViewStar = () => {
               {" "}
               <ModalContariner>
                 <div
-                  style={{ position: "absolute", top: "25.5%", left: "25%" }}
+                  style={{ position: "absolute", top: "29.4%", left: "25%" }}
                 >
                   <button
                     onClick={() => setOpenDetail(false)}
