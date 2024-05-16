@@ -211,7 +211,13 @@ const ClassDetail = () => {
                 {odcClass.odcContent}
               </p>
             </div>
-            <button onClick={onUpdate}>수정</button>
+            {/* {user} */}
+            {user.userId == odcClass.user.userId ? (
+              <button onClick={onUpdate}>수정</button>
+            ) : (
+              <></>
+            )}
+
             <button onClick={onBack}>취소</button>
           </div>
         </div>

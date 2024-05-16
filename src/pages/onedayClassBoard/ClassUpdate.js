@@ -154,21 +154,6 @@ const ClassUpdate = () => {
       alert("등록할 클래스명을 적어주세요");
     } else if (odcClass.odcContent == "" || odcClass.odcContent == undefined) {
       alert("자세한 클래스 내용을 적어주세요");
-    } else if (
-      odcClass.odcStartDate == "" ||
-      odcClass.odcStartDate == undefined
-    ) {
-      alert("시작 날짜를 정해주세요");
-    } else if (
-      odcClass.odcLastDate == "" ||
-      odcClass.odcLastDate == undefined
-    ) {
-      alert("마지막 날짜를 정해주세요");
-    } else if (
-      odcClass.odcAccompaying == "" ||
-      odcClass.odcAccompaying == undefined
-    ) {
-      alert("동반여부에 관련 체크를 정해주세요");
     } else {
       await updateClass(formData);
 
