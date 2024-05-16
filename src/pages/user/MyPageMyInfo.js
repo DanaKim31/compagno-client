@@ -8,6 +8,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { updateUser, quitUser } from "../../api/user";
 import { Form, Button } from "react-bootstrap";
+import MyPagePutPwd from "./MyPagePutPwd";
 
 const Div = styled.div`
   @font-face {
@@ -302,14 +303,14 @@ const MyPageMyInfo = () => {
   };
 
   // 비밀번호 체크 정규표현식 실행하는 useEffect
-  useEffect(() => {
-    onChangePwd();
-  }, [user.userPwd]);
+  // useEffect(() => {
+  //   onChangePwd();
+  // }, [user.userPwd]);
 
   // 동일 비밀번호 체크 정규표현식 실행하는 useEffect
-  useEffect(() => {
-    onChangeChkPwd();
-  }, [user.userPwdCheck]);
+  // useEffect(() => {
+  //   onChangeChkPwd();
+  // }, [user.userPwdCheck]);
 
   // 이메일 체크 정규표현식 실행하는 useEffect
   useEffect(() => {
@@ -323,19 +324,21 @@ const MyPageMyInfo = () => {
 
   // 회원정보 수정 클릭시 작동 함수
   const editMyInfo = async () => {
+    // if (
+    //   !pwdRegexp.test(user.userPwd) ||
+    //   user.userPwd === "" ||
+    //   user.userPwd === undefined
+    // ) {
+    //   alert("올바른 비밀번호를 입력했는지 확인해주세요");
+    // } else if (
+    //   user.userPwd !== user.userPwdCheck ||
+    //   user.userPwdCheck === "" ||
+    //   user.userPwdCheck === undefined
+    // ) {
+    //   alert("동일한 비밀번호를 입력했는지 확인해주세요");
+    // } else
+
     if (
-      !pwdRegexp.test(user.userPwd) ||
-      user.userPwd === "" ||
-      user.userPwd === undefined
-    ) {
-      alert("올바른 비밀번호를 입력했는지 확인해주세요");
-    } else if (
-      user.userPwd !== user.userPwdCheck ||
-      user.userPwdCheck === "" ||
-      user.userPwdCheck === undefined
-    ) {
-      alert("동일한 비밀번호를 입력했는지 확인해주세요");
-    } else if (
       !emailRegexp.test(user.userEmail) ||
       user.userEmail === "" ||
       user.userEmail === undefined
@@ -473,9 +476,10 @@ const MyPageMyInfo = () => {
                   </div>
 
                   <div className="info-edit-text">
-                    <Form.Control
+                    {/* <Form.Control
                       type="password"
                       value={user.userPwd}
+                      placeholder=""
                       onChange={(e) => {
                         setUser((prev) => ({
                           ...prev,
@@ -495,7 +499,7 @@ const MyPageMyInfo = () => {
                         }));
                       }}
                     />
-                    <span className="regExpMessage">{userPwdCheckSpan}</span>
+                    <span className="regExpMessage">{userPwdCheckSpan}</span> */}
 
                     <Form.Control
                       type="text"
@@ -527,6 +531,9 @@ const MyPageMyInfo = () => {
                 회원 정보 수정
               </Button>
             </div>
+          </Tab>
+          <Tab eventKey="editPwd" title="암호 변경">
+            <MyPagePutPwd />
           </Tab>
           <Tab eventKey="quit" title="회원 탈퇴">
             <div className="info-quit">
