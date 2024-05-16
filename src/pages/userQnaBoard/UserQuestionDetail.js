@@ -57,7 +57,7 @@ const Div = styled.div`
     }
 
     // 날짜
-    #date{
+    #date {
       display: flex;
       justify-content: end;
     }
@@ -69,7 +69,7 @@ const Div = styled.div`
       justify-content: space-between;
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
-      #like{
+      #like {
         text-align: right;
       }
     }
@@ -124,7 +124,7 @@ const Div = styled.div`
     }
   }
 
-  // input 
+  // input
   #input {
     display: flex;
     flex-direction: column;
@@ -136,6 +136,8 @@ const Div = styled.div`
       font-weight: bold;
     }
     p {
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
       font-size: 1.2rem;
       margin-left: 10px;
     }
@@ -158,12 +160,47 @@ const Div = styled.div`
     }
   }
 
-  // content
-  #desc {
-    p {
-      font-family: "TAEBAEKmilkyway";
-      font-weight: bold;
+  #topbarr {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    #desc {
+      display: flex;
+      flex-direction: column;
+      button {
+        margin: 10px;
+      }
+      padding: 0px;
+      height: 0px;
+      margin: 0px;
     }
+  }
+  // content
+  p {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+  }
+
+  #desc {
+    padding: 30px;
+    margin: 20px;
+    height: 80px;
+  }
+  #reanswer {
+    #desc {
+      padding: 10px;
+    }
+  }
+  button {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+  }
+  button:hover {
+    background-color: #94b29b;
   }
 `;
 
@@ -425,16 +462,14 @@ const UserQuestionDetail = () => {
                   </div>
                   {/* 수정, 취소 버튼 */}
                   <div id="buttons">
-                    <Button variant="warning" onClick={questionUpdate}>
-                      수정
-                    </Button>
-                    <Button
+                    <button onClick={questionUpdate}>수정</button>
+                    <button
                       onClick={() => {
                         navigate("/compagno/userQna");
                       }}
                     >
                       취소
-                    </Button>
+                    </button>
                   </div>
                 </>
               ) : (
@@ -443,12 +478,12 @@ const UserQuestionDetail = () => {
                   <div id="qtopbar">
                     <h1>{question.userQuestionBoardTitle}</h1>
                     <div id="date">
-                    <p>
-                          작성일 :{" "}
-                          {moment(question.userQuestionBoardDate).format(
-                            "YY-MM-DD hh:mm"
-                          )}
-                        </p>
+                      <p>
+                        작성일 :{" "}
+                        {moment(question.userQuestionBoardDate).format(
+                          "YY-MM-DD hh:mm"
+                        )}
+                      </p>
                     </div>
                     <hr />
                     <div id="quserbar">
@@ -467,21 +502,18 @@ const UserQuestionDetail = () => {
                       </div>
 
                       <div id="desc">
-                        
                         <p>조회수 : {question.viewcount}</p>
                         {question.userQuestionBoardStatus === "N" ||
                         question.userQuestionBoardStatus == null ? (
                           <>
                             {/* 상태가 N: 수정, 삭제 버튼 */}
                             <div id="status">
-                              <Button
-                                variant="dark"
+                              <button
                                 onClick={() => onUpdateQuestion(question)}
                               >
                                 수정
-                              </Button>
-                              <Button
-                                variant="secondary"
+                              </button>
+                              <button
                                 onClick={() =>
                                   onDeleteQuestion(
                                     question.userQuestionBoardCode
@@ -489,7 +521,7 @@ const UserQuestionDetail = () => {
                                 }
                               >
                                 삭제
-                              </Button>
+                              </button>
                             </div>
                           </>
                         ) : (
@@ -526,15 +558,47 @@ const UserQuestionDetail = () => {
           <>
             {user.userRole === "ROLE_ADMIN" ? (
               <>
-                <h1>관리자!!! 수정 x, 삭제 버튼만</h1>
-                <Button
-                  variant="dark"
-                  onClick={() =>
-                    onDeleteQuestion(question.userQuestionBoardCode)
-                  }
-                >
-                  삭제
-                </Button>
+                {/* <h1>관리자!!! 수정 x, 삭제 버튼만</h1> */}
+
+                <div id="qtopbar">
+                  <h1>{question.userQuestionBoardTitle}</h1>
+                  <div id="date">
+                    <p>
+                      작성일 :{" "}
+                      {moment(question.userQuestionBoardDate).format(
+                        "YY-MM-DD hh:mm"
+                      )}
+                    </p>
+                  </div>
+                  <hr />
+                  <div id="topbarr">
+                    {/* 프로필 + 작성자 이름, 아이디 */}
+                    <div id="profile">
+                      <img
+                        alt=""
+                        key={question.userQuestionBoardCode}
+                        // src={"http://localhost:8081/" + question.userImg}
+                        src={"http://192.168.10.28:8081/" + question.userImg}
+                      />
+                      <div>
+                        <p>작성자 : {question.userNickname}</p>
+                        <p>아이디 : {question.userId}</p>
+                      </div>
+                    </div>
+                    <div id="desc">
+                      <span>조회수 : {question.viewcount}</span>
+
+                      <button
+                        onClick={() =>
+                          onDeleteQuestion(question.userQuestionBoardCode)
+                        }
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 {/* 상세 정보 */}
                 {question.images?.map((image) => (
                   <img
@@ -548,15 +612,6 @@ const UserQuestionDetail = () => {
                   />
                 ))}
                 <div id="desc">
-                  <p>{question.userQuestionBoardTitle}</p>
-                  <p>
-                    날짜 :{" "}
-                    {moment(question.userQuestionBoardDate).format(
-                      "YY-MM-DD hh:mm"
-                    )}
-                  </p>
-                  <p>{question.userId}</p>
-                  <p>{question.userNickname}</p>
                   <p>{question.userQuestionBoardContent}</p>
                 </div>
                 <hr />
@@ -565,7 +620,6 @@ const UserQuestionDetail = () => {
             ) : (
               <>
                 <div>
-                  <h1>public</h1>
                   <div id="qtopbar">
                     <h1>{question.userQuestionBoardTitle}</h1>
                     <div id="date">
@@ -575,7 +629,7 @@ const UserQuestionDetail = () => {
                           "YY-MM-DD hh:mm"
                         )}
                       </p>
-                      </div>
+                    </div>
                     <hr />
                     <div id="quserbar">
                       {/* 프로필 + 작성자 이름, 아이디 */}
@@ -594,9 +648,9 @@ const UserQuestionDetail = () => {
                       </div>
 
                       <div>
-                      <p>조회수 : {question.viewcount}</p>
+                        <p>조회수 : {question.viewcount}</p>
 
-                      {/* 좋아요 */}
+                        {/* 좋아요 */}
                         <div id="like">
                           {user.userId !== undefined ? (
                             <>
@@ -613,7 +667,7 @@ const UserQuestionDetail = () => {
                           ) : (
                             <></>
                           )}
-                      </div>
+                        </div>
                       </div>
                     </div>
                   </div>

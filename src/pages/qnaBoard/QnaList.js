@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { Form } from "react-bootstrap";
 
 const Div = styled.div`
-@font-face {
+  @font-face {
     font-family: "TAEBAEKmilkyway";
     src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
       format("woff2");
@@ -80,7 +80,6 @@ const Div = styled.div`
       border: 1px solid gray;
       background-color: white;
       color: black;
-      margin: 5px;
       font-weight: bolder;
     }
   }
@@ -93,13 +92,13 @@ const Div = styled.div`
     select {
       border-radius: 7px;
       border: 1px solid gray;
-    font-weight: bold;
-      option{
+      font-weight: bold;
+      option {
         font-family: "TAEBAEKmilkyway";
         font-weight: bold;
       }
     }
-    
+
     input {
       margin-left: 7px;
       margin-right: 7px;
@@ -115,6 +114,13 @@ const Div = styled.div`
       border: 1px solid gray;
       color: white;
     }
+  }
+  #searchbutton {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  button:hover {
+    background-color: #94b29b;
   }
 `;
 
@@ -256,12 +262,8 @@ const QnaList = () => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={props.onHide}>
-            닫기
-          </Button>
-          <Button variant="primary" onClick={pwdCheck}>
-            확인
-          </Button>
+          <button onClick={props.onHide}>닫기</button>
+          <button onClick={pwdCheck}>확인</button>
         </Modal.Footer>
       </Modal>
     );
@@ -286,7 +288,7 @@ const QnaList = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <Button onClick={search}>
+          <Button id="searchbutton" onClick={search}>
             <IoSearch />
             조회
           </Button>

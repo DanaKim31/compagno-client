@@ -12,8 +12,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import styled from "styled-components";
 const Div = styled.div`
-// ======== 폰트 관련
-@font-face {
+  // ======== 폰트 관련
+  @font-face {
     font-family: "TAEBAEKmilkyway";
     src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
       format("woff2");
@@ -36,15 +36,27 @@ const Div = styled.div`
     background-color: rgb(32, 61, 59);
     color: white;
   }
+  /* 등록 */
+  #register {
+    padding: 20px;
+    h1 {
+      margin-bottom: 20px;
+    }
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    input {
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+  }
 
-  
   #input {
     display: flex;
     flex-direction: column;
     height: 350px;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
-    input{
+    input {
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
@@ -58,10 +70,10 @@ const Div = styled.div`
       margin-bottom: 10px;
     }
   }
+
   #buttons {
     display: flex;
-    justify-content: center;
-    
+    justify-content: space-between;
     button {
       margin: 10px;
       font-family: "TAEBAEKmilkyway";
@@ -69,6 +81,46 @@ const Div = styled.div`
     }
   }
 
+  button {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+  }
+  button:hover {
+    background-color: #94b29b;
+  }
+
+  /* 보기 */
+  #atopbar {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    #buttons {
+      justify-content: end;
+    }
+    h2 {
+      padding-top: 10px;
+    }
+  }
+  p {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+  }
+  #content {
+    padding: 30px;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    height: 200px;
+  }
+  #list {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 200px;
+  }
 `;
 
 const QnaADetail = () => {
@@ -215,7 +267,7 @@ const QnaADetail = () => {
   };
 
   return (
-    <>
+    <Div>
       {user.userRole === "ROLE_ADMIN" ? (
         // 관리자의 경우!
         <>
@@ -243,20 +295,23 @@ const QnaADetail = () => {
                   onChange={imageChange}
                 />
               </div>
+
               <div id="buttons">
-                <Button variant="dark" onClick={answerSubmit}>
-                  답변 등록
-                </Button>
-                <Button onClick={cancelAnswer}>취소</Button>
+                <div id="list">
+                  <button onClick={() => navigate("/compagno/question")}>
+                    목록
+                  </button>
+                </div>
+                <div>
+                  <button onClick={answerSubmit}>답변 등록</button>
+                </div>
               </div>
-              
             </div>
           ) : (
             <>
               {editA !== null && editA?.qnaACode === answer.qnaACode ? (
                 <>
                   {/* 수정 페이지!!! */}
-                  <h1>답변 수정 폼</h1>
                   {/* 기존 이미지 */}
                   <div id="edit">
                     {editA.images?.map((image) => (
@@ -281,75 +336,78 @@ const QnaADetail = () => {
                     <div>
                       <p>제목</p>
                       <Form.Control
-                    type="text"
-                    placeholder="제목 작성"
-                    value={editA.qnaATitle}
-                    onChange={(e) =>
-                      setEditA((prev) => ({
-                        ...prev,
-                        qnaATitle: e.target.value,
-                      }))
-                    }
-                  />
+                        type="text"
+                        placeholder="제목 작성"
+                        value={editA.qnaATitle}
+                        onChange={(e) =>
+                          setEditA((prev) => ({
+                            ...prev,
+                            qnaATitle: e.target.value,
+                          }))
+                        }
+                      />
                     </div>
                     <div>
                       <p>내용</p>
                       <Form.Control
-                    as="textarea"
-                    placeholder="내용 작성"
-                    value={editA.qnaAContent}
-                    onChange={(e) =>
-                      setEditA((prev) => ({
-                        ...prev,
-                        qnaAContent: e.target.value,
-                      }))
-                    }
-                  />
+                        as="textarea"
+                        placeholder="내용 작성"
+                        value={editA.qnaAContent}
+                        onChange={(e) =>
+                          setEditA((prev) => ({
+                            ...prev,
+                            qnaAContent: e.target.value,
+                          }))
+                        }
+                      />
                     </div>
                     <div>
                       <p>이미지</p>
-                    <Form.Control
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={imageChange}
-                  />
+                      <Form.Control
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={imageChange}
+                      />
                     </div>
                   </div>
                   <div id="buttons">
-                  <Button variant="dark" onClick={answerUpdate}>
-                    답변 등록
-                  </Button>
-                  <Button variant="secondary" onClick={cancelAnswer}>취소</Button>
+                    <button onClick={answerUpdate}>답변 등록</button>
+                    <button variant="secondary" onClick={cancelAnswer}>
+                      취소
+                    </button>
                   </div>
-                  
-                  
-                  
                 </>
               ) : (
                 <>
-                  <h1>ANSWER!!!</h1>
-
-                  <button onClick={() => onUpdateAnswer(answer)}>수정</button>
-                  <button onClick={() => onDeleteAnswer(answer.qnaACode)}>
-                    삭제
-                  </button>
+                  <div id="atopbar">
+                    <h2>{answer.qnaATitle}</h2>
+                    <div>
+                      <div id="buttons">
+                        <button onClick={() => onUpdateAnswer(answer)}>
+                          수정
+                        </button>
+                        <button onClick={() => onDeleteAnswer(answer.qnaACode)}>
+                          삭제
+                        </button>
+                      </div>
+                      <span>
+                        날짜 :{" "}
+                        {moment(answer.qnaADate).format("YY-MM-DD hh:mm")}
+                      </span>
+                    </div>
+                  </div>
                   <div>
-                    <h1>사진</h1>
                     {answer.images?.map((image) => (
                       <img
                         alt=""
                         key={image.qnaAImgCode}
-                        src={"http://localhost:8081" + image.qnaAUrl}
+                        // src={"http://localhost:8081" + image.qnaAUrl}
+                        src={"http://192.168.10.28:8081/QnaA/" + image.qnaQUrl}
                       />
                     ))}
                   </div>
-                  <div>
-                  <p>
-                        날짜 :{" "}
-                        {moment(answer.qnaADate).format("YY-MM-DD hh:mm")}
-                      </p>
-                    <p>{answer.qnaATitle}</p>
+                  <div id="content">
                     <p>{answer.qnaAContent}</p>
                   </div>
                 </>
@@ -364,25 +422,48 @@ const QnaADetail = () => {
             // 답변이 없을 때
             <>
               <p>답변이 아직 작성되지 않았습니다.</p>
+              <div id="list">
+                <button onClick={() => navigate("/compagno/question")}>
+                  목록
+                </button>
+              </div>
             </>
           ) : (
             // 답변이 있을 때
             <>
+              <div id="atopbar">
+                <h2>{answer.qnaATitle}</h2>
+                <div style={({ display: "flex" }, { flexDirection: "column" })}>
+                  <p>
+                    날짜 : {moment(answer.qnaADate).format("YY-MM-DD hh:mm")}
+                  </p>
+                  <p>{answer.userId}</p>
+                </div>
+              </div>
               <div>
-                <h1>ANSWER!!!!!</h1>
-                <p>
-                        날짜 :{" "}
-                        {moment(answer.qnaADate).format("YY-MM-DD hh:mm")}
-                      </p>
-                <p>{answer.qnaATitle}</p>
+                {answer.images?.map((image) => (
+                  <img
+                    alt=""
+                    key={image.qnaAImgCode}
+                    // src={"http://localhost:8081" + image.qnaAUrl}
+                    src={"http://192.168.10.28:8081/QnaA/" + image.qnaQUrl}
+                  />
+                ))}
+              </div>
+              <div id="content">
                 <p>{answer.qnaAContent}</p>
+              </div>
+
+              <div id="list">
+                <button onClick={() => navigate("/compagno/question")}>
+                  목록
+                </button>
               </div>
             </>
           )}
         </>
       )}
-      <button onClick={() => navigate("/compagno/question")}>목록</button>
-    </>
+    </Div>
   );
 };
 

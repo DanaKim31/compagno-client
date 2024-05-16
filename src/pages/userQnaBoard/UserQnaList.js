@@ -158,7 +158,18 @@ const Div = styled.div`
       background-color: white;
       color: black;
       margin: 5px;
+      padding: 0px;
     }
+  }
+  button {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+  }
+  button:hover {
+    background-color: #94b29b;
   }
 `;
 
@@ -436,6 +447,7 @@ const UserQnaList = () => {
                   </>
                 )}
                 <td>{question.likecount}</td>
+                <td>{question.viewcount}</td>
               </tr>
             );
           })}

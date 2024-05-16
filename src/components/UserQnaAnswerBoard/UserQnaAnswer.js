@@ -17,119 +17,188 @@ import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import useDidMountEffect from "../../assets/useDidMountEffect";
 import MyToggleBar from "../../components/note/MyToggleBar";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import styled from "styled-components";
 
 const Div = styled.div`
   padding-bottom: 100px;
 
+  // ======== 폰트 관련
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
+
+  #writer {
+    background-color: #94b29b;
+    border: none;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 2px;
+  }
+
   // 채택된 상위 답변
   #topanswer {
-    background-color: lightgray;
-    border: 2px dashed;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    background-color: rgba(32, 61, 59, 0.17);
+    border: 2px dashed rgba(32, 61, 59, 0.17);
     border-radius: 15px;
     padding-top: 30px;
     padding-left: 30px;
     margin-bottom: 20px;
     width: 80%;
-    margin : 0 auto;
+    margin: 0 auto;
 
     #choosetopbar {
-    display: flex;
-    justify-content: space-between;
-    button {
-      height: 40px;
-      margin-right: 10px;
+      display: flex;
+      justify-content: space-between;
+      button {
+        height: 40px;
+        margin-right: 10px;
+      }
     }
-  }
   }
 
   // 상위 답변
   #answer {
-    background-color: lightgray;
-    border: 1px solid;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    background-color: rgba(32, 61, 59, 0.08);
+    border: 1px solid rgba(32, 61, 59, 0.2);
     border-radius: 15px;
-    padding-top: 30px;
+    padding-top: 15px;
     padding-left: 30px;
     margin-bottom: 20px;
     width: 80%;
-    margin : 0 auto;
+    margin: 0 auto;
+    margin-bottom: 20px;
   }
-      /* 하위 답변 */
-      #reanswer {
-      margin-top: 20px;
-      margin-bottom: 10px;
-      background-color: white;
-      padding-top: 10px;
-      padding-left: 20px;
-      border: 1px solid;
-      border-radius: 15px;
-      width: 75%;
-      margin: 20px auto;
-      button {
-        margin: 5px;
-      }
 
-      /* 하위 답변 */
-      #reanswertopbar {
-        display: flex;
-        justify-content: space-between;
-        margin-right: 10px;
-      }
+  /* 하위 답변 */
+  #reanswer {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: white;
+    padding-top: 15px;
+    padding-left: 20px;
+    border: none;
+    border-radius: 15px;
+    width: 75%;
+    margin: 20px auto;
+    button {
+      margin: 5px;
+    }
 
+    /* 하위 답변 */
+    #reanswertopbar {
+      display: flex;
+      justify-content: space-between;
+      margin-right: 10px;
     }
-    #desc{
-      margin: 20px;
-    }
-    #reansweredit {
-      margin-top: 10px;
-      margin-left: 25px;
-      margin-right: 25px;
-      margin-bottom: 10px;
+  }
+
+  #default {
+    width: 100%;
+    margin-right: 30px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    #topbarright {
+      #choosebutton {
+        margin-top: 20px;
+      }
       button {
-        margin: 5px;
-        width: 70px;
+        margin: 0px;
+        margin-left: 10px;
       }
       display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+  /* content */
+  #desc {
+    padding: 30px;
+    margin: 20px;
+    height: 80px;
+  }
+  #reansweredit {
+    padding: 10px;
+    margin: 20px auto;
+    input {
+      margin: auto;
+      height: 40px;
+    }
+    button {
+      margin: 5px;
+      width: 80px;
+    }
+    display: flex;
+  }
+
+  #reanswerregister {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    margin-left: 80px;
+    margin-right: 50px;
+    margin-bottom: 10px;
+    button {
+      margin: 5px;
     }
 
-    #reanswerregister {
-      margin-left: 25px;
-      margin-right: 50px;
-      margin-bottom: 10px;
+    #reanswerregistercontent {
+      display: flex;
+      height: 50px;
       button {
-        margin: 5px;
-      }
-
-      #reanswerregistercontent {
-        display: flex;
-        height: 50px;
-        button {
-          width: 80px;
-          height: 41px;
-          margin-left: 10px;
-          padding-right: 10px;
-        }
+        width: 80px;
+        height: 41px;
+        margin-left: 10px;
+        padding-right: 10px;
       }
     }
+  }
 
   /* 프로필 */
   #profile {
-      margin-left: 10px;
-      display: flex;
-      flex-direction: row;
+    padding-top: 10px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    height: 65px;
+    img {
+      width: 65px;
       height: 65px;
-      img {
-        width: 65px;
-        height: 65px;
-        border-radius: 50%;
-        margin-right: 15px;
-      }
+      border-radius: 50%;
+      margin-right: 15px;
     }
-
+  }
 
   #answerregister {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
     display: flex;
+    width: 80%;
+    margin: 0 auto;
     button {
       width: 80px;
       height: 41px;
@@ -145,9 +214,7 @@ const Div = styled.div`
     justify-content: space-between;
   }
 
-  
-
-  #buttons{
+  #buttons {
     display: flex;
     justify-content: center;
     button {
@@ -156,6 +223,17 @@ const Div = styled.div`
       width: 60px;
     }
     margin-right: 40px;
+  }
+
+  button {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+  }
+  button:hover {
+    background-color: #94b29b;
   }
 `;
 
@@ -240,8 +318,6 @@ const UserQnaAnswer = ({ question }) => {
     setCode(0);
   };
 
-  
-
   // 1-3. 하위 답변 취소
   const UserReanswerCancel = async () => {
     setReanswerContent("");
@@ -278,9 +354,9 @@ const UserQnaAnswer = ({ question }) => {
   };
 
   // 2-3. 상위 답변 수정 취소
-  const userAnswerUpdateCancel = async() => {
+  const userAnswerUpdateCancel = async () => {
     setEditA(null);
-  }
+  };
 
   // 2-4. 하위 답변 수정
   const userReAnswerUpdate = async () => {
@@ -347,7 +423,6 @@ const UserQnaAnswer = ({ question }) => {
     setTopChoose(response.data);
   };
 
-
   return (
     <Div>
       <div>
@@ -364,7 +439,7 @@ const UserQnaAnswer = ({ question }) => {
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   />
-                  <Button onClick={UseranswerSubmit}>등록</Button>
+                  <button onClick={UseranswerSubmit}>등록</button>
                 </div>
               </>
             ) : (
@@ -381,61 +456,203 @@ const UserQnaAnswer = ({ question }) => {
                   <div id="topanswer">
                     <div id="choosetopbar">
                       <div id="default">
-                        <h3>채택된 답변</h3>
-                        <div id="profile">
-                        <img
-                          alt=""
-                          key={topChoose.userQuestionBoardCode}
-                          // src={"http://localhost:8081/" + question.userImg}
-                          src={"http://192.168.10.28:8081/" + topChoose.userImg}
-                        />
-                       <div>
-                              <MyToggleBar name={topChoose.user?.userNickname} />
+                        <div>
+                          <h3>채택된 답변</h3>
+                          <div id="profile">
+                            <img
+                              alt=""
+                              key={topChoose.userQuestionBoardCode}
+                              src={"http://localhost:8081/" + question.userImg}
+                              // src={
+                              //   "http://192.168.10.28:8081/" + topChoose.userImg
+                              // }
+                            />
+                            <div>
+                              <MyToggleBar
+                                name={topChoose.user?.userNickname}
+                              />
                             </div>
+                          </div>
+                        </div>
+                        <div id="topbarright">
+                          <div>
+                            {user.userId === question.userId ? (
+                              <>
+                                <button
+                                  onClick={() =>
+                                    chooseDelete(
+                                      topChoose.userQuestionBoardCode
+                                    )
+                                  }
+                                >
+                                  채택 취소하기
+                                </button>
+                              </>
+                            ) : (
+                              <></>
+                            )}
+                          </div>
+                          <div>
+                            <p>
+                              날짜 :
+                              {moment(topChoose.userAnswerDate).format(
+                                "YY-MM-DD HH:mm"
+                              )}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                        <p>
-                          날짜 :
-                          {moment(topChoose.userAnswerDate).format(
-                            "YY-MM-DD HH:mm"
-                          )}
-                        </p>
-                      </div>
-                      {user.userId === question.userId ? (
-                        <>
-                          <Button
-                            variant="dark"
-                            onClick={() =>
-                              chooseDelete(topChoose.userQuestionBoardCode)
-                            }
-                          >
-                            채택 취소하기
-                          </Button>
-                        </>
-                      ) : (
-                        <></>
-                      )}
+                    </div>
+                    <div id="desc">
+                      <p>{topChoose.userAnswerContent}</p>
                     </div>
 
-                    <p>{topChoose.userAnswerContent}</p>
-                    {code !== 0 ? (
-                          <></>
+                    {/* 채택된 답변 하위 답변 출력하기 */}
+                    {topChoose.answers?.map((reanswer) => (
+                      <div key={topChoose.userAnswerBoardCode} id="reanswer">
+                        <div id="reanswertopbar">
+                          {user.userId === reanswer.user.userId ? (
+                            <>
+                              {/* 접속 유저 = 댓글 작성자 */}
+                              <div id="profile">
+                                <img
+                                  alt=""
+                                  key={question.userQuestionBoardCode}
+                                  src={
+                                    "http://localhost:8081/" + question.userImg
+                                  }
+                                  // src={
+                                  //   "http://192.168.10.28:8081/" +
+                                  //   reanswer.user.userImg
+                                  // }
+                                />
+                                <div>
+                                  <MyToggleBar
+                                    name={reanswer.user.userNickname}
+                                  />
+                                </div>
+                              </div>
+
+                              <div>
+                                {editA !== null ? (
+                                  <>{/* 수정중 */}</>
+                                ) : (
+                                  <>
+                                    {/* 안 수정중 */}
+                                    <div id="buttons">
+                                      <button
+                                        onClick={() =>
+                                          onUpdateUserReAnswer(reanswer)
+                                        }
+                                      >
+                                        수정
+                                      </button>
+                                      <button
+                                        onClick={() =>
+                                          onDeleteUserAnswer(
+                                            reanswer.userAnswerBoardCode
+                                          )
+                                        }
+                                      >
+                                        삭제
+                                      </button>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              {topChoose.user.userId === question.userId &&
+                              editA === null ? (
+                                <>
+                                  {/* 글 작성자 본인! */}
+                                  <div>
+                                    {topChoose.user.userId}
+                                    <span id="writer">작성자</span>
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <div id="profile">
+                                    <img
+                                      alt=""
+                                      key={topChoose.userAnswerBoardCode}
+                                      src={
+                                        "http://localhost:8081/" +
+                                        question.userImg
+                                      }
+                                      // src={
+                                      //   "http://192.168.10.28:8081/" +
+                                      //   topChoose.userImg
+                                      // }
+                                    />
+                                    <div>
+                                      <MyToggleBar
+                                        name={topChoose.user.userNickname}
+                                      />
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+                            </>
+                          )}
+                        </div>
+                        {editA !== null &&
+                        editA?.userAnswerBoardCode ===
+                          topChoose.userAnswerBoardCode ? (
+                          <>
+                            <div>
+                              <div id="reansweredit">
+                                <Form.Control
+                                  type="textarea"
+                                  placeholder="답변 작성"
+                                  value={editA.userAnswerContent}
+                                  onChange={(e) =>
+                                    setEditA((prev) => ({
+                                      ...prev,
+                                      userAnswerContent: e.target.value,
+                                    }))
+                                  }
+                                />
+                                <button onClick={userReAnswerUpdate}>
+                                  수정
+                                </button>
+                                <button onClick={userReAnswerUpdateCancel}>
+                                  취소
+                                </button>
+                              </div>
+                            </div>
+                          </>
                         ) : (
                           <>
-                          {user.userId !== undefined ? (<>
-                            <Button
-                              variant="dark"
-                              onClick={(e) =>
-                                setCode(topChoose.userAnswerBoardCode)
-                              }
-                            >
-                              답변 달기
-                            </Button>
-                          </>) : (<>
-                          </>)}
-                            
+                            <div id="desc">{reanswer.userAnswerContent}</div>
                           </>
                         )}
-                      {code === topChoose.userAnswerBoardCode ? (
+                      </div>
+                    ))}
+                    <div id="reanswerregister">
+                      {code !== 0 ? (
+                        <></>
+                      ) : (
+                        <>
+                          {user.userId !== undefined ? (
+                            <>
+                              <button
+                                onClick={(e) =>
+                                  setCode(topChoose.userAnswerBoardCode)
+                                }
+                              >
+                                답변 달기
+                              </button>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    {code === topChoose.userAnswerBoardCode ? (
                       <>
                         <div id="reanswerregistercontent">
                           <Form.Control
@@ -444,139 +661,17 @@ const UserQnaAnswer = ({ question }) => {
                             value={reanswerContent}
                             onChange={(e) => setReanswerContent(e.target.value)}
                           />
-                          <Button variant="dark" onClick={UserReanswerSubmit}>
-                            등록
-                          </Button>
-                          <Button variant="dark" onClick={UserReanswerCancel}>
-                            취소
-                          </Button>
+                          <button onClick={UserReanswerSubmit}>등록</button>
+                          <button onClick={UserReanswerCancel}>취소</button>
                         </div>
                       </>
                     ) : (
                       <></>
                     )}
-                {/* 채택된 답변 하위 답변 출력하기 */}
-                {topChoose.answers?.map((reanswer) => (
-                    <div key={topChoose.userAnswerBoardCode} id="reanswer">
-                      <div id="reanswertopbar">
-                        {user.userId === reanswer.user.userId ? (
-                          <>
-                            {/* 접속 유저 = 댓글 작성자 */}
-                            
-                            <div id="profile">
-                              <img
-                                alt=""
-                                key={question.userQuestionBoardCode}
-                                // src={"http://localhost:8081/" + question.userImg}
-                                src={"http://192.168.10.28:8081/" + reanswer.user.userImg}
-                              />
-                              <div>
-                                    <MyToggleBar name={reanswer.user.userNickname} />
-                              </div>
-                            </div>
-
-                            <div>
-                              {editA !== null ? (<>
-                              {/* 수정중 */}
-                              </>) : (<>
-                              {/* 안 수정중 */}
-                              <Button
-                                variant="dark"
-                                onClick={() => onUpdateUserReAnswer(reanswer)}
-                              >
-                                수정
-                              </Button>
-                              <Button
-                                variant="dark"
-                                onClick={() =>
-                                  onDeleteUserAnswer(
-                                    reanswer.userAnswerBoardCode
-                                  )
-                                }
-                              >
-                                삭제
-                              </Button>
-                              </>)}
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            {topChoose.user.userId === question.userId && editA === null ? (
-                              <>
-                                {/* 글 작성자 본인! */}
-                                <div>
-                                  {topChoose.user.userId}
-                                  <span
-                                    id="writer"
-                                    style={{ border: "2px solid" }}
-                                  >
-                                    작성자
-                                  </span>
-                                </div>
-                              </>
-                            ) : (
-                              <>
-                              <div id="profile">
-                        <img
-                          alt=""
-                          key={topChoose.userAnswerBoardCode}
-                          // src={"http://localhost:8081/" + question.userImg}
-                          src={"http://192.168.10.28:8081/" + topChoose.userImg}
-                        />
-                       <div>
-                              <MyToggleBar name={topChoose.user.userNickname} />
-                            </div>
-                      </div>
-                             
-                              </>
-                            )}
-                          </>
-                        )}
-                      </div>
-                      {editA !== null &&
-                      editA?.userAnswerBoardCode ===
-                        topChoose.userAnswerBoardCode ? (
-                        <>
-                          <div>
-                            <div id="reansweredit">
-                              <Form.Control
-                                type="textarea"
-                                placeholder="답변 작성"
-                                value={editA.userAnswerContent}
-                                onChange={(e) =>
-                                  setEditA((prev) => ({
-                                    ...prev,
-                                    userAnswerContent: e.target.value,
-                                  }))
-                                }
-                              />
-                              <Button
-                                variant="dark"
-                                onClick={userReAnswerUpdate}
-                              >
-                                수정
-                              </Button>
-                              <Button
-                                variant="dark"
-                                onClick={userReAnswerUpdateCancel}
-                              >
-                                취소
-                              </Button>
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <><div id="desc">{reanswer.userAnswerContent}</div></>
-                      )}
-                    </div>
-                  ))}
                   </div>
-                <hr />
+                  <hr />
                 </div>
-
               </>
-
-
             ) : (
               <>
                 <div></div>
@@ -592,88 +687,106 @@ const UserQnaAnswer = ({ question }) => {
                 <div key={answer.userAnswerBoardCode} id="answer">
                   <div id="topmenu">
                     <div id="default">
-                    <div id="profile">
+                      <div id="profile">
                         <img
                           alt=""
                           key={answer.userQuestionBoardCode}
-                          // src={"http://localhost:8081/" + question.userImg}
-                          src={"http://192.168.10.28:8081/" + answer.user.userImg}
+                          src={"http://localhost:8081/" + question.userImg}
+                          // src={
+                          //   "http://192.168.10.28:8081/" + answer.user.userImg
+                          // }
                         />
-                       <div>
-                              <MyToggleBar name={answer.user.userNickname} />
-                            </div>
+                        <MyToggleBar name={answer.user.userNickname} />
                       </div>
-                      <p>
-                        날짜 :
-                        {moment(answer.userAnswerDate).format("YY-MM-DD HH:mm")}
-                      </p>
-                    </div>
-                    {user.userId === undefined ? (
-                      <>
-                        <p>비회원인데용</p>
-                      </>
-                    ) : (
-                      <div id="editdeletebutton">
-                        {user.userId === question.userId ? (
-                          <>
-                            {/* 접속 유저 = 질문 작성자 */}
-                            {topChoose.length === 0 && user.userId !== answer.user.userId ? (
-                              <>
-                                {/* 채택 답변이 없는 경우 */}
-                                <button onClick={() => choose(answer)}>
-                                  채택하기
-                                </button>
-                              </>
-                            ) : (
-                              <></>
-                            )}
-
-                            <div>
-                              <Button
-                                variant="dark"
-                                onClick={() => onUpdateUserAnswer(answer)}
-                              >
-                                수정
-                              </Button>
-                              <Button
-                                onClick={() =>
-                                  onDeleteUserAnswer(answer.userAnswerBoardCode)
-                                }
-                              >
-                                삭제
-                              </Button>
-                            </div>
-                          </>
+                      <div id="topbarright">
+                        <p>
+                          작성일 :
+                          {moment(answer.userAnswerDate).format(
+                            "YY-MM-DD HH:mm"
+                          )}
+                        </p>
+                        {user.userId === undefined ? (
+                          <></>
                         ) : (
-                          <>
-                            {user.userId === answer.user.userId && editA === null ? (
+                          <div id="editdeletebutton">
+                            {user.userId === question.userId ? (
                               <>
-                                {/* 접속 유저 = 댓글 작성자 */}
-                                <Button
-                                  variant="dark"
-                                  onClick={() => onUpdateUserAnswer(answer)}
-                                >
-                                  수정
-                                </Button>
-                                <Button
-                                  onClick={() =>
-                                    onDeleteUserAnswer(
-                                      answer.userAnswerBoardCode
-                                    )
-                                  }
-                                >
-                                  삭제
-                                </Button>
-
+                                {/* 접속 유저 = 질문 작성자 */}
+                                {topChoose.length === 0 &&
+                                // 접속자가 해당 답변 작성자가 아닌 경우
+                                user.userId !== answer.user.userId ? (
+                                  <>
+                                    {/* 채택 답변이 없는 경우 */}
+                                    <button
+                                      id="choosebutton"
+                                      onClick={() => choose(answer)}
+                                    >
+                                      채택하기
+                                    </button>
+                                  </>
+                                ) : (
+                                  <>
+                                    {user.userId === answer.user.userId ? (
+                                      <>
+                                        <div id="buttons">
+                                          <button
+                                            onClick={() =>
+                                              onUpdateUserAnswer(answer)
+                                            }
+                                          >
+                                            수정
+                                          </button>
+                                          <button
+                                            onClick={() =>
+                                              onDeleteUserAnswer(
+                                                answer.userAnswerBoardCode
+                                              )
+                                            }
+                                          >
+                                            삭제
+                                          </button>
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <></>
+                                    )}
+                                  </>
+                                )}
                               </>
                             ) : (
                               <>
+                                {user.userId === answer.user.userId &&
+                                editA === null ? (
+                                  <>
+                                    {/* 접속 유저 = 댓글 작성자 */}
+                                    <div id="buttons">
+                                      <button
+                                        onClick={() =>
+                                          onUpdateUserAnswer(answer)
+                                        }
+                                      >
+                                        수정
+                                      </button>
+                                      <button
+                                        onClick={() =>
+                                          onDeleteUserAnswer(
+                                            answer.userAnswerBoardCode
+                                          )
+                                        }
+                                      >
+                                        삭제
+                                      </button>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <></>
+                                )}
                               </>
                             )}
-                          </>
+                          </div>
                         )}
                       </div>
-                    )}
+                    </div>
                   </div>
                   {editA !== null &&
                   editA?.userAnswerBoardCode === answer.userAnswerBoardCode ? (
@@ -691,10 +804,8 @@ const UserQnaAnswer = ({ question }) => {
                           }
                         />
                         <div id="buttons">
-                        <Button variant="dark" onClick={userAnswerUpdate}>
-                          수정
-                        </Button>
-                        <Button onClick={userAnswerUpdateCancel}>취소</Button>
+                          <button onClick={userAnswerUpdate}>수정</button>
+                          <button onClick={userAnswerUpdateCancel}>취소</button>
                         </div>
                       </div>
                     </>
@@ -711,70 +822,81 @@ const UserQnaAnswer = ({ question }) => {
                           <>
                             {/* 접속 유저 = 댓글 작성자 */}
                             <div id="profile">
-                        <img
-                          alt=""
-                          key={question.userQuestionBoardCode}
-                          // src={"http://localhost:8081/" + question.userImg}
-                          src={"http://192.168.10.28:8081/" + reanswer.user.userImg}
-                        />
-                       <div>
-                              <MyToggleBar name={reanswer.user.userNickname} />
-                            </div>
-                      </div>
-                            <div>
-                              {editA !== null ? (<>
-                              {/* 수정중 */}
-                              </>) : (<>
-                              {/* 안 수정중 */}
-                              <Button
-                                variant="dark"
-                                onClick={() => onUpdateUserReAnswer(reanswer)}
-                              >
-                                수정
-                              </Button>
-                              <Button
-                                variant="dark"
-                                onClick={() =>
-                                  onDeleteUserAnswer(
-                                    reanswer.userAnswerBoardCode
-                                  )
+                              <img
+                                alt=""
+                                key={question.userQuestionBoardCode}
+                                src={
+                                  "http://localhost:8081/" + question.userImg
                                 }
-                              >
-                                삭제
-                              </Button>
-                              </>)}
-                              
+                                // src={
+                                //   "http://192.168.10.28:8081/" +
+                                //   reanswer.user.userImg
+                                // }
+                              />
+                              <div>
+                                <MyToggleBar
+                                  name={reanswer.user.userNickname}
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              {editA !== null ? (
+                                <>{/* 수정중 */}</>
+                              ) : (
+                                <>
+                                  {/* 안 수정중 */}
+                                  <button
+                                    onClick={() =>
+                                      onUpdateUserReAnswer(reanswer)
+                                    }
+                                  >
+                                    수정
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      onDeleteUserAnswer(
+                                        reanswer.userAnswerBoardCode
+                                      )
+                                    }
+                                  >
+                                    삭제
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </>
                         ) : (
                           <>
-                            {reanswer.user.userId === question.userId && editA === null ? (
+                            {reanswer.user.userId === question.userId &&
+                            editA === null ? (
                               <>
                                 {/* 글 작성자 본인! */}
                                 <div>
                                   {reanswer.user.userId}
-                                  <span
-                                    id="writer"
-                                    style={{ border: "2px solid" }}
-                                  >
-                                    작성자
-                                  </span>
+                                  <span id="writer">작성자</span>
                                 </div>
                               </>
                             ) : (
                               <>
-                              <div id="profile">
-                        <img
-                          alt=""
-                          key={question.userQuestionBoardCode}
-                          // src={"http://localhost:8081/" + question.userImg}
-                          src={"http://192.168.10.28:8081/" + question.userImg}
-                        />
-                       <div>
-                              <MyToggleBar name={reanswer.user.userNickname} />
-                            </div>
-                      </div>
-                             
+                                <div id="profile">
+                                  <img
+                                    alt=""
+                                    key={question.userQuestionBoardCode}
+                                    src={
+                                      "http://localhost:8081/" +
+                                      question.userImg
+                                    }
+                                    // src={
+                                    //   "http://192.168.10.28:8081/" +
+                                    //   question.userImg
+                                    // }
+                                  />
+                                  <div>
+                                    <MyToggleBar
+                                      name={reanswer.user.userNickname}
+                                    />
+                                  </div>
+                                </div>
                               </>
                             )}
                           </>
@@ -797,24 +919,17 @@ const UserQnaAnswer = ({ question }) => {
                                   }))
                                 }
                               />
-                              <Button
-                                variant="dark"
-                                onClick={userReAnswerUpdate}
-                              >
-                                수정
-                              </Button>
-                              <Button
-                                variant="dark"
-                                onClick={userReAnswerUpdateCancel}
-                              >
+                              <button onClick={userReAnswerUpdate}>수정</button>
+                              <button onClick={userReAnswerUpdateCancel}>
                                 취소
-                              </Button>
+                              </button>
                             </div>
                           </div>
                         </>
                       ) : (
-                        <><div id="desc">
-                          {reanswer.userAnswerContent}</div></>
+                        <>
+                          <div id="desc">{reanswer.userAnswerContent}</div>
+                        </>
                       )}
                     </div>
                   ))}
@@ -827,17 +942,19 @@ const UserQnaAnswer = ({ question }) => {
                           <></>
                         ) : (
                           <>
-                          {user.userId !== undefined ? (<>
-                            <Button
-                              variant="dark"
-                              onClick={(e) =>
-                                setCode(answer.userAnswerBoardCode)
-                              }
-                            >
-                              답변 달기
-                            </Button>
-                          </>) : (<></>)}
-
+                            {user.userId !== undefined ? (
+                              <>
+                                <button
+                                  onClick={(e) =>
+                                    setCode(answer.userAnswerBoardCode)
+                                  }
+                                >
+                                  답변 달기
+                                </button>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </>
                         )}
                       </>
@@ -852,17 +969,12 @@ const UserQnaAnswer = ({ question }) => {
                             value={reanswerContent}
                             onChange={(e) => setReanswerContent(e.target.value)}
                           />
-                          <Button variant="dark" onClick={UserReanswerSubmit}>
-                            등록
-                          </Button>
-                          <Button variant="dark" onClick={UserReanswerCancel}>
-                            취소
-                          </Button>
+                          <button onClick={UserReanswerSubmit}>등록</button>
+                          <button onClick={UserReanswerCancel}>취소</button>
                         </div>
                       </>
                     ) : (
-                      <>
-                      </>
+                      <></>
                     )}
                   </div>
 
@@ -884,13 +996,10 @@ const UserQnaAnswer = ({ question }) => {
                   <Form.Control
                     type="textarea"
                     placeholder="답변 작성"
-                    variant="dark"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   />
-                  <Button variant="dark" onClick={UseranswerSubmit}>
-                    등록
-                  </Button>
+                  <button onClick={UseranswerSubmit}>등록</button>
                 </div>
               </>
             )}
