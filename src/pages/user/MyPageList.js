@@ -26,9 +26,14 @@ const Div = styled.div`
 
   #content-header {
     padding-bottom: 15px;
+    font-weight: bold;
   }
 
   .myPageList {
+    table-layout: fixed;
+    border-collapse: separate;
+    width: 300px;
+    border-bottom: 2px solid black;
     thead th {
       width: 200px;
       height: 50px;
@@ -38,13 +43,20 @@ const Div = styled.div`
       border-top: 2px solid black;
       border-bottom: 2px solid black;
     }
+    .th1 {
+      width: 300px;
+    }
 
     tbody {
-      color: black;
-      height: 50px;
-      text-align: left;
-      line-height: 50px;
-      border-bottom: 2px solid black;
+      td {
+        color: black;
+        height: 50px;
+        text-align: left;
+        line-height: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
 
       a {
         color: black;
@@ -138,7 +150,7 @@ const MyPageList = () => {
         <thead>
           <tr>
             <th>동물 카테고리</th>
-            <th>글 제목</th>
+            <th className="th1">글 제목</th>
             <th>글 작성자</th>
             <th>글 작성 날짜</th>
             <th>좋아요 삭제</th>

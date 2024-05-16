@@ -43,6 +43,12 @@ const Div = styled.div`
       align-items: center;
       flex-direction: column;
 
+      #headText {
+        width: 1100px;
+        padding-bottom: 15px;
+        font-weight: bold;
+      }
+
       .myQnaList {
         thead th {
           background-color: rgb(85, 96, 143);
@@ -148,6 +154,9 @@ const MyPageMyQnA = () => {
         <div className="contentZone">
           {user.userRole == "ROLE_USER" ? (
             <>
+              <div id="headText">
+                <h1>내 질문 목록</h1>
+              </div>
               <table className="myQnaList">
                 <thead>
                   <tr>

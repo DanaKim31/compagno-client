@@ -30,28 +30,59 @@ const Div = styled.div`
     padding-top: 20px;
 
     .contentZone {
-      width: 100%;
       height: calc(100vh - 66px);
       display: flex;
+      justify-content: center;
       align-items: center;
       flex-direction: column;
 
+      #headText {
+        width: 1000px;
+        padding-bottom: 15px;
+        font-weight: bold;
+      }
+
       .myOdcList {
+        table-layout: fixed;
+        border-collapse: separate;
+        width: 300px;
+        border-bottom: 2px solid black;
+
         thead th {
-          background-color: rgb(85, 96, 143);
-          width: 250px;
+          width: 200px;
           height: 50px;
           text-align: left;
           line-height: 50px;
-          color: white;
+          color: black;
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+        }
+        .th1 {
+          width: 300px;
+        }
+        .th2 {
+          width: 300px;
         }
 
         tbody {
-          background: linear-gradient(45deg, #49a09d, #5f2c82);
-          color: white;
-          height: 50px;
-          text-align: left;
-          line-height: 50px;
+          td {
+            color: black;
+            height: 50px;
+            text-align: left;
+            line-height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          a {
+            color: black;
+            text-decoration-line: none;
+          }
+
+          a:hover {
+            color: orange;
+          }
         }
       }
     }
@@ -111,8 +142,8 @@ const MyPageOneday = () => {
           <table className="myOdcList">
             <thead>
               <tr>
-                <th>제목</th>
-                <th>기간</th>
+                <th className="th1">제목</th>
+                <th className="th2">기간</th>
                 <th>동물 동반 여부</th>
                 <th>등록일</th>
               </tr>
@@ -120,7 +151,13 @@ const MyPageOneday = () => {
             <tbody>
               {odcList?.map((odc) => (
                 <tr key={odc.odcCode}>
-                  <td>{odc.odcTitle}</td>
+                  <td>
+                    <a
+                      href={`/compagno/onedayClassBoard/detail/` + odc.odcCode}
+                    >
+                      {odc.odcTitle}
+                    </a>
+                  </td>
                   <td>
                     {moment(odc.odcStartDate).format("YYYY-MM-DD")} ~{" "}
                     {moment(odc.odcLastDate).format("YYYY-MM-DD")}

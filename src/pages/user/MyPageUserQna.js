@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { getUserQnaList, getUserQnaCount } from "../../api/user";
 import useDidMountEffect from "../../assets/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
+import moment from "moment";
+import "moment/locale/ko";
 
 const Div = styled.div`
   @font-face {
@@ -34,22 +36,50 @@ const Div = styled.div`
       align-items: center;
       flex-direction: column;
 
+      #headText {
+        width: 900px;
+        padding-bottom: 15px;
+        font-weight: bold;
+      }
+
       .myUserQnaList {
+        table-layout: fixed;
+        border-collapse: separate;
+        width: 300px;
+        border-bottom: 2px solid black;
+
         thead th {
-          background-color: rgb(85, 96, 143);
           width: 200px;
           height: 50px;
           text-align: left;
           line-height: 50px;
-          color: white;
+          color: black;
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+        }
+        .th1 {
+          width: 300px;
         }
 
         tbody {
-          background: linear-gradient(45deg, #49a09d, #5f2c82);
-          color: white;
-          height: 50px;
-          text-align: left;
-          line-height: 50px;
+          td {
+            color: black;
+            height: 50px;
+            text-align: left;
+            line-height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          a {
+            color: black;
+            text-decoration-line: none;
+          }
+
+          a:hover {
+            color: orange;
+          }
         }
       }
     }
@@ -102,10 +132,11 @@ const MyPageUserQna = () => {
       <div className="myUserQnaMain">
         <MyPageTab />
         <div className="contentZone">
+          <h1 id="headText">유저간 질문 목록</h1>
           <table className="myUserQnaList">
             <thead>
               <tr>
-                <th>제목</th>
+                <th className="th1">제목</th>
                 <th>답변 여부</th>
                 <th>뭐넣지 여기에</th>
                 <th>작성일</th>
@@ -114,10 +145,23 @@ const MyPageUserQna = () => {
             <tbody>
               {userQnaList?.map((userQna) => (
                 <tr key={userQna.userQuestionBoardCode}>
-                  <td>{userQna.userQuestionBoardTitle}</td>
+                  <td>
+                    <a
+                      href={
+                        `/compagno/userQna/detail/` +
+                        userQna.userQuestionBoardCode
+                      }
+                    >
+                      {userQna.userQuestionBoardTitle}
+                    </a>
+                  </td>
                   <td>{userQna.userQuestionBoardStatus}</td>
-                  <td>뭐넣지...</td>
-                  <td>{userQna.userQuestionBoardDate}</td>
+                  <td>답변자 닉네임 추가예정</td>
+                  <td>
+                    {moment(userQna.userQuestionBoardDate).format(
+                      "YYYY-MM-DD hh:mm"
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

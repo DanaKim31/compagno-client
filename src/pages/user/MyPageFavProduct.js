@@ -40,22 +40,50 @@ const Div = styled.div`
       align-items: center;
       flex-direction: column;
 
+      #headText {
+        width: 1100px;
+        padding-bottom: 15px;
+        font-weight: bold;
+      }
+
       .myProductList {
+        table-layout: fixed;
+        border-collapse: separate;
+        width: 300px;
+        border-bottom: 2px solid black;
+
         thead th {
-          background-color: rgb(85, 96, 143);
           width: 200px;
           height: 50px;
           text-align: left;
           line-height: 50px;
-          color: white;
+          color: black;
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+        }
+        .th1 {
+          width: 300px;
         }
 
         tbody {
-          background: linear-gradient(45deg, #49a09d, #5f2c82);
-          color: white;
-          height: 50px;
-          text-align: left;
-          line-height: 50px;
+          td {
+            color: black;
+            height: 50px;
+            text-align: left;
+            line-height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          a {
+            color: black;
+            text-decoration-line: none;
+          }
+
+          a:hover {
+            color: orange;
+          }
         }
       }
     }
@@ -111,12 +139,14 @@ const MyPageFavProduct = () => {
       <MyPageSidebar />
       <div className="myProductMain">
         <MyPageTab />
+
         <div className="contentZone">
+          <h1 id="headText">북마크한 제품 목록</h1>
           <table className="myProductList">
             <thead>
               <tr>
                 <th>동물 카테고리</th>
-                <th>글 제목</th>
+                <th className="th1">글 제목</th>
                 <th>상품명</th>
                 <th>가격</th>
                 <th>작성일</th>
@@ -126,7 +156,16 @@ const MyPageFavProduct = () => {
               {productBoardFav?.map((product) => (
                 <tr key={product.productBookmarkCode}>
                   <td>{product.productBoard.animalCategory.animalType}</td>
-                  <td>{product.productBoard.productBoardTitle}</td>
+                  <td>
+                    <a
+                      href={
+                        `/compagno/product-board/` +
+                        product.productBoard.productBoardCode
+                      }
+                    >
+                      {product.productBoard.productBoardTitle}
+                    </a>
+                  </td>
                   <td>{product.productBoard.productName}</td>
                   <td>{product.productBoard.productPrice}</td>
                   <td>
