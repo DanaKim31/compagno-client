@@ -286,8 +286,8 @@ const NoteViewStar = () => {
                 alignItems: "center",
               }}
             >
-              <BsEnvelopePaper />
-              <span style={{ marginLeft: "10px" }}>총 {allCount}개</span>
+              {/* <BsEnvelopePaper />
+              <span style={{ marginLeft: "10px" }}>총 {allCount}개</span> */}
             </div>
             <table style={{ width: "100%", height: "60%" }}>
               <thead

@@ -2,6 +2,7 @@ import {
   viewAllNote,
   starSenderUpdate,
   starReceiverUpdate,
+  viewAllNotPage,
 } from "../../api/note";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -108,7 +109,7 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-  // const [num, setNum] = useState(0);
+  const [num, setNum] = useState(0);
   const notesAPI = async () => {
     let response = await viewAllNote(
       user.userNickname +
@@ -126,28 +127,37 @@ const NoteViewAll = () => {
     setNotes(response.data.content);
     setAllCount(response.data.totalElements);
     setTotalPage(response.data.totalPages);
-    // console.log(response.data);
 
     // for (let i = 0; i < response.data.content.length; i++) {
-    //   console.log(response.data);
-    //   console.log(response.data.content[i]);
+    //   console.log(i);
     //   console.log(response.data.content[i].deletedBySender);
-    //   console.log(response.data[i].starSender);
-
-    //   {
-    //     response.data.count[i]?.deletedBySender == true ? (
-    //       setNum(num + 1)
-    //     ) : (
-    //       <></>
-    //     );
-    //   }
-    //   if (response?.data?.conent[i]?.deletedBySender == true || undefined) {
+    //   if (
+    //     response.data.content[i].deletedBySender == true ||
+    //     response.data.content[i].deletedByReceiver == true
+    //   ) {
     //     setNum(num + 1);
     //   }
     // }
-    // console.log(num);
   };
 
+  // const numAPI = async () => {
+  //   let response = await viewAllNotPage(user.userNickname);
+  //   console.log(response.data);
+  //   for (let i = 0; i < response.data.content.length; i++) {
+  //     console.log(i);
+  //     console.log(response.data.content[i].deletedBySender);
+  //     if (
+  //       response.data.content[i].deletedBySender == true ||
+  //       response.data.content[i].deletedByReceiver == true
+  //     ) {
+  //       setNum(num + 1);
+  //     }
+  //   }
+  // };
+  // console.log(num);
+  // useEffect(() => {
+  //   numAPI();
+  // }, []);
   let lastPage = 0;
   let firstPage = 0;
   let pageList = [];
@@ -300,7 +310,7 @@ const NoteViewAll = () => {
               }}
             >
               <BsEnvelopePaper />
-              <span style={{ marginLeft: "10px" }}>총 {allCount}개</span>
+              <span style={{ marginLeft: "10px" }}>총 {allCount - num}개</span>
             </div>
             <table style={{ width: "100%", height: "60%" }}>
               <thead

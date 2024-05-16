@@ -31,6 +31,12 @@ export const viewAllNote = async (nickName) => {
   return await authorize.get("note/viewAll/" + nickName);
 };
 
+// 전체 보기(페이징처리x)
+//     @GetMapping("/note/viewAllNotPage/{nickName}")]
+// export const viewAllNotPage = async (nickName) => {
+//   return await authorize.get("note/viewAllNotPage/" + nickName);
+// };
+
 // 쪽지 1개 보기
 // http://localhost:8080/compagno/note/18
 export const viewOneNote = async (code) => {
