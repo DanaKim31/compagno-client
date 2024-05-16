@@ -39,23 +39,28 @@ const Section5 = () => {
   const adListFilter = () => {
     //카테고리 포인트가 가장 높은 카테고리
     // 1. 가장 높은 점수
+    console.log(points);
     const maxTotalScore = Math.max(...points.map((point) => point.totalScore));
     // 2. 의 요소 가져오기
     const highestScoreCate = points.find(
       (point) => point.totalScore === maxTotalScore
     );
-
+    console.log(maxTotalScore);
     // 두 번째로 큰 요소(가장 큰 요소 제거)리스트
     const exceptHighest = points.filter(
       (point) => point.totalScore !== maxTotalScore
     );
+    console.log(exceptHighest);
     // 그 중에서 다시 가장 큰 값 뽑기
     const secondMaxTotalScore = Math.max(
       ...exceptHighest.map((exception) => exception.totalScore)
     );
+    console.log(secondMaxTotalScore);
+    console.log(points);
     const secondHighestScoreCate = points.find(
       (point) => point.totalScore === secondMaxTotalScore
     );
+    console.log(secondHighestScoreCate);
 
     // 세 번째로 큰 요소(두번째로 큰 요소가 있는 리스트에서 걔만 삭제) 리스트
     const exceptSecondHighest = exceptHighest.filter(
@@ -87,6 +92,7 @@ const Section5 = () => {
       .filter((ad) => ad.productBoardGrade >= 3.5)
       .slice(0, 7);
     // 포인트 두번째로 높음
+    console.log(secondHighestScoreCate);
     const adsCate02 = ads
       .filter(
         (ad) =>
@@ -95,20 +101,21 @@ const Section5 = () => {
       )
       .filter((ad) => ad.productBoardGrade >= 3.5)
       .slice(0, 5);
-    // 포인트 세 번째로 높음
-    const adsCate03 = ads
-      .filter(
-        (ad) =>
-          ad.animalCategory.animalCategoryCode ===
-          thridHighestScoreCate.animalCategory.animalCategoryCode
-      )
-      .filter((ad) => ad.productBoardGrade >= 3.5)
-      .slice(0, 3);
+    // // 포인트 세 번째로 높음
+    // const adsCate03 = ads
+    //   .filter(
+    //     (ad) =>
+    //       ad.animalCategory.animalCategoryCode ===
+    //       thridHighestScoreCate.animalCategory.animalCategoryCode
+    //   )
+    //   .filter((ad) => ad.productBoardGrade >= 3.5)
+    //   .slice(0, 3);
     // console.log(adsCate01);
     // console.log(adsCate02);
     // console.log(adsCate03);
     // 새롭게 뽑힌 배열
-    const filteredArr = [...adsCate01, ...adsCate02, ...adsCate03];
+    // const filteredArr = [...adsCate01, ...adsCate02, ...adsCate03];
+    const filteredArr = [...adsCate01];
     const shuffleArray = (array) => {
       return array.sort(() => Math.random() - 0.5);
     };
@@ -126,12 +133,12 @@ const Section5 = () => {
   useDidMountEffect(() => {
     currentPointAPI();
   }, [ads]);
-  useDidMountEffect(() => {
-    if (Object.keys(ads).length && Object.keys(points).length !== 0) {
-      adListFilter();
-    }
-  }, [points]);
-  //
+  // useDidMountEffect(() => {
+  //   if (Object.keys(ads).length && Object.keys(points).length !== 0) {
+  //     adListFilter();
+  //   }
+  // }, [points]);
+
   return (
     <>
       <section id="section5">
