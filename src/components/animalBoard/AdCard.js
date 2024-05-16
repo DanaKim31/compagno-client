@@ -50,6 +50,7 @@ const Div = styled.div`
       width: 80px;
       height: 80px;
       margin-right: 10px;
+      border-radius: 50%;
     }
   }
   .getDetailBoard {
@@ -59,6 +60,14 @@ const Div = styled.div`
     &:hover {
       color: green;
       cursor: pointer;
+    }
+  }
+  .image-container {
+    img {
+      border-radius: 10px;
+      width: 345px;
+      height: 200px;
+      object-fit: scale-down;
     }
   }
 `;
@@ -120,8 +129,18 @@ const AdCard = ({ adDetail }) => {
         </>
       ) : (
         <>
-          <img src={"http://192.168.10.28:8081/" + ad?.productMainImage} />
-          <br />
+          <div className="image-container">
+            {ad?.productMainImage === null ? (
+              <>미리보기 이미지가 없습니다!</>
+            ) : (
+              <>
+                <img
+                  src={"http://192.168.10.28:8081/" + ad?.productMainImage}
+                />
+              </>
+            )}
+          </div>
+
           <span className="ad-boardSpan">{star(ad?.productBoardGrade)}</span>
           <br />
           <span
