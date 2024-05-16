@@ -56,6 +56,10 @@ import MyPageOneday from "./pages/user/MyPageOneday";
 import MyPageLost from "./pages/user/MyPageLost";
 import MyPageSitter from "./pages/user/MyPageSitter";
 import ClassUpdate from "./pages/onedayClassBoard/ClassUpdate";
+import NoteViewAll from "./components/note/NoteViewAll";
+import NoteViewReceiveBox from "./components/note/NoteViewReceiveBox";
+import NoteViewSendBox from "./components/note/NoteViewSendBox";
+import NoteViewStar from "./components/note/NoteViewStar";
 
 const router = createBrowserRouter([
   {
@@ -78,7 +82,16 @@ const router = createBrowserRouter([
           { path: "myinfo", element: <MyPageMyInfo /> },
           { path: "myanimalfav", element: <MyPageMyActivity /> },
           { path: "myproductfav", element: <MyPageFavProduct /> },
-          { path: "mynote", element: <MyPageMyNote /> },
+          {
+            path: "mynote",
+            // element: <MyPageMyNote />,
+            children: [
+              { index: true, element: <NoteViewAll /> },
+              { path: "viewReceiveBox", element: <NoteViewReceiveBox /> },
+              { path: "viewSendBox", element: <NoteViewSendBox /> },
+              { path: "viewStar", element: <NoteViewStar /> },
+            ],
+          },
           { path: "myqna", element: <MyPageMyQnA /> },
           { path: "myadoption", element: <MyPageAdoption /> },
           { path: "myuserqna", element: <MyPageUserQna /> },

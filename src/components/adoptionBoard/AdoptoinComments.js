@@ -444,7 +444,6 @@ const Comments = () => {
                                 style={{ marginBottom: "0px" }}
                               >
                                 <MyToggleBar name={comment.user.userNickname} />
-                                {/* {comment.user.userNickname} */}
                               </p>
                               {comment.user.userNickname ==
                               adop.userNickname ? (
@@ -571,6 +570,7 @@ const Comments = () => {
                                   width: "100%",
                                 }}
                               >
+                                {/* 건들일부분 시작 */}
                                 <div
                                   id="userWriter"
                                   style={{
@@ -578,30 +578,60 @@ const Comments = () => {
                                     justifyContent: "space-between",
                                   }}
                                 >
+                                  {/* 나눠야 할 part1 */}
                                   <span
                                     id="bottomName"
                                     style={{
                                       fontSize: "0.8rem",
                                       paddingTop: "5px",
+                                      display: "flex",
                                     }}
                                   >
                                     <MyToggleBar
                                       name={bottom.user.userNickname}
                                     />
-                                    {/* {bottom.user.userNickname} */}
+                                    {adop.userId == bottom.user.userId ? (
+                                      // <div
+                                      //   id="bottomWriterBtn"
+                                      //   style={{
+                                      //     display: "flex",
+                                      //     height: "27px",
+                                      //     width: "79%",
+                                      //     justifyContent: "space-between",
+                                      //     paddingTop: "6px",
+                                      //   }}
+                                      // >
+                                      <span
+                                        id="bottomWriter"
+                                        style={{
+                                          marginLeft: "9px",
+                                          border: "1px solid green",
+                                          fontWeight: "bold",
+                                          borderRadius: "30px",
+                                          padding: "3px 5px",
+                                          fontSize: "0.5rem",
+                                        }}
+                                      >
+                                        작성자
+                                      </span>
+                                    ) : (
+                                      // </div>
+                                      <></>
+                                    )}
                                   </span>
                                   {/* 게시글 작성자와 댓글 작성자가 같을 때 -> 작성자 표시 */}
-                                  {adop.userId == bottom.user.userId ? (
-                                    <div
-                                      id="bottomWriterBtn"
-                                      style={{
-                                        display: "flex",
-                                        height: "27px",
-                                        width: "79%",
-                                        justifyContent: "space-between",
-                                        paddingTop: "6px",
-                                      }}
-                                    >
+
+                                  {/* {adop.userId == bottom.user.userId ? (
+                                    // <div
+                                    //   id="bottomWriterBtn"
+                                    //   style={{
+                                    //     display: "flex",
+                                    //     height: "27px",
+                                    //     width: "79%",
+                                    //     justifyContent: "space-between",
+                                    //     paddingTop: "6px",
+                                    //   }}
+                                    // >
                                       <span
                                         id="bottomWriter"
                                         style={{
@@ -616,11 +646,12 @@ const Comments = () => {
                                         작성자
                                       </span>
 
-                                      {/* 수정 버튼을 클릭 안했을 때 */}
-                                    </div>
+                                      
+                                    // </div>
                                   ) : (
                                     <></>
-                                  )}
+                                  )} */}
+
                                   {user.userId == bottom.user.userId &&
                                   edit.adopParentCode !=
                                     comment.adopCommentCode ? (
@@ -702,6 +733,8 @@ const Comments = () => {
                                     </div>
                                   )}
                                 </div>
+                                {/* 건들일 부분 끝 */}
+
                                 {edit.adopCommentCode ==
                                 bottom.adopCommentCode ? (
                                   <div
