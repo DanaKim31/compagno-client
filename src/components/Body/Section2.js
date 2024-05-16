@@ -1,77 +1,79 @@
 import "../../assets/style.css";
 import { useRef, useState, useEffect } from "react";
+
 // 화면 노출 관련 js
 const Section2 = () => {
-  // const [container1, setContainer1] = useState(false);
-  //     변수이름    ,   함수이름        초기값을 false로 처리
-  // const [container2, setContainer2] = useState(false);
-  // const [container3, setContainer3] = useState(false);
-  // const scrollRef = useRef(null);
+  const scrollRef1 = useRef(null);
+  const scrollRef2 = useRef(null);
+  const scrollRef3 = useRef(null);
+  const [container1, setContainer1] = useState(false);
+  const [container2, setContainer2] = useState(false);
+  const [container3, setContainer3] = useState(false);
 
-  // useEffect(() => {
-  //   if (scrollRef.current) {
-  //     window.addEventListener("scroll", scrollEvent);
-  //   } else {
-  //     window.removeEventListener("scroll", scrollEvent);
-  //   }
-  // }, [scrollRef.current]);
+  const handleScroll = () => {
+    // 각각의 요소들의 위치
+    const rect1 = scrollRef1.current.getBoundingClientRect();
+    const rect2 = scrollRef2.current.getBoundingClientRect();
+    const rect3 = scrollRef3.current.getBoundingClientRect();
 
-  // // const rect = getBoundingClientRect();
-  // // const winHeight = window.innerHeight;
-  // // const contentHeight = rect.bottom - rect.top;
+    // 네비게이션 부분을 제외한 높이
+    const winHeight = window.innerHeight;
 
-  // const scrollEvent = () => {
-  //   const scroll = scrollRef.current.getBoundingClientRect();
+    // 각가의 요소들의 높이
+    const contentHeight1 = rect1.bottom - rect1.top; //실제 높이 !! .scroll_on의 부분의 높이값
+    const contentHeight2 = rect2.bottom - rect2.top;
+    const contentHeight3 = rect3.bottom - rect3.top;
 
-  //   setContainer1(scroll);
-  // };
+    if (
+      rect1.top <= winHeight - contentHeight1 &&
+      rect1.bottom >= contentHeight1 // 역역의 위치가 다들어와서 커질때
+    ) {
+      setContainer1(true); // css에 있는 .active의 생각대로 추가하겠다
+    } else {
+      setContainer1(false);
+    }
 
-  // const [Scroll, setSroll] = useState();
-  // const scrollRef = useRef(null);
+    if (
+      rect2.top <= winHeight - contentHeight2 &&
+      rect2.bottom >= contentHeight2
+    ) {
+      setContainer2(true);
+    } else {
+      setContainer2(false);
+    }
 
-  // const Section2 = () => {
-  //   const counters = document.querySelectorAll(".scroll_on");
-  //   const exposurePercentage = 100;
-  //   const loop = true;
+    if (
+      rect3.top <= winHeight - contentHeight3 &&
+      rect3.bottom >= contentHeight3
+    ) {
+      setContainer3(true);
+    } else {
+      setContainer3(false);
+    }
+  };
 
-  //   const handleScroll = () => {
-  //     counters.forEach((counter) => {
-  //       const rect = counter.getBoundingClientRect();
-  //       const winHeight = window.innerHeight;
-  //       const contentHeight = rect.bottom - rect.top;
+  // 직접 접근하기위한 Ref 사용관련
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
 
-  //       if (
-  //         rect.top <= winHeight - (contentHeight * exposurePercentage) / 100 &&
-  //         rect.bottom >= (contentHeight * exposurePercentage) / 100
-  //       ) {
-  //         console.log("active");
-  //         counter.classList.add("active");
-  //       }
-
-  //       if (loop && (rect.bottom <= 0 || rect.top >= winHeight)) {
-  //         counter.classList.remove("active");
-  //         console.log("remove");
-  //       }
-  //     });
-  //   };
-
-  //   document.addEventListener("scroll", handleScroll);
-  //   handleScroll(); // 페이지 로드시 한번 실행
-  // };
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
       <section id="section2">
         <div className="scroll_wrap">
           <div
-          // ref={scrollRef}
-          // className={`scroll_on type_bottom ${container1 ? "active" : ""}`}
+            ref={scrollRef1}
+            className={`scroll_on type_bottom ${container1 ? "active" : ""}`}
           >
             <p>안 녕 하 세 요 꼼 빠 뇨 에 이 전 시 입 니 다</p>
           </div>
           <div
-          // ref={scrollRef}
-          // className={`scroll_on type_bottom ${container2 ? "active" : ""}`}
+            ref={scrollRef2}
+            className={`scroll_on type_bottom ${container2 ? "active" : ""}`}
           >
             <h1>
               저희는 반려동물과 함께하는 즐거움, 특별함의 서비스를 제공하고
@@ -80,8 +82,8 @@ const Section2 = () => {
             </h1>
           </div>
           <div
-          // ref={scrollRef}
-          // className={`scroll_on type_bottom ${container3 ? "active" : ""}`}
+            ref={scrollRef3}
+            className={`scroll_on type_bottom ${container3 ? "active" : ""}`}
           >
             <h4>
               다양한 시스템과 커뮤니티를 통해 우리는 보다 최선의 방법을 통해

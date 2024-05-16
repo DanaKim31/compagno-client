@@ -55,6 +55,7 @@ import MyPageNeighbor from "./pages/user/MyPageNeighbor";
 import MyPageOneday from "./pages/user/MyPageOneday";
 import MyPageLost from "./pages/user/MyPageLost";
 import MyPageSitter from "./pages/user/MyPageSitter";
+import ClassUpdate from "./pages/onedayClassBoard/ClassUpdate";
 
 const router = createBrowserRouter([
   {
@@ -197,6 +198,7 @@ const router = createBrowserRouter([
           { index: true, element: <ClassList /> },
           { path: "create", element: <CreateClass /> },
           { path: "detail/:code", element: <ClassDetail /> },
+          { path: "update/:code", element: <ClassUpdate /> },
         ],
       },
       {
