@@ -1,12 +1,17 @@
 import styled from "styled-components";
-import { getAnimalboardFavList, getAnimalboardFavCount } from "../../api/user";
+import {
+  getAnimalboardFavList,
+  getAnimalboardFavCount,
+  deleteAnimalFav,
+  updateFavCount,
+} from "../../api/user";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
 import moment from "moment";
 import "moment/locale/ko";
+import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
   @font-face {
@@ -19,32 +24,52 @@ const Div = styled.div`
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
 
+  #content-header {
+    padding-bottom: 15px;
+  }
+
   .myPageList {
     thead th {
-      background-color: rgb(85, 96, 143);
       width: 200px;
       height: 50px;
       text-align: left;
       line-height: 50px;
-      color: white;
+      color: black;
+      border-top: 2px solid black;
+      border-bottom: 2px solid black;
     }
 
     tbody {
-      background: linear-gradient(45deg, #49a09d, #5f2c82);
-      color: white;
+      color: black;
       height: 50px;
       text-align: left;
       line-height: 50px;
+      border-bottom: 2px solid black;
 
       a {
-        color: white;
+        color: black;
         text-decoration-line: none;
+      }
+
+      a:hover {
+        color: orange;
+      }
+
+      button {
+        border: none;
+        background-color: transparent;
+        font-weight: bold;
+      }
+      button:hover {
+        color: red;
       }
     }
   }
 `;
 
 const MyPageList = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({});
 
   // 유저정보 가지고 오기
@@ -89,10 +114,26 @@ const MyPageList = () => {
 
     setAnimalBoardFav(favData);
     setAnimalBoardFavCount(countFavData);
+    console.log(favData);
+  };
+
+  // 좋아요 삭제하기
+  const deleteFav = async (id, boardCode, favCode) => {
+    await deleteAnimalFav(id, favCode);
+    await updateFavCount(boardCode);
+
+    const response = await getAnimalboardFavList(user.userId, page);
+    const favData = response.data;
+    setAnimalBoardFav(favData);
+
+    const countResponse = await getAnimalboardFavCount(user.userId);
+    const countFavData = countResponse.data;
+    setAnimalBoardFavCount(countFavData);
   };
 
   return (
     <Div>
+      <h1 id="content-header">자유게시판 좋아요 목록</h1>
       <table className="myPageList">
         <thead>
           <tr>
@@ -100,7 +141,7 @@ const MyPageList = () => {
             <th>글 제목</th>
             <th>글 작성자</th>
             <th>글 작성 날짜</th>
-            <th>얜 뭐넣을까</th>
+            <th>좋아요 삭제</th>
           </tr>
         </thead>
         <tbody>
@@ -121,7 +162,19 @@ const MyPageList = () => {
               <td>
                 {moment(favContent.animalFavoriteDate).format("YYYY-MM-DD")}
               </td>
-              <td>안녕1</td>
+              <td>
+                <button
+                  onClick={() =>
+                    deleteFav(
+                      user.userId,
+                      favContent.animalBoard.animalBoardCode,
+                      favContent.animalFavoriteCode
+                    )
+                  }
+                >
+                  삭제
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

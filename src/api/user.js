@@ -30,11 +30,6 @@ export const loginUser = async (user) => {
   return await instance.post("login", user);
 };
 
-// 내 정보 불러오기
-export const myPageInfo = async (id) => {
-  return await authorize.get("mypage/myinfo/" + id);
-};
-
 // 회원가입시 중복 아이디 체크
 export const checkDupId = async (id) => {
   return await instance.get("signUp/checkid/" + id);
@@ -65,6 +60,18 @@ export const getAnimalboardFavList = async (id, pageNum) => {
 // 내 활동내역 - animalboard 좋아요 갯수 출력
 export const getAnimalboardFavCount = async (id) => {
   return await authorize.get("mypage/myactivity/countanimalfav/" + id);
+};
+
+// 내 활동내역 - animalboard 좋아요 삭제
+export const deleteAnimalFav = async (id, code) => {
+  return await authorize.delete(
+    "mypage/myactivity/deleteanimalfav/" + id + "?code=" + code
+  );
+};
+
+// 내 활동내역 - animalboard 좋아요 카운트 변경
+export const updateFavCount = async (code) => {
+  return await authorize.put("mypage/myactivity/updateanimalfavcount/" + code);
 };
 
 // 내 활동내역 - 북마크한 상품 목록 출력
