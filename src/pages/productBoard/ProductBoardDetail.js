@@ -22,7 +22,7 @@ import MyToggleBar from "../../components/note/MyToggleBar";
 const Main = styled.main`
   width: 1900px;
   padding: 0px 300px;
-  padding-top: 150px;
+  padding-top: 120px;
   height: 100%;
   background-color: rgb(244, 244, 244);
   display: flex;
@@ -39,6 +39,7 @@ const Main = styled.main`
   h2,
   textarea {
     font-weight: bold;
+    resize: none;
   }
 
   @font-face {
@@ -50,8 +51,14 @@ const Main = styled.main`
     font-style: normal;
   }
 
-  textarea {
-    resize: none;
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding-bottom: 10px;
+  }
+  h1:hover {
+    color: mediumblue;
   }
 
   .boardDiv {
@@ -304,7 +311,7 @@ const ProductBoardDetail = () => {
   const { code } = useParams();
   const [productBoard, setProductBoard] = useState([]);
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState([]);
+  const [comment, setComment] = useState("");
   const [replyNo, setReplyNo] = useState(0);
   const [replyContent, setReplyContent] = useState("");
   const [editNo, setEditNo] = useState(0);
@@ -363,9 +370,11 @@ const ProductBoardDetail = () => {
   );
 
   const commentDelete = async (no) => {
-    await delProductBoardcomment(no);
-    viewProductBoard();
-    viewProductBoardComment();
+    if (window.confirm("댓글을 삭제하시겠습니까?")) {
+      await delProductBoardcomment(no);
+      viewProductBoard();
+      viewProductBoardComment();
+    }
   };
 
   const addComment = async () => {
@@ -377,12 +386,15 @@ const ProductBoardDetail = () => {
       alert("내용을 입력해주세요.");
       return false;
     }
-    await addProductBoardComment({
-      productBoardCode: code,
-      productCommentContent: comment,
-    });
-    viewProductBoard();
-    viewProductBoardComment();
+    if (window.confirm("댓글을 작성하시겠습니까?")) {
+      await addProductBoardComment({
+        productBoardCode: code,
+        productCommentContent: comment,
+      });
+      viewProductBoard();
+      viewProductBoardComment();
+      alert("댓글이 등록되었습니다.");
+    }
   };
 
   const addReply = async () => {
@@ -394,15 +406,18 @@ const ProductBoardDetail = () => {
       alert("내용을 입력해주세요.");
       return false;
     }
-    await addProductBoardComment({
-      productBoardCode: code,
-      productParentCode: replyNo,
-      productCommentContent: replyContent,
-    });
-    setReplyNo(0);
-    setReplyContent("");
-    viewProductBoard();
-    viewProductBoardComment();
+    if (window.confirm("댓글을 작성하시겠습니까?")) {
+      await addProductBoardComment({
+        productBoardCode: code,
+        productParentCode: replyNo,
+        productCommentContent: replyContent,
+      });
+      setReplyNo(0);
+      setReplyContent("");
+      viewProductBoard();
+      viewProductBoardComment();
+      alert("댓글이 등록되었습니다.");
+    }
   };
 
   const editComment = async () => {
@@ -410,18 +425,24 @@ const ProductBoardDetail = () => {
       alert("내용을 입력해주세요.");
       return false;
     }
-    await editProductBoardComment({
-      productCommentCode: editNo,
-      productCommentContent: editContent,
-    });
-    setReplyContent("");
-    setEditNo(0);
-    viewProductBoardComment();
+    if (window.confirm("수정 하시겠습니까?")) {
+      await editProductBoardComment({
+        productCommentCode: editNo,
+        productCommentContent: editContent,
+      });
+      setReplyContent("");
+      setEditNo(0);
+      viewProductBoardComment();
+      alert("댓글이 수정되었습니다.");
+    }
   };
 
   const removeProductBoard = async () => {
-    await delProductBoard(code);
-    navigate("/compagno/product-board");
+    if (window.confirm("게시물을 삭제 하시겠습니까?")) {
+      await delProductBoard(code);
+      navigate("/compagno/product-board");
+      window.alert("게시물이 삭제되었습니다.");
+    }
   };
 
   const editProductBoard = () => {
@@ -431,6 +452,9 @@ const ProductBoardDetail = () => {
   return (
     <Main>
       <div className="boardDiv">
+        <h1 onClick={() => navigate("/compagno/product-board")}>
+          제품 정보 공유 게시판
+        </h1>
         <div className="boardTitle">{productBoard.productBoardTitle} </div>
         <div className="boardUserInfo">
           {productBoard.user?.userImg !== undefined && (
@@ -570,6 +594,7 @@ const ProductBoardDetail = () => {
                           onClick={(e) => {
                             e.stopPropagation();
                             setEditNo(comment.productCommentCode);
+                            setEditContent(comment.productCommentContent);
                             setReplyNo("");
                           }}
                         >
@@ -698,6 +723,7 @@ const ProductBoardDetail = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setEditNo(reply.productCommentCode);
+                                setEditContent(reply.productCommentContent);
                                 setReplyNo("");
                               }}
                             >
@@ -843,6 +869,7 @@ const ProductBoardDetail = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setEditNo(reply.productCommentCode);
+                                setEditContent(reply.productCommentContent);
                                 setReplyNo("");
                               }}
                             >

@@ -272,34 +272,37 @@ const UpdateProductBoard = () => {
       return false;
     }
 
-    const formData = new FormData();
-    formData.append("productBoardCode", code);
-    formData.append("productBoardTitle", title);
-    formData.append("productName", productName);
-    formData.append("productPrice", price);
-    formData.append("productBoardGrade", grade);
-    formData.append("productBoardContent", content);
-    formData.append("animalCategoryCode", animal);
-    formData.append("productCategory", productCategory);
-    formData.append("userId", user.userId);
-    if (mainImgSrc === "http://192.168.10.28:8081/" + prevMainImg) {
-      formData.append("mainImage", prevMainImg);
+    if (window.confirm("게시물을 수정하시겠습니까?")) {
+      const formData = new FormData();
+      formData.append("productBoardCode", code);
+      formData.append("productBoardTitle", title);
+      formData.append("productName", productName);
+      formData.append("productPrice", price);
+      formData.append("productBoardGrade", grade);
+      formData.append("productBoardContent", content);
+      formData.append("animalCategoryCode", animal);
+      formData.append("productCategory", productCategory);
+      formData.append("userId", user.userId);
+      if (mainImgSrc === "http://192.168.10.28:8081/" + prevMainImg) {
+        formData.append("mainImage", prevMainImg);
+      }
+
+      if (productMainFile instanceof File) {
+        formData.append("productMainFile", productMainFile);
+      }
+
+      files.forEach((file, index) => {
+        formData.append(`files[${index}]`, file);
+      });
+
+      prevImgSrc.forEach((image, index) => {
+        formData.append(`images[${index}]`, image.productImage);
+      });
+
+      await editProductBoard(formData);
+      navigate("/compagno/product-board");
+      window.alert("게시물이 수정되었습니다. ");
     }
-
-    if (productMainFile instanceof File) {
-      formData.append("productMainFile", productMainFile);
-    }
-
-    files.forEach((file, index) => {
-      formData.append(`files[${index}]`, file);
-    });
-
-    prevImgSrc.forEach((image, index) => {
-      formData.append(`images[${index}]`, image.productImage);
-    });
-
-    await editProductBoard(formData);
-    navigate("/compagno/product-board");
   };
 
   const viewProductBoard = async () => {
@@ -796,10 +799,10 @@ const UpdateProductBoard = () => {
         </Button>
         <Button
           className="writeCancle"
-          onClick={() => navigate("/compagno/product-board")}
+          onClick={() => navigate("/compagno/product-board/" + code)}
           variant="secondary"
         >
-          메인으로
+          취소
         </Button>
       </div>
     </Main>

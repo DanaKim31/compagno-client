@@ -302,6 +302,7 @@ const ViewAllProductBoard = () => {
 
   useEffect(() => {
     getProductBoards();
+    paging();
   }, [page]);
 
   // totalPage가 바뀔 때 마다 실행
@@ -427,18 +428,24 @@ const ViewAllProductBoard = () => {
           size="sm"
           type="Number"
           placeholder="최소 금액"
-          onChange={(e) =>
-            setFilter((prev) => ({ ...prev, minPrice: e.target.value.trim() }))
-          }
+          onChange={(e) => {
+            if (e.target.value.length > 9) {
+              e.target.value = e.target.value.slice(0, 9);
+            }
+            setFilter((prev) => ({ ...prev, minPrice: e.target.value.trim() }));
+          }}
         />
         -
         <Form.Control
           size="sm"
           type="Number"
           placeholder="최대 금액"
-          onChange={(e) =>
-            setFilter((prev) => ({ ...prev, maxPrice: e.target.value.trim() }))
-          }
+          onChange={(e) => {
+            if (e.target.value.length > 9) {
+              e.target.value = e.target.value.slice(0, 9);
+            }
+            setFilter((prev) => ({ ...prev, maxPrice: e.target.value.trim() }));
+          }}
           style={{ marginRight: "20px" }}
         />
         <div className="gradeDiv">
@@ -736,6 +743,7 @@ const ViewAllProductBoard = () => {
                   float: "right",
                   height: "25px",
                 }}
+                onClick={(e) => e.stopPropagation()}
               >
                 <img
                   className="userImage"
@@ -791,11 +799,15 @@ const ViewAllProductBoard = () => {
         ))}
       </div>
       <nav className="paging">
-        <FaAnglesLeft onClick={() => setPage(1)} />
-        {/* 가장 첫 페이지로 */}
-        <FaAngleLeft
-          onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
-        />
+        {prev && (
+          <FaAnglesLeft onClick={() => setPage(Math.ceil(page / 5) * 5 - 9)} />
+          /* 가장 첫 페이지로 */
+        )}
+        {page !== 1 && (
+          <FaAngleLeft
+            onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
+          />
+        )}
         {pages.map(
           (
             num,
@@ -806,19 +818,23 @@ const ViewAllProductBoard = () => {
               key={index}
               value={num}
               onClick={(e) => setPage(Number(e.target.value))}
+              // style={num === page && { color: "#78e150" }}
             >
               {num}
             </button>
           )
         )}
-
-        <FaAngleRight
-          onClick={
-            () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
-          }
-        />
-        <FaAnglesRight onClick={() => setPage(totalPage)} />
-        {/* 가장 마지막 페이지로 */}
+        {page !== totalPage && (
+          <FaAngleRight
+            onClick={
+              () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
+            }
+          />
+        )}
+        {next && (
+          <FaAnglesRight onClick={() => setPage(Math.ceil(page / 5) * 5 + 1)} />
+          /* 가장 마지막 페이지로 */
+        )}
       </nav>
     </StyledProductBoard>
   );

@@ -235,7 +235,7 @@ const CreateProductBoard = () => {
   const imageCreate = (e) => {
     const images = Array.from(e.target.files);
     if (images.length > 4) {
-      alert("이미지는 최대 4장 까지 등록 가능합니다");
+      alert("이미지는 최대 4장 까지 등록 가능합니다.");
       e.target.value = "";
       setFiles([]);
       setImgSrc([]);
@@ -277,51 +277,54 @@ const CreateProductBoard = () => {
 
   const createBoard = async () => {
     if (title === "") {
-      alert("제목을 입력해주세요");
+      alert("제목을 입력해주세요.");
       return false;
     } else if (productName == "") {
-      alert("제품명을 입력해주세요");
+      alert("제품명을 입력해주세요.");
       return false;
     } else if (productCategory == "") {
-      alert("제품 분류를 입력해주세요");
+      alert("제품 분류를 입력해주세요.");
       return false;
     } else if (animal == "") {
-      alert("사용 동물을 선택해주세요");
+      alert("사용 동물을 선택해주세요.");
       return false;
     } else if (price == "") {
-      alert("가격을 입력해주세요");
+      alert("가격을 입력해주세요.");
       return false;
     } else if (grade == "") {
-      alert("평점을 입력해주세요");
+      alert("평점을 입력해주세요.");
       return false;
     } else if (content == "") {
-      alert("내용을 입력해주세요");
+      alert("내용을 입력해주세요.");
       return false;
     } else if (files.length !== 0 && JSON.stringify(productMainFile) === "{}") {
-      alert("썸네일로 사용할 이미지를 선택해주세요");
+      alert("썸네일로 사용할 이미지를 선택해주세요.");
       return false;
     }
-    const formData = new FormData();
-    formData.append("productBoardTitle", title);
-    formData.append("productName", productName);
-    formData.append("productPrice", price);
-    formData.append("productBoardGrade", grade);
-    formData.append("productBoardContent", content);
-    formData.append("animalCategoryCode", animal);
-    formData.append("productCategory", productCategory);
-    formData.append("userId", user.userId);
+    if (window.confirm("게시물을 등록하시겠습니까?")) {
+      const formData = new FormData();
+      formData.append("productBoardTitle", title);
+      formData.append("productName", productName);
+      formData.append("productPrice", price);
+      formData.append("productBoardGrade", grade);
+      formData.append("productBoardContent", content);
+      formData.append("animalCategoryCode", animal);
+      formData.append("productCategory", productCategory);
+      formData.append("userId", user.userId);
 
-    if (productMainFile instanceof File) {
-      formData.append("productMainFile", productMainFile);
+      if (productMainFile instanceof File) {
+        formData.append("productMainFile", productMainFile);
+      }
+
+      files.forEach((file, index) => {
+        formData.append(`files[${index}]`, file);
+      });
+
+      await addProductBoard(formData);
+
+      navigate("/compagno/product-board");
+      window.alert("게시물이 등록되었습니다. ");
     }
-
-    files.forEach((file, index) => {
-      formData.append(`files[${index}]`, file);
-    });
-
-    await addProductBoard(formData);
-
-    navigate("/compagno/product-board");
   };
 
   useEffect(() => {
