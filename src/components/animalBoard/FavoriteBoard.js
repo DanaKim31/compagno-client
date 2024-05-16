@@ -6,6 +6,7 @@ import {
   checkFavorite,
   delFavorite,
 } from "../../api/animalBoard";
+import { AdLogic } from "../../api/AdLogic";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -29,7 +30,7 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
       userId: userId,
     });
     setBoolean(response.data);
-    console.log(response.data);
+    // console.log(response.data);
   };
   // 좋아요
   const addFav = async () => {
@@ -43,6 +44,7 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
 
     // setNewCount((prev) => prev + 1);
   };
+  const [likeThisCate, setLikeThisCate] = useState(null);
   // 좋아요 시 count +1
   const addCount = async () => {
     // setCountBoolean(true); // 좋아요 수 +1
@@ -50,6 +52,7 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
       animalBoardCode: boardCode,
       checkBoolean: true,
     });
+    setLikeThisCate(true);
     animalBoardAPI();
   };
   // 좋아요 취소
@@ -61,6 +64,7 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
         animalBoardCode: boardCode,
         userId: userId,
       });
+      setLikeThisCate(false);
       subtCount();
       currentFavStateAPI();
     }
@@ -75,10 +79,19 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
     });
     animalBoardAPI();
   };
+  //========================================
+  // 카테고리 포인트 증감
+  // useEffect(() => {
+  //   AdLogic(userId, boardCode, likeThisCate);
+  //   // 보내는값 : userId, animalBoardCode, 좋아요여부boolean
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [likeThisCate]);
+  //========================================
   useEffect(() => {
     // console.log(newCount);
     // console.log(count);
     currentFavStateAPI();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boolean]);
   return (
     <Div>

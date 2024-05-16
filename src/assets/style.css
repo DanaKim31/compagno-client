@@ -700,8 +700,7 @@ span img {
   top: 90px;
 }
 
-.marquee div {
-  display: block;
+.marquee > div {
   width: 377%;
   height: 35vh;
   position: absolute;
@@ -709,7 +708,8 @@ span img {
   animation: marquee 12s linear infinite;
 }
 
-.marquee span {
+.marquee > div > div,
+.marquee > div > span {
   float: left;
 }
 
