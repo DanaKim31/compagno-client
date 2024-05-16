@@ -24,6 +24,11 @@ export const createAdopBoard = async (data) => {
   return await authorize.post("adoptionBoard", data);
 };
 
+// 조회수 추가
+export const viewCountAdopBoard = async (code) => {
+  return await instance.put("adopBoard/viewCount?adopBoardCode=" + code);
+};
+
 // 전체 보기
 export const viewAllAdopBoard = async (page) => {
   return await instance.get("adoptionBoard?page=" + page);

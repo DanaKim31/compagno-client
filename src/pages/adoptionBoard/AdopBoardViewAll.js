@@ -1,4 +1,4 @@
-import { viewAllAdopBoard } from "../../api/adoptionBoard";
+import { viewAllAdopBoard, viewCountAdopBoard } from "../../api/adoptionBoard";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -146,8 +146,10 @@ const Div = styled.div`
     margin-top: 40px;
 
     .contentDetail {
-      border: 1px solid black;
-      border-radius: 10px;
+      /* border: 1px solid black; */
+      /* border-radius: 10px; */
+      border-top: 1px dashed green;
+      border-bottom: 1px dashed green;
       #animalKind {
         display: flex;
         justify-content: center;
@@ -165,10 +167,10 @@ const Div = styled.div`
         }
       }
       #regiDate {
-        display: flex;
-        justify-content: right;
+        /* display: flex; */
+        /* justify-content: right; */
+        margin-top: 10px;
         span {
-          border-bottom: 0.5px dashed black;
           padding-top: 5px;
           margin-right: 10px;
         }
@@ -177,11 +179,14 @@ const Div = styled.div`
         padding-left: 10px;
         margin-top: 15px;
         margin-bottom: 15px;
+        border-top: 1px dashed black;
+        padding-top: 10px;
       }
     }
   }
   .contentDetail:hover {
     background-color: #e9efeb;
+    cursor: pointer;
   }
   .paging {
     margin-bottom: 30px;
@@ -191,6 +196,10 @@ const Div = styled.div`
       width: 30px;
       height: 30px;
       font-weight: bold;
+      background-color: #cbd6ce;
+    }
+    .iconPaging {
+      cursor: pointer;
     }
   }
 `;
@@ -272,7 +281,8 @@ const ViewAllAdopBoard = () => {
     }
   };
 
-  const view = (code) => {
+  const view = async (code) => {
+    await viewCountAdopBoard(code);
     navigate("/compagno/adoptionBoard/view/" + code);
   };
 
@@ -349,6 +359,8 @@ const ViewAllAdopBoard = () => {
           <select onChange={(e) => setSort(e.target.value)}>
             <option value="0">작성일 최신순</option>
             <option value="1">작성일 오래된순</option>
+            <option value="2">조회수 낮은순</option>
+            <option value="3">조회수 높은순</option>
           </select>
         </div>
       </div>
@@ -374,9 +386,23 @@ const ViewAllAdopBoard = () => {
                   )}
                 />
               </div>
-              <div id="regiDate">
-                <span>{moment(adop.adopRegiDate).format("YY-MM-DD")}</span>
+
+              <div
+                className="topContents"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <div
+                  id="viewCount"
+                  style={{ display: "flex", marginTop: "10px" }}
+                >
+                  <span>조회수</span>&nbsp;
+                  <span>{adop.adopViewCount}</span>
+                </div>
+                <div id="regiDate">
+                  <span>{moment(adop.adopRegiDate).format("YY-MM-DD")}</span>
+                </div>
               </div>
+
               <div className="contents">
                 신고자 닉네임 : {adop.userNickname}
                 <br />

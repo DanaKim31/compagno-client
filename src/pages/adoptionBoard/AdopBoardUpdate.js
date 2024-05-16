@@ -151,7 +151,7 @@ const Div = styled.div`
         border: none;
         background-color: #94b29b;
         font-weight: bold;
-        font-size: 1.3rem;
+        font-size: 1rem;
         margin: 0px 10px;
         &:hover {
           background-color: white;
@@ -384,14 +384,6 @@ const UpdateAdopBoard = () => {
     setExistImages(imagesss);
   };
 
-  // 기존 사진 클릭 삭제
-  // const delImg = (i) => {
-  //   const existImages = images.filter((element) => element !== images[i]);
-  //   setImages(existImages);
-  //   const existImgSrc = imgSrc.filter((image) => image !== imgSrc[i]);
-  //   setImgSrc(existImgSrc);
-  // };
-
   // 수정 취소
   const delUpdate = () => {
     navigate("/compagno/adoptionBoard/view/" + code);
@@ -574,9 +566,14 @@ const UpdateAdopBoard = () => {
                         <img
                           alt=""
                           key={image.adopImageCode}
+                          // src={image.adopImage?.replace(
+                          //   "C:",
+                          //   "http://localhost:8081"
+                          // )}
+
                           src={image.adopImage?.replace(
-                            "C:",
-                            "http://localhost:8081"
+                            "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
+                            "http://192.168.10.28:8081/adoptionBoard/"
                           )}
                           onClick={() => deleteImage(image.adopImageCode)}
                         />

@@ -2,13 +2,13 @@ import {
   viewAllNote,
   starSenderUpdate,
   starReceiverUpdate,
-  viewAllNotPage,
 } from "../../api/note";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import "moment/locale/ko";
+import { useNavigate } from "react-router-dom";
 
 import { BsEnvelopePaper } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
@@ -82,8 +82,7 @@ const ModalNoteWrite = styled.div`
   z-index: 100;
   transform: translate(-50%, -50%);
 `;
-
-const NoteViewAll = () => {
+const NoteViewStar = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   // 유저정보 가지고 오기
@@ -109,7 +108,7 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-  const [num, setNum] = useState(0);
+
   const notesAPI = async () => {
     let response = await viewAllNote(
       user.userNickname +
@@ -125,39 +124,11 @@ const NoteViewAll = () => {
         noteRegiDate
     );
     setNotes(response.data.content);
+    console.log(response.data);
     setAllCount(response.data.totalElements);
     setTotalPage(response.data.totalPages);
-
-    // for (let i = 0; i < response.data.content.length; i++) {
-    //   console.log(i);
-    //   console.log(response.data.content[i].deletedBySender);
-    //   if (
-    //     response.data.content[i].deletedBySender == true ||
-    //     response.data.content[i].deletedByReceiver == true
-    //   ) {
-    //     setNum(num + 1);
-    //   }
-    // }
   };
 
-  // const numAPI = async () => {
-  //   let response = await viewAllNotPage(user.userNickname);
-  //   console.log(response.data);
-  //   for (let i = 0; i < response.data.content.length; i++) {
-  //     console.log(i);
-  //     console.log(response.data.content[i].deletedBySender);
-  //     if (
-  //       response.data.content[i].deletedBySender == true ||
-  //       response.data.content[i].deletedByReceiver == true
-  //     ) {
-  //       setNum(num + 1);
-  //     }
-  //   }
-  // };
-  // console.log(num);
-  // useEffect(() => {
-  //   numAPI();
-  // }, []);
   let lastPage = 0;
   let firstPage = 0;
   let pageList = [];
@@ -184,11 +155,18 @@ const NoteViewAll = () => {
   }, [totalPage]);
 
   //1개 보기
+  const navigate = useNavigate();
   const [code, setCode] = useState(0);
   const [openDetail, setOpenDetail] = useState(false);
   const onDetail = (e) => {
     setCode(e);
     setOpenDetail(true);
+  };
+
+  // 답장
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const sendNote = () => {
+    setModalIsOpen(!modalIsOpen);
   };
 
   // 중요 표시
@@ -203,7 +181,6 @@ const NoteViewAll = () => {
     window.location.reload();
     starReceiverUpdate(code);
   };
-
   return (
     <>
       {!openDetail ? (
@@ -309,8 +286,8 @@ const NoteViewAll = () => {
                 alignItems: "center",
               }}
             >
-              <BsEnvelopePaper />
-              <span style={{ marginLeft: "10px" }}>총 {allCount - num}개</span>
+              {/* <BsEnvelopePaper />
+              <span style={{ marginLeft: "10px" }}>총 {allCount}개</span> */}
             </div>
             <table style={{ width: "100%", height: "60%" }}>
               <thead
@@ -329,31 +306,39 @@ const NoteViewAll = () => {
               <tbody>
                 {notes.map((note) => (
                   <tr key={note.noteCode}>
-                    {(note.deletedBySender == 1 &&
-                      note.sender == user.userNickname) ||
-                    (note.deletedByReceiver == 1 &&
-                      note.receiver == user.userNickname) ? (
-                      <></>
-                    ) : (
+                    {(note.deletedBySender == 0 &&
+                      note.sender == user.userNickname &&
+                      note.starSender == 1) ||
+                    (note.deletedByReceiver == 0 &&
+                      note.receiver == user.userNickname &&
+                      note.starReceiver == 1) ? (
                       <>
                         <td>
                           {/* 보낸 이 일 때 */}
                           {note.sender == user.userNickname ? (
                             <>
-                              {note.starSender == 1 ? (
-                                <FaStar
-                                  onClick={() => starSenderCheck(note.noteCode)}
-                                  style={{
-                                    color: "yellow",
-                                    cursor: "pointer",
-                                  }}
-                                />
-                              ) : (
-                                <FaRegStar
-                                  onClick={() => starSenderCheck(note.noteCode)}
-                                  style={{ cursor: "pointer" }}
-                                />
-                              )}
+                              {
+                                // star == true &&
+                                // starCode == note.noteCode &&
+                                note.starSender == 1 ? (
+                                  <FaStar
+                                    onClick={() =>
+                                      starSenderCheck(note.noteCode)
+                                    }
+                                    style={{
+                                      color: "yellow",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                ) : (
+                                  <FaRegStar
+                                    onClick={() =>
+                                      starSenderCheck(note.noteCode)
+                                    }
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                )
+                              }
                             </>
                           ) : (
                             //  받는 이 일 때
@@ -408,6 +393,8 @@ const NoteViewAll = () => {
                           )}
                         </td>
                       </>
+                    ) : (
+                      <></>
                     )}
                   </tr>
                 ))}
@@ -472,4 +459,4 @@ const NoteViewAll = () => {
     </>
   );
 };
-export default NoteViewAll;
+export default NoteViewStar;

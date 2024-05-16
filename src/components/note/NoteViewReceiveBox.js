@@ -1,15 +1,9 @@
-import {
-  viewAllNote,
-  starSenderUpdate,
-  starReceiverUpdate,
-  viewAllNotPage,
-} from "../../api/note";
-import { useState, useEffect } from "react";
-import styled from "styled-components";
+import { receivBox, starReceiverUpdate } from "../../api/note";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import "moment/locale/ko";
-
+import NoteViewDetail from "./NoteViewDetail";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
 import {
@@ -18,10 +12,36 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
-import NoteViewDetail from "./NoteViewDetail";
-import { FaRegFileLines } from "react-icons/fa6";
+import styled from "styled-components";
 import { FaStar, FaRegStar } from "react-icons/fa";
-
+import { FaRegFileLines } from "react-icons/fa6";
+const ModalContariner = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  border: 1px solid black;
+  width: 100%;
+  font-weight: bold;
+  /* height: 300px; */
+  height: 80%;
+`;
+const ModalNoteWrite = styled.div`
+  position: fixed;
+  left: 50%;
+  width: 40%;
+  top: 50%;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0 0 9999px;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+`;
 const Div = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
@@ -31,7 +51,6 @@ const Div = styled.div`
     font-style: normal;
   }
   font-family: "TAEBAEKmilkyway";
-  /* border: 1px solid black; */
   width: 100%;
   height: 100%;
   font-weight: bold;
@@ -54,39 +73,9 @@ const Div = styled.div`
     background-color: #cbd6ce;
   }
 `;
-const ModalContariner = styled.div`
-  @font-face {
-    font-family: "TAEBAEKmilkyway";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
-      format("woff2");
-    font-weight: normal;
-    font-style: normal;
-  }
-  font-family: "TAEBAEKmilkyway";
-  border: 1px solid black;
-  width: 100%;
-  font-weight: bold;
-  /* height: 300px; */
-  height: 80%;
-`;
-
-const ModalNoteWrite = styled.div`
-  position: fixed;
-  left: 50%;
-  width: 40%;
-  top: 50%;
-  background-color: white;
-  border: 2px solid black;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.3) 0 0 0 9999px;
-  z-index: 100;
-  transform: translate(-50%, -50%);
-`;
-
-const NoteViewAll = () => {
+const NoteViewReceiveBox = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
-  // 유저정보 가지고 오기
   const info = useSelector((state) => {
     return state.user;
   });
@@ -100,7 +89,6 @@ const NoteViewAll = () => {
 
   // 검색
   const [sender, setSender] = useState("");
-  const [receiver, setReceiver] = useState("");
   const [noteTitle, setNoteTitle] = useState("");
   const [noteRegiDate, setNoteRegiDate] = useState("");
 
@@ -109,16 +97,14 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-  const [num, setNum] = useState(0);
+
   const notesAPI = async () => {
-    let response = await viewAllNote(
+    let response = await receivBox(
       user.userNickname +
         "?page=" +
         page +
         "&sender=" +
         sender +
-        "&receiver=" +
-        receiver +
         "&noteTitle=" +
         noteTitle +
         "&noteRegiDate=" +
@@ -127,44 +113,11 @@ const NoteViewAll = () => {
     setNotes(response.data.content);
     setAllCount(response.data.totalElements);
     setTotalPage(response.data.totalPages);
-
-    // for (let i = 0; i < response.data.content.length; i++) {
-    //   console.log(i);
-    //   console.log(response.data.content[i].deletedBySender);
-    //   if (
-    //     response.data.content[i].deletedBySender == true ||
-    //     response.data.content[i].deletedByReceiver == true
-    //   ) {
-    //     setNum(num + 1);
-    //   }
-    // }
   };
 
-  // const numAPI = async () => {
-  //   let response = await viewAllNotPage(user.userNickname);
-  //   console.log(response.data);
-  //   for (let i = 0; i < response.data.content.length; i++) {
-  //     console.log(i);
-  //     console.log(response.data.content[i].deletedBySender);
-  //     if (
-  //       response.data.content[i].deletedBySender == true ||
-  //       response.data.content[i].deletedByReceiver == true
-  //     ) {
-  //       setNum(num + 1);
-  //     }
-  //   }
-  // };
-  // console.log(num);
-  // useEffect(() => {
-  //   numAPI();
-  // }, []);
   let lastPage = 0;
   let firstPage = 0;
   let pageList = [];
-
-  useEffect(() => {
-    notesAPI();
-  }, []);
 
   useEffect(() => {
     notesAPI();
@@ -191,11 +144,10 @@ const NoteViewAll = () => {
     setOpenDetail(true);
   };
 
-  // 중요 표시
-  // sender
-  const starSenderCheck = (code) => {
-    window.location.reload();
-    starSenderUpdate(code);
+  // 답장
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const sendNote = () => {
+    setModalIsOpen(!modalIsOpen);
   };
 
   // receiver
@@ -216,22 +168,19 @@ const NoteViewAll = () => {
                 display: "flex",
                 justifyContent: "center",
                 flexDirection: "column",
+
                 borderRadius: "20px",
                 paddingBottom: "20px",
+                paddingTop: "30px",
               }}
             >
               <div
-                id="searchPerson"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  width: "100%",
-                  paddingTop: "20px",
-                }}
+                id="searchItems"
+                style={{ display: "flex", justifyContent: "space-evenly" }}
               >
                 <div id="searchSender">
                   <label>
-                    보내는 사람
+                    보낸 사람
                     <input
                       type="text"
                       onChange={(e) => setSender(e.target.value)}
@@ -239,27 +188,6 @@ const NoteViewAll = () => {
                     />
                   </label>
                 </div>
-                <div id="searchReceiver">
-                  <label>
-                    받는 사람
-                    <input
-                      type="text"
-                      onChange={(e) => setReceiver(e.target.value)}
-                      style={{ marginLeft: "15px" }}
-                    />
-                  </label>
-                </div>
-              </div>
-
-              <div
-                id="searchTitleDate"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  width: "100%",
-                  paddingTop: "20px",
-                }}
-              >
                 <div id="searchTitle">
                   <label>
                     제목
@@ -273,7 +201,7 @@ const NoteViewAll = () => {
 
                 <div id="searchNoteRegiDate">
                   <label>
-                    날짜
+                    받은 날짜
                     <input
                       type="date"
                       max={moment().format("YYYY-MM-DD")}
@@ -310,76 +238,43 @@ const NoteViewAll = () => {
               }}
             >
               <BsEnvelopePaper />
-              <span style={{ marginLeft: "10px" }}>총 {allCount - num}개</span>
+              <span style={{ marginLeft: "10px" }}>총 {allCount}개</span>
             </div>
+
             <table style={{ width: "100%", height: "60%" }}>
               <thead
                 style={{ height: "30px", borderBottom: "1px dashed black" }}
               >
                 <tr>
                   <th>중요</th>
-                  <th>보내는 사람</th>
+                  <th>보낸 사람</th>
                   <th>제목</th>
                   <th>내용</th>
-                  <th>받는 사람</th>
-                  <th>날짜</th>
+                  <th>받은 날짜</th>
                   <th>첨부파일 유무</th>
                 </tr>
               </thead>
               <tbody>
                 {notes.map((note) => (
                   <tr key={note.noteCode}>
-                    {(note.deletedBySender == 1 &&
-                      note.sender == user.userNickname) ||
-                    (note.deletedByReceiver == 1 &&
-                      note.receiver == user.userNickname) ? (
-                      <></>
-                    ) : (
+                    {note.deletedByReceiver == 0 ? (
                       <>
                         <td>
-                          {/* 보낸 이 일 때 */}
-                          {note.sender == user.userNickname ? (
-                            <>
-                              {note.starSender == 1 ? (
-                                <FaStar
-                                  onClick={() => starSenderCheck(note.noteCode)}
-                                  style={{
-                                    color: "yellow",
-                                    cursor: "pointer",
-                                  }}
-                                />
-                              ) : (
-                                <FaRegStar
-                                  onClick={() => starSenderCheck(note.noteCode)}
-                                  style={{ cursor: "pointer" }}
-                                />
-                              )}
-                            </>
+                          {note.starReceiver == 1 ? (
+                            <FaStar
+                              onClick={() => starReceiverCheck(note.noteCode)}
+                              style={{
+                                color: "yellow",
+                                cursor: "pointer",
+                              }}
+                            />
                           ) : (
-                            //  받는 이 일 때
-                            <>
-                              {note.starReceiver == 1 ? (
-                                <FaStar
-                                  onClick={() =>
-                                    starReceiverCheck(note.noteCode)
-                                  }
-                                  style={{
-                                    color: "yellow",
-                                    cursor: "pointer",
-                                  }}
-                                />
-                              ) : (
-                                <FaRegStar
-                                  onClick={() =>
-                                    starReceiverCheck(note.noteCode)
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                />
-                              )}
-                            </>
+                            <FaRegStar
+                              onClick={() => starReceiverCheck(note.noteCode)}
+                              style={{ cursor: "pointer" }}
+                            />
                           )}
                         </td>
-
                         <td>{note.sender}</td>
                         <td
                           onClick={() => onDetail(note.noteCode)}
@@ -393,7 +288,6 @@ const NoteViewAll = () => {
                         >
                           {note.noteContent}
                         </td>
-                        <td>{note.receiver}</td>
                         <td>
                           {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
                         </td>
@@ -408,6 +302,8 @@ const NoteViewAll = () => {
                           )}
                         </td>
                       </>
+                    ) : (
+                      <></>
                     )}
                   </tr>
                 ))}
@@ -472,4 +368,4 @@ const NoteViewAll = () => {
     </>
   );
 };
-export default NoteViewAll;
+export default NoteViewReceiveBox;

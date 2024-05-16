@@ -7,6 +7,7 @@ import moment from "moment";
 import "moment/locale/ko";
 import { useNavigate } from "react-router-dom";
 import { FaRegPaperPlane } from "react-icons/fa6";
+import MyPageMyNote from "../../pages/user/MyPageMyNote";
 
 const Div = styled.div`
   @font-face {
@@ -18,21 +19,26 @@ const Div = styled.div`
   }
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
-  border: 1px solid black;
   width: 100%;
+  height: 100%;
+
   .notePerson {
     display: flex;
     justify-content: space-around;
     padding-top: 20px;
     border-bottom: 1px dashed green;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
     input {
       margin-left: 20px;
     }
   }
+  #okCreate {
+    border: 1px solid #94b29b;
+    background-color: white;
+  }
 `;
 
-const NoteCreate = () => {
+const NoteCreate = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => {
@@ -75,75 +81,128 @@ const NoteCreate = () => {
     formData.append("noteTitle", noteTitle);
     formData.append("noteContent", noteContent);
     formData.append("sender", user.userNickname);
-    formData.append("receiver", receiver);
+    formData.append("receiver", props.nickName);
     formData.append("noteRegiDate", noteRegiDate);
     files.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
 
-    if (receiver == "" || noteTitle == "") {
-      alert("보내는 이와 제목을 필수 작성입니다.");
+    if (noteTitle == "") {
+      alert("제목은 필수입니다.");
     } else {
       createNote(formData);
-      navigate("/compagno/mypage/myactivity");
+      // navigate("/compagno/mypage/mynote");
+      window.location.reload();
     }
   };
 
   // 전송 취소
   const delCreate = () => {
-    navigate("/compagno/mypage/myactivity");
+    window.location.reload();
   };
+
   return (
     <Div className="noteCreate">
-      <FaRegPaperPlane style={{ fontSize: "2.3rem", marginTop: "30px" }} />
-      <div className="notePerson">
+      <FaRegPaperPlane
+        style={{ fontSize: "2.5rem", marginTop: "30px", marginLeft: "25px" }}
+      />
+      <div className="notePerson" style={{ margin: "5px 20px" }}>
         <div id="sender">
           <span>보내는 사람</span>
-          <input type="text" value={user.userNickname} readOnly />
+          <input
+            type="text"
+            value={user.userNickname}
+            readOnly
+            style={{ fontWeight: "bold" }}
+          />
         </div>
         <div id="receiver">
           <span>받는 사람</span>
           <input
             type="text"
-            value={receiver}
-            onChange={(e) => setReceiver(e.target.value)}
+            value={props.nickName}
+            readOnly
+            style={{ fontWeight: "bold" }}
           />
         </div>
       </div>
-      <div className="contents">
-        <div id="title">
-          <span>제목</span>
+      <div
+        className="noteContents"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          height: "60%",
+          marginTop: "30px",
+        }}
+      >
+        <div
+          id="noteTitle"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "70%",
+            marginBottom: "30px",
+          }}
+        >
+          <span style={{ marginBottom: "15px", fontSize: "1.3rem" }}>제목</span>
           <textarea
             type="text"
             placeholder="제목을 입력해주세요"
             value={noteTitle}
             onChange={(e) => setNoteTitle(e.target.value)}
-            style={{ resize: "none" }}
+            style={{ resize: "none", height: "70px", fontWeight: "bold" }}
           />
         </div>
-        <div id="content">
-          <span>내용</span>
+        <div
+          id="noteContent"
+          style={{ display: "flex", flexDirection: "column", width: "70%" }}
+        >
+          <span style={{ marginBottom: "15px", fontSize: "1.3rem" }}>내용</span>
           <textarea
             type="text"
             placeholder="내용을 입력해주세요"
             value={noteContent}
             onChange={(e) => setNoteContent(e.target.value)}
-            style={{ resize: "none" }}
+            style={{ resize: "none", height: "150px", fontWeight: "bold" }}
           />
         </div>
-        <div id="files">
-          <input type="file" multiple onChange={filesCreate} />
+        <div id="files" style={{ marginTop: "30px", width: "70%" }}>
+          <input
+            type="file"
+            multiple
+            onChange={filesCreate}
+            style={{ fontWeight: "bold" }}
+          />
         </div>
       </div>
-      <div className="btn">
+      <div className="btn" style={{ width: "100%", marginTop: "13px" }}>
         <button
           id="okCreate"
-          style={{ marginRight: "30px" }}
+          style={{
+            marginRight: "30px",
+            fontWeight: "bold",
+            border: "none",
+            borderRadius: "10px",
+            backgroundColor: "#94b29b",
+            padding: "4px 10px",
+          }}
           onClick={okCreate}
         >
           전송 확인
         </button>
-        <button id="delCreate" onClick={delCreate}>
+        <button
+          id="delCreate"
+          onClick={delCreate}
+          style={{
+            fontWeight: "bold",
+            border: "none",
+            borderRadius: "10px",
+            backgroundColor: "black",
+            color: "white",
+            padding: "4px 10px",
+          }}
+        >
           전송 취소
         </button>
       </div>

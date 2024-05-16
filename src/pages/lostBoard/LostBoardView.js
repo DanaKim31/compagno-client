@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/ko";
 import Comments from "../../components/lostBoard/LostComments";
+import MyToggleBar from "../../components/note/MyToggleBar";
 
 const Div = styled.div`
   @font-face {
@@ -43,11 +44,25 @@ const Div = styled.div`
         margin: 0px 10px;
         width: 70px;
         border-radius: 20px;
-        border: 2px solid green;
+        border: none;
         font-weight: bold;
       }
-      button:hover {
-        background-color: yellow;
+      :nth-child(1) {
+        background-color: gray;
+        color: white;
+        &:hover {
+          color: black;
+          background-color: #94b29b;
+        }
+      }
+      :nth-child(2) {
+        background-color: black;
+        color: white;
+        &:hover {
+          border: 2px solid black;
+          color: black;
+          background-color: white;
+        }
       }
     }
   }
@@ -208,7 +223,7 @@ const ViewLostBoard = () => {
   useEffect(() => {
     viewsAPI();
   }, []);
-
+  console.log(lost);
   return (
     <>
       <Div>
@@ -247,10 +262,49 @@ const ViewLostBoard = () => {
                   <table>
                     <thead>
                       <tr>
-                        <td>
+                        <td
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
                           <h3>
                             <FaUser /> 분실 신고자 정보
                           </h3>
+                          <div
+                            id="writerTag"
+                            style={{
+                              display: "flex",
+                              borderBottom: "1px dashed black",
+                              cursor: "pointer",
+                              alignItems: "center",
+                            }}
+                          >
+                            <img
+                              style={{
+                                width: "35px",
+                                height: "35px",
+                                borderRadius: "50%",
+                                border: "0.3px solid black",
+                                marginRight: "10px",
+                                alignContent: "center",
+                              }}
+                              src={lost.lostAnimalImage?.replace(
+                                "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                                "http://192.168.10.28:8081/lostBoard/"
+                              )}
+                            />
+                            <span
+                              style={{
+                                alignContent: "center",
+                                color: "black",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {/* {lost.userNickname} */}
+                              <MyToggleBar name={lost.userNickname} />
+                            </span>
+                          </div>
                         </td>
                       </tr>
                     </thead>

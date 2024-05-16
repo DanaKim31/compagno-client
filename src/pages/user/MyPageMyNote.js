@@ -6,6 +6,10 @@ import NoteCreate from "../../components/note/NoteCreate";
 import { FaRegPaperPlane } from "react-icons/fa6";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { RiFolderSharedLine, RiFolderReceivedLine } from "react-icons/ri";
+import NoteViewSendBox from "../../components/note/NoteViewSendBox";
+import NoteViewReceiveBox from "../../components/note/NoteViewReceiveBox";
+import { FaStar } from "react-icons/fa";
+import NoteViewStar from "../../components/note/NoteViewStar";
 
 const Div = styled.div`
   display: flex;
@@ -22,8 +26,8 @@ const Div = styled.div`
 
     /* 여기서부터 */
     #noteAll {
-      border: 1px solid black;
       height: 100%;
+      background-color: white;
     }
   }
 `;
@@ -44,8 +48,8 @@ const TabMenu = styled.ul`
   flex-direction: row;
   align-items: center;
   list-style: none;
-  margin-bottom: 3rem;
-  margin-top: 30px;
+  margin-bottom: 1.6rem;
+  margin-top: 2rem;
   width: 90%;
   border-radius: 10px;
   padding-left: 0px;
@@ -82,7 +86,8 @@ const TabMenu = styled.ul`
 `;
 const Desc = styled.div`
   text-align: center;
-  width: "80%";
+  height: 80%;
+  width: 80%;
 `;
 
 const MyPageMyNote = () => {
@@ -108,7 +113,7 @@ const MyPageMyNote = () => {
           받은 쪽지함
         </>
       ),
-      content: "받은 쪽지함",
+      content: <NoteViewReceiveBox />,
     },
     {
       name: (
@@ -119,23 +124,19 @@ const MyPageMyNote = () => {
           보낸 쪽지함
         </>
       ),
-      content: "보낸 쪽지함",
+      content: <NoteViewSendBox />,
     },
     {
       name: (
         <>
-          <FaRegPaperPlane
-            style={{ marginRight: "15px", fontSize: "1.3rem" }}
-          />
-          쪽지 보내기
+          <FaStar style={{ marginRight: "15px", fontSize: "1.3rem" }} />
+          중요 쪽지함
         </>
       ),
-      content: <NoteCreate />,
+      content: <NoteViewStar />,
     },
   ];
   const selectMenuHandler = (index) => {
-    // parameter로 현재 선택한 인덱스 값을 전달해야 하며, 이벤트 객체(event)는 쓰지 않는다
-    // 해당 함수가 실행되면 현재 선택된 Tab Menu 가 갱신.
     clickTab(index);
   };
 
