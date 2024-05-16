@@ -361,8 +361,8 @@ header a {
   font-size: 4rem;
   position: relative;
   font-weight: lighter;
-  width: 47%;
-  left: 57%;
+  width: 43%;
+  left: 56%;
   top: 190px;
   z-index: 1;
 }
@@ -425,9 +425,9 @@ header a {
 
 .fading-up {
   opacity: 1;
-  transition: 1s ease-out;
+  transition: 1.5s ease-out;
   transform: translateY(0px);
-  transition-delay: 0.7s;
+  transition-delay: 1.2s;
 }
 /* ================== 설명과 시작 ===================== */
 #section2 {
@@ -570,6 +570,8 @@ header a {
   width: 100%;
   height: 100%;
   max-width: 1474px;
+  position: relative;
+  bottom: 50px;
 }
 .row-cols-2 {
   position: relative;
@@ -586,11 +588,14 @@ header a {
 .col h1 {
   width: 50vh;
   border-top: 1px solid;
-  padding-top: 0.35em;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .col p {
   width: 67%;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .col img {
@@ -810,7 +815,7 @@ span img {
 }
 .text {
   height: 225px;
-  width: 100%;
+  width: 124%;
   overflow: hidden;
   position: relative;
 }
@@ -845,73 +850,46 @@ span img {
 .footer {
   width: 100%;
   background-color: #465c58;
-  height: 50vh;
   position: relative;
   border: 1px solid;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
-  display: flex;
   color: white;
 }
 
 .footer h1 {
   font-size: 7.5rem;
-  font-weight: bold;
   color: white;
   position: relative;
-  top: 30px;
-  left: 54px;
-}
-
-.info {
-  display: flex;
-}
-
-.service {
-  flex-direction: column;
-  font-size: 1.2rem;
-  position: relative;
-  padding: 44px;
-  left: 141px;
-  bottom: -19px;
-  height: 348px;
-  text-align: center;
+  text-decoration: none;
+  top: 40px;
+  right: 90px;
 }
 
 .service a {
   color: white;
+  font-size: 1.2rem;
+  padding: 20px;
 }
 
 .person {
-  width: 13%;
-  display: flex;
-  flex-direction: column;
   position: relative;
-  left: 332px;
-  height: 351px;
-  top: 60px;
+  left: 150px;
+  top: 35px;
 }
 
-.sns {
-  position: relative;
-  bottom: 5px;
-  left: 173px;
+.person p {
+  padding: 10px;
 }
 
 .sns a {
   color: white;
-  border: 1px solid;
-  border-radius: 15px;
-  font-size: 2rem;
-  padding: 10px;
-  padding-right: 10px;
-  margin: 10px;
-  position: relative;
-  top: 200px;
+  padding: 50px;
 }
 
+.info a:hover,
 .sns a:hover {
   color: rgb(33, 55, 70);
 }

@@ -128,13 +128,6 @@ const ClassUpdate = () => {
     setFile(files[0]);
   };
 
-  // const deleteImage = () => {
-  //   setOdcClass((prev) => {
-  //     const images = prev.images.filter((image) => image.odcCode !== code);
-  //     return { ...prev, images: images };
-  //   });
-  // };
-
   // 수정하는 부분 수정후 => 저장시켜서 보내기
   const onSubmit = async () => {
     const formData = new FormData();

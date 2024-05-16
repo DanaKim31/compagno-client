@@ -1,7 +1,5 @@
 import "../../assets/style.css";
-import { FaLinkedinIn, FaFacebookF, FaInstagram } from "react-icons/fa";
-import { CiYoutube } from "react-icons/ci";
-import { MdOutlineEmail } from "react-icons/md";
+
 const Footer = () => {
   return (
     <>
@@ -9,81 +7,147 @@ const Footer = () => {
         <section id="section7">
           <div className="text">
             <div>
-              <span>You spin me right round, baby. Like a record, hello y</span>
+              <span
+                style={{
+                  fontFamily: "TAEBAEKmilkyway",
+                  color: "rgb(67,95,87)",
+                }}
+              >
+                We always remember animals as my friends and only family
+              </span>
             </div>
           </div>
           <div className="footer">
-            <div>
-              <h1>Compagno</h1>
-              <h3>© 2024 Seoul Developmemt</h3>
-              <p></p>
-              <div className="sns">
-                <a href="">
-                  <FaFacebookF className="i" />
-                </a>
-                <a href="">
-                  <FaLinkedinIn className="i" />
-                </a>
-                <a href="">
-                  <FaInstagram className="i" />
-                </a>
-                <a href="">
-                  <CiYoutube className="i" />
-                </a>
-                <a href="">
-                  <MdOutlineEmail className="i" />
-                </a>
+            <div
+              className="fote1"
+              style={{ display: "flex", justifyContent: "space-evenly" }}
+            >
+              <div>
+                <h1 style={{ fontWeight: "lighter" }}>Compagno</h1>
+                <p
+                  style={{
+                    fontSize: "1.2rem",
+                    position: "relative",
+                    top: "455px",
+                    right: "220px",
+                  }}
+                >
+                  © 6, Teheran-ro 14-gil, Gangnam-gu, Seoul, Republic of Korea{" "}
+                </p>
+
+                <div className="info">
+                  <div
+                    className="service"
+                    style={{
+                      display: "flex",
+                      top: "80px",
+                      position: "relative",
+                      right: "60px",
+                    }}
+                  >
+                    <p style={{ paddingRight: "30px", fontSize: "1.5rem" }}>
+                      Navigator
+                    </p>
+                    <a href="">Home</a>
+                    <a href="">User</a>
+                    <a href="">Board</a>
+                    <a href="">Notice</a>
+                    <a href="">Service</a>
+                  </div>
+                </div>
+              </div>
+
+              {/* 여기는 조원들 이름과 이메일 정보 */}
+              <div
+                className="person"
+                style={{ position: "relative", left: "300px" }}
+              >
+                <p>
+                  김다은 / DanaKim
+                  <br />T +010-xxxx-xxxx <br />
+                  kh123@naver.com
+                </p>
+                <p>
+                  손민정
+                  <br />T +010-xxxx-xxxx <br />
+                  kh123@naver.com
+                </p>
+                <p>
+                  권예빈
+                  <br />T +010-xxxx-xxxx <br />
+                  kh123@naver.com
+                </p>
+              </div>
+              <div className="person">
+                <p>
+                  이상현
+                  <br />T +010-xxxx-xxxx <br />
+                  kh123@naver.com
+                </p>
+                <p>
+                  정동준
+                  <br />T +010-xxxx-xxxx <br />
+                  kh123@naver.com
+                </p>
+                <p>
+                  정회영
+                  <br />T +010-xxxx-xxxx <br />
+                  kh123@naver.com
+                </p>
+                <p>
+                  김현수
+                  <br />T +010-xxxx-xxxx <br />
+                  kh123@naver.com
+                </p>
               </div>
             </div>
-            <div className="info">
-              <div className="service">
-                <p>Navigator</p>
-                <a href="">Home</a> <br />
-                <a href="">User</a> <br />
-                <a href="">Board</a> <br />
-                <a href="">Notice</a> <br />
-                <a href="">Service</a>
+            <div
+              style={{
+                display: "flex",
+                textAlign: "center",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div>
+                <p
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    bottom: "50px",
+                    fontSize: "2rem",
+                    borderTop: "1px solid",
+                    paddingTop: "50px",
+                  }}
+                >
+                  p ) + 603 7985 8288{" "}
+                </p>
+                <div
+                  className="sns"
+                  style={{
+                    position: "relative",
+                    bottom: "25px",
+                    fontSize: "1.5rem",
+                    paddingBottom: "50px",
+                    textDecoration: "none",
+                  }}
+                >
+                  <a href="">facebook</a>
+                  <a href="">LinkedinIn</a>
+                  <a href="">instagram</a>
+                  <a href="">Youtube</a>
+                  <p
+                    style={{
+                      position: "relative",
+                      left: "984px",
+                      width: "306px",
+                      top: "50px",
+                    }}
+                  >
+                    SINCE 2024 F&B Project
+                  </p>
+                </div>
               </div>
-            </div>
-            {/* 여기는 조원들 이름과 이메일 정보 */}
-            <div className="person">
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-            </div>
-            <div className="person">
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
             </div>
           </div>
         </section>

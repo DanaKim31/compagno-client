@@ -159,8 +159,8 @@ const ClassDetail = () => {
               }}
             />
             <div className="userinfo">
-              유저 닉네임 :
-              <div className="toggle">
+              <div className="toggle" style={{ display: "flex" }}>
+                유저 닉네임 :
                 <MyToggleBar
                   name={odcClass.user?.userNickname}
                   style={{ width: "78px" }}
@@ -193,6 +193,7 @@ const ClassDetail = () => {
               textAlign: "center",
               top: "32px",
               position: "relative",
+              backgroundColor: "rgb(244, 244, 244)",
             }}
           >
             {/* <div>사용자 : {user.userImg}</div> */}
@@ -204,7 +205,7 @@ const ClassDetail = () => {
 
               <p
                 className="Content"
-                style={{ width: "100%", position: "relative" }}
+                style={{ width: "50%", position: "relative", left: "25%" }}
               >
                 상세 내용
                 <br /> <br />

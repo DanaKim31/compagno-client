@@ -161,57 +161,45 @@ const Section5 = () => {
             <GoArrowUpRight className="odcArrow" />
             OneDayclassName
           </h1>
-          <a href="" className="odcdetail">
-            더 많은 사용후기 보기
+          <a href="/compagno/onedayClassBoard" className="odcdetail">
+            더 많은 클래스 보기
           </a>
           <div>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/나의 동물과 똑 닮은 키링~.jpg" alt="logo image" />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/수채화 클래스.jpg" alt="logo image" />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/수제 간식.jpg" alt="logo image" />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/동물 피규어.png" alt="logo image" />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img
+                src="/img/나의 동물을 위한 간식만들기.jpg"
+                alt="logo image"
+              />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/친구들과 함께 야외산책.png" alt="logo image" />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/고양이 펫 리쉬.webp" alt="logo image" />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/도기인사이드.jpg" alt="logo image" />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/약선펫푸드 보호자 수업.jpg" alt="logo image" />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/반려동물들과의 레크레이션.jpg" alt="logo image" />
             </span>
             <span>
-              <img src="/img/김현수.png" alt="logo image" />
-            </span>
-            <span>
-              <img src="/img/김현수.png" alt="logo image" />
-            </span>
-            <span>
-              <img src="/img/김현수.png" alt="logo image" />
-            </span>
-            <span>
-              <img src="/img/김현수.png" alt="logo image" />
-            </span>
-            <span>
-              <img src="/img/김현수.png" alt="logo image" />
-            </span>
-            <span>
-              <img src="/img/김현수.png" alt="logo image" />
+              <img src="/img/반려동물친구들과 여행.jpg" alt="logo image" />
             </span>
           </div>
         </div>
