@@ -14,12 +14,46 @@ const Div = styled.div`
   position: relative;
   top: 130px;
 
+  // ======== 폰트 관련
+@font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
+
+
+
   #category {
     margin-left: 100px;
     display: flex;
+
+    h1{
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
     p {
-      margin-top: 15px;
+      margin-top: 20px;
       margin-left: 5px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
   }
   #content {
@@ -28,19 +62,30 @@ const Div = styled.div`
     justify-content: space-evenly;
     width: 80%;
     margin: 0 auto;
-    padding: 30px;
+    padding: 20px;
 
     th {
       font-weight: bolder;
       font-size: 20px;
       padding: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 2px solid;
     }
     a {
       text-decoration: none;
       color: black;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
     td {
       padding: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+      text-align: center;
+      padding-right: 20px;
+      padding-left: 20px;
     }
     #map {
       display: flex;
@@ -49,17 +94,24 @@ const Div = styled.div`
       height: 500px;
       margin-top: 150px;
       margin-left: 50px;
+      border: 1px solid lightgray;
     }
   }
   .paging {
     width: 100%;
     padding-top: 30px;
     text-align: center;
+    font-family: "TAEBAEKmilkyway";
+
     button {
-      background-color: white;
+      font-weight: bold;
+      width: 40px;
+      height: 28px;
       border-radius: 5px;
+      border: 1px solid gray;
+      background-color: white;
+      color: black;
       margin: 5px;
-      font-weight: bolder;
     }
   }
 `;

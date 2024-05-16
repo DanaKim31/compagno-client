@@ -10,7 +10,7 @@ import moment from "moment";
 import MyToggleBar from "../../components/note/MyToggleBar";
 
 const Div = styled.div`
-  /* // ======== 폰트 관련
+  // ======== 폰트 관련
   @font-face {
     font-family: "TAEBAEKmilkyway";
     src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
@@ -32,7 +32,7 @@ const Div = styled.div`
   .content a:hover {
     background-color: rgb(32, 61, 59);
     color: white;
-  } */
+  }
 
   position: relative;
   width: 80%;
@@ -40,6 +40,8 @@ const Div = styled.div`
   top: 150px;
   #qtopbar {
     h1 {
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
       text-align: center;
     }
 
@@ -48,6 +50,8 @@ const Div = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
 
     /* 프로필 */
@@ -94,6 +98,45 @@ const Div = styled.div`
     img {
       width: 100px;
       height: 100px;
+    }
+  }
+
+  
+  #input {
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    input{
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-left: 10px;
+    }
+    div {
+      margin-left: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+  #buttons {
+    display: flex;
+    justify-content: center;
+    
+    button {
+      margin: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+  }
+
+  #desc{
+    p{
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
   }
 `;
@@ -252,7 +295,7 @@ const QnaQDetail = () => {
                   <>
                     {/* 수정 페이지! ==================================================================================*/}
                     {/* 이미지들 */}
-                    <div>
+                    <div id="edit">
                       <div id="prevImages">
                         {/* 기존 이미지들 */}
                         {editQ.images?.map((image) => (
@@ -282,7 +325,10 @@ const QnaQDetail = () => {
                       </div>
                     </div>
                     {/* 수정 폼 */}
-                    <Form.Control
+                    <div id="input">
+                      <div id="title">
+                        <p>제목</p>
+                        <Form.Control
                       type="text"
                       placeholder="제목"
                       value={editQ.qnaQTitle}
@@ -293,7 +339,10 @@ const QnaQDetail = () => {
                         }))
                       }
                     />
-                    <Form.Control
+                      </div>
+                    <div>
+                      <p>내용</p>
+                      <Form.Control
                       type="textarea"
                       placeholder="내용"
                       value={editQ.qnaQContent}
@@ -304,14 +353,20 @@ const QnaQDetail = () => {
                         }));
                       }}
                     />
-                    <Form.Control
+                    </div>
+                    <div>
+                      <p>이미지</p>
+                      <Form.Control
                       type="file"
                       multiple
                       accept="image/*"
                       onChange={preview}
                     />
-
+                    </div>
+              </div>
                     {/* 수정, 취소 버튼 */}
+                      <div id="buttons">
+
                     <Button variant="warning" onClick={questionUpdate}>
                       수정
                     </Button>
@@ -322,6 +377,8 @@ const QnaQDetail = () => {
                     >
                       취소
                     </Button>
+                    </div>
+
                   </>
                 ) : (
                   <>
@@ -358,13 +415,13 @@ const QnaQDetail = () => {
                               {/* 상태가 N: 수정, 삭제 버튼 */}
                               <div id="status">
                                 <Button
-                                  variant="warning"
+                                  variant="dark"
                                   onClick={() => onUpdateQuestion(question)}
                                 >
                                   수정
                                 </Button>
                                 <Button
-                                  variant="danger"
+                                  variant="secondary"
                                   onClick={() =>
                                     onDeleteQuestion(question.qnaQCode)
                                   }
@@ -381,7 +438,7 @@ const QnaQDetail = () => {
                     </div>
                     <hr />
                     {/* 상세 정보 */}
-                    <div>
+                    <div id="desc">
                       <p>{question.qnaQContent}</p>
                     </div>
                     <div id="images">
@@ -394,11 +451,12 @@ const QnaQDetail = () => {
                         />
                       ))}
                     </div>
+                    <hr />
+              <QnaADetail />
                   </>
                 )}
               </div>
-              <hr />
-              <QnaADetail />
+             
             </>
           ) : (
             <>
@@ -416,8 +474,8 @@ const QnaQDetail = () => {
                           src={"http://192.168.10.28:8081/" + question.userImg}
                         />
                         <div>
-                          <p>작성자 : {question.userNickname}</p>
-                          <p>아이디 : {question.userId}</p>
+                          <p>{question.userNickname}</p>
+                          <p>{question.userId}</p>
                         </div>
                       </div>
                       <div>
@@ -437,7 +495,7 @@ const QnaQDetail = () => {
                     </div>
                   </div>
 
-                  <div>
+                  <div id="desc">
                     <p>{question.qnaQContent}</p>
                   </div>
                   <div id="images">
@@ -513,7 +571,7 @@ const QnaQDetail = () => {
                     </div>
                     <hr />
                     {/* 상세 정보 */}
-                    <div>
+                    <div id="desc">
                       <p>{question.qnaQContent}</p>
                     </div>
                     <div id="images">

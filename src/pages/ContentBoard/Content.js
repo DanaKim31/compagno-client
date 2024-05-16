@@ -4,6 +4,31 @@ import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
+
+@font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
+
   position: relative;
   top: 120px;
   height: 80vh;
@@ -11,7 +36,8 @@ const Div = styled.div`
   flex-direction: column;
   justify-content: center;
   span {
-    font-weight: bolder;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
     padding-top: 10px;
     padding-right: 20px;
   }
@@ -22,11 +48,25 @@ const Div = styled.div`
     justify-content: center;
     height: 50px;
     margin-bottom: 20px;
+    font-family: "TAEBAEKmilkyway";
+
+    input{
+    font-weight: bold;
+
+    }
     #mainCate {
       margin-right: 20px;
     }
     #subCate {
       margin-right: 10px;
+    }
+    select{
+    font-weight: bold;
+
+    }
+    option{
+      font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
     }
   }
 
@@ -201,7 +241,7 @@ const Content = () => {
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
                   />
-                  <Button onClick={filtering}>조회</Button>
+                  <Button variant="dark" onClick={filtering}>조회</Button>
                 </div>
               </>
             ) : (

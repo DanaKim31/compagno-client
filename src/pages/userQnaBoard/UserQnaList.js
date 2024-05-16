@@ -16,9 +16,36 @@ import { IoSearch } from "react-icons/io5";
 import moment from "moment";
 
 const Div = styled.div`
+// ======== 폰트 관련
+@font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
+
   position: relative;
   top: 130px;
   #topbar {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -31,10 +58,16 @@ const Div = styled.div`
     border-radius: 15px;
 
     select {
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
       width: 150px;
       height: 30px;
       border: 1px solid gray;
       border-radius: 7px;
+      option{
+        font-family: "TAEBAEKmilkyway";
+        font-weight: bold;
+      }
     }
 
     #filter {
@@ -65,6 +98,7 @@ const Div = styled.div`
       }
 
       input {
+        font-weight: bold;
         width: 300px;
         margin-top: 2px;
         height: 30px;
@@ -79,7 +113,7 @@ const Div = styled.div`
       height: 35px;
       background-color: gray;
       border: 1px solid gray;
-    
+      font-family: "TAEBAEKmilkyway";
   }
 
   #topbarsecond {
@@ -88,7 +122,11 @@ const Div = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
     span {
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
       margin-left: 30px;
       margin-top: 5px;
       width: 100px;
@@ -104,18 +142,22 @@ const Div = styled.div`
         margin-left: 10px;
       }
     }
+
   .paging {
     width: 100%;
     padding-top: 30px;
     text-align: center;
+    font-family: "TAEBAEKmilkyway";
+
     button {
+      font-weight: bold;
       width: 25px;
+      height: 28px;
       border-radius: 5px;
       border: 1px solid gray;
       background-color: white;
       color: black;
       margin: 5px;
-      font-weight: bolder;
     }
   }
 `;
@@ -123,6 +165,8 @@ const Div = styled.div`
 const Table = styled.table`
   width: 90%;
   margin: 0 auto;
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   thead {
     text-align: center;
     font-weight: bolder;
@@ -252,6 +296,7 @@ const UserQnaList = () => {
               <option value={2}>작성일 오래된순</option>
               <option value={1}>작성일 최신순</option>
               <option value={3}>답변 많은순</option>
+              <option value={5}>좋아요순</option>
               <option value={4}>조회순</option>
             </select>
           </div>
@@ -344,6 +389,7 @@ const UserQnaList = () => {
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
+            <th>좋아요수</th>
             <th>조회수</th>
           </tr>
         </thead>
@@ -382,6 +428,7 @@ const UserQnaList = () => {
                     </td>
                   </>
                 )}
+                <td>{question.likecount}</td>
                 <td>{question.viewcount}</td>
               </tr>
             );

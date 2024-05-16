@@ -15,8 +15,37 @@ import { userSave } from "../../store/user";
 import moment from "moment";
 import UserQnaAnswer from "../../components/UserQnaAnswerBoard/UserQnaAnswer";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import MyToggleBar from "../../components/note/MyToggleBar";
 
 const Div = styled.div`
+
+// ======== 폰트 관련
+@font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
+
+
+
   position: relative;
   width: 80%;
   margin: 0 auto;
@@ -24,6 +53,8 @@ const Div = styled.div`
   #qtopbar {
     h1 {
       text-align: center;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
 
     /* 프로필, 작성일, 수정/삭제 or 상태보기 */
@@ -31,6 +62,8 @@ const Div = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
 
     /* 프로필 */
@@ -58,7 +91,8 @@ const Div = styled.div`
     }
   }
 
-  #prevImages {
+  #edit{
+    #prevImages {
     width: 500px;
 
     img {
@@ -77,6 +111,49 @@ const Div = styled.div`
     img {
       width: 100px;
       height: 100px;
+    }
+  }
+
+
+  }
+
+  #input {
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    input{
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-left: 10px;
+    }
+    div {
+      margin-left: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+  #buttons {
+    display: flex;
+    justify-content: center;
+    
+    button {
+      margin: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+  }
+
+  
+
+  #desc{
+    p{
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
   }
 `;
@@ -263,7 +340,7 @@ const UserQuestionDetail = () => {
                 <>
                   {/* 수정 페이지! */}
                   {/* 이미지들 */}
-                  <div>
+                  <div id="edit">
                     <div id="prevImages">
                       {/* 기존 이미지들 */}
                       {editQ.images?.map((image) => (
@@ -294,8 +371,11 @@ const UserQuestionDetail = () => {
                       ))}
                     </div>
                   </div>
+                  <div id="input">
                   {/* 수정 폼 */}
-                  <Form.Control
+                  <div id="title">
+                    <p>제목</p>
+                    <Form.Control
                     type="text"
                     placeholder="제목"
                     value={editQ.userQuestionBoardTitle}
@@ -306,9 +386,13 @@ const UserQuestionDetail = () => {
                       }))
                     }
                   />
+                  </div>
+                  <div>
+                    <p>내용</p>
                   <Form.Control
-                    type="textarea"
-                    placeholder="내용"
+                    as="textarea"
+                    rows={3}
+                    style={{fontWeight:"bold"}}
                     value={editQ.userQuestionBoardContent}
                     onChange={(e) => {
                       setEditQ((prev) => ({
@@ -317,13 +401,20 @@ const UserQuestionDetail = () => {
                       }));
                     }}
                   />
-                  <Form.Control
+                  </div>
+                  <div>
+                    <p>이미지</p>
+                    <Form.Control
                     type="file"
                     multiple
                     accept="image/*"
                     onChange={preview}
                   />
+                  </div>
+                  
+                  </div>
                   {/* 수정, 취소 버튼 */}
+                  <div id="buttons">
                   <Button variant="warning" onClick={questionUpdate}>
                     수정
                   </Button>
@@ -334,6 +425,7 @@ const UserQuestionDetail = () => {
                   >
                     취소
                   </Button>
+                  </div>
                 </>
               ) : (
                 <>
@@ -355,7 +447,8 @@ const UserQuestionDetail = () => {
                           <p>아이디 : {question.userId}</p>
                         </div>
                       </div>
-                      <div>
+
+                      <div id="desc">
                         <p>
                           작성일 :{" "}
                           {moment(question.userQuestionBoardDate).format(
@@ -369,13 +462,13 @@ const UserQuestionDetail = () => {
                             {/* 상태가 N: 수정, 삭제 버튼 */}
                             <div id="status">
                               <Button
-                                variant="warning"
+                                variant="dark"
                                 onClick={() => onUpdateQuestion(question)}
                               >
                                 수정
                               </Button>
                               <Button
-                                variant="danger"
+                                variant="secondary"
                                 onClick={() =>
                                   onDeleteQuestion(
                                     question.userQuestionBoardCode
@@ -394,7 +487,7 @@ const UserQuestionDetail = () => {
                   </div>
                   <hr />
                   {/* 상세 정보 */}
-                  <div>
+                  <div id="desc">
                     <p>{question.userQuestionBoardContent}</p>
                   </div>
                   <div id="images">
@@ -407,6 +500,8 @@ const UserQuestionDetail = () => {
                       />
                     ))}
                   </div>
+                  <hr/>
+                  <UserQnaAnswer question={question} />
                 </>
               )}
             </div>
@@ -417,7 +512,7 @@ const UserQuestionDetail = () => {
               <>
                 <h1>관리자!!! 수정 x, 삭제 버튼만</h1>
                 <Button
-                  variant="danger"
+                  variant="dark"
                   onClick={() =>
                     onDeleteQuestion(question.userQuestionBoardCode)
                   }
@@ -433,7 +528,7 @@ const UserQuestionDetail = () => {
                     src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
                   />
                 ))}
-                <div>
+                <div id="desc">
                   <p>{question.userQuestionBoardTitle}</p>
                   <p>
                     날짜 :{" "}
@@ -445,6 +540,8 @@ const UserQuestionDetail = () => {
                   <p>{question.userNickname}</p>
                   <p>{question.userQuestionBoardContent}</p>
                 </div>
+                <hr/>
+                <UserQnaAnswer question={question} />
               </>
             ) : (
               <>
@@ -462,8 +559,10 @@ const UserQuestionDetail = () => {
                           src={"http://192.168.10.28.8081/" + question.userImg}
                         />
                         <div>
-                          <span>작성자 : {question.userId}</span>
-                          <span>아이디 : {question.userNickname}</span>
+                          <p>
+                              <MyToggleBar name={question.userNickname} />
+                            </p>
+                          <p>아이디 : {question.userNickname}</p>
                         </div>
                       </div>
                       <p>
@@ -473,6 +572,7 @@ const UserQuestionDetail = () => {
                         )}
                       </p>
                       <p>조회수 : {question.viewcount}</p>
+                      {/* 좋아요 */}
                       {user.userId !== undefined ? (
                         <>
                           {checklike === 1 ? (
@@ -492,7 +592,7 @@ const UserQuestionDetail = () => {
                   </div>
                 </div>
 
-                <div>
+                <div id="desc">
                   <p>{question.userQuestionBoardContent}</p>
                 </div>
                 <div id="images">
@@ -509,13 +609,13 @@ const UserQuestionDetail = () => {
                   ))}
 
                 </div>
+                <hr/>
+                  <UserQnaAnswer question={question} />
               </>
             )}
           </>
         )}
       </>
-      <hr />
-      <UserQnaAnswer question={question} />
     </Div>
   );
 };
