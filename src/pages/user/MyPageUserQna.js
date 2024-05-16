@@ -8,6 +8,7 @@ import useDidMountEffect from "../../assets/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
 import moment from "moment";
 import "moment/locale/ko";
+import { useLocation } from "react-router-dom";
 
 const Div = styled.div`
   @font-face {
@@ -32,7 +33,7 @@ const Div = styled.div`
     .contentZone {
       height: calc(100vh - 66px);
       display: flex;
-      justify-content: center;
+      padding-top: 15px;
       align-items: center;
       flex-direction: column;
 
@@ -101,10 +102,12 @@ const MyPageUserQna = () => {
     }
   }, []);
 
+  // 유저간 질문 리스트 초기값 설정
   const [userQnaList, setUserQnaList] = useState([]);
   const [page, setPage] = useState(1);
   const [userQnaCount, setUserQnaCount] = useState(0);
 
+  // 유저간 질문 리스트 불러오기
   const userQnaAPI = async () => {
     const response = await getUserQnaList(user.userId, page);
     const userQnaData = response.data;
@@ -113,6 +116,7 @@ const MyPageUserQna = () => {
     const countResponse = await getUserQnaCount(user.userId);
     const countUserQnaData = countResponse.data;
     setUserQnaCount(countUserQnaData);
+    console.log(userQnaData);
   };
   useDidMountEffect(() => {
     userQnaAPI();
@@ -126,11 +130,15 @@ const MyPageUserQna = () => {
     setUserQnaList(userQnaData);
   };
 
+  // 페이지 경로에서 정보 따오기
+  const location = useLocation();
+  const nowLoca = location.pathname.substring(17);
+
   return (
     <Div>
       <MyPageSidebar />
       <div className="myUserQnaMain">
-        <MyPageTab />
+        <MyPageTab onClickMenu={nowLoca} />
         <div className="contentZone">
           <h1 id="headText">유저간 질문 목록</h1>
           <table className="myUserQnaList">

@@ -13,6 +13,7 @@ import Paging from "../../components/user/MyPagePagination";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import moment from "moment";
 import "moment/locale/ko";
+import { useLocation } from "react-router-dom";
 
 const Div = styled.div`
   // ======== 폰트 관련
@@ -39,32 +40,54 @@ const Div = styled.div`
     .contentZone {
       height: calc(100vh - 66px);
       display: flex;
-      justify-content: center;
+      padding-top: 15px;
       align-items: center;
       flex-direction: column;
 
       #headText {
-        width: 1100px;
+        width: 900px;
         padding-bottom: 15px;
         font-weight: bold;
       }
 
       .myQnaList {
+        table-layout: fixed;
+        border-collapse: separate;
+        width: 300px;
+        border-bottom: 2px solid black;
+
         thead th {
-          background-color: rgb(85, 96, 143);
           width: 200px;
           height: 50px;
           text-align: left;
           line-height: 50px;
-          color: white;
+          color: black;
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+        }
+        .th1 {
+          width: 300px;
         }
 
         tbody {
-          background: linear-gradient(45deg, #49a09d, #5f2c82);
-          color: white;
-          height: 50px;
-          text-align: left;
-          line-height: 50px;
+          td {
+            color: black;
+            height: 50px;
+            text-align: left;
+            line-height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          a {
+            color: black;
+            text-decoration-line: none;
+          }
+
+          a:hover {
+            color: orange;
+          }
         }
       }
     }
@@ -146,21 +169,23 @@ const MyPageMyQnA = () => {
 
   // -----------------------------------------------------------------------------------
 
+  // 페이지 경로에서 정보 따오기
+  const location = useLocation();
+  const nowLoca = location.pathname.substring(17);
+
   return (
     <Div>
       <MyPageSidebar />
       <div className="myQnaMain">
-        <MyPageTab />
+        <MyPageTab onClickMenu={nowLoca} />
         <div className="contentZone">
           {user.userRole == "ROLE_USER" ? (
             <>
-              <div id="headText">
-                <h1>내 질문 목록</h1>
-              </div>
+              <h1 id="headText">내 질문 목록</h1>
               <table className="myQnaList">
                 <thead>
                   <tr>
-                    <th>제목</th>
+                    <th className="th1">제목</th>
                     <th>작성자</th>
                     <th>작성일</th>
                     <th>답변 여부</th>
@@ -169,7 +194,11 @@ const MyPageMyQnA = () => {
                 <tbody>
                   {qnaList?.map((qna) => (
                     <tr key={qna.qnaQCode}>
-                      <td>{qna.qnaQTitle}</td>
+                      <td>
+                        <a href={`/compagno/question/detail/` + qna.qnaQCode}>
+                          {qna.qnaQTitle}
+                        </a>
+                      </td>
                       <td>{qna.userNickname}</td>
                       <td>{moment(qna.qnaQDate).format("YYYY-MM-DD")}</td>
                       <td>{qna.qnaQStatus}</td>
@@ -181,10 +210,11 @@ const MyPageMyQnA = () => {
             </>
           ) : (
             <>
+              <h1 id="headText">미답변 질문 목록</h1>
               <table className="myQnaList">
                 <thead>
                   <tr>
-                    <th>제목</th>
+                    <th className="th1">제목</th>
                     <th>작성자</th>
                     <th>작성일</th>
                     <th>답변 여부</th>
@@ -193,7 +223,11 @@ const MyPageMyQnA = () => {
                 <tbody>
                   {manageQnaList?.map((mQna) => (
                     <tr key={mQna.qnaQCode}>
-                      <td>{mQna.qnaQTitle}</td>
+                      <td>
+                        <a href={`/compagno/question/detail/` + mQna.qnaQCode}>
+                          {mQna.qnaQTitle}
+                        </a>
+                      </td>
                       <td>{mQna.userNickname}</td>
                       <td>{moment(mQna.qnaQDate).format("YYYY-MM-DD")}</td>
                       <td>{mQna.qnaQStatus}</td>

@@ -4,14 +4,10 @@ import MyPageTab from "../../components/user/MyPageTab";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
-import {
-  getNeighborPostList,
-  getNeighborPostCount,
-  getNeighborComList,
-  getNeighborComCount,
-} from "../../api/user";
+import { getNeighborPostList, getNeighborPostCount } from "../../api/user";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
+import { useLocation } from "react-router-dom";
 
 const Div = styled.div`
   @font-face {
@@ -35,25 +31,57 @@ const Div = styled.div`
     padding-top: 20px;
 
     .contentZone {
-      width: 100%;
       height: calc(100vh - 66px);
       display: flex;
-      flex-direction: row;
+      align-items: center;
+      flex-direction: column;
+      padding-top: 15px;
 
-      .content-post {
-        width: 50%;
-        background-color: yellow;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
+      #headText {
+        width: 900px;
+        padding-bottom: 15px;
+        font-weight: bold;
       }
 
-      .content-com {
-        width: 50%;
+      .myNeighborList {
+        table-layout: fixed;
+        border-collapse: separate;
+        width: 300px;
+        border-bottom: 2px solid black;
 
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
+        thead th {
+          width: 200px;
+          height: 50px;
+          text-align: left;
+          line-height: 50px;
+          color: black;
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+        }
+        .th1 {
+          width: 300px;
+        }
+
+        tbody {
+          td {
+            color: black;
+            height: 50px;
+            text-align: left;
+            line-height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          a {
+            color: black;
+            text-decoration-line: none;
+          }
+
+          a:hover {
+            color: orange;
+          }
+        }
       }
     }
   }
@@ -77,7 +105,6 @@ const MyPageNeighbor = () => {
 
   useDidMountEffect(() => {
     neighborPostAPI();
-    neighborComAPI();
   }, [user]);
   // --------------------------------- 게시글 ---------------------------------
   // 작성 게시글 기초값 세팅
@@ -103,48 +130,24 @@ const MyPageNeighbor = () => {
     const postData = postResponse.data;
     setPostList(postData);
   };
-  // -------------------------------------------------------------------------
-
-  // --------------------------------- 댓글 ---------------------------------
-  // 작성 댓글 기초값 세팅
-  const [comList, setComList] = useState([]);
-  const [comPage, setComPage] = useState(1);
-  const [countCom, setCountCom] = useState(0);
-
-  // 작성 댓글 불러오기
-  const neighborComAPI = async () => {
-    const comResponse = await getNeighborComList(user.userId, comPage);
-    const comData = comResponse.data;
-    setComList(comData);
-
-    const countCom = await getNeighborComCount(user.userId);
-    const countComData = countCom.data;
-    setCountCom(countComData);
-  };
-
-  // 댓글 페이지 변경
-  const handleComPageChange = async (page) => {
-    setComPage(page);
-    const comResponse = await getNeighborComList(user.userId, page);
-    const comData = comResponse.data;
-    setComList(comData);
-  };
-
-  // ------------------------------------------------------------------------
+  // 페이지 경로에서 정보 따오기
+  const location = useLocation();
+  const nowLoca = location.pathname.substring(17);
 
   return (
     <Div>
       <MyPageSidebar />
       <div className="myNeighborMain">
-        <MyPageTab />
+        <MyPageTab onClickMenu={nowLoca} />
         <div className="contentZone">
+          <h1 id="headText">우리동네 게시판 작성 글 목록</h1>
           <div className="content-post">
-            <table>
+            <table className="myNeighborList">
               <thead>
                 <tr>
                   <th>반려동물</th>
+                  <th className="th1">제목</th>
                   <th>지역</th>
-                  <th>제목</th>
                   <th>작성일</th>
                 </tr>
               </thead>
@@ -152,8 +155,17 @@ const MyPageNeighbor = () => {
                 {postList?.map((post) => (
                   <tr key={post.neighborBoardCode}>
                     <td>{post.animalCategoryCode.animalType}</td>
+                    <td>
+                      <a
+                        href={
+                          `/compagno/neighborBoard/detail/` +
+                          post.neighborBoardCode
+                        }
+                      >
+                        {post.neighborBoardTitle}
+                      </a>
+                    </td>
                     <td>{post.location.locationName}</td>
-                    <td>{post.neighborBoardTitle}</td>
                     <td>
                       {moment(post.neighborBoardRegiDate).format("YYYY-MM-DD")}
                     </td>
@@ -165,33 +177,6 @@ const MyPageNeighbor = () => {
               page={postPage}
               count={countPost}
               setPage={handlePostPageChange}
-            />
-          </div>
-          <div className="content-com">
-            <table>
-              <thead>
-                <tr>
-                  <th>게시글 번호</th>
-                  <th>댓글 내용</th>
-                  <th>작성일</th>
-                </tr>
-              </thead>
-              <tbody>
-                {comList?.map((com) => (
-                  <tr key={com.neighborCommentCode}>
-                    <td>{com.neighborBoardCode}</td>
-                    <td>{com.neighborCommentContent}</td>
-                    <td>
-                      {moment(com.neighborCommentRegiDate).format("YYYY-MM-DD")}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <Paging
-              page={comPage}
-              count={countCom}
-              setPage={handleComPageChange}
             />
           </div>
         </div>

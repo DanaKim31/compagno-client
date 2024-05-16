@@ -7,6 +7,7 @@ import moment from "moment";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
 import { getOnedayClass, getOnedayClassCount } from "../../api/user";
+import { useLocation } from "react-router-dom";
 
 const Div = styled.div`
   @font-face {
@@ -32,7 +33,7 @@ const Div = styled.div`
     .contentZone {
       height: calc(100vh - 66px);
       display: flex;
-      justify-content: center;
+      padding-top: 15px;
       align-items: center;
       flex-direction: column;
 
@@ -133,12 +134,17 @@ const MyPageOneday = () => {
     setOdcList(odcData);
   };
 
+  // 페이지 경로에서 정보 따오기
+  const location = useLocation();
+  const nowLoca = location.pathname.substring(17);
+
   return (
     <Div>
       <MyPageSidebar />
       <div className="myOdcMain">
-        <MyPageTab />
+        <MyPageTab onClickMenu={nowLoca} />
         <div className="contentZone">
+          <h1 id="headText">개설한 원데이 클래스 목록</h1>
           <table className="myOdcList">
             <thead>
               <tr>

@@ -179,3 +179,15 @@ export const getLostList = async (id, pageNum) => {
 export const getLostCount = async (id) => {
   return await authorize.get("mypage/myactivity/mylost/count/" + id);
 };
+
+// 내 활동내역 - 시터 게시글 불러오기
+export const getSitterList = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/mysitterpost/" + id + "?page=" + pageNum
+  );
+};
+
+// 내 활동내역 - 시터 게시글 갯수 불러오기
+export const getSitterCount = async (id) => {
+  return await authorize.get("mypage/myactivity/mysitterpost/count/" + id);
+};

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { userSave, userLogout } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import useDidMountEffect from "../../components/user/useDidMountEffect";
 
 // 헤더 색변환 / 햄버거 메뉴바 js
 
@@ -51,6 +52,10 @@ const Header = () => {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
   }, []);
+
+  // useDidMountEffect(() => {
+  //   console.log(user);
+  // }, [user]);
 
   // 로그아웃 기능 작동 (유저관련)
   const logout = (e) => {
@@ -138,6 +143,11 @@ const Header = () => {
               <div className="dropdown">
                 <span className="dropbtn">마이페이지</span>
                 <div className="dropdown-content">
+                  {/* <img
+                    className="headerProfileImage"
+                    src={"http://192.168.10.28:8081/" + user.userImg}
+                  ></img>
+                  <p>{user.userId}</p> */}
                   <a href="/compagno/mypage/myinfo">계정정보 수정</a>
                   <a href="/compagno/mypage/myadoption">활동 내역</a>
                 </div>

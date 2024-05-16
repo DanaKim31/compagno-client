@@ -35,15 +35,34 @@ const Div = styled.div`
     // 탭 선택바
     .mb-3 {
       width: 90%;
-      font-size: 1.5rem;
+      display: flex;
+      font-size: 1.2rem;
+
+      .nav-link {
+        color: white;
+        background-color: #94b29b;
+      }
+      .active {
+        color: black;
+        background-color: transparent;
+      }
     }
     // 정보 조회
     .info-content {
-      padding-top: 100px;
+      margin-top: 100px;
+      padding-top: 60px;
       width: 40vw;
       display: flex;
       justify-content: space-around;
       align-items: center;
+      padding-bottom: 20px;
+      border-width: 2px 2px 60px 2px;
+      border-color: #94b29b;
+      border-style: solid;
+      /* border-bottom: #94b29b solid 60px; */
+      border-radius: 50px;
+
+      font-size: 1.2rem;
 
       .info-image {
         width: 300px;
@@ -53,14 +72,65 @@ const Div = styled.div`
     }
 
     // 정보 수정
+
     .info-edit {
+      width: 1000px;
+
       .changeMyInfo {
-        width: 500px;
+        display: flex;
+
+        .info-edit-img {
+          width: fit-content;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-right: 100px;
+
+          img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+          }
+
+          .picBtn {
+            width: fit-content;
+          }
+        }
+
+        .info-edit-text {
+          width: 80%;
+
+          input {
+            font-weight: bold;
+            border: 1px solid black;
+          }
+        }
+      }
+
+      /* .changeMyInfo {
+        width: 1000px;
         height: 500px;
 
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: space-evenly;
+
+        .editBtn {
+          font-weight: bold;
+          border-radius: 5px;
+          border: none;
+          color: rgb(32, 61, 59);
+          text-decoration: none;
+          padding: 10px;
+          font-size: 1rem;
+          align-items: center;
+        }
+
+        .editBtn:hover {
+          font-weight: bold;
+          background-color: rgb(32, 61, 59);
+          color: white;
+        }
 
         .profileImage {
           cursor: pointer;
@@ -71,7 +141,7 @@ const Div = styled.div`
             border-radius: 50%;
           }
         }
-      }
+      } */
     }
 
     .info-quit {
@@ -375,85 +445,88 @@ const MyPageMyInfo = () => {
             </div>
           </Tab>
           <Tab eventKey="profile" title="정보 수정">
+            <h1>회원 정보 수정</h1>
             <div className="info-edit">
-              <h1>회원 정보 수정</h1>
               <div className="changeMyInfo">
                 <Form.Group controlId="formFile" className="mb-3">
-                  <label className="profileImage">
-                    <img
-                      src={
-                        pImageUrl
-                          ? pImageUrl
-                          : "http://192.168.10.28:8081/" + info.userImg
-                      }
-                      htmlFor="pic"
-                    />
+                  <div className="info-edit-img">
+                    <label className="profileImage">
+                      <img
+                        src={
+                          pImageUrl
+                            ? pImageUrl
+                            : "http://192.168.10.28:8081/" + info.userImg
+                        }
+                        htmlFor="pic"
+                      />
+                      <Form.Control
+                        type="file"
+                        accept="image/*"
+                        onChange={uploadProfileImage}
+                        name="pic"
+                        hidden
+                      />
+                    </label>
+                    <button onClick={onChangedefaultImg} className="picBtn">
+                      프로필 이미지 삭제
+                    </button>
+                  </div>
+
+                  <div className="info-edit-text">
                     <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={uploadProfileImage}
-                      name="pic"
-                      hidden
+                      type="password"
+                      value={user.userPwd}
+                      onChange={(e) => {
+                        setUser((prev) => ({
+                          ...prev,
+                          userPwd: e.target.value,
+                          userId: info.userId,
+                        }));
+                      }}
                     />
-                  </label>
-                  <button onClick={onChangedefaultImg}>
-                    프로필 이미지 삭제
-                  </button>
+                    <span className="regExpMessage">{userPwdSpan}</span>
+                    <Form.Control
+                      type="password"
+                      value={user.userPwdCheck}
+                      onChange={(e) => {
+                        setUser((prev) => ({
+                          ...prev,
+                          userPwdCheck: e.target.value,
+                        }));
+                      }}
+                    />
+                    <span className="regExpMessage">{userPwdCheckSpan}</span>
 
-                  <Form.Control
-                    type="password"
-                    value={user.userPwd}
-                    onChange={(e) => {
-                      setUser((prev) => ({
-                        ...prev,
-                        userPwd: e.target.value,
-                        userId: info.userId,
-                      }));
-                    }}
-                  />
-                  <span className="regExpMessage">{userPwdSpan}</span>
-                  <Form.Control
-                    type="password"
-                    value={user.userPwdCheck}
-                    onChange={(e) => {
-                      setUser((prev) => ({
-                        ...prev,
-                        userPwdCheck: e.target.value,
-                      }));
-                    }}
-                  />
-                  <span className="regExpMessage">{userPwdCheckSpan}</span>
+                    <Form.Control
+                      type="text"
+                      value={user.userPhone}
+                      onChange={(e) => {
+                        setUser((prev) => ({
+                          ...prev,
+                          userPhone: e.target.value,
+                        }));
+                      }}
+                    />
+                    <span className="regExpMessage">{userPhoneSpan}</span>
 
-                  <Form.Control
-                    type="text"
-                    value={user.userPhone}
-                    onChange={(e) => {
-                      setUser((prev) => ({
-                        ...prev,
-                        userPhone: e.target.value,
-                      }));
-                    }}
-                  />
-                  <span className="regExpMessage">{userPhoneSpan}</span>
-
-                  <Form.Control
-                    type="text"
-                    value={user.userEmail}
-                    onChange={(e) => {
-                      setUser((prev) => ({
-                        ...prev,
-                        userEmail: e.target.value,
-                      }));
-                    }}
-                  />
-                  <span className="regExpMessage">{userEmailSpan}</span>
+                    <Form.Control
+                      type="text"
+                      value={user.userEmail}
+                      onChange={(e) => {
+                        setUser((prev) => ({
+                          ...prev,
+                          userEmail: e.target.value,
+                        }));
+                      }}
+                    />
+                    <span className="regExpMessage">{userEmailSpan}</span>
+                  </div>
                 </Form.Group>
-                <Button onClick={editMyInfo}>회원 정보 수정</Button>
               </div>
+              <Button onClick={editMyInfo} className="editBtn">
+                회원 정보 수정
+              </Button>
             </div>
-          </Tab>
-          <Tab eventKey="changePwd" title="암호 변경">
-            <div className="info-pwd"></div>
           </Tab>
           <Tab eventKey="quit" title="회원 탈퇴">
             <div className="info-quit">

@@ -125,15 +125,11 @@ const MyPageLost = () => {
   const location = useLocation();
   const nowLoca = location.pathname.substring(17);
 
-  useEffect(() => {
-    console.log(nowLoca);
-  }, [location]);
-
   return (
     <Div>
       <MyPageSidebar />
       <div className="myLostMain">
-        <MyPageTab />
+        <MyPageTab onClickMenu={nowLoca} />
         <div className="contentZone">
           <div className="cardZone">
             {lostList?.map((lost) => (

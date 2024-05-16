@@ -17,6 +17,10 @@ const Div = styled.div`
     font-weight: normal;
     font-style: normal;
   }
+  .adoption {
+    color: black;
+    background-color: white;
+  }
 
   display: flex;
   height: 100vh;
@@ -124,15 +128,19 @@ const MyPageAdoption = () => {
   const location = useLocation();
   const nowLoca = location.pathname.substring(17);
 
-  useEffect(() => {
-    console.log(nowLoca);
-  }, [location]);
+  // const onClickMenu = (id) => {
+  //   setMenu(id);
+  // };
+
+  // useEffect(() => {
+  //   console.log(nowLoca);
+  // }, [location]);
 
   return (
     <Div>
       <MyPageSidebar />
       <div className="myAdopMain">
-        <MyPageTab />
+        <MyPageTab onClickMenu={nowLoca} />
         <div className="contentZone">
           <div className="cardZone">
             {adopList?.map((adop) => (
