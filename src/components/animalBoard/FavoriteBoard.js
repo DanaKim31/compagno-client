@@ -6,7 +6,7 @@ import {
   checkFavorite,
   delFavorite,
 } from "../../api/animalBoard";
-import { AdLogic } from "./AdLogic";
+import { AdLogic } from "../../api/AdLogic";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -30,7 +30,7 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
       userId: userId,
     });
     setBoolean(response.data);
-    console.log(response.data);
+    // console.log(response.data);
   };
   // 좋아요
   const addFav = async () => {
