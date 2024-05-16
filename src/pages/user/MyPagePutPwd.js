@@ -16,6 +16,51 @@ const Div = styled.div`
 
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
+  width: calc(100vw - 300px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+
+  .headText {
+    width: 30%;
+    font-weight: bold;
+  }
+
+  .inputPwd {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    input {
+      width: 100%;
+      height: 40px;
+      box-sizing: border-box;
+      font-weight: bold;
+    }
+
+    span {
+      width: 100%;
+      height: 30px;
+    }
+
+    button {
+      border-radius: 5px;
+      border: 2px solid;
+      color: rgb(32, 61, 59);
+      text-decoration: none;
+      padding: 10px;
+      font-size: 1rem;
+      align-items: center;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
+      font-weight: bold;
+    }
+  }
 `;
 
 const MyPagePutPwd = () => {
@@ -60,7 +105,12 @@ const MyPagePutPwd = () => {
 
   // 입력한 비밀번호 정규표현식으로 체크하는 함수
   const onChangePwd = () => {
-    if (pwdRegexp.test(user.userPwd) || user.userPwd === "") {
+    if (
+      pwdRegexp.test(user.userPwd) ||
+      user.userPwd === "" ||
+      user.userPwd === null ||
+      user.userPwd === undefined
+    ) {
       setUserPwdSpan("");
     } else {
       setUserPwdSpan(pwdText);
@@ -69,12 +119,22 @@ const MyPagePutPwd = () => {
 
   // 동일한 비멀번호 입력 체크하는 함수
   const onChangeChkPwd = () => {
-    if (user.userPwd === user.userPwdCheck || user.userPwdCheck === "") {
+    if (
+      user.userPwd === user.userPwdCheck ||
+      user.userPwdCheck === "" ||
+      user.userPwdCheck === null ||
+      user.userPwdCheck === undefined
+    ) {
       setUserPwdCheckSpan("");
     } else {
       setUserPwdCheckSpan(pwdChkText);
     }
   };
+
+  useEffect(() => {
+    console.log(user.userPwd);
+    console.log(user.userPwdCheck);
+  }, []);
 
   // 비밀번호 체크 정규표현식 실행하는 useEffect
   useEffect(() => {
@@ -114,12 +174,15 @@ const MyPagePutPwd = () => {
 
   return (
     <Div>
-      <p>비밀번호변경창</p>
-      <div>
+      <div className="headText">
+        <h1>비밀번호 변경</h1>
+        <p>변경할 비밀번호를 입력해주세요</p>
+      </div>
+      <div className="inputPwd">
         <input
           type="password"
           value={user.userPwd}
-          placeholder=""
+          placeholder="변경할 비밀번호 입력"
           onChange={(e) => {
             setUser((prev) => ({
               ...prev,
@@ -131,6 +194,7 @@ const MyPagePutPwd = () => {
         <input
           type="password"
           value={user.userPwdCheck}
+          placeholder="동일한 비밀번호 입력"
           onChange={(e) => {
             setUser((prev) => ({
               ...prev,
@@ -139,8 +203,8 @@ const MyPagePutPwd = () => {
           }}
         />
         <span className="regExpMessage">{userPwdCheckSpan}</span>
+        <button onClick={change}>비밀번호 변경</button>
       </div>
-      <button onClick={change}>비밀번호 변경</button>
     </Div>
   );
 };
