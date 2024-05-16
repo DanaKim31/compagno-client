@@ -17,26 +17,57 @@ import { FaThumbsUp, FaRegThumbsUp } from "react-icons/fa6";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import { FiCornerDownRight } from "react-icons/fi";
-import Pagination from "react-js-pagination";
+import MyToggleBar from "../../components/note/MyToggleBar";
+
 const Main = styled.main`
-  padding-top: 150px;
+  width: 1900px;
+  padding: 0px 300px;
+  padding-top: 120px;
   height: 100%;
+  background-color: rgb(244, 244, 244);
   display: flex;
   flex-direction: column;
-  margin: 0px 20%;
   padding-bottom: 90px;
-  width: 1200px;
+
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+
+  input,
+  select,
+  button,
+  option,
+  h2,
+  textarea {
+    font-weight: bold;
+    resize: none;
+  }
+
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding-bottom: 10px;
+  }
+  h1:hover {
+    color: mediumblue;
+  }
+
   .boardDiv {
-    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px black solid;
   }
 
   .boardRegiDate {
     float: right;
-  }
-
-  p {
-    margin-bottom: 20px;
-    font-size: 1.5rem;
   }
 
   .viewCount {
@@ -75,6 +106,7 @@ const Main = styled.main`
     font-size: 2rem;
     cursor: pointer;
     width: 100px;
+    margin-top: 20px;
 
     .recommend {
       font-size: 3rem;
@@ -126,6 +158,14 @@ const Main = styled.main`
     img {
       margin-right: 5px;
     }
+
+    div {
+      display: inline-flex;
+      font-size: 0.8rem;
+      svg {
+        cursor: pointer;
+      }
+    }
   }
   .commentUserImage {
     width: 40px;
@@ -172,6 +212,93 @@ const Main = styled.main`
       width: 80px;
     }
   }
+
+  .boardUserInfo {
+    div {
+      display: inline-flex;
+      font-size: 0.8rem;
+    }
+    svg {
+      cursor: pointer;
+    }
+
+    span {
+      line-height: 40px;
+    }
+
+    border-bottom: 2px solid #dcdcdc;
+    padding: 4px 0px;
+  }
+
+  .boardTitle {
+    font-size: 1.8rem;
+    padding-bottom: 6px;
+    border-bottom: 2px solid gray;
+  }
+
+  .boardUserImage {
+    width: 40px;
+    height: 40px;
+  }
+
+  .boardImage {
+    margin-top: 20px;
+    position: relative;
+    img {
+      object-fit: "cover";
+      margin-left: 9px;
+    }
+    img:nth-child(1) {
+      width: 620px;
+      height: 405px;
+      margin-left: 31px;
+    }
+    img:nth-child(2) {
+      position: absolute;
+      top: 0px;
+    }
+    img:nth-child(3) {
+      position: absolute;
+      top: 0px;
+      right: 31px;
+    }
+    img:nth-child(4) {
+      position: absolute;
+      bottom: 0px;
+    }
+    img:nth-child(5) {
+      position: absolute;
+      bottom: 0px;
+      right: 31px;
+    }
+
+    img:not(:nth-child(1)) {
+      width: 300px;
+      height: 200px;
+    }
+  }
+
+  .boardContent {
+    padding: 20px;
+    border-top: 2px solid #dcdcdc;
+    border-bottom: 2px solid #dcdcdc;
+    background-color: whitesmoke;
+  }
+
+  .boardCommentDiv {
+    margin-top: 20px;
+  }
+
+  .boardBtnNav {
+    padding-top: 10px;
+    padding-right: 10px;
+    button {
+      margin: 0px 5px;
+      float: right;
+      width: 75px;
+      height: 45px;
+    }
+  }
 `;
 
 const ProductBoardDetail = () => {
@@ -184,12 +311,13 @@ const ProductBoardDetail = () => {
   const { code } = useParams();
   const [productBoard, setProductBoard] = useState([]);
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState([]);
+  const [comment, setComment] = useState("");
   const [replyNo, setReplyNo] = useState(0);
   const [replyContent, setReplyContent] = useState("");
   const [editNo, setEditNo] = useState(0);
   const [editContent, setEditContent] = useState("");
   const [page, setPage] = useState("");
+  const token = localStorage.getItem("token");
 
   const viewProductBoard = async () => {
     const response = await getProductBoard(code);
@@ -202,6 +330,10 @@ const ProductBoardDetail = () => {
   };
 
   const recommend = async () => {
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      return false;
+    }
     await productBoardRecommend({
       productBoardCode: code,
       userId: user.userId,
@@ -226,7 +358,6 @@ const ProductBoardDetail = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
@@ -239,45 +370,79 @@ const ProductBoardDetail = () => {
   );
 
   const commentDelete = async (no) => {
-    await delProductBoardcomment(no);
-    viewProductBoard();
-    viewProductBoardComment();
+    if (window.confirm("댓글을 삭제하시겠습니까?")) {
+      await delProductBoardcomment(no);
+      viewProductBoard();
+      viewProductBoardComment();
+    }
   };
 
   const addComment = async () => {
-    await addProductBoardComment({
-      productBoardCode: code,
-      productCommentContent: comment,
-    });
-    viewProductBoard();
-    viewProductBoardComment();
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      return false;
+    }
+    if (comment === "") {
+      alert("내용을 입력해주세요.");
+      return false;
+    }
+    if (window.confirm("댓글을 작성하시겠습니까?")) {
+      await addProductBoardComment({
+        productBoardCode: code,
+        productCommentContent: comment,
+      });
+      viewProductBoard();
+      viewProductBoardComment();
+      alert("댓글이 등록되었습니다.");
+    }
   };
 
   const addReply = async () => {
-    await addProductBoardComment({
-      productBoardCode: code,
-      productParentCode: replyNo,
-      productCommentContent: replyContent,
-    });
-    setReplyNo(0);
-    setReplyContent("");
-    viewProductBoard();
-    viewProductBoardComment();
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      return false;
+    }
+    if (replyContent === "") {
+      alert("내용을 입력해주세요.");
+      return false;
+    }
+    if (window.confirm("댓글을 작성하시겠습니까?")) {
+      await addProductBoardComment({
+        productBoardCode: code,
+        productParentCode: replyNo,
+        productCommentContent: replyContent,
+      });
+      setReplyNo(0);
+      setReplyContent("");
+      viewProductBoard();
+      viewProductBoardComment();
+      alert("댓글이 등록되었습니다.");
+    }
   };
 
   const editComment = async () => {
-    await editProductBoardComment({
-      productCommentCode: editNo,
-      productCommentContent: editContent,
-    });
-    setReplyContent("");
-    setEditNo(0);
-    viewProductBoardComment();
+    if (editContent === "") {
+      alert("내용을 입력해주세요.");
+      return false;
+    }
+    if (window.confirm("수정 하시겠습니까?")) {
+      await editProductBoardComment({
+        productCommentCode: editNo,
+        productCommentContent: editContent,
+      });
+      setReplyContent("");
+      setEditNo(0);
+      viewProductBoardComment();
+      alert("댓글이 수정되었습니다.");
+    }
   };
 
   const removeProductBoard = async () => {
-    await delProductBoard(code);
-    navigate("/compagno/product-board");
+    if (window.confirm("게시물을 삭제 하시겠습니까?")) {
+      await delProductBoard(code);
+      navigate("/compagno/product-board");
+      window.alert("게시물이 삭제되었습니다.");
+    }
   };
 
   const editProductBoard = () => {
@@ -287,57 +452,50 @@ const ProductBoardDetail = () => {
   return (
     <Main>
       <div className="boardDiv">
-        <p className="boardTitle">
-          제목 : {productBoard.productBoardTitle}{" "}
+        <h1 onClick={() => navigate("/compagno/product-board")}>
+          제품 정보 공유 게시판
+        </h1>
+        <div className="boardTitle">{productBoard.productBoardTitle} </div>
+        <div className="boardUserInfo">
+          {productBoard.user?.userImg !== undefined && (
+            <img
+              className="boardUserImage"
+              src={"http://192.168.10.28:8081/" + productBoard.user?.userImg}
+            />
+          )}
+          {productBoard.user?.userNickname} <MyToggleBar />
           <span className="boardRegiDate">
             작성 일 :{" "}
-            {moment(productBoard.productCommentRegiDate).format(
-              "YYYY.MM.DD HH:mm"
+            {moment(productBoard.productBoardRegiDate).format(
+              "YYYY-MM-DD HH:mm"
             )}
           </span>
           <span className="viewCount">
             조회 수 : {productBoard.productBoardViewCount}
           </span>
-        </p>
-        <p>작성자 : {productBoard.user?.userNickname}</p>
+        </div>
         {productBoard.productMainImage != undefined && (
-          <img
-            src={"http://192.168.10.28:8081/" + productBoard.productMainImage}
-            style={{
-              height: "400px",
-              width: "600px",
-              objectFit: "cover",
-              margin: "20px auto",
-            }}
-          />
+          <div className="boardImage">
+            <img
+              src={"http://192.168.10.28:8081/" + productBoard.productMainImage}
+            />
+            {productBoard.images?.map((image) => (
+              <img
+                key={image.productImageCode}
+                src={"http://192.168.10.28:8081/" + image.productImage}
+              />
+            ))}
+          </div>
         )}
-        <p>상품명 : {productBoard.productName}</p>
+        <p>제품명 : {productBoard.productName}</p>
         <p>사용 동물 : {productBoard.animalCategory?.animalType}</p>
-        <p>상품 분류 : {productBoard.productCategory}</p>
-        <p>가격 : {productBoard.productPrice}</p>
+        <p>제품 품목 : {productBoard.productCategory}</p>
+        <p>가격 : {productBoard.productPrice?.toLocaleString("ko-KR")}원</p>
         <p>
           만족도 : {star(productBoard.productBoardGrade)}
           &nbsp;&nbsp;{productBoard.productBoardGrade}
         </p>
-        {productBoard.images?.map((image) => (
-          <img
-            key={image.productImageCode}
-            src={"http://192.168.10.28:8081/" + image.productImage}
-            style={{
-              height: "300px",
-              width: "500px",
-              objectFit: "cover",
-              marginRight: "60px",
-              marginBottom: "30px",
-            }}
-          />
-        ))}
-        <Form.Control
-          as="textarea"
-          rows={20}
-          readOnly
-          value={productBoard.productBoardContent}
-        />
+        <div className="boardContent">{productBoard.productBoardContent}</div>
         <div className="recommendDiv">
           {checkRecommend?.length === 0 ? (
             <FaRegThumbsUp className="recommend" onClick={() => recommend()} />
@@ -346,25 +504,35 @@ const ProductBoardDetail = () => {
           )}
           <span>{productBoard.recommend?.length}</span>
         </div>
+      </div>
+      <nav className="boardBtnNav">
+        <Button
+          variant="secondary"
+          onClick={() => navigate("/compagno/product-board")}
+        >
+          목록
+        </Button>
         {user.userId === productBoard.user?.userId && (
           <>
-            <button
-              onClick={() => {
-                removeProductBoard();
-              }}
-            >
-              삭제
-            </button>
-            <button
+            <Button
+              variant="warning"
               onClick={() => {
                 editProductBoard();
               }}
             >
               수정
-            </button>
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => {
+                removeProductBoard();
+              }}
+            >
+              삭제
+            </Button>
           </>
         )}
-      </div>
+      </nav>
       <div className="boardCommentDiv">
         <h2>
           댓글{" "}
@@ -381,7 +549,10 @@ const ProductBoardDetail = () => {
               rows={3}
               className="writeComment"
               onChange={(e) => {
-                setComment(e.target.value);
+                if (e.target.value.length > 250) {
+                  e.target.value = e.target.value.slice(0, 250);
+                }
+                setComment(e.target.value.trim());
               }}
             />
             <Button
@@ -406,7 +577,7 @@ const ProductBoardDetail = () => {
                         productBoard.user?.userImg
                       }
                     />
-                    {comment.user.userNickname}
+                    {comment.user.userNickname} <MyToggleBar />
                   </span>
                   <span className="commentRegiDate">
                     {moment(comment.productCommentRegiDate).isSame(
@@ -423,6 +594,7 @@ const ProductBoardDetail = () => {
                           onClick={(e) => {
                             e.stopPropagation();
                             setEditNo(comment.productCommentCode);
+                            setEditContent(comment.productCommentContent);
                             setReplyNo("");
                           }}
                         >
@@ -452,7 +624,10 @@ const ProductBoardDetail = () => {
                             e.stopPropagation();
                           }}
                           onChange={(e) => {
-                            setEditContent(e.target.value);
+                            if (e.target.value.length > 250) {
+                              e.target.value = e.target.value.slice(0, 250);
+                            }
+                            setEditContent(e.target.value.trim());
                           }}
                         />
                         <Button
@@ -500,7 +675,10 @@ const ProductBoardDetail = () => {
                         rows={3}
                         className="writeReply"
                         onChange={(e) => {
-                          setReplyContent(e.target.value);
+                          if (e.target.value.length > 250) {
+                            e.target.value = e.target.value.slice(0, 250);
+                          }
+                          setReplyContent(e.target.value.trim());
                         }}
                       />
                       <Button onClick={() => addReply()}>작성</Button>
@@ -528,7 +706,7 @@ const ProductBoardDetail = () => {
                             productBoard.user?.userImg
                           }
                         />
-                        {reply.user.userNickname}
+                        {reply.user.userNickname} <MyToggleBar />
                       </span>
                       <span className="commentRegiDate">
                         {moment(reply.productCommentRegiDate).isSame(
@@ -537,7 +715,7 @@ const ProductBoardDetail = () => {
                         )
                           ? moment(reply.productCommentRegiDate).from(moment())
                           : moment(reply.productCommentRegiDate).format(
-                              "YYYY.MM.DD"
+                              "YYYY.MM.DD. HH:mm"
                             )}
                         {user.userId === reply.user?.userId && (
                           <span className="commentChangeSpan">
@@ -545,6 +723,7 @@ const ProductBoardDetail = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setEditNo(reply.productCommentCode);
+                                setEditContent(reply.productCommentContent);
                                 setReplyNo("");
                               }}
                             >
@@ -574,7 +753,10 @@ const ProductBoardDetail = () => {
                                 e.stopPropagation();
                               }}
                               onChange={(e) => {
-                                setEditContent(e.target.value);
+                                if (e.target.value.length > 250) {
+                                  e.target.value = e.target.value.slice(0, 250);
+                                }
+                                setEditContent(e.target.value.trim());
                               }}
                             />
                             <Button
@@ -638,7 +820,10 @@ const ProductBoardDetail = () => {
                         rows={3}
                         className="writeReply"
                         onChange={(e) => {
-                          setReplyContent(e.target.value);
+                          if (e.target.value.length > 250) {
+                            e.target.value = e.target.value.slice(0, 250);
+                          }
+                          setReplyContent(e.target.value.trim());
                         }}
                       />
                       <Button onClick={() => addReply()}>작성</Button>
@@ -666,7 +851,7 @@ const ProductBoardDetail = () => {
                             productBoard.user?.userImg
                           }
                         />
-                        {reply.user.userNickname}
+                        {reply.user.userNickname} <MyToggleBar />
                       </span>
 
                       <span className="commentRegiDate">
@@ -676,7 +861,7 @@ const ProductBoardDetail = () => {
                         )
                           ? moment(reply.productCommentRegiDate).from(moment())
                           : moment(reply.productCommentRegiDate).format(
-                              "YYYY.MM.DD"
+                              "YYYY.MM.DD. HH:mm"
                             )}
                         {user.userId === reply.user?.userId && (
                           <span className="commentChangeSpan">
@@ -684,6 +869,7 @@ const ProductBoardDetail = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setEditNo(reply.productCommentCode);
+                                setEditContent(reply.productCommentContent);
                                 setReplyNo("");
                               }}
                             >
@@ -713,7 +899,10 @@ const ProductBoardDetail = () => {
                                 e.stopPropagation();
                               }}
                               onChange={(e) => {
-                                setEditContent(e.target.value);
+                                if (e.target.value.length > 250) {
+                                  e.target.value = e.target.value.slice(0, 250);
+                                }
+                                setEditContent(e.target.value.trim());
                               }}
                             />
                             <Button

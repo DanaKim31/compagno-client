@@ -25,10 +25,36 @@ import {
 import { MdOutlineWatchLater } from "react-icons/md";
 import { BiMessageDetail } from "react-icons/bi";
 import { Form, Button } from "react-bootstrap";
+import MyToggleBar from "../../components/note/MyToggleBar";
 
 const StyledProductBoard = styled.main`
   padding-top: 120px;
+  padding-bottom: 30px;
   display: grid;
+  background-color: rgb(244, 244, 244);
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+
+  input,
+  select,
+  button,
+  option {
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  textarea {
+    resize: none;
+  }
+
   h1 {
     font-size: 2.5;
     padding-left: 120px;
@@ -48,12 +74,13 @@ const StyledProductBoard = styled.main`
     position: relative;
     cursor: pointer;
     border-radius: 10px;
+    font: inherit;
   }
 
   .boardList {
     display: grid;
     grid-template-columns: repeat(4, 390px);
-    grid-template-rows: 300px;
+    grid-template-rows: 358px;
     gap: 30px;
     margin: 0px 120px;
     span {
@@ -67,7 +94,15 @@ const StyledProductBoard = styled.main`
     cursor: pointer;
     position: absolute;
     right: 5px;
+    background-color: rgb(244, 244, 244);
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
+
+  .bookmark:hover {
+    color: #ffeb5a;
+  }
+
   .paging {
     margin: 20px 0px;
     display: flex;
@@ -129,10 +164,14 @@ const StyledProductBoard = styled.main`
   }
 
   .nullMainImage {
-    height: 200px;
+    height: 258px;
     width: 100%;
-    font-size: 2rem;
     border-bottom: 1px solid black;
+    text-align: center;
+    line-height: 258px;
+    svg {
+      font-size: 6rem;
+    }
   }
 
   .sortWriteNav {
@@ -176,6 +215,40 @@ const StyledProductBoard = styled.main`
       font-size: 0.75rem;
     }
   }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .pageNoBtn {
+    width: 30px;
+    height: 30px;
+    border: 2px solid black;
+    margin: 0px 1px;
+    border-radius: 5px;
+  }
+
+  .pageNoBtn:hover {
+    background-color: #78e150;
+  }
+
+  .paging {
+    svg {
+      margin-top: 5px;
+      cursor: pointer;
+      height: 20px;
+      width: 20px;
+    }
+    svg:hover {
+      color: #78e150;
+    }
+  }
+
+  .bookmarkTrue:hover {
+    color: black !important;
+  }
 `;
 
 const ViewAllProductBoard = () => {
@@ -191,6 +264,7 @@ const ViewAllProductBoard = () => {
   const [prev, setPrev] = useState(false); // 앞으로 한칸 버튼
   const [next, setNext] = useState(false); // 뒤로 한칸 버튼
   const [pages, setPages] = useState([]); // 페이지들
+  const token = localStorage.getItem("token");
 
   const [filter, setFilter] = useState({
     productName: "",
@@ -228,12 +302,13 @@ const ViewAllProductBoard = () => {
 
   useEffect(() => {
     getProductBoards();
+    paging();
   }, [page]);
 
   // totalPage가 바뀔 때 마다 실행
   const paging = () => {
-    lastPage = Math.ceil(page / 10) * 10;
-    firstPage = lastPage - 9;
+    lastPage = Math.ceil(page / 5) * 5;
+    firstPage = lastPage - 4;
 
     if (totalPage < lastPage) {
       lastPage = totalPage; // 전체 페이지가 마지막 페이지보다 작은 경우엔 전체 페이지 수가 마지막 페이지 수랑 같음
@@ -251,7 +326,6 @@ const ViewAllProductBoard = () => {
   }, [totalPage]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
@@ -275,6 +349,10 @@ const ViewAllProductBoard = () => {
   };
 
   const bookmark = async (code) => {
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      return false;
+    }
     await productBoardBookmark({
       productBoardCode: code,
       userId: user.userId,
@@ -291,6 +369,14 @@ const ViewAllProductBoard = () => {
     getProductBoards();
   }, [filter.sort]);
 
+  const boardWrite = () => {
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      return false;
+    }
+    navigate("/compagno/product-board/create");
+  };
+
   return (
     <StyledProductBoard>
       <h1 onClick={() => navigate("/compagno/product-board")}>
@@ -302,7 +388,10 @@ const ViewAllProductBoard = () => {
           type="text"
           placeholder="제품 품목"
           onChange={(e) =>
-            setFilter((prev) => ({ ...prev, productCate: e.target.value }))
+            setFilter((prev) => ({
+              ...prev,
+              productCate: e.target.value.trim(),
+            }))
           }
         />
         <Form.Control
@@ -311,14 +400,17 @@ const ViewAllProductBoard = () => {
           placeholder="제품 명"
           style={{ margin: "0px 15px" }}
           onChange={(e) =>
-            setFilter((prev) => ({ ...prev, productName: e.target.value }))
+            setFilter((prev) => ({
+              ...prev,
+              productName: e.target.value.trim(),
+            }))
           }
         />
         <Form.Select
           size="sm"
           defaultValue=""
           onChange={(e) =>
-            setFilter((prev) => ({ ...prev, animal: e.target.value }))
+            setFilter((prev) => ({ ...prev, animal: e.target.value.trim() }))
           }
           className="animalSelect"
           style={{ marginRight: "15px" }}
@@ -334,20 +426,26 @@ const ViewAllProductBoard = () => {
         </Form.Select>
         <Form.Control
           size="sm"
-          type="text"
+          type="Number"
           placeholder="최소 금액"
-          onChange={(e) =>
-            setFilter((prev) => ({ ...prev, minPrice: e.target.value }))
-          }
+          onChange={(e) => {
+            if (e.target.value.length > 9) {
+              e.target.value = e.target.value.slice(0, 9);
+            }
+            setFilter((prev) => ({ ...prev, minPrice: e.target.value.trim() }));
+          }}
         />
         -
         <Form.Control
           size="sm"
-          type="text"
+          type="Number"
           placeholder="최대 금액"
-          onChange={(e) =>
-            setFilter((prev) => ({ ...prev, maxPrice: e.target.value }))
-          }
+          onChange={(e) => {
+            if (e.target.value.length > 9) {
+              e.target.value = e.target.value.slice(0, 9);
+            }
+            setFilter((prev) => ({ ...prev, maxPrice: e.target.value.trim() }));
+          }}
           style={{ marginRight: "20px" }}
         />
         <div className="gradeDiv">
@@ -558,7 +656,7 @@ const ViewAllProductBoard = () => {
           placeholder="검색어 입력"
           style={{ marginRight: "5px" }}
           onChange={(e) => {
-            setFilter((prev) => ({ ...prev, keyword: e.target.value }));
+            setFilter((prev) => ({ ...prev, keyword: e.target.value.trim() }));
           }}
         />
         <Button
@@ -582,10 +680,7 @@ const ViewAllProductBoard = () => {
           <option value="view">조회 순</option>
           <option value="recommend">추천 순</option>
         </Form.Select>
-        <Button
-          variant="secondary"
-          onClick={() => navigate("/compagno/product-board/create")}
-        >
+        <Button variant="secondary" onClick={() => boardWrite()}>
           글쓰기{" "}
         </Button>
       </nav>
@@ -608,8 +703,8 @@ const ViewAllProductBoard = () => {
               />
             ) : (
               <FaStar
-                className="bookmark"
-                style={{ color: "yellow" }}
+                className="bookmark bookmarkTrue"
+                style={{ color: "#FFEB5A" }}
                 onClick={(e) => {
                   e.stopPropagation();
                   bookmark(productBoard.productBoardCode);
@@ -623,15 +718,19 @@ const ViewAllProductBoard = () => {
                   "http://192.168.10.28:8081/" + productBoard.productMainImage
                 }
                 style={{
-                  height: "200px",
+                  height: "258px",
                   width: "100%",
                   objectFit: "fill",
                   borderBottom: "1px solid black",
                   borderRadius: "7px",
+                  borderBottomRightRadius: "0px",
+                  borderBottomLeftRadius: "0px",
                 }}
               />
             ) : (
-              <FaRegImage className="nullMainImage" />
+              <div className="nullMainImage">
+                <FaRegImage />
+              </div>
             )}
             <div className="boardInfoDiv">
               <span className="boardSpan">
@@ -644,6 +743,7 @@ const ViewAllProductBoard = () => {
                   float: "right",
                   height: "25px",
                 }}
+                onClick={(e) => e.stopPropagation()}
               >
                 <img
                   className="userImage"
@@ -699,33 +799,42 @@ const ViewAllProductBoard = () => {
         ))}
       </div>
       <nav className="paging">
-        <FaAnglesLeft onClick={() => setPage(1)} />
-        {/* 가장 첫 페이지로 */}
-        <FaAngleLeft
-          onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
-        />
+        {prev && (
+          <FaAnglesLeft onClick={() => setPage(Math.ceil(page / 5) * 5 - 9)} />
+          /* 가장 첫 페이지로 */
+        )}
+        {page !== 1 && (
+          <FaAngleLeft
+            onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
+          />
+        )}
         {pages.map(
           (
             num,
             index // 배열 담은 pages를 map으로 만들어서 반복문 페이지번호 생성
           ) => (
             <button
+              className="pageNoBtn"
               key={index}
               value={num}
               onClick={(e) => setPage(Number(e.target.value))}
+              // style={num === page && { color: "#78e150" }}
             >
               {num}
             </button>
           )
         )}
-
-        <FaAngleRight
-          onClick={
-            () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
-          }
-        />
-        <FaAnglesRight onClick={() => setPage(totalPage)} />
-        {/* 가장 마지막 페이지로 */}
+        {page !== totalPage && (
+          <FaAngleRight
+            onClick={
+              () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
+            }
+          />
+        )}
+        {next && (
+          <FaAnglesRight onClick={() => setPage(Math.ceil(page / 5) * 5 + 1)} />
+          /* 가장 마지막 페이지로 */
+        )}
       </nav>
     </StyledProductBoard>
   );
