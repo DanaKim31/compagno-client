@@ -1,4 +1,4 @@
-import { sendBox, starSenderUpdate } from "../../api/note";
+import { sendBox, starSenderUpdate, delSenderCount } from "../../api/note";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -174,6 +174,17 @@ const NoteViewSendBox = () => {
     starSenderUpdate(code);
   };
 
+  // 삭제 된 쪽지 수
+  const [num, setNum] = useState(0);
+  const numAPI = async () => {
+    const response = await delSenderCount(user.userNickname);
+    setNum(response.data);
+  };
+
+  useEffect(() => {
+    numAPI();
+  }, [user]);
+
   return (
     <DivTotal>
       <MyPageSidebar />
@@ -273,7 +284,9 @@ const NoteViewSendBox = () => {
                   }}
                 >
                   <BsEnvelopePaper />
-                  <span style={{ marginLeft: "10px" }}>총 {allCount}개</span>
+                  <span style={{ marginLeft: "10px" }}>
+                    총 {allCount - num}개
+                  </span>
                 </div>
                 <table style={{ width: "85%", height: "60%" }}>
                   <thead

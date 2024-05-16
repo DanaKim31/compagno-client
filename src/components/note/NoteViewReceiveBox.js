@@ -1,4 +1,8 @@
-import { receivBox, starReceiverUpdate } from "../../api/note";
+import {
+  receivBox,
+  starReceiverUpdate,
+  delReceiverCount,
+} from "../../api/note";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -189,7 +193,14 @@ const NoteViewReceiveBox = () => {
     window.location.reload();
     starReceiverUpdate(code);
   };
-
+  const [num, setNum] = useState(0);
+  const numAPI = async () => {
+    const response = await delReceiverCount(user.userNickname);
+    setNum(response.data);
+  };
+  useEffect(() => {
+    numAPI();
+  }, [user]);
   return (
     <DivTotal>
       <MyPageSidebar />
@@ -289,7 +300,9 @@ const NoteViewReceiveBox = () => {
                   }}
                 >
                   <BsEnvelopePaper />
-                  <span style={{ marginLeft: "10px" }}>총 {allCount}개</span>
+                  <span style={{ marginLeft: "10px" }}>
+                    총 {allCount - num}개
+                  </span>
                 </div>
 
                 <table style={{ width: "85%", height: "60%" }}>

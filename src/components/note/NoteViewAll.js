@@ -2,6 +2,7 @@ import {
   viewAllNote,
   starSenderUpdate,
   starReceiverUpdate,
+  delCount,
 } from "../../api/note";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -140,7 +141,6 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-  const [num, setNum] = useState(0);
   const notesAPI = async () => {
     let response = await viewAllNote(
       user.userNickname +
@@ -158,37 +158,18 @@ const NoteViewAll = () => {
     setNotes(response.data.content);
     setAllCount(response.data.totalElements);
     setTotalPage(response.data.totalPages);
-
-    // for (let i = 0; i < response.data.content.length; i++) {
-    //   console.log(i);
-    //   console.log(response.data.content[i].deletedBySender);
-    //   if (
-    //     response.data.content[i].deletedBySender == true ||
-    //     response.data.content[i].deletedByReceiver == true
-    //   ) {
-    //     setNum(num + 1);
-    //   }
-    // }
+  };
+  // 삭제 된 쪽지 수
+  const [num, setNum] = useState(0);
+  const numAPI = async () => {
+    const response = await delCount(user.userNickname);
+    setNum(response.data);
   };
 
-  // const numAPI = async () => {
-  //   let response = await viewAllNotPage(user.userNickname);
-  //   console.log(response.data);
-  //   for (let i = 0; i < response.data.content.length; i++) {
-  //     console.log(i);
-  //     console.log(response.data.content[i].deletedBySender);
-  //     if (
-  //       response.data.content[i].deletedBySender == true ||
-  //       response.data.content[i].deletedByReceiver == true
-  //     ) {
-  //       setNum(num + 1);
-  //     }
-  //   }
-  // };
-  // console.log(num);
-  // useEffect(() => {
-  //   numAPI();
-  // }, []);
+  useEffect(() => {
+    numAPI();
+  }, [user]);
+
   let lastPage = 0;
   let firstPage = 0;
   let pageList = [];

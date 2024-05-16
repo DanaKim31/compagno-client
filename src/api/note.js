@@ -31,11 +31,24 @@ export const viewAllNote = async (nickName) => {
   return await authorize.get("note/viewAll/" + nickName);
 };
 
-// 전체 보기(페이징처리x)
-//     @GetMapping("/note/viewAllNotPage/{nickName}")]
-// export const viewAllNotPage = async (nickName) => {
-//   return await authorize.get("note/viewAllNotPage/" + nickName);
-// };
+// 전체 보기 중 삭제 쪽지
+// http://localhost:8080/compagno/note/delCount/hand0000
+export const delCount = async (nickName) => {
+  return await authorize.get("note/delCount/" + nickName);
+};
+
+// recievBox 삭제 쪽지
+export const delReceiverCount = async (nickName) => {
+  return await authorize.get("note/delReceiverCount/" + nickName);
+};
+// sendBox 삭제 쪽지
+export const delSenderCount = async (nickName) => {
+  return await authorize.get("note/delSenderCount/" + nickName);
+};
+// 중요 쪽지 갯수
+export const starCount = async (nickName) => {
+  return await authorize.get("note/starCount/" + nickName);
+};
 
 // 쪽지 1개 보기
 // http://localhost:8080/compagno/note/18

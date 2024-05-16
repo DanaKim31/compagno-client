@@ -2,6 +2,7 @@ import {
   viewAllNote,
   starSenderUpdate,
   starReceiverUpdate,
+  starCount,
 } from "../../api/note";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -155,8 +156,8 @@ const NoteViewStar = () => {
         noteRegiDate
     );
     setNotes(response.data.content);
-    console.log(response.data);
-    setAllCount(response.data.totalElements);
+    // setAllCount(response.data.totalElements);
+    setAllCount(num);
     setTotalPage(response.data.totalPages);
   };
 
@@ -212,6 +213,18 @@ const NoteViewStar = () => {
     window.location.reload();
     starReceiverUpdate(code);
   };
+
+  // 중요 쪽지 수
+  const [num, setNum] = useState(0);
+  const numAPI = async () => {
+    const response = await starCount(user.userNickname);
+    setNum(response.data);
+  };
+
+  useEffect(() => {
+    numAPI();
+  }, [user]);
+
   return (
     <DivTotal>
       <MyPageSidebar />
@@ -331,8 +344,8 @@ const NoteViewStar = () => {
                     width: "85%",
                   }}
                 >
-                  {/* <BsEnvelopePaper />
-              <span style={{ marginLeft: "10px" }}>총 {allCount}개</span> */}
+                  <BsEnvelopePaper />
+                  <span style={{ marginLeft: "10px" }}>총 {num}개</span>
                 </div>
                 <table style={{ width: "85%", height: "60%" }}>
                   <thead
