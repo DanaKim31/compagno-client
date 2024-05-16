@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { userSave } from "../../store/user";
-import { getUserQuestions } from "../../api/userQnaQuestion";
+import { getUserQuestions, getliked } from "../../api/userQnaQuestion";
+import { getUserAnswers } from "../../api/userQnaAnswer";
 import { Button, Form } from "react-bootstrap";
 import {
   FaAnglesLeft,
@@ -15,67 +16,164 @@ import { IoSearch } from "react-icons/io5";
 import moment from "moment";
 
 const Div = styled.div`
+// ======== 폰트 관련
+@font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
+
   position: relative;
-  top: 150px;
+  top: 130px;
   #topbar {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    padding-top: 5px;
-    height: 90px;
+    justify-content: space-evenly;
+    padding: 30px;
 
-    Button {
+    height: 100px;
+    width: 90%;
+    margin: 0 auto;
+    border: 2px dashed gray;
+    border-radius: 15px;
+
+    select {
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+      width: 150px;
+      height: 30px;
+      border: 1px solid gray;
+      border-radius: 7px;
+      option{
+        font-family: "TAEBAEKmilkyway";
+        font-weight: bold;
+      }
+    }
+
+    #filter {
+      width: 50%;
+      margin: auto auto;
+      display: flex;
+      justify-content: space-between;
+      div{
+        display: flex;
+      }
+        span {
+          margin: auto 10px;
+        }
+      }
+    }
+
+    #search {
+      display: flex;
+      justify-content: space-between;
+      width: 600px;
+      height: 35px;
+      margin: 0 auto;
+
+      select {
+        margin-left: 10px;
+        margin-top: 2px;
+        width: 80px;
+      }
+
+      input {
+        font-weight: bold;
+        width: 300px;
+        margin-top: 2px;
+        height: 30px;
+        border: 1px solid gray;
+      }
+    }
+
+    button {
+      width: 100px;
+      border-radius: 5px;
+      color: white;
       height: 35px;
       background-color: gray;
       border: 1px solid gray;
+      font-family: "TAEBAEKmilkyway";
+  }
+
+  #topbarsecond {
+    width: 90%;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    span {
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+      margin-left: 30px;
+      margin-top: 5px;
+      width: 100px;
+    }
+    button {
+      margin-right: 20px;
     }
   }
-  Table {
-    width: 70%;
-    margin: 0 auto;
-  }
+  #like{
+      display: flex;
+      flex-direction: row;
+      span{
+        margin-left: 10px;
+      }
+    }
+
   .paging {
     width: 100%;
     padding-top: 30px;
     text-align: center;
-    button {
-      border-radius: 5px;
-      margin: 5px;
-      font-weight: bolder;
-    }
-  }
-  #search {
-    display: flex;
-    height: 35px;
+    font-family: "TAEBAEKmilkyway";
 
-    select {
-      border-radius: 7px;
-      border: 1px solid gray;
-    }
-    input {
-      margin-left: 7px;
-      margin-right: 7px;
-      border-radius: 7px;
-      border: 1px solid gray;
-    }
     button {
-      width: 120px;
-      background-color: gray;
+      font-weight: bold;
+      width: 25px;
+      height: 28px;
       border-radius: 5px;
       border: 1px solid gray;
-      color: white;
+      background-color: white;
+      color: black;
+      margin: 5px;
     }
   }
 `;
 
 const Table = styled.table`
+  width: 90%;
+  margin: 0 auto;
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
   thead {
     text-align: center;
     font-weight: bolder;
     th {
       height: 70px;
       padding-top: 20px;
-      border: 1px solid;
+      border-bottom: 2px solid;
     }
   }
   tbody {
@@ -83,7 +181,6 @@ const Table = styled.table`
     td {
       height: 50px;
       padding-top: 10px;
-      border: 1px solid;
       a {
         color: black;
         text-decoration: none;
@@ -120,7 +217,16 @@ const UserQnaList = () => {
     const response = await getUserQuestions(page);
     setQuestions(response.data);
     setTotalPage(response.data.totalPages); // response에서 totalPages 불러와서 set으로 담기
+    console.log(response.data);
   };
+
+  const [answercount, setAnswerCount] = useState(0);
+
+  const answersAPI = async (code) => {
+    const response = await getUserAnswers(code);
+    setAnswerCount(response.data.length);
+  };
+
   // 첫페이지, 마지막 페이지, 페이지 리스트 초기 셋팅
   let lastPage = 0;
   let firstPage = 0;
@@ -146,28 +252,85 @@ const UserQnaList = () => {
     setPages(pageList); // 해당 list 배열을 setPages에 담기
   }, [totalPage]);
 
-  const [select, setSelect] = useState("title");
+  const [select, setSelect] = useState("");
+  const [status, setStatus] = useState(0);
+  const [category, setCategory] = useState(0);
   const [keyword, setKeyword] = useState("");
+  const [sort, setSort] = useState(0);
+  const [liked, setLiked] = useState(true);
 
   const search = async () => {
-    const response = await getUserQuestions(page, select, keyword);
-    console.log(response.data);
+    const response = await getUserQuestions(
+      page,
+      select,
+      keyword,
+      category,
+      status,
+      sort
+    );
     setQuestions(response.data);
     setTotalPage(response.data?.totalPages);
+  };
+
+  const filtering = async (e) => {
+    const isChecked = e.target.checked;
+    setLiked(isChecked);
+    if (isChecked) {
+      const response = await getliked(page, true);
+      setQuestions(response.data);
+      setTotalPage(response.data?.totalPages);
+    } else {
+      const response = await getliked(page, false); // 체크 해제 시에도 데이터를 가져올 필요가 있는지 확인해야 합니다.
+      setQuestions(response.data);
+      setTotalPage(response.data?.totalPages);
+    }
   };
 
   return (
     <Div>
       <div id="topbar">
-        <div>
-          <p>전체 {questions?.totalElements}건</p>
+        <div id="filter">
+          <div id="sort">
+            <span>정렬</span>
+            <select onChange={(e) => setSort(e.target.value)}>
+              <option value={2}>작성일 오래된순</option>
+              <option value={1}>작성일 최신순</option>
+              <option value={3}>답변 많은순</option>
+              <option value={5}>좋아요순</option>
+              <option value={4}>조회순</option>
+            </select>
+          </div>
+
+          <div id="category">
+            <span>동물</span>
+            <select onChange={(e) => setCategory(e.target.value)}>
+              <option value={0}>전체</option>
+              <option value={1}>개</option>
+              <option value={2}>고양이</option>
+              <option value={3}>기타</option>
+            </select>
+          </div>
+
+          <div id="status">
+            <span>채택 답변 유무</span>
+            <select onChange={(e) => setStatus(e.target.value)}>
+              <option value={0}>전체</option>
+              <option value={1}>Y</option>
+              <option value={2}>N</option>
+            </select>
+          </div>
         </div>
+
         <div id="search">
-          <select onChange={(e) => setSelect(e.target.value)}>
-            <option value={"title"}>제목</option>
-            <option value={"content"}>내용</option>
-            <option value={"id"}>작성자</option>
-          </select>
+          <div id="option">
+            <span>검색 조건</span>
+            <select onChange={(e) => setSelect(e.target.value)}>
+              <option value={""}>전체</option>
+              <option value={"title"}>제목</option>
+              <option value={"content"}>내용</option>
+              <option value={"id"}>작성자</option>
+            </select>
+          </div>
           <Form.Control
             type="text"
             placeholder="검색어를 입력하세요"
@@ -179,37 +342,55 @@ const UserQnaList = () => {
             조회
           </Button>
         </div>
-
-        {Object.keys(user).length === 0 ? (
-          <>
-            <Button
-              onClick={() => {
-                navigate("/compagno/login");
-              }}
-            >
-              질문 등록
-            </Button>
-          </>
+      </div>
+      <div id="topbarsecond">
+        <span>전체 {questions?.totalElements}건</span>
+        {user.userId !== undefined ? (
+          <div id="like">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={(e) => filtering(e)}/>
+              <label class="form-check-label" for="flexSwitchCheckDefault">좋아요한 글만 보기</label>
+            </div>
+          </div>
         ) : (
-          <>
-            <Button
-              onClick={() => {
-                navigate("/compagno/userQna/register");
-              }}
-            >
-              질문 등록
-            </Button>
-          </>
+          <></>
         )}
+        <div>
+          {Object.keys(user).length === 0 ? (
+            <>
+              <Button
+                variant="dark"
+                onClick={() => {
+                  navigate("/compagno/login");
+                }}
+              >
+                질문 등록
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant="dark"
+                onClick={() => {
+                  navigate("/compagno/userQna/register");
+                }}
+              >
+                질문 등록
+              </Button>
+            </>
+          )}
+        </div>
       </div>
       <Table>
         <thead>
           <tr>
             <th>질문 번호</th>
-            <th>답변 여부</th>
+            <th>채택 여부</th>
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
+            <th>좋아요수</th>
+            <th>조회수</th>
           </tr>
         </thead>
         <tbody>
@@ -225,6 +406,7 @@ const UserQnaList = () => {
                   >
                     {question.userQuestionBoardTitle}
                   </a>
+                  <span>[{question.userQuestionBoardCount}]</span>
                 </td>
                 <td>{question.userId}</td>
                 {/* qnaQDate가 null일 때 DateUpdate로 출력 */}
@@ -246,6 +428,8 @@ const UserQnaList = () => {
                     </td>
                   </>
                 )}
+                <td>{question.likecount}</td>
+                <td>{question.viewcount}</td>
               </tr>
             );
           })}

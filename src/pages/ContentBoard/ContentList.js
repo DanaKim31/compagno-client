@@ -12,24 +12,80 @@ import MapList from "./MapList";
 
 const Div = styled.div`
   position: relative;
-  top: 120px;
+  top: 130px;
 
+  // ======== 폰트 관련
+@font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
+
+
+
+  #category {
+    margin-left: 100px;
+    display: flex;
+
+    h1{
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+    p {
+      margin-top: 20px;
+      margin-left: 5px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+  }
   #content {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     width: 80%;
     margin: 0 auto;
+    padding: 20px;
 
-    background-color: pink;
     th {
       font-weight: bolder;
       font-size: 20px;
       padding: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 2px solid;
     }
     a {
       text-decoration: none;
       color: black;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+    td {
+      padding: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+      text-align: center;
+      padding-right: 20px;
+      padding-left: 20px;
     }
     #map {
       display: flex;
@@ -37,18 +93,25 @@ const Div = styled.div`
       width: 600px;
       height: 500px;
       margin-top: 150px;
-      background-color: skyblue;
+      margin-left: 50px;
+      border: 1px solid lightgray;
     }
   }
   .paging {
     width: 100%;
     padding-top: 30px;
     text-align: center;
+    font-family: "TAEBAEKmilkyway";
+
     button {
-      background-color: white;
+      font-weight: bold;
+      width: 40px;
+      height: 28px;
       border-radius: 5px;
+      border: 1px solid gray;
+      background-color: white;
+      color: black;
       margin: 5px;
-      font-weight: bolder;
     }
   }
 `;
@@ -58,12 +121,12 @@ const ContentList = () => {
   const [content, setContent] = useState([]);
   const [contents, setContents] = useState([]);
 
-  const location = useLocation();
-
   const [mainCate, setMainCate] = useState(0);
   const [subCate, setSubCate] = useState(0);
   const [mainReg, setMainReg] = useState(0);
   const [keyword, setKeyword] = useState("");
+
+  const [category, setCategory] = useState("");
 
   // useLocation, useSearchParams
   function useQuery() {
@@ -85,9 +148,68 @@ const ContentList = () => {
     }
   }, []);
 
+  const cateAPI = (subCate) => {
+    switch (subCate) {
+      case "1":
+        setCategory("동물약국");
+        break;
+
+      case "2":
+        setCategory("동물병원");
+        break;
+
+      case "3":
+        setCategory("미술관");
+        break;
+
+      case "4":
+        setCategory("문예회관");
+        break;
+
+      case "5":
+        setCategory("펜션");
+        break;
+
+      case "6":
+        setCategory("여행지");
+        break;
+
+      case "7":
+        setCategory("박물관");
+        break;
+
+      case "8":
+        setCategory("카페");
+        break;
+
+      case "9":
+        setCategory("식당");
+        break;
+
+      case "10":
+        setCategory("반려동물 용품");
+        break;
+
+      case "11":
+        setCategory("미용");
+        break;
+
+      case "12":
+        setCategory("위탁 관리");
+        break;
+
+      default:
+        setCategory("동물약국");
+    }
+  };
+
   useEffect(() => {
     if (mainCate !== 0) {
       ContentAPI();
+    }
+
+    if (subCate !== 0) {
+      cateAPI(subCate);
     }
   }, [mainCate, subCate, mainReg, keyword, page]);
 
@@ -134,12 +256,17 @@ const ContentList = () => {
   return (
     <Div>
       <>
-        <p>전체 {contents.totalElements}건</p>
+        <div id="category">
+          <h1>{category}</h1>
+          <p>전체 {contents.totalElements}건</p>
+        </div>
         <div id="content">
           <table>
             <thead>
               <tr>
-                <th>이름</th>
+                <th>기관명</th>
+                <th>주소</th>
+                <th>조회수</th>
               </tr>
             </thead>
             <tbody>
@@ -151,6 +278,8 @@ const ContentList = () => {
                         {item.name}
                       </a>
                     </td>
+                    <td>{item.addr}</td>
+                    <td>{item.viewcount}</td>
                   </tr>
                 );
               })}

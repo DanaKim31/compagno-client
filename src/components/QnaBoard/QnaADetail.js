@@ -10,6 +10,66 @@ import {
 } from "../../api/Answer";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
+import styled from "styled-components";
+const Div = styled.div`
+// ======== 폰트 관련
+@font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
+
+  
+  #input {
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    input{
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-left: 10px;
+    }
+    div {
+      margin-left: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+  #buttons {
+    display: flex;
+    justify-content: center;
+    
+    button {
+      margin: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+  }
+
+`;
 
 const QnaADetail = () => {
   const { qnaQCode } = useParams();
@@ -162,29 +222,34 @@ const QnaADetail = () => {
           {answer === "" ? (
             // 답변이 없는 경우
             <div className="Answer">
-              <h1>답변 작성 폼</h1>
-              <Form.Control
-                type="text"
-                placeholder="제목 작성"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-              <Form.Control
-                as="textarea"
-                placeholder="내용 작성"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-              <Form.Control
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={imageChange}
-              />
-              <Button variant="dark" onClick={answerSubmit}>
-                답변 등록
-              </Button>
-              <Button onClick={cancelAnswer}>취소</Button>
+              <div id="register">
+                <h1>답변 작성 폼</h1>
+                <Form.Control
+                  type="text"
+                  placeholder="제목 작성"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <Form.Control
+                  as="textarea"
+                  placeholder="내용 작성"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                />
+                <Form.Control
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={imageChange}
+                />
+              </div>
+              <div id="buttons">
+                <Button variant="dark" onClick={answerSubmit}>
+                  답변 등록
+                </Button>
+                <Button onClick={cancelAnswer}>취소</Button>
+              </div>
+              
             </div>
           ) : (
             <>
@@ -193,7 +258,7 @@ const QnaADetail = () => {
                   {/* 수정 페이지!!! */}
                   <h1>답변 수정 폼</h1>
                   {/* 기존 이미지 */}
-                  <div>
+                  <div id="edit">
                     {editA.images?.map((image) => (
                       <img
                         alt=""
@@ -212,7 +277,10 @@ const QnaADetail = () => {
                       </div>;
                     })}
                   </div>
-                  <Form.Control
+                  <div id="input">
+                    <div>
+                      <p>제목</p>
+                      <Form.Control
                     type="text"
                     placeholder="제목 작성"
                     value={editA.qnaATitle}
@@ -223,7 +291,10 @@ const QnaADetail = () => {
                       }))
                     }
                   />
-                  <Form.Control
+                    </div>
+                    <div>
+                      <p>내용</p>
+                      <Form.Control
                     as="textarea"
                     placeholder="내용 작성"
                     value={editA.qnaAContent}
@@ -234,16 +305,26 @@ const QnaADetail = () => {
                       }))
                     }
                   />
-                  <Form.Control
+                    </div>
+                    <div>
+                      <p>이미지</p>
+                    <Form.Control
                     type="file"
                     multiple
                     accept="image/*"
                     onChange={imageChange}
                   />
+                    </div>
+                  </div>
+                  <div id="buttons">
                   <Button variant="dark" onClick={answerUpdate}>
                     답변 등록
                   </Button>
-                  <Button onClick={cancelAnswer}>취소</Button>
+                  <Button variant="secondary" onClick={cancelAnswer}>취소</Button>
+                  </div>
+                  
+                  
+                  
                 </>
               ) : (
                 <>
@@ -282,7 +363,7 @@ const QnaADetail = () => {
           {answer === "" ? (
             // 답변이 없을 때
             <>
-              <h1>답변이 아직 작성되지 않았습니다.</h1>
+              <p>답변이 아직 작성되지 않았습니다.</p>
             </>
           ) : (
             // 답변이 있을 때
