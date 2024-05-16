@@ -17,32 +17,36 @@ import moment from "moment";
 
 const Div = styled.div`
   position: relative;
-  top: 150px;
+  top: 130px;
   #topbar {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-evenly;
     padding: 30px;
 
-    height: 200px;
-    width: 80%;
+    height: 100px;
+    width: 90%;
     margin: 0 auto;
     border: 2px dashed gray;
     border-radius: 15px;
 
     select {
-      width: 200px;
-      height: 35px;
+      width: 150px;
+      height: 30px;
       border: 1px solid gray;
       border-radius: 7px;
     }
 
     #filter {
+      width: 50%;
+      margin: auto auto;
       display: flex;
       justify-content: space-between;
-      div {
+      div{
+        display: flex;
+      }
         span {
-          margin-right: 10px;
+          margin: auto 10px;
         }
       }
     }
@@ -50,17 +54,21 @@ const Div = styled.div`
     #search {
       display: flex;
       justify-content: space-between;
+      width: 600px;
       height: 35px;
-      width: 70%;
       margin: 0 auto;
 
       select {
         margin-left: 10px;
+        margin-top: 2px;
         width: 80px;
       }
 
       input {
-        width: 40%;
+        width: 300px;
+        margin-top: 2px;
+        height: 30px;
+        border: 1px solid gray;
       }
     }
 
@@ -71,11 +79,11 @@ const Div = styled.div`
       height: 35px;
       background-color: gray;
       border: 1px solid gray;
-    }
+    
   }
 
   #topbarsecond {
-    width: 80%;
+    width: 90%;
     margin: 10px auto;
     display: flex;
     flex-direction: row;
@@ -83,19 +91,28 @@ const Div = styled.div`
     span {
       margin-left: 30px;
       margin-top: 5px;
+      width: 100px;
     }
     button {
       margin-right: 20px;
     }
   }
-
+  #like{
+      display: flex;
+      flex-direction: row;
+      span{
+        margin-left: 10px;
+      }
+    }
   .paging {
     width: 100%;
     padding-top: 30px;
     text-align: center;
     button {
+      width: 25px;
       border-radius: 5px;
       border: 1px solid gray;
+      background-color: white;
       color: black;
       margin: 5px;
       font-weight: bolder;
@@ -104,7 +121,7 @@ const Div = styled.div`
 `;
 
 const Table = styled.table`
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   thead {
     text-align: center;
@@ -120,7 +137,6 @@ const Table = styled.table`
     td {
       height: 50px;
       padding-top: 10px;
-      border: 1px solid;
       a {
         color: black;
         text-decoration: none;
@@ -233,8 +249,8 @@ const UserQnaList = () => {
           <div id="sort">
             <span>정렬</span>
             <select onChange={(e) => setSort(e.target.value)}>
-              <option value={1}>작성일 최신순</option>
               <option value={2}>작성일 오래된순</option>
+              <option value={1}>작성일 최신순</option>
               <option value={3}>답변 많은순</option>
               <option value={4}>조회순</option>
             </select>
@@ -285,14 +301,12 @@ const UserQnaList = () => {
       <div id="topbarsecond">
         <span>전체 {questions?.totalElements}건</span>
         {user.userId !== undefined ? (
-          <>
-            <span>
-              <label>
-                <input type="checkbox" onChange={(e) => filtering(e)} />
-                좋아요한 글만 보기
-              </label>
-            </span>
-          </>
+          <div id="like">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={(e) => filtering(e)}/>
+              <label class="form-check-label" for="flexSwitchCheckDefault">좋아요한 글만 보기</label>
+            </div>
+          </div>
         ) : (
           <></>
         )}

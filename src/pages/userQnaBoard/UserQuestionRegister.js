@@ -147,7 +147,8 @@ const UserQuestionRegister = () => {
       <div id="register">
         <div id="select">
           <span>동물</span>
-          <select onChange={handleselectaniCate} value={animalCatecode}>
+          <select onChange={handleselectaniCate}>
+            <option value={0}>전체</option>
             <option value={1}>개</option>
             <option value={2}>고양이</option>
             <option value={3}>기타</option>

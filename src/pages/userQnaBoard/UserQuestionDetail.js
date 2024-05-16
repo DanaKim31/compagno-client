@@ -270,10 +270,10 @@ const UserQuestionDetail = () => {
                         <img
                           alt=""
                           key={image.userQuestionImgCode}
-                          src={
-                            "http://localhost:8081" + image.userQuestionImgUrl
-                          }
-                          // src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
+                          // src={
+                          //   "http://localhost:8081" + image.userQuestionImgUrl
+                          // }
+                          src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
                           onClick={() => deleteImage(image.userQuestionImgCode)}
                         />
                       ))}
@@ -347,8 +347,8 @@ const UserQuestionDetail = () => {
                         <img
                           alt=""
                           key={question.userQuestionBoardCode}
-                          src={"http://localhost:8081/" + question.userImg}
-                          //   src={"http://192.168.10.28:8081/" + question.userImg}
+                          // src={"http://localhost:8081/" + question.userImg}
+                            src={"http://192.168.10.28:8081/" + question.userImg}
                         />
                         <div>
                           <p>작성자 : {question.userNickname}</p>
@@ -395,7 +395,6 @@ const UserQuestionDetail = () => {
                   <hr />
                   {/* 상세 정보 */}
                   <div>
-                    <p>{question.animalCategoryCode}</p>
                     <p>{question.userQuestionBoardContent}</p>
                   </div>
                   <div id="images">
@@ -403,8 +402,8 @@ const UserQuestionDetail = () => {
                       <img
                         alt=""
                         key={image.userQuestionImgCode}
-                        src={"http://localhost:8081" + image.userQuestionImgUrl}
-                        // src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
+                        // src={"http://localhost:8081" + image.userQuestionImgUrl}
+                        src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
                       />
                     ))}
                   </div>
@@ -430,8 +429,8 @@ const UserQuestionDetail = () => {
                   <img
                     alt=""
                     key={image.userQuestionImgCode}
-                    src={"http://localhost:8081" + image.userQuestionImgUrl}
-                    // src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
+                    // src={"http://localhost:8081" + image.userQuestionImgUrl}
+                    src={"http://192.168.10.28:8081/userQuestion/" + image.userQuestionImgUrl}
                   />
                 ))}
                 <div>
@@ -501,13 +500,14 @@ const UserQuestionDetail = () => {
                     <img
                       alt=""
                       key={image.userQuestionImgCode}
-                      src={"http://localhost:8081" + image.userQuestionImgUrl}
-                      //   src={
-                      //     "http://192.168.10.28:8081/userQuestion/" +
-                      //     image.userQuestionImgUrl
-                      //   }
+                      // src={"http://localhost:8081" + image.userQuestionImgUrl}
+                        src={
+                          "http://192.168.10.28:8081/userQuestion/" +
+                          image.userQuestionImgUrl
+                        }
                     />
                   ))}
+
                 </div>
               </>
             )}

@@ -20,9 +20,11 @@ const Div = styled.div`
   position: relative;
   top: 150px;
   #topbar {
+    margin: 0 auto;
+    width: 70%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     padding-top: 5px;
     height: 90px;
 
@@ -41,7 +43,11 @@ const Div = styled.div`
     padding-top: 30px;
     text-align: center;
     button {
+      width: 25px;
       border-radius: 5px;
+      border: 1px solid gray;
+      background-color: white;
+      color: black;
       margin: 5px;
       font-weight: bolder;
     }
@@ -77,7 +83,7 @@ const Table = styled.table`
     th {
       height: 70px;
       padding-top: 20px;
-      border: 1px solid;
+      border-bottom: 2px solid;
     }
   }
   tbody {
@@ -85,7 +91,6 @@ const Table = styled.table`
     td {
       height: 50px;
       padding-top: 10px;
-      border: 1px solid;
       a {
         color: black;
         text-decoration: none;

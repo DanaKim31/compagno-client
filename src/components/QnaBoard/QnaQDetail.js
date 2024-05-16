@@ -259,8 +259,8 @@ const QnaQDetail = () => {
                           <img
                             alt=""
                             key={image.qnaQImgCode}
-                            src={"http://localhost:8081" + image.qnaQUrl}
-                            // src={"http://192.168.10.28:8081/QnaQ/" + image.qnaQUrl}
+                            // src={"http://localhost:8081" + image.qnaQUrl}
+                            src={"http://192.168.10.28:8081/QnaQ/" + image.qnaQUrl}
                             onClick={() => deleteImage(image.qnaQImgCode)}
                           />
                         ))}
@@ -389,8 +389,8 @@ const QnaQDetail = () => {
                         <img
                           alt=""
                           key={image.qnaQImgCode}
-                          src={"http://localhost:8081" + image.qnaQUrl}
-                          // src={"http://192.168.10.28:8081/QnaQ/" + image.qnaQUrl}
+                          // src={"http://localhost:8081/" + image.qnaQUrl}
+                          src={"http://192.168.10.28:8081/QnaQ/" + image.qnaQUrl}
                         />
                       ))}
                     </div>
