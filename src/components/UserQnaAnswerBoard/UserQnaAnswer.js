@@ -131,6 +131,7 @@ const Div = styled.div`
     justify-content: space-between;
     padding: 20px;
     h3{
+      padding-left: 10px;
       font-weight: bold;
     }
     #topbarright {
@@ -507,7 +508,7 @@ const UserQnaAnswer = ({ question }) => {
                               key={topChoose.userAnswerBoardCode}
                               // src={"http://localhost:8081/" + question.userImg}
                               src={
-                                "http://192.168.10.28:8081/" + topChoose.userImg
+                                "http://192.168.10.28:8081/" + topChoose.user.userImg
                               }
                             />
                             <div>
@@ -928,7 +929,7 @@ const UserQnaAnswer = ({ question }) => {
                                     // }
                                     src={
                                       "http://192.168.10.28:8081/" +
-                                      answer.user.userImg
+                                      reanswer.user.userImg
                                     }
                                   />
                                   <MyToggleBar name={question.userNickname} />

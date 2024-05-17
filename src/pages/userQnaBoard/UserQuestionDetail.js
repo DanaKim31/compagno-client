@@ -64,6 +64,7 @@ const Div = styled.div`
 
     /* 프로필, 작성일, 수정/삭제 or 상태보기 */
     #quserbar {
+      margin: 30px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -80,6 +81,7 @@ const Div = styled.div`
       display: flex;
       flex-direction: row;
       height: 65px;
+      
       img {
         width: 65px;
         height: 65px;
@@ -187,6 +189,7 @@ const Div = styled.div`
   #content{
     height: 80px;
     padding: 30px;
+    padding-left: 70px;
   }
   p {
     font-family: "TAEBAEKmilkyway";
