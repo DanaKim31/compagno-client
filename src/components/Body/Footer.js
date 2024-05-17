@@ -19,65 +19,91 @@ const Footer = () => {
           </div>
 
           <div className="footer">
-            <div
-              className="fote1"
+            <p
+              className="com"
               style={{
-                textAlign: "center",
-                position: "relative",
-                top: "30px",
+                fontSize: "3.5rem",
+                position: "absolute",
+                transform: "rotate(270deg)",
+                bottom: "165px",
+                left: "-100px",
               }}
             >
-              <p style={{ fontSize: "3rem", fontWeight: "lighter" }}>
-                Stay up to date at all times
-              </p>
-              <div
-                className="sns"
-                style={{
-                  fontSize: "1.2rem",
-                  textDecoration: "none",
-                }}
-              >
-                <a href="">facebook</a>
-                <a href="">LinkedinIn</a>
-                <a href="">instagram</a>
-                <a href="">Youtube</a>
-              </div>
-            </div>
+              {" "}
+              Compagno ){" "}
+            </p>
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-around",
-                paddingTop: "50px",
+                // paddingTop: "50px",
               }}
             >
               <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  textAlign: "center",
-                  width: "39%",
-                }}
+                style={
+                  {
+                    // display: "flex",
+                    // justifyContent: "space-between",
+                    // textAlign: "center",
+                    // width: "39%",
+                  }
+                }
               >
                 <div>
                   <div
+                  // style={{ position: "relative", top: "100px", height: "40px" }}
+                  >
+                    <div className="URL">
+                      <p
+                        style={{
+                          fontSize: "2rem",
+                          position: "absolute",
+                          bottom: "310px",
+                        }}
+                      >
+                        Development-related Code Information
+                      </p>
+                      <p style={{ position: "relative", top: "120px" }}>
+                        p ) + 603 7985 8288{" "}
+                      </p>
+
+                      <a
+                        href="https://github.com/DanaKim31/compagno-client"
+                        style={{ textDecoration: "none", color: "white" }}
+                      >
+                        GitHub : Client{" "}
+                      </a>
+                      <a
+                        href="https://github.com/DanaKim31/compagno-server"
+                        style={{ textDecoration: "none", color: "white" }}
+                      >
+                        {" "}
+                        / Sever{" "}
+                      </a>
+                    </div>
+                  </div>
+                  <div
                     className="info"
                     style={{
-                      display: "inline-block",
-                      left: "100px",
                       position: "relative",
-                      bottom: "100px",
+                      top: "150px",
                     }}
                   >
                     <p
                       style={{
                         fontSize: "2rem",
-                        textAlign: "center",
-                        position: "relative",
                       }}
                     >
                       Navigator
                     </p>
-                    <div style={{ display: "inline-grid" }}>
+                    <div
+                      style={
+                        {
+                          // display: "inline-grid",
+                        }
+                      }
+                      className="navi"
+                    >
                       <a href="">Home</a>
                       <a href="">User</a>
                       <a href="">Board</a>
@@ -86,46 +112,21 @@ const Footer = () => {
                     </div>
                   </div>
                 </div>
-                <div
-                  style={{ position: "relative", top: "100px", height: "40px" }}
-                >
-                  <p style={{ fontSize: "2rem" }}> Compagno ) </p>
-                  <div className="URL">
-                    <p>p ) + 603 7985 8288 </p>
-                    GitHub :
-                    <a
-                      href="https://github.com/DanaKim31/compagno-client"
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      {" "}
-                      Client{" "}
-                    </a>
-                    <a
-                      href="https://github.com/DanaKim31/compagno-server"
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      {" "}
-                      / Sever{" "}
-                    </a>
-                  </div>
-                </div>
 
                 {/* 여기는 조원들 이름과 이메일 정보 */}
               </div>
               <div
                 style={{
                   position: "relative",
-                  top: "43px",
-                  left: "40px",
+                  top: "80px",
                 }}
               >
-                <p style={{ fontSize: "2rem" }}></p>
                 <div
                   className="person"
                   style={{
                     display: "flex",
                     position: "relative",
-                    left: "80px",
+                    right: "140px",
                   }}
                 >
                   <p>
@@ -144,7 +145,14 @@ const Footer = () => {
                     kh123@naver.com
                   </p>
                 </div>
-                <div className="person" style={{ display: "flex" }}>
+                <div
+                  className="person"
+                  style={{
+                    display: "flex",
+                    position: "relative",
+                    bottom: "20px",
+                  }}
+                >
                   <p>
                     이상현
                     <br />T +010-xxxx-xxxx <br />
@@ -166,32 +174,69 @@ const Footer = () => {
                     kh123@naver.com
                   </p>
                 </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "180px",
+                    transform: "rotate(90deg)",
+                    right: "-190px",
+                    fontSize: "4rem",
+                  }}
+                >
+                  ||||||||||||||||
+                </div>
               </div>
             </div>
             <div
               style={{
                 display: "flex",
-                justifyContent: "space-evenly",
-                // paddingTop: "50px",
+                justifyContent: "space-between",
+                top: "85px",
+                position: "relative",
               }}
             >
               <p
                 style={{
                   fontSize: "1.2rem",
                   position: "relative",
-                  right: "350px",
+                  left: "50px",
                 }}
               >
                 © 6, Teheran-ro 14-gil, Gangnam-gu, Seoul, Republic of Korea{" "}
               </p>
-              <p
+              <div
+                className="fote1"
                 style={{
+                  // textAlign: "center",
                   position: "relative",
-                  left: "350px",
                 }}
               >
-                SINCE : 2024 F&B Project
-              </p>
+                <div
+                  className="sns"
+                  style={{
+                    fontSize: "1.2rem",
+                    textDecoration: "none",
+                    width: "100vh",
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <a href="">facebook</a>
+                  <a href="">LinkedinIn</a>
+                  <a href="">instagram</a>
+                  <a href="">Youtube</a>
+                </div>
+              </div>
+              <div>
+                <p
+                  style={{
+                    position: "relative",
+                    right: "50px",
+                  }}
+                >
+                  SINCE : 2024 F&B Project
+                </p>
+              </div>
             </div>
           </div>
         </section>

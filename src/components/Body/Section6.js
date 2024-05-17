@@ -45,7 +45,9 @@ const Section6 = () => {
               if both users delete it.
             </p>
             {/* <a href="">유저들과의 쪽지를 원하시나요</a> */}
-            <button onClick={sendNote}>유저들과의 쪽지를 원하시나요</button>
+            <button onClick={sendNote} style={{ fontWeight: "bold" }}>
+              유저들과의 쪽지를 원하시나요
+            </button>
           </div>
           <div className="photo">
             <img src="/img/section6-(1).jpg" alt="logo image" />
