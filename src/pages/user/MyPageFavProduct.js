@@ -4,7 +4,7 @@ import {
 } from "../../api/user";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import Paging from "../../components/user/MyPagePagination";
@@ -36,9 +36,9 @@ const Div = styled.div`
     .contentZone {
       height: calc(100vh - 66px);
       display: flex;
-      justify-content: center;
       align-items: center;
       flex-direction: column;
+      padding-top: 15px;
 
       #headText {
         width: 1100px;
@@ -134,12 +134,16 @@ const MyPageFavProduct = () => {
     const favData = response.data;
     setProductBoardFav(favData);
   };
+
+  // 페이지 경로에서 정보 따오기
+  const location = useLocation();
+  const nowLoca = location.pathname.substring(17);
+
   return (
     <Div>
       <MyPageSidebar />
       <div className="myProductMain">
-        <MyPageTab />
-
+        <MyPageTab onClickMenu={nowLoca} />
         <div className="contentZone">
           <h1 id="headText">북마크한 제품 목록</h1>
           <table className="myProductList">

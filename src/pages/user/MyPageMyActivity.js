@@ -2,7 +2,7 @@ import styled from "styled-components";
 import MyPageSidebar from "../../components/user/MyPageSidebar";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MyPageList from "./MyPageList";
 import MyPageTab from "../../components/user/MyPageTab";
 
@@ -18,10 +18,10 @@ const Div = styled.div`
     padding-top: 20px;
 
     .contentZone {
+      padding-top: 15px;
       height: calc(100vh - 66px);
       display: flex;
       justify-content: center;
-      align-items: center;
     }
   }
 `;
@@ -46,12 +46,15 @@ const MyPageMyActivity = () => {
     }
   }, []);
 
+  // 페이지 경로에서 정보 따오기
+  const location = useLocation();
+  const nowLoca = location.pathname.substring(17);
+
   return (
     <Div>
       <MyPageSidebar />
-
       <div className="mypageMain">
-        <MyPageTab />
+        <MyPageTab onClickMenu={nowLoca} />
         <div className="contentZone">
           <MyPageList />
         </div>

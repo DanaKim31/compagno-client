@@ -37,14 +37,20 @@ const Div = styled.div`
       justify-content: center;
       flex-direction: column;
       align-items: center;
+      padding-top: 15px;
+
+      #headText {
+        width: 1200px;
+        padding-bottom: 5px;
+        font-weight: bold;
+      }
 
       .cardZone {
-        padding-top: 20px;
         width: fit-content;
         display: grid;
         grid-template-rows: repeat(3, 200px);
         grid-template-columns: repeat(2, 600px);
-        gap: 30px 20px;
+        gap: 15px 10px;
 
         .lostCard {
           display: flex;
@@ -125,26 +131,25 @@ const MyPageLost = () => {
   const location = useLocation();
   const nowLoca = location.pathname.substring(17);
 
-  useEffect(() => {
-    console.log(nowLoca);
-  }, [location]);
-
   return (
     <Div>
       <MyPageSidebar />
       <div className="myLostMain">
-        <MyPageTab />
+        <MyPageTab onClickMenu={nowLoca} />
         <div className="contentZone">
+          <h1 id="headText">실종 공고 작성 글 목록</h1>
           <div className="cardZone">
             {lostList?.map((lost) => (
               <div className="lostCard" key={lost.lostBoardCode}>
                 <div className="lostCardImg">
-                  <img
-                    src={lost.lostAnimalImage?.replace(
-                      "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                      "http://192.168.10.28:8081/lostBoard/"
-                    )}
-                  />
+                  <a href={`/compagno/lostBoard/view/` + lost.lostBoardCode}>
+                    <img
+                      src={lost.lostAnimalImage?.replace(
+                        "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                        "http://192.168.10.28:8081/lostBoard/"
+                      )}
+                    />
+                  </a>
                 </div>
                 <div className="lostCardtext">
                   <ul>

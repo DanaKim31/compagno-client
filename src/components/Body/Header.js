@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { userSave, userLogout } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import useDidMountEffect from "../../components/user/useDidMountEffect";
 
 // 헤더 색변환 / 햄버거 메뉴바 js
 
@@ -136,10 +137,19 @@ const Header = () => {
             <>
               {" "}
               <div className="dropdown">
-                <span className="dropbtn">마이페이지</span>
+                <span className="dropbtn">{user.userNickname}</span>
                 <div className="dropdown-content">
-                  <a href="/compagno/mypage/myinfo">계정정보 수정</a>
-                  <a href="/compagno/mypage/myadoption">활동 내역</a>
+                  {user.userRole == "ROLE_USER" ? (
+                    <>
+                      <a href="/compagno/mypage/myinfo">계정정보 수정</a>
+                      <a href="/compagno/mypage/myadoption">활동 내역</a>
+                    </>
+                  ) : (
+                    <>
+                      <a href="/compagno/mypage/myinfo">계정정보 수정</a>
+                      <a href="/compagno/mypage/myqna">미답변 QnA</a>
+                    </>
+                  )}
                 </div>
               </div>
               <div>

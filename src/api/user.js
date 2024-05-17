@@ -1,4 +1,5 @@
 import axios from "axios";
+import { data } from "jquery";
 
 const getToken = () => {
   return localStorage.getItem("token");
@@ -178,4 +179,21 @@ export const getLostList = async (id, pageNum) => {
 // 내 활동내역 - 실종 공고 갯수 불러오기
 export const getLostCount = async (id) => {
   return await authorize.get("mypage/myactivity/mylost/count/" + id);
+};
+
+// 내 활동내역 - 시터 게시글 불러오기
+export const getSitterList = async (id, pageNum) => {
+  return await authorize.get(
+    "mypage/myactivity/mysitterpost/" + id + "?page=" + pageNum
+  );
+};
+
+// 내 활동내역 - 시터 게시글 갯수 불러오기
+export const getSitterCount = async (id) => {
+  return await authorize.get("mypage/myactivity/mysitterpost/count/" + id);
+};
+
+// 내 정보 - 비밀번호 변경
+export const changePwd = async (data) => {
+  return await authorize.put("mypage/myinfo/updatepwd", data);
 };

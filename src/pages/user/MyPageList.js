@@ -126,7 +126,6 @@ const MyPageList = () => {
 
     setAnimalBoardFav(favData);
     setAnimalBoardFavCount(countFavData);
-    console.log(favData);
   };
 
   // 좋아요 삭제하기
