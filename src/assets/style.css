@@ -16,10 +16,6 @@ header {
   z-index: 7000;
   font-size: 20px;
   background-color: white;
-  -webkit-transition-duration: 0.4s;
-  -webkit-transition-timing-function: ease;
-  transition-duration: 0.4s;
-  transition-timing-function: ease;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
 }
@@ -30,24 +26,8 @@ header {
   align-items: center;
 }
 
-/* .head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-} */
-
 header {
   font-size: 2rem;
-}
-
-.down {
-  /*이부분 헤더 색상 변경!!*/
-  background-color: black;
-  opacity: 0.7;
-  -webkit-transition-duration: 0.4s;
-  -webkit-transition-timing-function: ease;
-  transition-duration: 0.4s;
-  transition-timing-function: ease;
 }
 
 header a {
@@ -56,6 +36,7 @@ header a {
   text-decoration: none;
   width: 186px;
 }
+
 .user {
   align-items: center;
   width: 215px;
@@ -71,7 +52,8 @@ header a {
   top: 35px;
   right: 15px;
 }
-/* =========================================== */
+
+/* ================================================== Header bar */
 .dropdown {
   display: inline-block;
   width: 146px;
@@ -140,9 +122,8 @@ header a {
   height: 110px;
   width: 54%;
 }
-/* =========================================== */
 
-/* ============================== 메뉴 햄버거 ================================== */
+/* ========================= <메뉴 햄버거> =========================== */
 
 #toggle {
   position: absolute;
@@ -201,7 +182,7 @@ header a {
   transition: bottom 0.3s ease, transform 0.3s 0.3s ease;
 }
 
-/* ============= 여기까지 다 햄버거 ==================== */
+/* =================== 여기까지 다 햄버거 ==================== */
 
 #overlay {
   position: fixed;
@@ -257,7 +238,6 @@ header a {
 
 #overlay nav ul li a {
   position: relative;
-  /* height: 50px; */
   display: inline-block;
   /* 여기는 언더라인 색깔조정 */
   color: black;
@@ -336,7 +316,7 @@ header a {
   margin-left: 0;
   opacity: 1;
 }
-/* ==================================================== */
+/* =====================  여기까지 햄버거 메뉴안 ======================= */
 
 #section1 {
   font-family: "TAEBAEKmilkyway";
@@ -466,7 +446,7 @@ header a {
   position: relative;
   left: 25%;
 }
-/* =================================================== */
+/* =======================================  section 2 */
 
 .scroll_wrap {
   overflow: hidden;
@@ -482,7 +462,7 @@ header a {
 }
 
 .scroll_on.type_bottom {
-  transform: translate(0, 50px);
+  transform: translate(0, -50px);
 }
 
 /* ==================================================== */
@@ -848,10 +828,7 @@ span img {
 /* ================================================================== */
 
 .footer {
-  width: 100%;
   background-color: #465c58;
-  position: relative;
-  border: 1px solid;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   font-family: "TAEBAEKmilkyway";
@@ -859,37 +836,24 @@ span img {
   color: white;
 }
 
-.footer h1 {
-  font-size: 7.5rem;
-  color: white;
-  position: relative;
-  text-decoration: none;
-  top: 40px;
-  right: 90px;
-}
-
-.service a {
-  color: white;
-  font-size: 1.2rem;
-  padding: 20px;
-}
-
-.person {
-  position: relative;
-  left: 150px;
-  top: 35px;
-}
-
-.person p {
-  padding: 10px;
-}
-
 .sns a {
   color: white;
   padding: 50px;
 }
 
+.person p {
+  padding: 15px;
+}
+
+.info a {
+  color: white;
+  text-decoration: none;
+  font-size: 2rem;
+  padding: 10px;
+}
+
 .info a:hover,
-.sns a:hover {
+.sns a:hover,
+.URL a:hover {
   color: rgb(33, 55, 70);
 }

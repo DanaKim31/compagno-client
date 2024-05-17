@@ -27,6 +27,7 @@ const StyledDiv = styled.div`
     font-family: "TAEBAEKmilkyway";
     font-size: 1rem;
     font-weight: bold;
+    color: rgb(32, 61, 59);
   }
 
   button {

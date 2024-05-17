@@ -24,7 +24,7 @@ const Section6 = () => {
               voluptatibus aliquam suscipit natus consequatur vel recusandae
               quis? Ab.
             </p>
-            <a href="">유저들과의 대화를 원하시나요</a>
+            <a href="">유저들과의 쪽지를 원하시나요</a>
           </div>
           <div className="photo">
             <img src="/img/section6-(1).jpg" alt="logo image" />

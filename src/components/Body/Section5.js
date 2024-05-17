@@ -159,7 +159,7 @@ const Section5 = () => {
         <div className="marquee">
           <h1 className="odc">
             <GoArrowUpRight className="odcArrow" />
-            OneDayclassName
+            OneDayclass
           </h1>
           <a href="/compagno/onedayClassBoard" className="odcdetail">
             더 많은 클래스 보기

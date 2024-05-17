@@ -152,7 +152,7 @@ const ClassDetail = () => {
             }}
           >
             <img
-              src={"http://192.168.10.28:8081/" + user.userImg}
+              src={"http://192.168.10.28:8081/" + odcClass.user?.userImg}
               style={{
                 width: "25vh",
                 position: "relative",
@@ -167,7 +167,7 @@ const ClassDetail = () => {
                 />
               </div>
               {/* {odcClass.user.userNickname} */}
-              <p> 이메일 : {user.userEmail}</p>
+              <p> 이메일 : {odcClass.user?.userEmail}</p>
             </div>
             <p className="regidate">
               등록 날짜 : {moment(odcClass.odcRegiDate).format("YY-MM-DD")}
@@ -213,13 +213,13 @@ const ClassDetail = () => {
               </p>
             </div>
             {/* {user} */}
-            {user.userId == odcClass.user?.userId ? (
+            {user.userId == odcClass.user?.userId ||
+            user.userRole == "ROLE_ADMIN" ? (
               //&& user.userId !== undefined
               <button onClick={onUpdate}>수정</button>
             ) : (
               <></>
             )}
-
             <button onClick={onBack}>취소</button>
           </div>
         </div>

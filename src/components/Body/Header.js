@@ -15,28 +15,9 @@ const Header = () => {
   const user = useSelector((state) => {
     return state.user;
   });
-
-  // // Header >>>>  색변환 !!
-  // $(function () {
-  //   var $header = $("header"); //헤더를 변수에 넣기
-  //   var $page = $(".page-start"); //색상이 변할 부분
-  //   var $window = $(window);
-  //   var pageOffsetTop = $page.offset().top; //색상 변할 부분의 top값 구하기
-
-  //   $window.resize(function () {
-  //     //반응형을 대비하여 리사이즈시 top값을 다시 계산
-  //     pageOffsetTop = $page.offset().top;
-  //   });
-
-  //   $window.on("scroll", function () {
-  //     //스크롤시
-  //     var scrolled = $window.scrollTop() >= pageOffsetTop; //스크롤된 상태; true or false
-  //     $header.toggleClass("down", scrolled); //클래스 토글
-  //   });
-  // });
   // ===========================================================================
   useEffect(() => {
-    // #toggle 요소에 클릭 이벤트를 추가합니다.
+    // #toggle 요소에 클릭 이벤트를 추가합니다.  // 여기부분 햄버거 메뉴  관련
     document.getElementById("toggle").addEventListener("click", function () {
       // #toggle .bar 요소에 animate 클래스를 토글합니다.
       document.querySelector("#toggle .bar").classList.toggle("animate");
@@ -61,27 +42,6 @@ const Header = () => {
     alert("로그아웃하여 메인페이지로 이동합니다.");
     navigate("/compagno");
   };
-
-  // useEffect(() => {
-  //   document.addEventListener("DOMContentLoaded", function () {
-  //     var header = document.querySelector("header"); // 헤더 요소를 변수에 저장합니다.
-  //     var page = document.querySelector(".page-start"); // 색상이 변할 부분을 변수에 저장합니다.
-  //     var window = window;
-  //     var pageOffsetTop = page.getBoundingClientRect().top + window.scrollY; // 색상이 변할 부분의 top 값을 구합니다.
-
-  //     window.addEventListener("resize", function () {
-  //       // 반응형을 대비하여 리사이즈할 때 top 값을 다시 계산합니다.
-  //       pageOffsetTop = page.getBoundingClientRect().top + window.scrollY;
-  //     });
-
-  //     window.addEventListener("scroll", function () {
-  //       // 스크롤할 때
-  //       var scrolled = window.scrollY >= pageOffsetTop; // 스크롤된 상태를 판단합니다.
-  //       console.log(window.scrollY);
-  //       header.classList.toggle("down", scrolled); // 클래스를 토글하여 적용합니다.
-  //     });
-  //   });
-  // }, []);
 
   return (
     <>
