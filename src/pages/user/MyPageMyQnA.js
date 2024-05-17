@@ -164,7 +164,7 @@ const MyPageMyQnA = () => {
   // 매니저 질문 목록과 페이징 기초값 세팅
   // 페이징에 사용할 총 질문 갯수 가져오기
   const [manageQnaList, setManageQnaList] = useState([]);
-  const [managePage, setManagePage] = useState(0);
+  const [managePage, setManagePage] = useState(1);
   const [manageQnaCount, setManageQnaCount] = useState(0);
 
   // -----------------------------------------------------------------------------------
@@ -201,7 +201,7 @@ const MyPageMyQnA = () => {
                       </td>
                       <td>{qna.userNickname}</td>
                       <td>{moment(qna.qnaQDate).format("YYYY-MM-DD")}</td>
-                      <td>{qna.qnaQStatus}</td>
+                      <td>{qna.qnaQStatus === "N" ? "X" : "O"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -230,7 +230,7 @@ const MyPageMyQnA = () => {
                       </td>
                       <td>{mQna.userNickname}</td>
                       <td>{moment(mQna.qnaQDate).format("YYYY-MM-DD")}</td>
-                      <td>{mQna.qnaQStatus}</td>
+                      <td>{mQna.qnaQStatus === "N" ? "X" : "O"}</td>
                     </tr>
                   ))}
                 </tbody>

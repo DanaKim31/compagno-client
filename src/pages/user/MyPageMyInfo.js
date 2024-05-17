@@ -530,60 +530,64 @@ const MyPageMyInfo = () => {
           <Tab eventKey="editPwd" title="암호 변경">
             <MyPagePutPwd />
           </Tab>
-          <Tab eventKey="quit" title="회원 탈퇴">
-            <div className="info-quit">
-              <h1 id="quitHeadText">Compagno 탈퇴 전 확인하세요.</h1>
-              <div id="quitInstructions">
-                <h3>회원 탈퇴 및 정보 보존 정책</h3>
-                <ol className="quitInstructionText">
-                  <li>
-                    회원 탈퇴 시, 본 사이트의 모든 서비스 및 기능에 대한 접근이
-                    제한됩니다. 회원 탈퇴 후에도 개인 정보 보호 및 보안 정책은
-                    유지됩니다.
-                  </li>
-                  <li>
-                    탈퇴 전에 작성된 타 유저의 게시물에 달린 댓글은 탈퇴 후에도
-                    삭제되지 않습니다. 이는 타인의 컨텐츠에 대한 존중과 함께
-                    본인의 의견을 보존하는 것을 목적으로 합니다.
-                  </li>
-                  <li>
-                    회원 탈퇴 후 6개월 이내에 모든 개인 정보가 영구적으로
-                    삭제됩니다. 이는 회원 탈퇴에 대한 최종적인 조치로, 삭제된
-                    정보는 복구가 불가능합니다. 탈퇴 후에도 이전에 제공한 정보가
-                    일부 서비스 또는 기능에서 잠재적으로 사용될 수 있음을
-                    유의하시기 바랍니다.
-                  </li>
-                </ol>
-              </div>
-              <div id="checkZone">
-                <label>
+          {user.userRole == "ROLE_USER" ? (
+            <Tab eventKey="quit" title="회원 탈퇴">
+              <div className="info-quit">
+                <h1 id="quitHeadText">Compagno 탈퇴 전 확인하세요.</h1>
+                <div id="quitInstructions">
+                  <h3>회원 탈퇴 및 정보 보존 정책</h3>
+                  <ol className="quitInstructionText">
+                    <li>
+                      회원 탈퇴 시, 본 사이트의 모든 서비스 및 기능에 대한
+                      접근이 제한됩니다. 회원 탈퇴 후에도 개인 정보 보호 및 보안
+                      정책은 유지됩니다.
+                    </li>
+                    <li>
+                      탈퇴 전에 작성된 타 유저의 게시물에 달린 댓글은 탈퇴
+                      후에도 삭제되지 않습니다. 이는 타인의 컨텐츠에 대한 존중과
+                      함께 본인의 의견을 보존하는 것을 목적으로 합니다.
+                    </li>
+                    <li>
+                      회원 탈퇴 후 6개월 이내에 모든 개인 정보가 영구적으로
+                      삭제됩니다. 이는 회원 탈퇴에 대한 최종적인 조치로, 삭제된
+                      정보는 복구가 불가능합니다. 탈퇴 후에도 이전에 제공한
+                      정보가 일부 서비스 또는 기능에서 잠재적으로 사용될 수
+                      있음을 유의하시기 바랍니다.
+                    </li>
+                  </ol>
+                </div>
+                <div id="checkZone">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="quitAgree"
+                      checked={quitCheckBox}
+                      onChange={clickCheckBox}
+                    />
+                    유의사항을 확인했습니다.
+                  </label>
                   <input
-                    type="checkbox"
-                    name="quitAgree"
-                    checked={quitCheckBox}
-                    onChange={clickCheckBox}
+                    className="forQuitInput"
+                    type="password"
+                    disabled={quitButton}
+                    placeholder="현재 비밀번호를 입력해주세요"
+                    value={approveInfo.userPwd}
+                    onChange={(e) =>
+                      setApproveInfo({
+                        userId: info.userId,
+                        userPwd: e.target.value,
+                      })
+                    }
                   />
-                  유의사항을 확인했습니다.
-                </label>
-                <input
-                  className="forQuitInput"
-                  type="password"
-                  disabled={quitButton}
-                  placeholder="현재 비밀번호를 입력해주세요"
-                  value={approveInfo.userPwd}
-                  onChange={(e) =>
-                    setApproveInfo({
-                      userId: info.userId,
-                      userPwd: e.target.value,
-                    })
-                  }
-                />
-                <button disabled={quitButton} onClick={clickQuitBtn}>
-                  회원 탈퇴
-                </button>
+                  <button disabled={quitButton} onClick={clickQuitBtn}>
+                    회원 탈퇴
+                  </button>
+                </div>
               </div>
-            </div>
-          </Tab>
+            </Tab>
+          ) : (
+            <></>
+          )}
         </Tabs>
       </div>
     </Div>

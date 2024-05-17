@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -44,15 +46,40 @@ const Div = styled.div`
 `;
 
 const MyPageSidebar = () => {
+  const [user, setUser] = useState({});
+  // 유저정보 가지고 오기
+  const info = useSelector((state) => {
+    return state.user;
+  });
+
+  useEffect(() => {
+    if (Object.keys(info).length === 0) {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    } else {
+      setUser(info);
+    }
+  }, []);
+
   // 마이페이지에서 공통적으로 사용할 사이드바 메뉴
   return (
     <Div>
       <div className="mypage-menu">
         <h1>마이 페이지</h1>
-        <a href="/compagno/mypage/myinfo">내 정보</a>
-        <a href="/compagno/mypage/myadoption">내 활동내역</a>
-        <a href="/compagno/mypage/mynote">쪽지함</a>
-        <a href="/compagno/">메인 페이지로</a>
+        {user.userRole == "ROLE_USER" ? (
+          <>
+            <a href="/compagno/mypage/myinfo">내 정보</a>
+            <a href="/compagno/mypage/myadoption">내 활동내역</a>
+            <a href="/compagno/mypage/mynote">쪽지함</a>
+            <a href="/compagno/">메인 페이지로</a>
+          </>
+        ) : (
+          <>
+            <a href="/compagno/mypage/myinfo">내 정보</a>
+            <a href="/compagno/mypage/myqna">미답변 질문</a>
+            <a href="/compagno/mypage/mynote">쪽지함</a>
+            <a href="/compagno/">메인 페이지로</a>
+          </>
+        )}
       </div>
     </Div>
   );

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Div = styled.div`
   @font-face {
@@ -80,36 +81,60 @@ const MyPageTab = (onClickMenu) => {
     setTabCss();
   }, []);
 
+  const [user, setUser] = useState({});
+  // 유저정보 가지고 오기
+  const info = useSelector((state) => {
+    return state.user;
+  });
+
+  useEffect(() => {
+    if (Object.keys(info).length === 0) {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    } else {
+      setUser(info);
+    }
+  }, []);
+
   return (
     <Div>
       <div className="activityHeader">
-        <a className={`${menu1}`} href="/compagno/mypage/myadoption">
-          입양 동물
-        </a>
-        <a className={`${menu2}`} href="/compagno/mypage/mylost">
-          실종 공고
-        </a>
-        <a className={`${menu3}`} href="/compagno/mypage/myanimalfav">
-          자유게시판
-        </a>
-        <a className={`${menu4}`} href="/compagno/mypage/myproductfav">
-          제품 정보
-        </a>
-        <a className={`${menu5}`} href="/compagno/mypage/myneighbor">
-          우리 동네
-        </a>
-        <a className={`${menu6}`} href="/compagno/mypage/myuserqna">
-          유저간 질문
-        </a>
-        <a className={`${menu7}`} href="/compagno/mypage/mysitter">
-          펫 시터
-        </a>
-        <a className={`${menu8}`} href="/compagno/mypage/myonedayclass">
-          원데이
-        </a>
-        <a className={`${menu9}`} href="/compagno/mypage/myqna">
-          QnA
-        </a>
+        {user.userRole == "ROLE_USER" ? (
+          <>
+            <a className={`${menu1}`} href="/compagno/mypage/myadoption">
+              입양 동물
+            </a>
+            <a className={`${menu2}`} href="/compagno/mypage/mylost">
+              실종 공고
+            </a>
+            <a className={`${menu3}`} href="/compagno/mypage/myanimalfav">
+              자유게시판
+            </a>
+            <a className={`${menu4}`} href="/compagno/mypage/myproductfav">
+              제품 정보
+            </a>
+            <a className={`${menu5}`} href="/compagno/mypage/myneighbor">
+              우리 동네
+            </a>
+            <a className={`${menu6}`} href="/compagno/mypage/myuserqna">
+              유저간 질문
+            </a>
+            <a className={`${menu7}`} href="/compagno/mypage/mysitter">
+              펫 시터
+            </a>
+            <a className={`${menu8}`} href="/compagno/mypage/myonedayclass">
+              원데이
+            </a>
+            <a className={`${menu9}`} href="/compagno/mypage/myqna">
+              QnA
+            </a>
+          </>
+        ) : (
+          <>
+            <a className={`${menu9}`} href="/compagno/mypage/myqna">
+              QnA
+            </a>
+          </>
+        )}
       </div>
     </Div>
   );

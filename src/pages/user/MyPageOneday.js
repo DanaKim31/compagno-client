@@ -168,7 +168,7 @@ const MyPageOneday = () => {
                     {moment(odc.odcStartDate).format("YYYY-MM-DD")} ~{" "}
                     {moment(odc.odcLastDate).format("YYYY-MM-DD")}
                   </td>
-                  <td>{odc.odcAccompaying}</td>
+                  <td>{odc.odcAccompaying === "N" ? "X" : "O"}</td>
                   <td>{moment(odc.odcRegiDate).format("YYYY-MM-DD")}</td>
                 </tr>
               ))}

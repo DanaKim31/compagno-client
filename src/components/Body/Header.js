@@ -139,8 +139,17 @@ const Header = () => {
               <div className="dropdown">
                 <span className="dropbtn">{user.userNickname}</span>
                 <div className="dropdown-content">
-                  <a href="/compagno/mypage/myinfo">계정정보 수정</a>
-                  <a href="/compagno/mypage/myadoption">활동 내역</a>
+                  {user.userRole == "ROLE_USER" ? (
+                    <>
+                      <a href="/compagno/mypage/myinfo">계정정보 수정</a>
+                      <a href="/compagno/mypage/myadoption">활동 내역</a>
+                    </>
+                  ) : (
+                    <>
+                      <a href="/compagno/mypage/myinfo">계정정보 수정</a>
+                      <a href="/compagno/mypage/myqna">미답변 QnA</a>
+                    </>
+                  )}
                 </div>
               </div>
               <div>

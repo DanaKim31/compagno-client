@@ -163,7 +163,7 @@ const MyPageUserQna = () => {
                       {userQna.userQuestionBoardTitle}
                     </a>
                   </td>
-                  <td>{userQna.userQuestionBoardStatus}</td>
+                  <td>{userQna.userQuestionBoardStatus === "N" ? "X" : "O"}</td>
                   <td>답변자 닉네임 추가예정</td>
                   <td>
                     {moment(userQna.userQuestionBoardDate).format(
