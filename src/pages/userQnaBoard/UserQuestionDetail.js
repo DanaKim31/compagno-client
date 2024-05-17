@@ -87,6 +87,13 @@ const Div = styled.div`
         margin-right: 15px;
       }
     }
+
+    #status{
+      button{
+        font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+      }
+    }
   }
 
   /* 질문 이미지들 */
@@ -183,9 +190,10 @@ const Div = styled.div`
   }
 
   #desc {
-    padding: 30px;
-    margin: 20px;
     height: 80px;
+    button{
+      margin-right: 10px;
+    }
   }
   #reanswer {
     #desc {
@@ -637,7 +645,7 @@ const UserQuestionDetail = () => {
                         <img
                           alt=""
                           key={question.userQuestionBoardCode}
-                          src={"http://192.168.10.28.8081/" + question.userImg}
+                          src={"http://192.168.10.28:8081/" + question.userImg}
                         />
                         <div>
                           <div>

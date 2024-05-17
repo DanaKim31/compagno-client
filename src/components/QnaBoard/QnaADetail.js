@@ -87,6 +87,8 @@ const Div = styled.div`
     padding: 5px;
     background-color: black;
     color: white;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
   }
   button:hover {
     background-color: #94b29b;
@@ -99,13 +101,31 @@ const Div = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
+    #answerbuttons{
+      padding-top: 20px;
+      padding-right: 20px;
+      margin-right: 10px;
+      display: flex;
+      flex-direction: column;
+      font-weight: bold;
+      button{
+        font-family: "TAEBAEKmilkyway";
+       font-weight: bold;
+      }
+    }
     #buttons {
       justify-content: end;
     }
     h2 {
-      padding-top: 10px;
+      padding-top: 25px;
+      font-weight: bold;
+      padding-left: 25px;
     }
   }
+
+  background-color: rgba(32, 61, 59, 0.15);
+  border-radius: 10px;
+
   p {
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
@@ -120,6 +140,11 @@ const Div = styled.div`
     display: flex;
     justify-content: center;
     margin-bottom: 200px;
+    button{
+      margin-bottom: 20px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
   }
 `;
 
@@ -382,7 +407,7 @@ const QnaADetail = () => {
                 <>
                   <div id="atopbar">
                     <h2>{answer.qnaATitle}</h2>
-                    <div>
+                    <div id="answerbuttons">
                       <div id="buttons">
                         <button onClick={() => onUpdateAnswer(answer)}>
                           수정
@@ -421,7 +446,10 @@ const QnaADetail = () => {
           {answer === "" ? (
             // 답변이 없을 때
             <>
-              <p>답변이 아직 작성되지 않았습니다.</p>
+            <div id="content">
+            <p>답변이 아직 작성되지 않았습니다.</p>
+
+            </div>
               <div id="list">
                 <button onClick={() => navigate("/compagno/question")}>
                   목록
@@ -433,7 +461,7 @@ const QnaADetail = () => {
             <>
               <div id="atopbar">
                 <h2>{answer.qnaATitle}</h2>
-                <div style={({ display: "flex" }, { flexDirection: "column" })}>
+                <div id="answerbuttons">
                   <p>
                     날짜 : {moment(answer.qnaADate).format("YY-MM-DD hh:mm")}
                   </p>

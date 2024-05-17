@@ -1,6 +1,6 @@
 import { getQuestions } from "../../api/Question";
 import { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { userSave } from "../../store/user";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,11 +53,8 @@ const Div = styled.div`
     justify-content: space-between;
     padding-top: 5px;
     height: 90px;
-
-    Button {
-      height: 35px;
-      background-color: gray;
-      border: 1px solid gray;
+    button{
+      font-weight: bold;
     }
   }
   Table {
@@ -98,6 +95,9 @@ const Div = styled.div`
         font-weight: bold;
       }
     }
+    button{
+      width: 120px;
+    }
 
     input {
       margin-left: 7px;
@@ -107,19 +107,35 @@ const Div = styled.div`
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
-    button {
-      width: 120px;
-      background-color: gray;
-      border-radius: 5px;
-      border: 1px solid gray;
-      color: white;
-    }
+    
   }
-  #searchbutton {
-    display: flex;
-    justify-content: space-evenly;
+  button{
+    height: 35px;
+    background-color: black;
+    border-radius: 5px;
+    color: white;
   }
   button:hover {
+    background-color: #94b29b;
+    border: 2px solid #94b29b;
+
+}
+`;
+
+const Btn = styled.button`
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+  background-color: black;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  
+  &:hover {
     background-color: #94b29b;
   }
 `;
@@ -245,13 +261,13 @@ const QnaList = () => {
         centered
       >
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-vcenter">
-            비밀글 확인 !
+          <Modal.Title id="contained-modal-title-vcenter" style={{fontFamily: "TAEBAEKmilkyway"}}>
+            <p style={{fontWeight:"bold"}}>비밀글 확인!</p>
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <p>비밀글입니다. 비밀번호를 입력하세요.</p>
+          <div style={{fontFamily: "TAEBAEKmilkyway"}}><p style={{fontWeight:"bold"}}>비밀글입니다. 비밀번호를 입력하세요.</p></div>
           <input
             type="password"
             id="password"
@@ -262,8 +278,8 @@ const QnaList = () => {
         </Modal.Body>
 
         <Modal.Footer>
-          <button onClick={props.onHide}>닫기</button>
-          <button onClick={pwdCheck}>확인</button>
+          <Btn onClick={props.onHide} className="custom-button">닫기</Btn>
+          <Btn onClick={pwdCheck} className="custom-button">확인</Btn>
         </Modal.Footer>
       </Modal>
     );
@@ -288,30 +304,30 @@ const QnaList = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <Button id="searchbutton" onClick={search}>
+          <button id="searchbutton" onClick={search}>
             <IoSearch />
             조회
-          </Button>
+          </button>
         </div>
         {Object.keys(user).length === 0 ? (
           <>
-            <Button
+            <button
               onClick={() => {
                 navigate("/compagno/login");
               }}
             >
               질문 등록
-            </Button>
+            </button>
           </>
         ) : (
           <>
-            <Button
+            <button
               onClick={() => {
                 navigate("/compagno/question/register");
               }}
             >
               질문 등록
-            </Button>
+            </button>
           </>
         )}
       </div>

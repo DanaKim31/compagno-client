@@ -142,9 +142,16 @@ const Div = styled.div`
     margin: 20px;
     height: 80px;
   }
+  #answeredit{
+    display: flex;
+    padding: 30px;
+    margin: 20px auto;
+  }
+  
   #reansweredit {
     padding: 10px;
     margin: 20px auto;
+    margin-left: 20px;
     input {
       margin: auto;
       height: 40px;
@@ -169,6 +176,9 @@ const Div = styled.div`
     #reanswerregistercontent {
       display: flex;
       height: 50px;
+      input{
+        font-weight: bold;
+      }
       button {
         width: 80px;
         height: 41px;
@@ -199,10 +209,14 @@ const Div = styled.div`
     display: flex;
     width: 80%;
     margin: 0 auto;
+    input{
+      font-weight: bold;
+    }
     button {
       width: 80px;
       height: 41px;
       margin-left: 10px;
+      font-weight: bold;
     }
 
     padding-bottom: 30px;
@@ -231,6 +245,7 @@ const Div = styled.div`
     padding: 5px;
     background-color: black;
     color: white;
+    font-weight: bold;
   }
   button:hover {
     background-color: #94b29b;
@@ -790,7 +805,7 @@ const UserQnaAnswer = ({ question }) => {
                   {editA !== null &&
                   editA?.userAnswerBoardCode === answer.userAnswerBoardCode ? (
                     <>
-                      <div style={{ display: "flex" }}>
+                      <div id="answeredit">
                         <Form.Control
                           type="textarea"
                           placeholder="답변 작성"

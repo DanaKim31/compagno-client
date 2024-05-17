@@ -52,6 +52,14 @@ const Div = styled.div`
       justify-content: space-between;
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
+      #status{
+        text-align: end;
+        margin-right: 10px;
+        button{
+          margin-right:10px;
+          font-weight: bold;
+        }
+      }
     }
 
     /* 프로필 */

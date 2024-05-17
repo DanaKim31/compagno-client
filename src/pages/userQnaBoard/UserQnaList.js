@@ -56,6 +56,9 @@ const Div = styled.div`
     margin: 0 auto;
     border: 2px dashed gray;
     border-radius: 15px;
+    button{
+      font-weight:bold;
+    }
 
     select {
       font-family: "TAEBAEKmilkyway";
@@ -114,6 +117,7 @@ const Div = styled.div`
     background-color: gray;
     border: 1px solid gray;
     font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
   }
 
   #topbarsecond {
@@ -352,10 +356,10 @@ const UserQnaList = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <Button onClick={search}>
+          <button onClick={search}>
             <IoSearch />
             조회
-          </Button>
+          </button>
         </div>
       </div>
       <div id="topbarsecond">
@@ -380,25 +384,23 @@ const UserQnaList = () => {
         <div>
           {Object.keys(user).length === 0 ? (
             <>
-              <Button
-                variant="dark"
+              <button
                 onClick={() => {
                   navigate("/compagno/login");
                 }}
               >
                 질문 등록
-              </Button>
+              </button>
             </>
           ) : (
             <>
-              <Button
-                variant="dark"
+              <button
                 onClick={() => {
                   navigate("/compagno/userQna/register");
                 }}
               >
                 질문 등록
-              </Button>
+              </button>
             </>
           )}
         </div>
