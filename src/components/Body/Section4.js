@@ -12,7 +12,6 @@ const Section4 = () => {
             <div className="col">
               <div style={{ display: "flex" }}>
                 <h1>동물 등록</h1>
-                <a className="btn">다양한 활동을 원하시나요 ?</a>
               </div>
               <img src="" alt="" />
               <p>
@@ -25,7 +24,6 @@ const Section4 = () => {
             <div className="col">
               <div>
                 <h1>구조 동물</h1>
-                <a className="btn">다양한 활동을 원하시나요 ?</a>
               </div>
               <img
                 src="/img/동물입양메인.png"
@@ -54,7 +52,6 @@ const Section4 = () => {
               <div>
                 {" "}
                 <h1>제품 등록</h1>
-                <a className="btn">다양한 활동을 원하시나요 ?</a>
               </div>
               <img src="" alt="" />
               <p>
@@ -67,10 +64,9 @@ const Section4 = () => {
             <div className="col">
               <div>
                 <h1>다양한 게시판</h1>
-                <a className="btn">다양한 활동을 원하시나요 ?</a>
               </div>
               <img src="" alt="" />
-              <p style={{ marginTop: "15px" }}>
+              <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Eligendi, tempora culpa! Recusandae ab, explicabo debitis
                 similique ad ex facilis porro non nostrum! Magni repellat itaque

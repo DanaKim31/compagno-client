@@ -3,7 +3,6 @@ import { viewAllClass } from "../../api/onedayClass";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import Pagination from "../../components/ClassBoard/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 
@@ -27,6 +26,8 @@ const StyledDiv = styled.div`
   * {
     font-family: "TAEBAEKmilkyway";
     font-size: 1rem;
+    font-weight: bold;
+    color: rgb(32, 61, 59);
   }
 
   button {
@@ -155,14 +156,11 @@ const ClassList = () => {
     navigate("/compagno/onedayClassBoard/detail/" + code);
   };
 
-  //  ================================================== Pagination
-
   return (
     <StyledDiv>
       <div>
         <h1>원데이 클래스</h1>
         <div className="button">
-          {/* <button onClick={list}>클래스 목록</button> */}
           <button onClick={create}>원데이 클래스 나도 추가</button>
         </div>
         <div className="viewAll">
@@ -182,9 +180,7 @@ const ClassList = () => {
                   />
                 ))}
               </div>
-
               <div className="info">
-                {/* 나머지 클래스 정보 */}
                 <div className="title">제목 : {onedayClass.odcTitle}</div>
                 <div className="Content">내용 : {onedayClass.odcContent}</div>
                 <div className="Accompaying">
@@ -207,11 +203,6 @@ const ClassList = () => {
             </div>
           ))}
         </div>
-        {/* <Pagination
-          page={page}
-          count={onedayClasses}
-          setPage={handlePageChange}
-        /> */}
       </div>
     </StyledDiv>
   );

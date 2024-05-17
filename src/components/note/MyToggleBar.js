@@ -3,7 +3,7 @@ import { BsCaretDownFill, BsCaretUpFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import styled from "styled-components";
-import Modal from "react-modal";
+// import Modal from "react-modal";
 import NoteCreate from "./NoteCreate";
 import { useNavigate } from "react-router-dom";
 

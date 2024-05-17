@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 import moment from "moment";
 import styled from "styled-components";
 import MyToggleBar from "../../components/note/MyToggleBar";
-import { Prev } from "react-bootstrap/esm/PageItem";
+import TextareaAutosize from "react-textarea-autosize";
 
 const StyledDiv = styled.div`
   background-color: rgb(244, 244, 244);
@@ -115,6 +115,7 @@ const ClassUpdate = () => {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
     oneClassAPI();
+    // console.log(moment().format("YYYY-MM-DD HH:mm:SS"));
   }, []);
 
   // 1 . 기존에 있던 정보들 먼저 삭제 하고 !!
@@ -128,13 +129,6 @@ const ClassUpdate = () => {
     setFile(files[0]);
   };
 
-  // const deleteImage = () => {
-  //   setOdcClass((prev) => {
-  //     const images = prev.images.filter((image) => image.odcCode !== code);
-  //     return { ...prev, images: images };
-  //   });
-  // };
-
   // 수정하는 부분 수정후 => 저장시켜서 보내기
   const onSubmit = async () => {
     const formData = new FormData();
@@ -143,6 +137,7 @@ const ClassUpdate = () => {
     formData.append("odcContent", odcClass.odcContent);
     formData.append("odcStartDate", odcClass.odcStartDate);
     formData.append("odcLastDate", odcClass.odcLastDate);
+    formData.append("odcRegiDate", moment().format("YYYY-MM-DD HH:mm:SS"));
     formData.append("odcAccompaying", odcClass.odcAccompaying);
     formData.append("imageCode", odcClass.images[0].odcImageCode);
     formData.append("imageURL", odcClass.images[0].odcMainImage);
@@ -300,6 +295,7 @@ const ClassUpdate = () => {
           <div
             className="info"
             style={{
+              backgroundColor: "rgb(244, 244, 244)",
               display: "block",
               textAlign: "center",
               top: "32px",
@@ -329,7 +325,7 @@ const ClassUpdate = () => {
               >
                 상세 내용 :
                 <br /> <br />
-                <input
+                <TextareaAutosize
                   type="text"
                   style={{
                     width: "50%",
@@ -344,7 +340,7 @@ const ClassUpdate = () => {
                       odcContent: e.target.value,
                     }))
                   }
-                ></input>
+                ></TextareaAutosize>
               </p>
             </div>
             <button onClick={onSubmit}>완료</button>

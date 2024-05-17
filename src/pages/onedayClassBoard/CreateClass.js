@@ -55,7 +55,7 @@ const StyledDiv = styled.div`
     font-weight: bold;
     justify-content: center;
     position: relative;
-    left: 29.6%;
+    left: 26.6%;
     width: 80px;
     position: relative;
     bottom: 89px;
@@ -68,6 +68,7 @@ const StyledDiv = styled.div`
 
   .create {
     position: relative;
+    right: 56px;
     bottom: 40px;
     padding-top: 37px;
   }
@@ -97,7 +98,7 @@ const StyledDiv = styled.div`
     bottom: 88px;
   }
 
-  .content {
+  .content1 {
     position: relative;
     height: 250px;
     width: 77%;
@@ -227,6 +228,7 @@ const CreateClass = () => {
               <input
                 type="date"
                 value={odcStartDate}
+                min={odcStartDate}
                 onChange={(e) => setOdcStartDate(e.target.value)}
               />
             </div>
@@ -244,18 +246,20 @@ const CreateClass = () => {
             <label>
               Y
               <input
-                type="checkbox"
+                type="radio"
                 value="Y"
                 className="Acom"
+                name="Acc"
                 onChange={(e) => setOdcAccompaying(e.target.value)}
               />
             </label>
             <label>
               N
               <input
-                type="checkbox"
+                type="radio"
                 value="N"
                 className="Acom"
+                name="Acc"
                 onChange={(e) => setOdcAccompaying(e.target.value)}
               />
             </label>
@@ -266,17 +270,15 @@ const CreateClass = () => {
               type="text"
               placeholder="내용을 입력하세요"
               value={odcContent}
-              className="content"
+              className="content1"
               onChange={(e) => setContent(e.target.value)}
             />
           </div>
-          {/* 파일 업로드 */}
           <div className="setup">
             <div className="uploadin">
               파일업로드{" "}
               <input
                 type="file"
-                // value={odcMainImage}
                 className="file"
                 onChange={(e) => setOdcMainImage(e.target.files[0])}
               />

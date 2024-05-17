@@ -1,7 +1,5 @@
 import "../../assets/style.css";
-import { FaLinkedinIn, FaFacebookF, FaInstagram } from "react-icons/fa";
-import { CiYoutube } from "react-icons/ci";
-import { MdOutlineEmail } from "react-icons/md";
+
 const Footer = () => {
   return (
     <>
@@ -9,80 +7,190 @@ const Footer = () => {
         <section id="section7">
           <div className="text">
             <div>
-              <span>You spin me right round, baby. Like a record, hello y</span>
+              <span
+                style={{
+                  fontFamily: "TAEBAEKmilkyway",
+                  color: "rgb(67,95,87)",
+                }}
+              >
+                We always remember animals as my friends and only family
+              </span>
             </div>
           </div>
+
           <div className="footer">
-            <div>
-              <h1>Compagno</h1>
-              <h3>© 2024 Seoul Developmemt</h3>
-              <p></p>
-              <div className="sns">
-                <a href="">
-                  <FaFacebookF className="i" />
-                </a>
-                <a href="">
-                  <FaLinkedinIn className="i" />
-                </a>
-                <a href="">
-                  <FaInstagram className="i" />
-                </a>
-                <a href="">
-                  <CiYoutube className="i" />
-                </a>
-                <a href="">
-                  <MdOutlineEmail className="i" />
-                </a>
+            <div
+              className="fote1"
+              style={{
+                textAlign: "center",
+                position: "relative",
+                top: "30px",
+              }}
+            >
+              <p style={{ fontSize: "3rem", fontWeight: "lighter" }}>
+                Stay up to date at all times
+              </p>
+              <div
+                className="sns"
+                style={{
+                  fontSize: "1.2rem",
+                  textDecoration: "none",
+                }}
+              >
+                <a href="">facebook</a>
+                <a href="">LinkedinIn</a>
+                <a href="">instagram</a>
+                <a href="">Youtube</a>
               </div>
             </div>
-            <div className="info">
-              <div className="service">
-                <p>Navigator</p>
-                <a href="">Home</a> <br />
-                <a href="">User</a> <br />
-                <a href="">Board</a> <br />
-                <a href="">Notice</a> <br />
-                <a href="">Service</a>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                paddingTop: "50px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  textAlign: "center",
+                  width: "39%",
+                }}
+              >
+                <div>
+                  <div
+                    className="info"
+                    style={{
+                      display: "inline-block",
+                      left: "100px",
+                      position: "relative",
+                      bottom: "100px",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontSize: "2rem",
+                        textAlign: "center",
+                        position: "relative",
+                      }}
+                    >
+                      Navigator
+                    </p>
+                    <div style={{ display: "inline-grid" }}>
+                      <a href="">Home</a>
+                      <a href="">User</a>
+                      <a href="">Board</a>
+                      <a href="">Notice</a>
+                      <a href="">Service</a>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style={{ position: "relative", top: "100px", height: "40px" }}
+                >
+                  <p style={{ fontSize: "2rem" }}> Compagno ) </p>
+                  <div className="URL">
+                    <p>p ) + 603 7985 8288 </p>
+                    GitHub :
+                    <a
+                      href="https://github.com/DanaKim31/compagno-client"
+                      style={{ textDecoration: "none", color: "white" }}
+                    >
+                      {" "}
+                      Client{" "}
+                    </a>
+                    <a
+                      href="https://github.com/DanaKim31/compagno-server"
+                      style={{ textDecoration: "none", color: "white" }}
+                    >
+                      {" "}
+                      / Sever{" "}
+                    </a>
+                  </div>
+                </div>
+
+                {/* 여기는 조원들 이름과 이메일 정보 */}
+              </div>
+              <div
+                style={{
+                  position: "relative",
+                  top: "43px",
+                  left: "40px",
+                }}
+              >
+                <p style={{ fontSize: "2rem" }}></p>
+                <div
+                  className="person"
+                  style={{
+                    display: "flex",
+                    position: "relative",
+                    left: "80px",
+                  }}
+                >
+                  <p>
+                    김다은 / DanaKim
+                    <br />T +010-xxxx-xxxx <br />
+                    kh123@naver.com
+                  </p>
+                  <p>
+                    손민정
+                    <br />T +010-xxxx-xxxx <br />
+                    kh123@naver.com
+                  </p>
+                  <p>
+                    권예빈
+                    <br />T +010-xxxx-xxxx <br />
+                    kh123@naver.com
+                  </p>
+                </div>
+                <div className="person" style={{ display: "flex" }}>
+                  <p>
+                    이상현
+                    <br />T +010-xxxx-xxxx <br />
+                    kh123@naver.com
+                  </p>
+                  <p>
+                    정동준
+                    <br />T +010-xxxx-xxxx <br />
+                    kh123@naver.com
+                  </p>
+                  <p>
+                    정회영
+                    <br />T +010-xxxx-xxxx <br />
+                    kh123@naver.com
+                  </p>
+                  <p>
+                    김현수
+                    <br />T +010-xxxx-xxxx <br />
+                    kh123@naver.com
+                  </p>
+                </div>
               </div>
             </div>
-            {/* 여기는 조원들 이름과 이메일 정보 */}
-            <div className="person">
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                // paddingTop: "50px",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "1.2rem",
+                  position: "relative",
+                  right: "350px",
+                }}
+              >
+                © 6, Teheran-ro 14-gil, Gangnam-gu, Seoul, Republic of Korea{" "}
               </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-            </div>
-            <div className="person">
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
-              </p>
-              <p>
-                name
-                <br />T +010-xxxx-xxxx <br />
-                kh123@naver.com
+              <p
+                style={{
+                  position: "relative",
+                  left: "350px",
+                }}
+              >
+                SINCE : 2024 F&B Project
               </p>
             </div>
           </div>

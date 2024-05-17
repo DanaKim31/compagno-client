@@ -152,22 +152,22 @@ const ClassDetail = () => {
             }}
           >
             <img
-              src={"http://192.168.10.28:8081/" + user.userImg}
+              src={"http://192.168.10.28:8081/" + odcClass.user?.userImg}
               style={{
                 width: "25vh",
                 position: "relative",
               }}
             />
             <div className="userinfo">
-              유저 닉네임 :
-              <div className="toggle">
+              <div className="toggle" style={{ display: "flex" }}>
+                유저 닉네임 :
                 <MyToggleBar
                   name={odcClass.user?.userNickname}
                   style={{ width: "78px" }}
                 />
               </div>
               {/* {odcClass.user.userNickname} */}
-              <p> 이메일 : {user.userEmail}</p>
+              <p> 이메일 : {odcClass.user?.userEmail}</p>
             </div>
             <p className="regidate">
               등록 날짜 : {moment(odcClass.odcRegiDate).format("YY-MM-DD")}
@@ -193,6 +193,7 @@ const ClassDetail = () => {
               textAlign: "center",
               top: "32px",
               position: "relative",
+              backgroundColor: "rgb(244, 244, 244)",
             }}
           >
             {/* <div>사용자 : {user.userImg}</div> */}
@@ -204,7 +205,7 @@ const ClassDetail = () => {
 
               <p
                 className="Content"
-                style={{ width: "100%", position: "relative" }}
+                style={{ width: "50%", position: "relative", left: "25%" }}
               >
                 상세 내용
                 <br /> <br />
@@ -212,13 +213,13 @@ const ClassDetail = () => {
               </p>
             </div>
             {/* {user} */}
-            {user.userId == odcClass.user?.userId ? (
+            {user.userId == odcClass.user?.userId ||
+            user.userRole == "ROLE_ADMIN" ? (
               //&& user.userId !== undefined
               <button onClick={onUpdate}>수정</button>
             ) : (
               <></>
             )}
-
             <button onClick={onBack}>취소</button>
           </div>
         </div>
