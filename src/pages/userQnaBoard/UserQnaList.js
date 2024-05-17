@@ -251,7 +251,6 @@ const UserQnaList = () => {
     const response = await getUserQuestions(page);
     setQuestions(response.data);
     setTotalPage(response.data.totalPages); // response에서 totalPages 불러와서 set으로 담기
-    console.log(response.data);
   };
 
   const [answercount, setAnswerCount] = useState(0);
@@ -268,8 +267,12 @@ const UserQnaList = () => {
 
   // 페이지가 변할 때마다 questionAPI() 실행
   useEffect(() => {
-    questionAPI();
+      search();
   }, [page]);
+
+  useEffect(() => {
+    questionAPI();
+  }, []);
 
   // totalPage가 바뀔 때 마다 실행
   useEffect(() => {
@@ -286,7 +289,7 @@ const UserQnaList = () => {
     setPages(pageList); // 해당 list 배열을 setPages에 담기
   }, [totalPage]);
 
-  const [select, setSelect] = useState("");
+  const [select, setSelect] = useState("title");
   const [status, setStatus] = useState(0);
   const [category, setCategory] = useState(0);
   const [keyword, setKeyword] = useState("");
@@ -304,6 +307,7 @@ const UserQnaList = () => {
     );
     setQuestions(response.data);
     setTotalPage(response.data?.totalPages);
+
   };
 
   const filtering = async (e) => {
@@ -363,7 +367,6 @@ const UserQnaList = () => {
           <div id="option">
             <span>검색 조건</span>
             <select onChange={(e) => setSelect(e.target.value)}>
-              <option value={""}>전체</option>
               <option value={"title"}>제목</option>
               <option value={"content"}>내용</option>
               <option value={"id"}>작성자</option>

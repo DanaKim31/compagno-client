@@ -71,6 +71,7 @@ const Div = styled.div`
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
       #like {
+        font-size: 1.4rem;
         text-align: right;
       }
     }

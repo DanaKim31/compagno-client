@@ -64,7 +64,7 @@ const Div = styled.div`
   }
 
   #rewriter{
-    background-color: pink;
+    background-color: #94B29B;
     border: none;
     border-radius: 7px;
     margin: 10px;
