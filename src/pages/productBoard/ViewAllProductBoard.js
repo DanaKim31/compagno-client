@@ -27,7 +27,7 @@ import { BiMessageDetail } from "react-icons/bi";
 import { Form, Button } from "react-bootstrap";
 
 const StyledProductBoard = styled.main`
-  min-width: 1700px;
+  min-width: 1900px;
   width: 100%;
 
   padding-top: 120px;
@@ -81,7 +81,7 @@ const StyledProductBoard = styled.main`
   .boardList {
     display: grid;
     grid-template-columns: repeat(4, 24%);
-    grid-template-rows: 358px;
+    grid-template-rows: 380px;
     gap: 1%;
     row-gap: 20px;
     margin: 0px 120px;
@@ -788,6 +788,16 @@ const ViewAllProductBoard = () => {
                   가격 : {productBoard.productPrice.toLocaleString("ko-KR")}원
                 </span>
               </span>
+              <br />
+              <span className="productPriceName">
+                <span className="boardSpan">
+                  제품 품목 : {productBoard.productCategory}
+                </span>
+                <span className="boardSpan">
+                  사용 동물 : {productBoard.animalCategory.animalType}
+                </span>
+              </span>
+
               <br />
               <span className="boardSpan">
                 <FaRegThumbsUp /> {productBoard.recommend.length}

@@ -457,7 +457,7 @@ const NoticeBoardDetail = () => {
                       className="commentUserImage"
                       src={"http://192.168.10.28:8081/" + comment.user?.userImg}
                     />
-                    {comment.user.userNickname} <MyToggleBar />
+                    <MyToggleBar name={comment.user.userNickname} />
                   </span>
                   <span className="commentRegiDate">
                     {moment(comment.noticeCommentRegiDate).isSame(
@@ -585,7 +585,7 @@ const NoticeBoardDetail = () => {
                             "http://192.168.10.28:8081/" + reply.user?.userImg
                           }
                         />
-                        {reply.user.userNickname} <MyToggleBar />
+                        <MyToggleBar name={reply.user.userNickname} />
                       </span>
                       <span className="commentRegiDate">
                         {moment(reply.noticeCommentRegiDate).isSame(
@@ -729,7 +729,7 @@ const NoticeBoardDetail = () => {
                             "http://192.168.10.28:8081/" + reply.user?.userImg
                           }
                         />
-                        {reply.user.userNickname} <MyToggleBar />
+                        <MyToggleBar name={reply.user.userNickname} />
                       </span>
 
                       <span className="commentRegiDate">

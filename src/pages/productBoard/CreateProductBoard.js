@@ -312,7 +312,7 @@ const CreateProductBoard = () => {
     } else if (content == "") {
       alert("내용을 입력해주세요.");
       return false;
-    } else if (files.length !== 0 && JSON.stringify(productMainFile) === "{}") {
+    } else if (files.length !== 0 && !(productMainFile instanceof File)) {
       alert("썸네일로 사용할 이미지를 선택해주세요.");
       return false;
     }

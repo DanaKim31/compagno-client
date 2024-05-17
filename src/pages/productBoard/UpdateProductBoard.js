@@ -283,7 +283,7 @@ const UpdateProductBoard = () => {
       return false;
     } else if (
       (files.length !== 0 || prevImgSrc.length !== 0) &&
-      JSON.stringify(productMainFile) === "{}" &&
+      !(productMainFile instanceof File) &&
       mainImgSrc === ""
     ) {
       alert("썸네일로 사용할 이미지를 선택해주세요");
@@ -427,8 +427,6 @@ const UpdateProductBoard = () => {
   };
 
   const imgCancle = () => {
-    console.log(prevImgSrc);
-    console.log(prevImg);
     selectImage.current.value = "";
     setFiles([]);
     setImgSrc([]);
@@ -532,6 +530,7 @@ const UpdateProductBoard = () => {
               <Form.Control
                 className="cateInput productInput"
                 type="text"
+                defaultValue={productCategory}
                 onChange={(e) => {
                   if (e.target.value.length > 12) {
                     e.target.value = e.target.value.slice(0, 12);
