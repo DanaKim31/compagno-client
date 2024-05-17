@@ -116,8 +116,6 @@ const MyPageSitter = () => {
     const countResponse = await getSitterCount(user.userId);
     const countSitterData = countResponse.data;
     setSitterCount(countSitterData);
-
-    console.log(sitterData);
   };
 
   useDidMountEffect(() => {

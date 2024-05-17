@@ -252,7 +252,6 @@ const SignUp = () => {
     try {
       const checkNickResult = await checkDupNick(user.userNickname);
       setCheckNick(checkNickResult.data);
-      console.log("닉네임 검사 결과 : " + checkNick);
     } catch (err) {
       alert("닉네임을 입력해주세요");
     }

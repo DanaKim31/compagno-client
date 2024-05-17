@@ -116,7 +116,6 @@ const MyPageUserQna = () => {
     const countResponse = await getUserQnaCount(user.userId);
     const countUserQnaData = countResponse.data;
     setUserQnaCount(countUserQnaData);
-    console.log(userQnaData);
   };
   useDidMountEffect(() => {
     userQnaAPI();

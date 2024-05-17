@@ -85,10 +85,6 @@ const MyPagePutPwd = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(user);
-  }, [info]);
-
   // ------------------------
   // 변경할 개인정보 받아줄 변수 언선
   const [user, setUser] = useState({
@@ -135,11 +131,6 @@ const MyPagePutPwd = () => {
       setUserPwdCheckSpan(pwdChkText);
     }
   };
-
-  useEffect(() => {
-    console.log(user.userPwd);
-    console.log(user.userPwdCheck);
-  }, []);
 
   // 비밀번호 체크 정규표현식 실행하는 useEffect
   useEffect(() => {

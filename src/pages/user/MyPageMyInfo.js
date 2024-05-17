@@ -377,8 +377,6 @@ const MyPageMyInfo = () => {
       formData.append("defaultImg", 0);
 
       if (pImageFile != null && defaultImgStatus == false) {
-        console.log(pImageFile);
-        console.log(pImageUrl);
         formData.append("file", pImageFile);
       }
       if (pImageFile == null && defaultImgStatus == true) {
@@ -387,7 +385,6 @@ const MyPageMyInfo = () => {
         formData.append("defaultImg", 1);
       }
 
-      console.log(defaultImgStatus);
       await updateUser(formData);
       localStorage.removeItem("token");
       localStorage.removeItem("user");
