@@ -5,6 +5,7 @@ import {
   getProvinces,
   getDistricts,
 } from "../../api/registerPetBoard";
+import { TbCopy } from "react-icons/tb";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -19,6 +20,7 @@ const Div = styled.div`
   font-weight: bold;
   width: 90%;
   margin: auto;
+  position: relative;
 
   h1 {
     font-size: 2.5rem;
@@ -81,15 +83,32 @@ const Div = styled.div`
     margin: auto;
     padding: 20px;
     border-top: 1px solid gray;
-  }
-  .title {
-    display: flex;
-    line-height: 30px;
-  }
-  span {
-    margin-right: 10px;
-    font-weight: bolder;
-    color: darkgrey;
+
+    .title {
+      display: flex;
+      line-height: 30px;
+    }
+    span {
+      margin-right: 10px;
+      font-weight: bolder;
+      color: darkgrey;
+    }
+
+    #addr {
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-bottom: 16px;
+        margin-left: 5px;
+        color: gray;
+      }
+
+      svg:hover {
+        color: black;
+        cursor: pointer;
+      }
+    }
   }
 `;
 
@@ -190,19 +209,6 @@ const RegisterPetInsts = () => {
         </div>
       </div>
 
-      {/* <div className="sort-total">
-        <div className="sorting">
-          <span>정렬</span>
-          <select onChange={(e) => setSort(e.target.value)}>
-            <option value="1">기관명 오름차순</option>
-            <option value="2">기관명 내림차순</option>
-            <option value="3">주소 오름차순</option>
-            <option value="4">주소 내림차순</option>
-          </select>
-        </div>
-        <span>총 {insts.totalElements}건</span>
-      </div> */}
-
       {insts?.map((inst) => (
         <div key={inst.regiBoardCode} className="list">
           <div className="title name">
@@ -219,7 +225,10 @@ const RegisterPetInsts = () => {
           </div>
           <div className="title addr">
             <span>주소</span>
-            <p>{inst.regiInstAddr}</p>
+            <div id="addr">
+              <p>{inst.regiInstAddr}</p>
+              <TbCopy />
+            </div>
           </div>
         </div>
       ))}

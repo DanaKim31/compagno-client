@@ -207,11 +207,11 @@ const SitterBoard = () => {
 
   const [sort, setSort] = useState(1);
   // ========== 페이징 ==========
-  const [page, setPage] = useState(1); // 현재 페이지
-  const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지
-  const [prev, setPrev] = useState(false); // 앞으로 한칸 버튼
-  const [next, setNext] = useState(false); // 뒤로 한칸 버튼
-  const [pages, setPages] = useState([]); // 페이지네이션 노출 페이지
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const [prev, setPrev] = useState(false);
+  const [next, setNext] = useState(false);
+  const [pages, setPages] = useState([]);
   // ========== 유저정보 ==========
   const dispatch = useDispatch();
   const user = useSelector((state) => {
@@ -244,7 +244,7 @@ const SitterBoard = () => {
     );
     console.log(result.data);
     setSitterBoards(result.data);
-    setTotalPage(result.data.totalPages); // result에서 totalPages 불러와서 set으로 담기
+    setTotalPage(result.data.totalPages);
   };
 
   const categoryAPI = async () => {
@@ -289,19 +289,17 @@ const SitterBoard = () => {
     lastPage = Math.ceil(page / 10) * 10;
     firstPage = lastPage - 9;
     if (totalPage < lastPage) {
-      lastPage = totalPage; // 전체 페이지가 마지막 페이지보다 작은 경우엔 전체 페이지 수가 마지막 페이지 수랑 같음
+      lastPage = totalPage;
     }
     setPrev(firstPage > 1);
     setNext(lastPage < totalPage);
     for (let i = firstPage; i <= lastPage; i++) {
-      pageList.push(i); // 처음 i는 firstPage, 범위는 lastPage로 반복문 돌려서 i값을 넣은 list 만들기
+      pageList.push(i);
     }
-    setPages(pageList); // 해당 lißst 배열을 setPages에 담기
+    setPages(pageList);
   }, [totalPage]);
 
   const handleProvinceChange = (e) => {
-    // districtAPI(e.target.value);
-    // setProvince(e.target.value);
     console.log(e);
     if (e == "") {
       districtAPI("");
@@ -310,10 +308,6 @@ const SitterBoard = () => {
     }
     setSearchProvince(e);
   };
-
-  // const handleDistrictChange = (e) => {
-  //   setDistrict(e.target.value);
-  // };
 
   const navigate = useNavigate();
   const registerBoard = async () => {
@@ -324,10 +318,6 @@ const SitterBoard = () => {
       navigate("/compagno/login");
     }
   };
-
-  // useEffect(() => {
-  //   console.log(searchDistrict);
-  // }, [searchDistrict]);
 
   return (
     <Div>

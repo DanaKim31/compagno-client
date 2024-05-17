@@ -12,7 +12,7 @@ import {
 } from "../../api/sitterBoard";
 import Form from "react-bootstrap/Form";
 import moment from "moment";
-import { FaRegCircleXmark } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 import { Button } from "react-bootstrap";
 import styled from "styled-components";
 
@@ -37,8 +37,10 @@ const Div = styled.div`
   }
 
   .header {
+    width: 100%;
     display: flex;
     justify-content: center;
+    margin: auto;
     line-height: 80px;
     font-size: 2rem;
     border: 3px dashed #455c58ff;
@@ -63,6 +65,10 @@ const Div = styled.div`
       flex-wrap: wrap;
       margin-bottom: 50px;
 
+      div {
+        margin-bottom: 20px;
+      }
+
       select {
         height: 38px;
         width: 185px;
@@ -78,22 +84,17 @@ const Div = styled.div`
       margin-bottom: 20px;
       padding-bottom: 50px;
 
+      div {
+        margin-bottom: 20px;
+      }
+
       input {
+        height: 38px;
         padding-left: 10px;
         border-radius: 5px;
         border: 1px solid gray;
         margin-right: 50px;
         background: #f6f6f6ff;
-      }
-
-      .writer {
-        display: flex;
-        flex-direction: row;
-      }
-
-      .register-date {
-        display: flex;
-        flex-direction: row;
       }
     }
 
@@ -109,7 +110,7 @@ const Div = styled.div`
       }
 
       input {
-        width: 90%;
+        width: 95%;
         line-height: 35px;
         padding-left: 10px;
         border-radius: 5px;
@@ -129,7 +130,7 @@ const Div = styled.div`
       }
 
       .content-input {
-        width: 90%;
+        width: 95%;
         padding-left: 10px;
         border-radius: 5px;
         border: 1px solid gray;
@@ -153,11 +154,34 @@ const Div = styled.div`
     }
 
     .uploaded-images {
-      width: 100%;
+      width: 95%;
       height: 300px;
+      margin-left: 40px;
+      margin-top: 20px;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      border-top: 1px solid lightgray;
+
+      .image-list {
+        position: absolute;
+
+        svg {
+          position: absolute;
+          background: lightgray;
+          top: 30px;
+          right: 22px;
+          padding: 1px;
+          font-weight: bold;
+          font-size: 1.3rem;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        svg:hover {
+          background: white;
+        }
+      }
 
       img {
         height: 200px;
@@ -202,7 +226,6 @@ const SitterUpdate = () => {
   }, []);
 
   const { code } = useParams();
-  const [sitterBorad, setSitterBoard] = useState({});
   const [sitterCategories, setSitterCategories] = useState([]);
   const [boardCategory, setBoardCategory] = useState("");
   const [animalCategories, setAnimalCategories] = useState([]);
@@ -227,6 +250,7 @@ const SitterUpdate = () => {
     formData.append("animalCategoryCode", animalCategory);
     formData.append("locationCode", district);
     formData.append("sitterRegiDate", registerDate);
+    formData.append("sitterUpdateDate", updateDate);
     formData.append("sitterTitle", title);
     formData.append("sitterContent", content);
     formData.append("userId", user.userId);
@@ -249,6 +273,7 @@ const SitterUpdate = () => {
     setSelectedProvince(response.location.parent.locationCode);
     setSelectedDistrict(response.location.locationCode);
     setRegisterDate(response.sitterRegiDate);
+    setUpdateDate(response.sitterUpdateDate);
     setTitle(response.sitterTitle);
     setContent(response.sitterContent);
     setPrevImgSrc(response.images);
@@ -406,17 +431,27 @@ const SitterUpdate = () => {
         <div className="information">
           <div className="writer">
             <span id="title">작성자</span>
-            <input type="text" value={user.userId} readOnly />
+            <input type="text" value={user.userNickname || ""} readOnly />
           </div>
 
           <div className="register-date">
             <span id="title">작성일</span>
-            <input type="text" value={registerDate} readOnly />
+            <input
+              type="text"
+              value={
+                `${new Date(registerDate).getFullYear()}-${new Date(
+                  registerDate
+                ).getMonth()}-${new Date(registerDate).getDate()}   ${new Date(
+                  registerDate
+                ).getHours()}:${new Date(registerDate).getMinutes()}` || ""
+              }
+              readOnly
+            />
           </div>
 
           <div className="update-date">
             <span id="title">수정일</span>
-            <input type="text" value={today} readOnly />
+            <input type="text" value={today || ""} readOnly />
           </div>
         </div>
 
@@ -425,7 +460,7 @@ const SitterUpdate = () => {
           <input
             type="text"
             placeholder="제목 입력"
-            value={title}
+            value={title || ""}
             onChange={(e) => {
               setTitle(e.target.value);
             }}
@@ -438,7 +473,7 @@ const SitterUpdate = () => {
             className="content-input"
             as="textarea"
             placeholder="내용 입력"
-            value={content}
+            value={content || ""}
             onChange={(e) => {
               setContent(e.target.value);
             }}
@@ -455,14 +490,14 @@ const SitterUpdate = () => {
             className="upload-btn"
             onChange={registerImage}
           />
-          <label for="upload-btn" className="upload-btn-custom">
+          <label htmlFor="upload-btn" className="upload-btn-custom">
             사진 업로드
           </label>
           <div className="uploaded-images">
             {imgSrc.map((img, i) => (
-              <div className="new-images" key={i}>
+              <div className="new-images image-list" key={i}>
                 <img src={img} key={i} />
-                <FaRegCircleXmark
+                <IoClose
                   onClick={() => {
                     deleteImage(i);
                   }}
@@ -470,11 +505,9 @@ const SitterUpdate = () => {
               </div>
             ))}
             {prevImgSrc.map((img, i) => (
-              <div className="prev-images" key={img.sitterImgCode}>
+              <div className="prev-images image-list" key={img.sitterImgCode}>
                 <img src={"http://localhost:8081" + img.sitterImg} />
-                <FaRegCircleXmark
-                  onClick={() => deletePrevSrc(img.sitterImgCode)}
-                />
+                <IoClose onClick={() => deletePrevSrc(img.sitterImgCode)} />
               </div>
             ))}
           </div>

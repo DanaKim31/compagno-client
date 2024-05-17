@@ -10,6 +10,7 @@ import {
   getDistricts,
 } from "../../api/sitterBoard";
 import { Button, Form } from "react-bootstrap";
+import { IoClose } from "react-icons/io5";
 import moment from "moment";
 import styled from "styled-components";
 
@@ -60,6 +61,10 @@ const Div = styled.div`
       flex-wrap: wrap;
       margin-bottom: 50px;
 
+      div {
+        margin-bottom: 20px;
+      }
+
       select {
         height: 38px;
         width: 185px;
@@ -75,22 +80,17 @@ const Div = styled.div`
       margin-bottom: 20px;
       padding-bottom: 50px;
 
+      div {
+        margin-bottom: 20px;
+      }
+
       input {
+        height: 38px;
         padding-left: 10px;
         border-radius: 5px;
         border: 1px solid gray;
         margin-right: 50px;
         background: #f6f6f6ff;
-      }
-
-      .writer {
-        display: flex;
-        flex-direction: row;
-      }
-
-      .register-date {
-        display: flex;
-        flex-direction: row;
       }
     }
 
@@ -106,7 +106,7 @@ const Div = styled.div`
       }
 
       input {
-        width: 90%;
+        width: 95%;
         line-height: 35px;
         padding-left: 10px;
         border-radius: 5px;
@@ -126,7 +126,7 @@ const Div = styled.div`
       }
 
       .content-input {
-        width: 90%;
+        width: 95%;
         padding-left: 10px;
         border-radius: 5px;
         border: 1px solid gray;
@@ -150,11 +150,34 @@ const Div = styled.div`
     }
 
     .uploaded-images {
-      width: 100%;
+      width: 95%;
       height: 300px;
+      margin-left: 40px;
+      margin-top: 20px;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      border-top: 1px solid lightgray;
+
+      .image-list {
+        position: relative;
+
+        svg {
+          position: absolute;
+          background: lightgray;
+          top: 30px;
+          right: 22px;
+          padding: 1px;
+          font-weight: bold;
+          font-size: 1.3rem;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        svg:hover {
+          background: white;
+        }
+      }
 
       img {
         height: 200px;
@@ -234,13 +257,10 @@ const SitterCreate = () => {
     const formData = new FormData();
     formData.append("sitterCategory", boardCategory);
     formData.append("animalCategoryCode", animalCategory);
-    // formData.append("location", location.parent.locationName);
-    // formData.append("location", location.locationName);
-    // formData.append("province", province);
     formData.append("locationCode", district);
     formData.append("sitterTitle", title);
     formData.append("sitterContent", content);
-    formData.append("userId", user.userId);
+    formData.append("user", user.userNickname);
     files.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
@@ -290,6 +310,12 @@ const SitterCreate = () => {
 
   const handleDistrictChange = (e) => {
     setDistrict(e.target.value);
+  };
+
+  const deleteImage = (code) => {
+    let newImgSrc = [...imgSrc];
+    newImgSrc.splice(code, 1);
+    setImgSrc(newImgSrc);
   };
 
   const cancelBtn = () => {
@@ -376,7 +402,7 @@ const SitterCreate = () => {
         <div className="information">
           <div className="writer">
             <span id="title">작성자</span>
-            <input type="text" value={user.userId} readOnly />
+            <input type="text" value={user.userNickname} readOnly />
           </div>
 
           <div className="register-date">
@@ -420,12 +446,19 @@ const SitterCreate = () => {
             className="upload-btn"
             onChange={registerImage}
           />
-          <label for="upload-btn" className="upload-btn-custom">
+          <label htmlFor="upload-btn" className="upload-btn-custom">
             사진 업로드
           </label>
           <div className="uploaded-images">
             {imgSrc.map((img, i) => (
-              <img src={img} key={i} />
+              <div className="new-images image-list" key={i}>
+                <img src={img} key={i} />
+                <IoClose
+                  onClick={() => {
+                    deleteImage(i);
+                  }}
+                />
+              </div>
             ))}
           </div>
         </div>

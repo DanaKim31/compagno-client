@@ -391,7 +391,7 @@ const NeighborCreate = () => {
             className="upload-btn"
             onChange={registerImage}
           />
-          <label for="upload-btn" className="upload-btn-custom">
+          <label htmlFor="upload-btn" className="upload-btn-custom">
             사진 업로드
           </label>
           <div className="uploaded-images">
