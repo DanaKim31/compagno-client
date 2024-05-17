@@ -56,6 +56,9 @@ import MyPageOneday from "./pages/user/MyPageOneday";
 import MyPageLost from "./pages/user/MyPageLost";
 import MyPageSitter from "./pages/user/MyPageSitter";
 import ClassUpdate from "./pages/onedayClassBoard/ClassUpdate";
+import ViewAllNoticeBoard from "./pages/noticeBoard/ViewAllNoticeBoard";
+import NoticeBoardDetail from "./pages/noticeBoard/NoticeBoardDetail";
+import CreateNoticeBoard from "./pages/noticeBoard/CreateNoticeBoard";
 
 const router = createBrowserRouter([
   {
@@ -176,6 +179,14 @@ const router = createBrowserRouter([
           { path: ":code", element: <ProductBoardDetail /> },
           { path: "create", element: <CreateProductBoard /> },
           { path: "edit/:code", element: <UpdateProductBoard /> },
+        ],
+      },
+      {
+        path: "notice-board",
+        children: [
+          { index: true, element: <ViewAllNoticeBoard /> },
+          { path: ":code", element: <NoticeBoardDetail /> },
+          { path: "create", element: <CreateNoticeBoard /> },
         ],
       },
       {
