@@ -1,23 +1,20 @@
 import { useState, useEffect } from "react";
-import {
-  getProductBoard,
-  getProductBoardComments,
-  productBoardRecommend,
-  delProductBoardcomment,
-  addProductBoardComment,
-  editProductBoardComment,
-  delProductBoard,
-} from "../../api/productBoard";
-import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import { FaThumbsUp, FaRegThumbsUp } from "react-icons/fa6";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
-import { FiCornerDownRight } from "react-icons/fi";
 import MyToggleBar from "../../components/note/MyToggleBar";
+import {
+  getNoticeBoard,
+  delNoticeBoard,
+  delNoticeBoardcomment,
+  editNoticeBoardComment,
+  addNoticeBoardComment,
+  getNoticeBoardComments,
+} from "../../api/noticeBoard";
+import { FiCornerDownRight } from "react-icons/fi";
 
 const Main = styled.main`
   min-width: 1700px;
@@ -33,12 +30,7 @@ const Main = styled.main`
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
 
-  input,
-  select,
-  button,
-  option,
-  h2,
-  textarea {
+  * {
     font-weight: bold;
     resize: none;
   }
@@ -61,7 +53,6 @@ const Main = styled.main`
   h1:hover {
     color: #94b29b;
   }
-
   .boardDiv {
     padding-bottom: 20px;
     border-bottom: 2px black solid;
@@ -78,6 +69,29 @@ const Main = styled.main`
 
   .viewCommentsDiv {
     border-top: 2px solid silver;
+  }
+
+  .commentRegiDate {
+    font-size: 0.8rem;
+    color: gray;
+  }
+
+  .viewReply {
+    padding: 16px 0px;
+    padding-right: 10px;
+    padding-left: 50px;
+    border-bottom: 1px dashed gainsboro;
+    .commentContentDiv {
+      cursor: auto;
+      margin-left: 60px;
+    }
+    .deleteComment {
+      cursor: auto;
+    }
+  }
+
+  .replyIcon {
+    height: 30px;
   }
 
   h2 {
@@ -97,46 +111,6 @@ const Main = styled.main`
       width: 8%;
     }
   }
-  .commentRegiDate {
-    font-size: 0.8rem;
-    color: gray;
-  }
-  .recommendDiv {
-    margin: 10px auto;
-    display: flex;
-    justify-content: center;
-    font-size: 2rem;
-    cursor: pointer;
-    width: 100px;
-    margin-top: 20px;
-
-    .recommend {
-      font-size: 3rem;
-    }
-
-    span {
-      margin-left: 10px;
-      line-height: 50px;
-    }
-  }
-  .viewReply {
-    padding: 16px 0px;
-    padding-right: 10px;
-    padding-left: 50px;
-    border-bottom: 1px dashed gainsboro;
-    .commentContentDiv {
-      cursor: auto;
-      margin-left: 60px;
-    }
-    .deleteComment {
-      cursor: auto;
-    }
-  }
-
-  .replyIcon {
-    height: 30px;
-  }
-
   .commentDiv {
     overflow: hidden;
     padding: 16px 10px;
@@ -240,48 +214,8 @@ const Main = styled.main`
     border-radius: 100%;
   }
 
-  .boardImage {
-    margin-top: 20px;
-    position: relative;
-    img {
-      object-fit: "fill";
-      margin-left: 9px;
-    }
-    img:nth-child(1) {
-      width: 620px;
-      height: 405px;
-      margin-left: 31px;
-    }
-    img:nth-child(2) {
-      position: absolute;
-      top: 0px;
-    }
-    img:nth-child(3) {
-      position: absolute;
-      top: 0px;
-      right: 31px;
-    }
-    img:nth-child(4) {
-      position: absolute;
-      bottom: 0px;
-    }
-    img:nth-child(5) {
-      position: absolute;
-      bottom: 0px;
-      right: 31px;
-    }
-
-    img:not(:nth-child(1)) {
-      width: 300px;
-      height: 200px;
-    }
-  }
-
   .boardContent {
     padding: 20px;
-    border-top: 2px solid #dcdcdc;
-    border-bottom: 2px solid #dcdcdc;
-    background-color: ghostwhite;
   }
 
   .boardCommentDiv {
@@ -300,15 +234,16 @@ const Main = styled.main`
   }
 `;
 
-const ProductBoardDetail = () => {
+const NoticeBoardDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => {
     return state.user;
   });
-
   const { code } = useParams();
-  const [productBoard, setProductBoard] = useState([]);
+
+  const [noticeBoard, setNoticeBoard] = useState([]);
+
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [replyNo, setReplyNo] = useState(0);
@@ -318,61 +253,29 @@ const ProductBoardDetail = () => {
   const [page, setPage] = useState("");
   const token = localStorage.getItem("token");
 
-  const viewProductBoard = async () => {
-    const response = await getProductBoard(code);
-    setProductBoard(response.data);
+  const viewNoticeBoard = async () => {
+    const response = await getNoticeBoard(code);
+    setNoticeBoard(response.data);
   };
 
-  const viewProductBoardComment = async () => {
-    const response = await getProductBoardComments(code);
+  const viewNoticeBoardComment = async () => {
+    const response = await getNoticeBoardComments(code);
     setComments(response.data);
-  };
-
-  const recommend = async () => {
-    if (token === null) {
-      alert("로그인이 필요합니다.");
-      return false;
-    }
-    await productBoardRecommend({
-      productBoardCode: code,
-      userId: user.userId,
-    });
-    viewProductBoard();
-  };
-
-  const star = (no) => {
-    const result = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= no) {
-        result.push(<FaStar color="orangered" key={i} />);
-      } else if (i > no) {
-        if (i - no === 0.5) {
-          result.push(<FaStarHalfAlt color="orangered" key={i} />);
-        } else {
-          result.push(<FaRegStar color="orangered" key={i} />);
-        }
-      }
-    }
-    return result;
   };
 
   useEffect(() => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
-    viewProductBoard();
-    viewProductBoardComment();
+    viewNoticeBoard();
+    viewNoticeBoardComment();
   }, []);
-
-  const checkRecommend = productBoard.recommend?.filter(
-    (rec) => rec.user.userId === user.userId
-  );
 
   const commentDelete = async (no) => {
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      await delProductBoardcomment(no);
-      viewProductBoard();
-      viewProductBoardComment();
+      await delNoticeBoardcomment(no);
+      viewNoticeBoard();
+      viewNoticeBoardComment();
     }
   };
 
@@ -386,12 +289,12 @@ const ProductBoardDetail = () => {
       return false;
     }
     if (window.confirm("댓글을 작성하시겠습니까?")) {
-      await addProductBoardComment({
-        productBoardCode: code,
-        productCommentContent: comment,
+      await addNoticeBoardComment({
+        noticeBoardCode: code,
+        noticeCommentContent: comment,
       });
-      viewProductBoard();
-      viewProductBoardComment();
+      viewNoticeBoard();
+      viewNoticeBoardComment();
       alert("댓글이 등록되었습니다.");
     }
   };
@@ -406,15 +309,15 @@ const ProductBoardDetail = () => {
       return false;
     }
     if (window.confirm("댓글을 작성하시겠습니까?")) {
-      await addProductBoardComment({
-        productBoardCode: code,
-        productParentCode: replyNo,
-        productCommentContent: replyContent,
+      await addNoticeBoardComment({
+        noticeBoardCode: code,
+        noticeParentCode: replyNo,
+        noticeCommentContent: replyContent,
       });
       setReplyNo(0);
       setReplyContent("");
-      viewProductBoard();
-      viewProductBoardComment();
+      viewNoticeBoard();
+      viewNoticeBoardComment();
       alert("댓글이 등록되었습니다.");
     }
   };
@@ -425,98 +328,79 @@ const ProductBoardDetail = () => {
       return false;
     }
     if (window.confirm("수정 하시겠습니까?")) {
-      await editProductBoardComment({
-        productCommentCode: editNo,
-        productCommentContent: editContent,
+      await editNoticeBoardComment({
+        noticeCommentCode: editNo,
+        noticeCommentContent: editContent,
       });
       setReplyContent("");
       setEditNo(0);
-      viewProductBoardComment();
+      viewNoticeBoardComment();
       alert("댓글이 수정되었습니다.");
     }
   };
 
-  const removeProductBoard = async () => {
+  const removeNoticeBoard = async () => {
     if (window.confirm("게시물을 삭제 하시겠습니까?")) {
-      await delProductBoard(code);
-      navigate("/compagno/product-board");
+      await delNoticeBoard(code);
+      navigate("/compagno/notice-board");
       window.alert("게시물이 삭제되었습니다.");
     }
   };
 
-  const editProductBoard = () => {
-    navigate("/compagno/product-board/edit/" + code);
+  const editNoticeBoard = () => {
+    // navigate("/compagno/notice-board/edit/" + code);
   };
 
   return (
     <Main>
       <div className="boardDiv">
-        <h1 onClick={() => navigate("/compagno/product-board")}>
-          제품 정보 공유 게시판
-        </h1>
-        <div className="boardTitle">{productBoard.productBoardTitle} </div>
+        <h1 onClick={() => navigate("/compagno/notice-board")}>공지 사항</h1>
+        <div className="boardTitle">{noticeBoard.noticeBoardTitle} </div>
         <div className="boardUserInfo">
-          {productBoard.user?.userImg !== undefined && (
+          {noticeBoard.user?.userImg !== undefined && (
             <img
               className="boardUserImage"
-              src={"http://192.168.10.28:8081/" + productBoard.user?.userImg}
+              src={"http://192.168.10.28:8081/" + noticeBoard.user?.userImg}
             />
           )}
-          {productBoard.user?.userNickname} <MyToggleBar />
+          {noticeBoard.user?.userNickname}
           <span className="boardRegiDate">
             작성 일 :{" "}
-            {moment(productBoard.productBoardRegiDate).format(
-              "YYYY-MM-DD HH:mm"
-            )}
+            {moment(noticeBoard.noticeBoardRegiDate).format("YYYY-MM-DD HH:mm")}
           </span>
           <span className="viewCount">
-            조회 수 : {productBoard.productBoardViewCount}
+            조회 수 : {noticeBoard.noticeBoardViewCount}
           </span>
         </div>
-        {productBoard.productMainImage != undefined && (
+        {noticeBoard.noticeMainImage != undefined && (
           <div className="boardImage">
             <img
-              src={"http://192.168.10.28:8081/" + productBoard.productMainImage}
+              src={"http://192.168.10.28:8081/" + noticeBoard.noticeMainImage}
             />
-            {productBoard.images?.map((image) => (
+            {noticeBoard.images?.map((image) => (
               <img
-                key={image.productImageCode}
-                src={"http://192.168.10.28:8081/" + image.productImage}
+                key={image.noticeImageCode}
+                src={"http://192.168.10.28:8081/" + image.noticeImage}
               />
             ))}
           </div>
         )}
-        <p>제품명 : {productBoard.productName}</p>
-        <p>사용 동물 : {productBoard.animalCategory?.animalType}</p>
-        <p>제품 품목 : {productBoard.productCategory}</p>
-        <p>가격 : {productBoard.productPrice?.toLocaleString("ko-KR")}원</p>
-        <p>
-          만족도 : {star(productBoard.productBoardGrade)}
-          &nbsp;&nbsp;{productBoard.productBoardGrade}
-        </p>
-        <div className="boardContent">{productBoard.productBoardContent}</div>
-        <div className="recommendDiv">
-          {checkRecommend?.length === 0 ? (
-            <FaRegThumbsUp className="recommend" onClick={() => recommend()} />
-          ) : (
-            <FaThumbsUp className="recommend" onClick={() => recommend()} />
-          )}
-          <span>{productBoard.recommend?.length}</span>
-        </div>
+
+        <div className="boardContent">{noticeBoard.noticeBoardContent}</div>
       </div>
       <nav className="boardBtnNav">
         <Button
           variant="secondary"
-          onClick={() => navigate("/compagno/product-board")}
+          onClick={() => navigate("/compagno/notice-board")}
         >
           목록
         </Button>
-        {user.userId === productBoard.user?.userId && (
+        {user.userRole === "ROLE_ADMIN" && (
           <>
             <Button
               variant="warning"
               onClick={() => {
-                editProductBoard();
+                editNoticeBoard();
               }}
             >
               수정
@@ -524,7 +408,7 @@ const ProductBoardDetail = () => {
             <Button
               variant="danger"
               onClick={() => {
-                removeProductBoard();
+                removeNoticeBoard();
               }}
             >
               삭제
@@ -536,8 +420,8 @@ const ProductBoardDetail = () => {
         <h2>
           댓글{" "}
           {
-            productBoard.comments?.filter(
-              (commentCount) => commentCount.productCommentDelete !== "Y"
+            noticeBoard.comments?.filter(
+              (commentCount) => commentCount.noticeCommentDelete !== "Y"
             ).length
           }
         </h2>
@@ -565,26 +449,23 @@ const ProductBoardDetail = () => {
         </div>
         <div className="viewCommentsDiv">
           {comments?.map((comment) =>
-            comment.productCommentDelete === "N" ? (
-              <div className="viewComment" key={comment.productCommentCode}>
+            comment.noticeCommentDelete === "N" ? (
+              <div className="viewComment" key={comment.noticeCommentCode}>
                 <div className="commentDiv">
                   <span className="userInfo">
                     <img
                       className="commentUserImage"
-                      src={
-                        "http://192.168.10.28:8081/" +
-                        productBoard.user?.userImg
-                      }
+                      src={"http://192.168.10.28:8081/" + comment.user?.userImg}
                     />
                     {comment.user.userNickname} <MyToggleBar />
                   </span>
                   <span className="commentRegiDate">
-                    {moment(comment.productCommentRegiDate).isSame(
+                    {moment(comment.noticeCommentRegiDate).isSame(
                       moment(),
                       "day"
                     )
-                      ? moment(comment.productCommentRegiDate).from(moment())
-                      : moment(comment.productCommentRegiDate).format(
+                      ? moment(comment.noticeCommentRegiDate).from(moment())
+                      : moment(comment.noticeCommentRegiDate).format(
                           "YYYY.MM.DD. HH:mm"
                         )}
                     {user.userId === comment.user?.userId && (
@@ -592,8 +473,8 @@ const ProductBoardDetail = () => {
                         <span
                           onClick={(e) => {
                             e.stopPropagation();
-                            setEditNo(comment.productCommentCode);
-                            setEditContent(comment.productCommentContent);
+                            setEditNo(comment.noticeCommentCode);
+                            setEditContent(comment.noticeCommentContent);
                             setReplyNo("");
                           }}
                         >
@@ -602,7 +483,7 @@ const ProductBoardDetail = () => {
                         <span
                           onClick={(e) => {
                             e.stopPropagation();
-                            commentDelete(comment.productCommentCode);
+                            commentDelete(comment.noticeCommentCode);
                           }}
                         >
                           삭제
@@ -611,11 +492,11 @@ const ProductBoardDetail = () => {
                     )}
                   </span>
                   <br />
-                  {editNo === comment.productCommentCode ? (
+                  {editNo === comment.noticeCommentCode ? (
                     <>
                       <InputGroup className="editGroup">
                         <Form.Control
-                          defaultValue={comment.productCommentContent}
+                          defaultValue={comment.noticeCommentContent}
                           as="textarea"
                           rows={3}
                           className="writeReply"
@@ -654,19 +535,19 @@ const ProductBoardDetail = () => {
                       <div
                         className="commentContentDiv"
                         onClick={(e) => {
-                          replyNo === comment.productCommentCode
+                          replyNo === comment.noticeCommentCode
                             ? setReplyNo("")
-                            : setReplyNo(comment.productCommentCode);
+                            : setReplyNo(comment.noticeCommentCode);
                           setEditNo("");
                         }}
                       >
                         {" "}
-                        {comment.productCommentContent}{" "}
+                        {comment.noticeCommentContent}{" "}
                       </div>
                     </>
                   )}
                 </div>
-                {replyNo === comment.productCommentCode && (
+                {replyNo === comment.noticeCommentCode && (
                   <div className="writeReplyDiv">
                     <InputGroup className="editGroup">
                       <Form.Control
@@ -694,26 +575,25 @@ const ProductBoardDetail = () => {
                   </div>
                 )}
                 {comment?.replies.map((reply) =>
-                  reply.productCommentDelete === "N" ? (
-                    <div className="viewReply" key={reply.productCommentCode}>
+                  reply.noticeCommentDelete === "N" ? (
+                    <div className="viewReply" key={reply.noticeCommentCode}>
                       <FiCornerDownRight className="replyIcon" />
                       <span className="userInfo">
                         <img
                           className="commentUserImage"
                           src={
-                            "http://192.168.10.28:8081/" +
-                            productBoard.user?.userImg
+                            "http://192.168.10.28:8081/" + reply.user?.userImg
                           }
                         />
                         {reply.user.userNickname} <MyToggleBar />
                       </span>
                       <span className="commentRegiDate">
-                        {moment(reply.productCommentRegiDate).isSame(
+                        {moment(reply.noticeCommentRegiDate).isSame(
                           moment(),
                           "day"
                         )
-                          ? moment(reply.productCommentRegiDate).from(moment())
-                          : moment(reply.productCommentRegiDate).format(
+                          ? moment(reply.noticeCommentRegiDate).from(moment())
+                          : moment(reply.noticeCommentRegiDate).format(
                               "YYYY.MM.DD. HH:mm"
                             )}
                         {user.userId === reply.user?.userId && (
@@ -721,8 +601,8 @@ const ProductBoardDetail = () => {
                             <span
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setEditNo(reply.productCommentCode);
-                                setEditContent(reply.productCommentContent);
+                                setEditNo(reply.noticeCommentCode);
+                                setEditContent(reply.noticeCommentContent);
                                 setReplyNo("");
                               }}
                             >
@@ -731,7 +611,7 @@ const ProductBoardDetail = () => {
                             <span
                               onClick={(e) => {
                                 e.stopPropagation();
-                                commentDelete(reply.productCommentCode);
+                                commentDelete(reply.noticeCommentCode);
                               }}
                             >
                               삭제
@@ -740,11 +620,11 @@ const ProductBoardDetail = () => {
                         )}
                       </span>
                       <br />
-                      {editNo === reply.productCommentCode ? (
+                      {editNo === reply.noticeCommentCode ? (
                         <>
                           <InputGroup className="editGroup">
                             <Form.Control
-                              defaultValue={reply.productCommentContent}
+                              defaultValue={reply.noticeCommentContent}
                               as="textarea"
                               rows={3}
                               className="writeReply"
@@ -782,7 +662,7 @@ const ProductBoardDetail = () => {
                         <>
                           <div className="commentContentDiv">
                             {" "}
-                            {reply.productCommentContent}{" "}
+                            {reply.noticeCommentContent}{" "}
                           </div>
                         </>
                       )}
@@ -790,7 +670,7 @@ const ProductBoardDetail = () => {
                   ) : (
                     <div
                       className="viewReply deleteReply"
-                      key={reply.productCommentCode}
+                      key={reply.noticeCommentCode}
                     >
                       삭제된 댓글입니다.
                     </div>
@@ -798,20 +678,20 @@ const ProductBoardDetail = () => {
                 )}
               </div>
             ) : (
-              <div className="viewComment" key={comment.productCommentCode}>
+              <div className="viewComment" key={comment.noticeCommentCode}>
                 <div
-                  key={comment.productCommentCode}
+                  key={comment.noticeCommentCode}
                   className="commentDiv deleteComment"
                   onClick={(e) => {
-                    replyNo === comment.productCommentCode
+                    replyNo === comment.noticeCommentCode
                       ? setReplyNo("")
-                      : setReplyNo(comment.productCommentCode);
+                      : setReplyNo(comment.noticeCommentCode);
                     setEditNo("");
                   }}
                 >
                   삭제된 댓글입니다.
                 </div>
-                {replyNo === comment.productCommentCode && (
+                {replyNo === comment.noticeCommentCode && (
                   <div className="writeReplyDiv">
                     <InputGroup className="editGroup">
                       <Form.Control
@@ -839,27 +719,26 @@ const ProductBoardDetail = () => {
                   </div>
                 )}
                 {comment?.replies.map((reply) =>
-                  reply.productCommentDelete === "N" ? (
-                    <div className="viewReply" key={reply.productCommentCode}>
+                  reply.noticeCommentDelete === "N" ? (
+                    <div className="viewReply" key={reply.noticeCommentCode}>
                       <FiCornerDownRight className="replyIcon" />
                       <span className="userInfo">
                         <img
                           className="commentUserImage"
                           src={
-                            "http://192.168.10.28:8081/" +
-                            productBoard.user?.userImg
+                            "http://192.168.10.28:8081/" + reply.user?.userImg
                           }
                         />
                         {reply.user.userNickname} <MyToggleBar />
                       </span>
 
                       <span className="commentRegiDate">
-                        {moment(reply.productCommentRegiDate).isSame(
+                        {moment(reply.noticeCommentRegiDate).isSame(
                           moment(),
                           "day"
                         )
-                          ? moment(reply.productCommentRegiDate).from(moment())
-                          : moment(reply.productCommentRegiDate).format(
+                          ? moment(reply.noticeCommentRegiDate).from(moment())
+                          : moment(reply.noticeCommentRegiDate).format(
                               "YYYY.MM.DD. HH:mm"
                             )}
                         {user.userId === reply.user?.userId && (
@@ -867,8 +746,8 @@ const ProductBoardDetail = () => {
                             <span
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setEditNo(reply.productCommentCode);
-                                setEditContent(reply.productCommentContent);
+                                setEditNo(reply.noticeCommentCode);
+                                setEditContent(reply.noticeCommentContent);
                                 setReplyNo("");
                               }}
                             >
@@ -877,7 +756,7 @@ const ProductBoardDetail = () => {
                             <span
                               onClick={(e) => {
                                 e.stopPropagation();
-                                commentDelete(reply.productCommentCode);
+                                commentDelete(reply.noticeCommentCode);
                               }}
                             >
                               삭제
@@ -886,11 +765,11 @@ const ProductBoardDetail = () => {
                         )}
                       </span>
                       <br />
-                      {editNo === reply.productCommentCode ? (
+                      {editNo === reply.noticeCommentCode ? (
                         <>
                           <InputGroup className="editGroup">
                             <Form.Control
-                              defaultValue={reply.productCommentContent}
+                              defaultValue={reply.noticeCommentContent}
                               as="textarea"
                               rows={3}
                               className="writeReply"
@@ -928,14 +807,14 @@ const ProductBoardDetail = () => {
                         <>
                           <div className="commentContentDiv">
                             {" "}
-                            {reply.productCommentContent}{" "}
+                            {reply.noticeCommentContent}{" "}
                           </div>
                         </>
                       )}
                     </div>
                   ) : (
                     <div
-                      key={reply.productCommentCode}
+                      key={reply.noticeCommentCode}
                       className="viewReply deleteReply"
                     >
                       삭제된 댓글입니다.
@@ -950,5 +829,4 @@ const ProductBoardDetail = () => {
     </Main>
   );
 };
-
-export default ProductBoardDetail;
+export default NoticeBoardDetail;

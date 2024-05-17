@@ -25,13 +25,14 @@ import {
 import { MdOutlineWatchLater } from "react-icons/md";
 import { BiMessageDetail } from "react-icons/bi";
 import { Form, Button } from "react-bootstrap";
-import MyToggleBar from "../../components/note/MyToggleBar";
 
 const StyledProductBoard = styled.main`
+  min-width: 1700px;
+  width: 100%;
+
   padding-top: 120px;
   padding-bottom: 30px;
   display: grid;
-  background-color: rgb(244, 244, 244);
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
 
@@ -62,7 +63,7 @@ const StyledProductBoard = styled.main`
     cursor: pointer;
   }
   h1:hover {
-    color: mediumblue;
+    color: #94b29b;
   }
 
   .boardSpan {
@@ -79,9 +80,10 @@ const StyledProductBoard = styled.main`
 
   .boardList {
     display: grid;
-    grid-template-columns: repeat(4, 390px);
+    grid-template-columns: repeat(4, 24%);
     grid-template-rows: 358px;
-    gap: 30px;
+    gap: 1%;
+    row-gap: 20px;
     margin: 0px 120px;
     span {
       font-size: 0.9rem;
@@ -94,7 +96,6 @@ const StyledProductBoard = styled.main`
     cursor: pointer;
     position: absolute;
     right: 5px;
-    background-color: rgb(244, 244, 244);
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
   }
@@ -103,14 +104,8 @@ const StyledProductBoard = styled.main`
     color: #ffeb5a;
   }
 
-  .paging {
-    margin: 20px 0px;
-    display: flex;
-    justify-content: center;
-  }
-
   .filterDiv {
-    border: 2px solid black;
+    border: 3px dashed #455c58ff;
     margin: 0px 120px;
     margin-bottom: 20px;
     padding: 10px 20px;
@@ -174,6 +169,31 @@ const StyledProductBoard = styled.main`
     }
   }
 
+  .viewCommentsDiv {
+    border-top: 2px solid silver;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .writeComment {
+    width: 92%;
+  }
+  .writeCommentDiv {
+    display: flex;
+    justify-content: space-between;
+    button {
+      height: 86px;
+      width: 8%;
+    }
+  }
+  .commentRegiDate {
+    font-size: 0.8rem;
+    color: gray;
+  }
+
   .sortWriteNav {
     margin: 0px 120px;
     margin-bottom: 20px;
@@ -235,6 +255,9 @@ const StyledProductBoard = styled.main`
   }
 
   .paging {
+    margin: 20px 0px;
+    display: flex;
+    justify-content: center;
     svg {
       margin-top: 5px;
       cursor: pointer;
@@ -379,9 +402,7 @@ const ViewAllProductBoard = () => {
 
   return (
     <StyledProductBoard>
-      <h1 onClick={() => navigate("/compagno/product-board")}>
-        제품 정보 공유 게시판
-      </h1>
+      <h1 onClick={() => setPage(1)}>제품 정보 공유 게시판</h1>
       <div className="filterDiv">
         <Form.Control
           size="sm"
@@ -818,7 +839,7 @@ const ViewAllProductBoard = () => {
               key={index}
               value={num}
               onClick={(e) => setPage(Number(e.target.value))}
-              style={num === page ? { backgroundColor: "#78e150" } : {}}
+              style={num === page ? { backgroundColor: "#94B29B" } : {}}
             >
               {num}
             </button>

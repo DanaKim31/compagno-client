@@ -9,10 +9,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { addProductBoard, getAnimalCategories } from "../../api/productBoard";
 
 const Main = styled.main`
-  width: 1900px;
+  width: 100%;
+  min-width: 1900px;
   padding: 0px 300px;
   padding-top: 120px;
-  background-color: rgb(244, 244, 244);
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
   padding-bottom: 100px;
@@ -54,7 +54,7 @@ const Main = styled.main`
   }
 
   .linkLogo:hover {
-    color: mediumblue;
+    color: #94b29b;
   }
 
   .starLeftSpan {
@@ -91,8 +91,7 @@ const Main = styled.main`
   .gradeDiv {
     display: inline-flex;
     flex-direction: row;
-    line-height: 50px;
-    margin-left: 15px;
+    line-height: 35px;
   }
 
   .imagesDiv {
@@ -110,6 +109,8 @@ const Main = styled.main`
     flex-direction: column;
     position: relative;
     border-radius: 10px;
+    float: left;
+    margin-bottom: 30px;
     img {
       width: 100%;
       height: 100%;
@@ -140,6 +141,7 @@ const Main = styled.main`
   .productInpoDiv {
     margin-top: 30px;
     margin-bottom: 30px;
+    height: 420px;
   }
 
   .imageSpan {
@@ -167,8 +169,8 @@ const Main = styled.main`
   }
   .inpoInputDiv {
     width: 700px;
-    float: right;
-    padding-top: 110px;
+    float: left;
+    padding-top: 60px;
     input,
     select {
       display: inline;
@@ -203,6 +205,19 @@ const Main = styled.main`
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  .inpoSpan {
+    display: inline-block;
+    width: 90px;
+    padding: 7px 0px;
+    border-right: 1px solid black;
+    text-align: center;
+    margin-left: 5px;
+  }
+
+  .productInput:not(.gradeDiv) {
+    margin-left: 20px !important;
   }
 `;
 
@@ -362,6 +377,7 @@ const CreateProductBoard = () => {
         <Link to={"/compagno/product-board"} className="linkLogo">
           제품 정보 공유 게시판
         </Link>
+        <p style={{ marginBottom: "10px", fontSize: "1.1rem" }}>제목</p>
         <Form.Control
           className="titleInput"
           type="text"
@@ -403,63 +419,74 @@ const CreateProductBoard = () => {
             </div>
           )}
           <div className="inpoInputDiv">
-            <Form.Control
-              className="nameInput"
-              type="text"
-              placeholder="제품명"
-              onChange={(e) => {
-                if (e.target.value.length > 20) {
-                  e.target.value = e.target.value.slice(0, 20);
-                }
-                setProductName(e.target.value.trim());
-              }}
-            />
-            <Form.Control
-              className="cateInput"
-              type="text"
-              onChange={(e) => {
-                if (e.target.value.length > 12) {
-                  e.target.value = e.target.value.slice(0, 12);
-                }
-                setProductCategory(e.target.value.trim());
-              }}
-              placeholder="제품 분류"
-            />
-            <Form.Select
-              className="animalInput"
-              defaultValue="default"
-              onChange={(e) => {
-                setAnimal(e.target.value);
-              }}
-            >
-              <option value="default" disabled="disabled" hidden>
-                동물 선택
-              </option>
-              {animalCategories.map((animalCategory) => (
-                <option
-                  value={animalCategory.animalCategoryCode}
-                  key={animalCategory.animalCategoryCode}
-                >
-                  {animalCategory.animalType}
+            <div>
+              <span className="inpoSpan">제품명</span>
+              <Form.Control
+                className="nameInput productInput"
+                type="text"
+                placeholder="제품명"
+                onChange={(e) => {
+                  if (e.target.value.length > 20) {
+                    e.target.value = e.target.value.slice(0, 20);
+                  }
+                  setProductName(e.target.value.trim());
+                }}
+              />
+            </div>
+            <div>
+              <span className="inpoSpan">제품 분류</span>
+              <Form.Control
+                className="cateInput productInput"
+                type="text"
+                onChange={(e) => {
+                  if (e.target.value.length > 12) {
+                    e.target.value = e.target.value.slice(0, 12);
+                  }
+                  setProductCategory(e.target.value.trim());
+                }}
+                placeholder="제품 분류"
+              />
+            </div>
+            <div>
+              <span className="inpoSpan">사용 동물</span>
+              <Form.Select
+                className="animalInput productInput"
+                defaultValue="default"
+                onChange={(e) => {
+                  setAnimal(e.target.value);
+                }}
+              >
+                <option value="default" disabled="disabled" hidden>
+                  동물 선택
                 </option>
-              ))}
-            </Form.Select>
-
-            <Form.Control
-              className="priceInput"
-              type="Number"
-              placeholder="가격"
-              onChange={(e) => {
-                if (e.target.value.length > 9) {
-                  e.target.value = e.target.value.slice(0, 9);
-                }
-                setPrice(e.target.value.trim());
-              }}
-            />
-            <div className="gradeDiv">
-              <p>평점 : </p>
+                {animalCategories.map((animalCategory) => (
+                  <option
+                    value={animalCategory.animalCategoryCode}
+                    key={animalCategory.animalCategoryCode}
+                  >
+                    {animalCategory.animalType}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
+            <div>
+              <span className="inpoSpan">제품 가격</span>
+              <Form.Control
+                className="priceInput productInput"
+                type="Number"
+                placeholder="가격"
+                onChange={(e) => {
+                  if (e.target.value.length > 9) {
+                    e.target.value = e.target.value.slice(0, 9);
+                  }
+                  setPrice(e.target.value.trim());
+                }}
+              />
+            </div>
+            <div className="gradeDiv productInput">
+              <span className="inpoSpan">평점</span>
               {grade >= 1 ? (
-                <div className="starDiv">
+                <div className="starDiv" style={{ marginLeft: "20px" }}>
                   <span
                     className="starLeftSpan"
                     onClick={() => setGrade(0.5)}
@@ -471,7 +498,7 @@ const CreateProductBoard = () => {
                   <FaStar className="star" />
                 </div>
               ) : grade === 0.5 ? (
-                <div className="starDiv">
+                <div className="starDiv" style={{ marginLeft: "20px" }}>
                   <span
                     className="starLeftSpan"
                     onClick={() => setGrade(0.5)}
@@ -483,7 +510,7 @@ const CreateProductBoard = () => {
                   <FaStarHalfAlt className="starHalf" />
                 </div>
               ) : (
-                <div className="starDiv">
+                <div className="starDiv" style={{ marginLeft: "20px" }}>
                   <span
                     className="starLeftSpan"
                     onClick={() => setGrade(0.5)}
@@ -647,6 +674,7 @@ const CreateProductBoard = () => {
           </div>
         </div>
         <div>
+          <p style={{ marginBottom: "10px", fontSize: "1.1rem" }}>내용</p>
           <Form.Control
             as="textarea"
             placeholder="내용 입력"

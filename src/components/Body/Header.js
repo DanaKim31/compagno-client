@@ -128,7 +128,7 @@ const Header = () => {
           <div className="dropdown">
             <div className="dropbtn">공지사항</div>
             <div className="dropdown-content">
-              <a href="#">공지사항</a>
+              <a href="/compagno/notice-board">공지사항</a>
               <a href="/compagno/question">QnA</a>
             </div>
           </div>
