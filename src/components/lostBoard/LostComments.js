@@ -613,7 +613,10 @@ const Comments = () => {
                                           borderRadius: "30px",
                                           padding: "3px 5px",
                                           fontSize: "0.5rem",
-                                          height: "78%",
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          height: "60%",
                                         }}
                                       >
                                         작성자

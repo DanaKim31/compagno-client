@@ -450,12 +450,19 @@ const Comments = () => {
                                 <span
                                   id="bottomWriter"
                                   style={{
+                                    // marginLeft: "9px",
+                                    // fontWeight: "bolder",
+                                    // borderRadius: "30px",
+                                    // padding: "3px 5px",
+                                    // fontSize: "0.5rem",
+                                    // border: "1px solid green",
+
                                     marginLeft: "9px",
-                                    fontWeight: "bolder",
+                                    border: "1px solid green",
+                                    fontWeight: "bold",
                                     borderRadius: "30px",
                                     padding: "3px 5px",
                                     fontSize: "0.5rem",
-                                    border: "1px solid green",
                                   }}
                                 >
                                   작성자
@@ -610,6 +617,10 @@ const Comments = () => {
                                           borderRadius: "30px",
                                           padding: "3px 5px",
                                           fontSize: "0.5rem",
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          height: "60%",
                                         }}
                                       >
                                         작성자
