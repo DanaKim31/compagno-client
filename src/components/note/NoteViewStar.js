@@ -74,16 +74,23 @@ const Div = styled.div`
     font-weight: bold;
   }
   #pageBtn {
-    font-weight: bold;
+    /* font-weight: bold;
     border-radius: 50%;
-    /* border: 1px solid; */
     border: none;
     color: rgb(32, 61, 59);
     width: 25px;
     height: 25px;
     font-size: 0.8rem;
     margin: 0px 5px;
-    background-color: #cbd6ce;
+    background-color: #cbd6ce; */
+    font-weight: bold;
+    width: 25px;
+    height: 28px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    background-color: white;
+    color: black;
+    margin: 5px;
   }
 `;
 const ModalContariner = styled.div`

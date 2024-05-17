@@ -977,12 +977,20 @@ const Comments = () => {
                 value={num}
                 onClick={(e) => setPage(Number(e.target.value))}
                 style={{
-                  borderRadius: "50%",
-                  width: "30px",
-                  height: "30px",
-                  border: "none",
+                  // borderRadius: "50%",
+                  // width: "30px",
+                  // height: "30px",
+                  // border: "none",
+                  // fontWeight: "bold",
+                  // backgroundColor: "#cbd6ce",
                   fontWeight: "bold",
-                  backgroundColor: "#cbd6ce",
+                  width: "25px",
+                  height: "28px",
+                  borderRadius: "5px",
+                  border: "1px solid gray",
+                  backgroundColor: "white",
+                  color: "black",
+                  margin: "5px",
                 }}
               >
                 {num}
