@@ -4,6 +4,7 @@ import Image from "react-bootstrap/Image";
 import { PiMedalFill } from "react-icons/pi";
 import { viewFavList, viewRanker } from "../../api/animalBoard";
 import useDidMountEffect from "../../assets/useDidMountEffect";
+import moment from "moment";
 const RankProfile = styled.div`
   width: 80%;
   padding-top: 200px;
@@ -83,6 +84,7 @@ const WeeklyRank = () => {
       (current, next) => current.animalFavoriteDate - next.animalFavoriteDate
     );
     console.log(sortedByDate);
+    // moment(board.animalBoardDate).format("MM.DD HH:mm")
 
     // 한 시간 간격으로 그룹화
     const groupedByHour = sortedByDate.reduce((acc, fav) => {
