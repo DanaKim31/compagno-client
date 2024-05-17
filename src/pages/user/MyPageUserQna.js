@@ -38,7 +38,7 @@ const Div = styled.div`
       flex-direction: column;
 
       #headText {
-        width: 900px;
+        width: 1000px;
         padding-bottom: 15px;
         font-weight: bold;
       }
@@ -145,8 +145,8 @@ const MyPageUserQna = () => {
             <thead>
               <tr>
                 <th className="th1">제목</th>
+                <th className="th1">내용</th>
                 <th>답변 여부</th>
-                <th>뭐넣지 여기에</th>
                 <th>작성일</th>
               </tr>
             </thead>
@@ -163,8 +163,8 @@ const MyPageUserQna = () => {
                       {userQna.userQuestionBoardTitle}
                     </a>
                   </td>
+                  <td>{userQna.userQuestionBoardContent}</td>
                   <td>{userQna.userQuestionBoardStatus === "N" ? "X" : "O"}</td>
-                  <td>답변자 닉네임 추가예정</td>
                   <td>
                     {moment(userQna.userQuestionBoardDate).format(
                       "YYYY-MM-DD hh:mm"
