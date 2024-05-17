@@ -169,6 +169,7 @@ const Div = styled.div`
     input {
       margin: auto;
       height: 40px;
+      font-weight: bold;
     }
     button {
       margin: 5px;
@@ -198,6 +199,9 @@ justify-content: space-evenly;
       margin: 5px;
     }
 
+    input{
+      font-weight: bold;
+    }
     #reanswerregistercontent {
       display: flex;
       height: 50px;
@@ -769,7 +773,7 @@ const UserQnaAnswer = ({ question }) => {
                                   </>
                                 ) : (
                                   <>
-                                    {user.userId === answer.user.userId ? (
+                                    {user.userId === answer.user.userId && editA === null ? (
                                       <>
                                         <div id="buttons">
                                           <button
