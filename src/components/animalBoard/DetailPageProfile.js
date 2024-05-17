@@ -3,6 +3,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { delBoard } from "../../api/animalBoard";
 import { Image } from "react-bootstrap";
+import MyToggleBar from "../note/MyToggleBar";
 
 const Div = styled.div`
   .title-container {
@@ -85,6 +86,7 @@ const DetailPageProfile = ({ author, currentUser }) => {
           <div className="user-info">
             <p>
               {author.user.userNickname} <FaPencilAlt className="writer" />
+              <MyToggleBar name={author.user.userId} />
             </p>
             <p>
               {"등록일 : " + author.animalBoardDate} |{" "}

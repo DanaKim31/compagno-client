@@ -16,6 +16,14 @@ import { BsCardList } from "react-icons/bs";
 import { FaImage } from "react-icons/fa";
 import useDidMountEffect from "../../assets/useDidMountEffect";
 const HomeContainer = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
   display: flex;
   flex-direction: column;
   .search-container {
