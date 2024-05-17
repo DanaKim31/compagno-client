@@ -462,7 +462,7 @@ const ProductBoardDetail = () => {
               src={"http://192.168.10.28:8081/" + productBoard.user?.userImg}
             />
           )}
-          {productBoard.user?.userNickname} <MyToggleBar />
+          <MyToggleBar name={productBoard.user?.userNickname} />
           <span className="boardRegiDate">
             작성 일 :{" "}
             {moment(productBoard.productBoardRegiDate).format(

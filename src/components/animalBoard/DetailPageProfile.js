@@ -85,8 +85,8 @@ const DetailPageProfile = ({ author, currentUser }) => {
         <div className="author-userablity">
           <div className="user-info">
             <p>
-              {author.user.userNickname} <FaPencilAlt className="writer" />
-              <MyToggleBar name={author.user.userId} />
+              <MyToggleBar name={author.user.userNickname} />{" "}
+              <FaPencilAlt className="writer" />
             </p>
             <p>
               {"등록일 : " + author.animalBoardDate} |{" "}
