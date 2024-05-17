@@ -44,23 +44,35 @@ const Div = styled.div`
   }
 
   position: relative;
-  width: 80%;
+  width: 60%;
   margin: 0 auto;
   top: 150px;
+
   #qtopbar {
+    // 제목
     h1 {
       text-align: center;
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
 
+    // 날짜
+    #date {
+      display: flex;
+      justify-content: end;
+    }
+
     /* 프로필, 작성일, 수정/삭제 or 상태보기 */
     #quserbar {
+      margin: 30px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
+      #like {
+        text-align: right;
+      }
     }
 
     /* 프로필 */
@@ -69,6 +81,7 @@ const Div = styled.div`
       display: flex;
       flex-direction: row;
       height: 65px;
+      
       img {
         width: 65px;
         height: 65px;
@@ -76,11 +89,18 @@ const Div = styled.div`
         margin-right: 15px;
       }
     }
+
+    #status{
+      button{
+        font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+      }
+    }
   }
 
   /* 질문 이미지들 */
   #images {
-    width: 80%;
+    width: 70%;
     margin: 0 auto;
     img {
       width: 30%;
@@ -88,6 +108,7 @@ const Div = styled.div`
     }
   }
 
+  /* 편집 폼!!!!---------------------------------------------------------------------------------- */
   #edit {
     #prevImages {
       width: 500px;
@@ -112,6 +133,7 @@ const Div = styled.div`
     }
   }
 
+  // input
   #input {
     display: flex;
     flex-direction: column;
@@ -123,6 +145,8 @@ const Div = styled.div`
       font-weight: bold;
     }
     p {
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
       font-size: 1.2rem;
       margin-left: 10px;
     }
@@ -132,6 +156,8 @@ const Div = styled.div`
       margin-bottom: 10px;
     }
   }
+
+  // 수정, 취소, 삭제 버튼 등
   #buttons {
     display: flex;
     justify-content: center;
@@ -143,11 +169,53 @@ const Div = styled.div`
     }
   }
 
-  #desc {
-    p {
-      font-family: "TAEBAEKmilkyway";
-      font-weight: bold;
+  #topbarr {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    #desc {
+      display: flex;
+      flex-direction: column;
+      button {
+        margin: 10px;
+      }
+      padding: 0px;
+      height: 0px;
+      margin: 0px;
     }
+  }
+  // content
+  #content{
+    height: 80px;
+    padding: 30px;
+    padding-left: 70px;
+  }
+  p {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+  }
+
+  #desc {
+    height: 80px;
+    button{
+      margin-right: 10px;
+    }
+  }
+  #reanswer {
+    #desc {
+      padding: 10px;
+    }
+  }
+  button {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+  }
+  button:hover {
+    background-color: #94b29b;
   }
 `;
 
@@ -409,16 +477,14 @@ const UserQuestionDetail = () => {
                   </div>
                   {/* 수정, 취소 버튼 */}
                   <div id="buttons">
-                    <Button variant="warning" onClick={questionUpdate}>
-                      수정
-                    </Button>
-                    <Button
+                    <button onClick={questionUpdate}>수정</button>
+                    <button
                       onClick={() => {
                         navigate("/compagno/userQna");
                       }}
                     >
                       취소
-                    </Button>
+                    </button>
                   </div>
                 </>
               ) : (
@@ -426,6 +492,14 @@ const UserQuestionDetail = () => {
                   {/* 그냥 보는 페이지 */}
                   <div id="qtopbar">
                     <h1>{question.userQuestionBoardTitle}</h1>
+                    <div id="date">
+                      <p>
+                        작성일 :{" "}
+                        {moment(question.userQuestionBoardDate).format(
+                          "YY-MM-DD hh:mm"
+                        )}
+                      </p>
+                    </div>
                     <hr />
                     <div id="quserbar">
                       {/* 프로필 + 작성자 이름, 아이디 */}
@@ -443,26 +517,18 @@ const UserQuestionDetail = () => {
                       </div>
 
                       <div id="desc">
-                        <p>
-                          작성일 :{" "}
-                          {moment(question.userQuestionBoardDate).format(
-                            "YY-MM-DD hh:mm"
-                          )}
-                        </p>
                         <p>조회수 : {question.viewcount}</p>
                         {question.userQuestionBoardStatus === "N" ||
                         question.userQuestionBoardStatus == null ? (
                           <>
                             {/* 상태가 N: 수정, 삭제 버튼 */}
                             <div id="status">
-                              <Button
-                                variant="dark"
+                              <button
                                 onClick={() => onUpdateQuestion(question)}
                               >
                                 수정
-                              </Button>
-                              <Button
-                                variant="secondary"
+                              </button>
+                              <button
                                 onClick={() =>
                                   onDeleteQuestion(
                                     question.userQuestionBoardCode
@@ -470,7 +536,7 @@ const UserQuestionDetail = () => {
                                 }
                               >
                                 삭제
-                              </Button>
+                              </button>
                             </div>
                           </>
                         ) : (
@@ -481,7 +547,7 @@ const UserQuestionDetail = () => {
                   </div>
                   <hr />
                   {/* 상세 정보 */}
-                  <div id="desc">
+                  <div id="content">
                     <p>{question.userQuestionBoardContent}</p>
                   </div>
                   <div id="images">
@@ -507,15 +573,47 @@ const UserQuestionDetail = () => {
           <>
             {user.userRole === "ROLE_ADMIN" ? (
               <>
-                <h1>관리자!!! 수정 x, 삭제 버튼만</h1>
-                <Button
-                  variant="dark"
-                  onClick={() =>
-                    onDeleteQuestion(question.userQuestionBoardCode)
-                  }
-                >
-                  삭제
-                </Button>
+                {/* <h1>관리자!!! 수정 x, 삭제 버튼만</h1> */}
+
+                <div id="qtopbar">
+                  <h1>{question.userQuestionBoardTitle}</h1>
+                  <div id="date">
+                    <p>
+                      작성일 :{" "}
+                      {moment(question.userQuestionBoardDate).format(
+                        "YY-MM-DD hh:mm"
+                      )}
+                    </p>
+                  </div>
+                  <hr />
+                  <div id="topbarr">
+                    {/* 프로필 + 작성자 이름, 아이디 */}
+                    <div id="profile">
+                      <img
+                        alt=""
+                        key={question.userQuestionBoardCode}
+                        // src={"http://localhost:8081/" + question.userImg}
+                        src={"http://192.168.10.28:8081/" + question.userImg}
+                      />
+                      <div>
+                        <p>작성자 : {question.userNickname}</p>
+                        <p>아이디 : {question.userId}</p>
+                      </div>
+                    </div>
+                    <div id="desc">
+                      <span>조회수 : {question.viewcount}</span>
+
+                      <button
+                        onClick={() =>
+                          onDeleteQuestion(question.userQuestionBoardCode)
+                        }
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 {/* 상세 정보 */}
                 {question.images?.map((image) => (
                   <img
@@ -528,16 +626,7 @@ const UserQuestionDetail = () => {
                     }
                   />
                 ))}
-                <div id="desc">
-                  <p>{question.userQuestionBoardTitle}</p>
-                  <p>
-                    날짜 :{" "}
-                    {moment(question.userQuestionBoardDate).format(
-                      "YY-MM-DD hh:mm"
-                    )}
-                  </p>
-                  <p>{question.userId}</p>
-                  <p>{question.userNickname}</p>
+                <div id="content">
                   <p>{question.userQuestionBoardContent}</p>
                 </div>
                 <hr />
@@ -546,9 +635,16 @@ const UserQuestionDetail = () => {
             ) : (
               <>
                 <div>
-                  <h1>public</h1>
                   <div id="qtopbar">
                     <h1>{question.userQuestionBoardTitle}</h1>
+                    <div id="date">
+                      <p>
+                        작성일 :
+                        {moment(question.userQuestionBoardDate).format(
+                          "YY-MM-DD hh:mm"
+                        )}
+                      </p>
+                    </div>
                     <hr />
                     <div id="quserbar">
                       {/* 프로필 + 작성자 이름, 아이디 */}
@@ -556,43 +652,43 @@ const UserQuestionDetail = () => {
                         <img
                           alt=""
                           key={question.userQuestionBoardCode}
-                          src={"http://192.168.10.28.8081/" + question.userImg}
+                          src={"http://192.168.10.28:8081/" + question.userImg}
                         />
                         <div>
-                          <p>
+                          <div>
                             <MyToggleBar name={question.userNickname} />
-                          </p>
+                          </div>
                           <p>아이디 : {question.userNickname}</p>
                         </div>
                       </div>
-                      <p>
-                        작성일 :
-                        {moment(question.userQuestionBoardDate).format(
-                          "YY-MM-DD hh:mm"
-                        )}
-                      </p>
-                      <p>조회수 : {question.viewcount}</p>
-                      {/* 좋아요 */}
-                      {user.userId !== undefined ? (
-                        <>
-                          {checklike === 1 ? (
+
+                      <div>
+                        <p>조회수 : {question.viewcount}</p>
+
+                        {/* 좋아요 */}
+                        <div id="like">
+                          {user.userId !== undefined ? (
                             <>
-                              <FaHeart onClick={() => unlike()} />
+                              {checklike === 1 ? (
+                                <>
+                                  <FaHeart onClick={() => unlike()} />
+                                </>
+                              ) : (
+                                <>
+                                  <FaRegHeart onClick={() => like()} />
+                                </>
+                              )}
                             </>
                           ) : (
-                            <>
-                              <FaRegHeart onClick={() => like()} />
-                            </>
+                            <></>
                           )}
-                        </>
-                      ) : (
-                        <></>
-                      )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div id="desc">
+                <div id="content">
                   <p>{question.userQuestionBoardContent}</p>
                 </div>
                 <div id="images">

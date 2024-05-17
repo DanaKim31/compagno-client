@@ -1,6 +1,6 @@
 import { getQuestions } from "../../api/Question";
 import { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { userSave } from "../../store/user";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { Form } from "react-bootstrap";
 
 const Div = styled.div`
-@font-face {
+  @font-face {
     font-family: "TAEBAEKmilkyway";
     src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
       format("woff2");
@@ -47,21 +47,18 @@ const Div = styled.div`
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
     margin: 0 auto;
-    width: 70%;
+    width: 60%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding-top: 5px;
     height: 90px;
-
-    Button {
-      height: 35px;
-      background-color: gray;
-      border: 1px solid gray;
+    button{
+      font-weight: bold;
     }
   }
   Table {
-    width: 70%;
+    width: 60%;
     margin: 0 auto;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
@@ -80,7 +77,6 @@ const Div = styled.div`
       border: 1px solid gray;
       background-color: white;
       color: black;
-      margin: 5px;
       font-weight: bolder;
     }
   }
@@ -93,13 +89,16 @@ const Div = styled.div`
     select {
       border-radius: 7px;
       border: 1px solid gray;
-    font-weight: bold;
-      option{
+      font-weight: bold;
+      option {
         font-family: "TAEBAEKmilkyway";
         font-weight: bold;
       }
     }
-    
+    button{
+      width: 120px;
+    }
+
     input {
       margin-left: 7px;
       margin-right: 7px;
@@ -108,13 +107,36 @@ const Div = styled.div`
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
-    button {
-      width: 120px;
-      background-color: gray;
-      border-radius: 5px;
-      border: 1px solid gray;
-      color: white;
-    }
+    
+  }
+  button{
+    height: 35px;
+    background-color: black;
+    border-radius: 5px;
+    color: white;
+  }
+  button:hover {
+    background-color: #94b29b;
+    border: 2px solid #94b29b;
+
+}
+`;
+
+const Btn = styled.button`
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+  background-color: black;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #94b29b;
   }
 `;
 
@@ -137,6 +159,18 @@ const Table = styled.table`
         color: black;
         text-decoration: none;
       }
+    }
+    #code{
+      width: 80px;
+    }
+    #status{
+      width: 80px;
+    }
+    #id{
+      width: 200px;
+    }
+    #date{
+      width: 200px;
     }
   }
 `;
@@ -239,13 +273,13 @@ const QnaList = () => {
         centered
       >
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-vcenter">
-            비밀글 확인 !
+          <Modal.Title id="contained-modal-title-vcenter" style={{fontFamily: "TAEBAEKmilkyway"}}>
+            <p style={{fontWeight:"bold"}}>비밀글 확인!</p>
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <p>비밀글입니다. 비밀번호를 입력하세요.</p>
+          <div style={{fontFamily: "TAEBAEKmilkyway"}}><p style={{fontWeight:"bold"}}>비밀글입니다. 비밀번호를 입력하세요.</p></div>
           <input
             type="password"
             id="password"
@@ -256,12 +290,8 @@ const QnaList = () => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={props.onHide}>
-            닫기
-          </Button>
-          <Button variant="primary" onClick={pwdCheck}>
-            확인
-          </Button>
+          <Btn onClick={props.onHide} className="custom-button">닫기</Btn>
+          <Btn onClick={pwdCheck} className="custom-button">확인</Btn>
         </Modal.Footer>
       </Modal>
     );
@@ -286,30 +316,30 @@ const QnaList = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <Button onClick={search}>
+          <button id="searchbutton" onClick={search}>
             <IoSearch />
             조회
-          </Button>
+          </button>
         </div>
         {Object.keys(user).length === 0 ? (
           <>
-            <Button
+            <button
               onClick={() => {
                 navigate("/compagno/login");
               }}
             >
               질문 등록
-            </Button>
+            </button>
           </>
         ) : (
           <>
-            <Button
+            <button
               onClick={() => {
                 navigate("/compagno/question/register");
               }}
             >
               질문 등록
-            </Button>
+            </button>
           </>
         )}
       </div>
@@ -327,10 +357,10 @@ const QnaList = () => {
           {questions?.content?.map((question) => {
             return (
               <tr key={question.qnaQCode}>
-                <td>{question.qnaQCode}</td>
-                <td>{question.qnaQStatus}</td>
+                <td id="code">{question.qnaQCode}</td>
+                <td id="status">{question.qnaQStatus}</td>
 
-                <td>
+                <td id="title">
                   {question.secret === "" || question.secret == null ? (
                     // 비밀번호가 걸려있지 않을 때
                     <a href={`/compagno/question/detail/${question.qnaQCode}`}>
@@ -376,17 +406,17 @@ const QnaList = () => {
                     </>
                   )}
                 </td>
-                <td>{question.userId}</td>
+                <td id="id">{question.userId}</td>
                 {/* qnaQDate가 null일 때 DateUpdate로 출력 */}
                 {question.qnaQDate === "" || question.qnaQDate == null ? (
                   <>
-                    <td>
+                    <td id="date">
                       {moment(question.qnaQDateUpdate).format("YY-MM-DD hh:mm")}
                     </td>
                   </>
                 ) : (
                   <>
-                    <td>
+                    <td id="date">
                       {moment(question.qnaQDate).format("YY-MM-DD hh:mm")}
                     </td>
                   </>

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { userSave } from "../../store/user";
-import { getUserQuestions, getliked } from "../../api/userQnaQuestion";
+import { getUserQuestions, getliked, updateviewcount } from "../../api/userQnaQuestion";
 import { getUserAnswers } from "../../api/userQnaAnswer";
 import { Button, Form } from "react-bootstrap";
 import {
@@ -56,6 +56,9 @@ const Div = styled.div`
     margin: 0 auto;
     border: 2px dashed gray;
     border-radius: 15px;
+    button{
+      font-weight:bold;
+    }
 
     select {
       font-family: "TAEBAEKmilkyway";
@@ -114,6 +117,7 @@ const Div = styled.div`
     background-color: gray;
     border: 1px solid gray;
     font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
   }
 
   #topbarsecond {
@@ -158,7 +162,18 @@ const Div = styled.div`
       background-color: white;
       color: black;
       margin: 5px;
+      padding: 0px;
     }
+  }
+  button {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+  }
+  button:hover {
+    background-color: #94b29b;
   }
 `;
 
@@ -187,6 +202,25 @@ const Table = styled.table`
       }
     }
   }
+  #code{
+      width: 150px;
+    }
+    #status{
+      width: 150px;
+    }
+    #id{
+      width: 230px;
+    }
+    #date{
+      width: 230px;
+    }
+    #likecount{
+      width: 150px;
+    }
+    #view{
+      width: 150px;
+    }
+    
 `;
 
 const UserQnaList = () => {
@@ -286,6 +320,10 @@ const UserQnaList = () => {
     }
   };
 
+  const viewcount = async(code) => {
+    await updateviewcount(code);
+  }
+
   return (
     <Div>
       <div id="topbar">
@@ -337,10 +375,10 @@ const UserQnaList = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <Button onClick={search}>
+          <button onClick={search}>
             <IoSearch />
             조회
-          </Button>
+          </button>
         </div>
       </div>
       <div id="topbarsecond">
@@ -365,25 +403,23 @@ const UserQnaList = () => {
         <div>
           {Object.keys(user).length === 0 ? (
             <>
-              <Button
-                variant="dark"
+              <button
                 onClick={() => {
                   navigate("/compagno/login");
                 }}
               >
                 질문 등록
-              </Button>
+              </button>
             </>
           ) : (
             <>
-              <Button
-                variant="dark"
+              <button
                 onClick={() => {
                   navigate("/compagno/userQna/register");
                 }}
               >
                 질문 등록
-              </Button>
+              </button>
             </>
           )}
         </div>
@@ -404,23 +440,24 @@ const UserQnaList = () => {
           {questions?.content?.map((question) => {
             return (
               <tr key={question.userQuestionBoardCode}>
-                <td>{question.userQuestionBoardCode}</td>
-                <td>{question.userQuestionBoardStatus}</td>
+                <td id="code">{question.userQuestionBoardCode}</td>
+                <td id="status">{question.userQuestionBoardStatus}</td>
 
-                <td>
+                <td id="title">
                   <a
                     href={`/compagno/userQna/detail/${question.userQuestionBoardCode}`}
+                    onClick={() => viewcount(question.userQuestionBoardCode)}
                   >
                     {question.userQuestionBoardTitle}
                   </a>
                   <span>[{question.userQuestionBoardCount}]</span>
                 </td>
-                <td>{question.userId}</td>
+                <td id="id">{question.userId}</td>
                 {/* qnaQDate가 null일 때 DateUpdate로 출력 */}
                 {question.userQuestionBoardDate === "" ||
                 question.userQuestionBoardDate == null ? (
                   <>
-                    <td>
+                    <td id="date">
                       {moment(question.userQuestionBoardDateUpdate).format(
                         "YY-MM-DD hh:mm"
                       )}
@@ -428,15 +465,15 @@ const UserQnaList = () => {
                   </>
                 ) : (
                   <>
-                    <td>
+                    <td id="date">
                       {moment(question.userQuestionBoardDate).format(
                         "YY-MM-DD hh:mm"
                       )}
                     </td>
                   </>
                 )}
-                <td>{question.likecount}</td>
-                <td>{question.viewcount}</td>
+                <td id="likecount">{question.likecount}</td>
+                <td id="view">{question.viewcount}</td>
               </tr>
             );
           })}
