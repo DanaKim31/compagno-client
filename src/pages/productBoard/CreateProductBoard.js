@@ -6,12 +6,37 @@ import { Form, Button } from "react-bootstrap";
 import { userSave } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { addProductBoard } from "../../api/productBoard";
+import { addProductBoard, getAnimalCategories } from "../../api/productBoard";
 
 const Main = styled.main`
+  width: 1900px;
+  padding: 0px 300px;
   padding-top: 120px;
-  width: 1200px;
-  margin: 0px auto;
+  background-color: rgb(244, 244, 244);
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+  padding-bottom: 100px;
+
+  input,
+  select,
+  button,
+  option,
+  textarea {
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  textarea {
+    resize: none;
+  }
   .createDiv {
     width: 100%;
   }
@@ -19,27 +44,19 @@ const Main = styled.main`
     margin-bottom: 15px;
   }
 
-  .productInpoDiv {
-    div {
-    }
-  }
-
-  h1 {
-    font-size: 2.5;
+  .linkLogo {
+    font-size: 2.5rem;
     font-weight: bold;
     cursor: pointer;
     margin-bottom: 30px;
+    color: black;
+    text-decoration: none;
   }
 
-  h1:hover {
+  .linkLogo:hover {
     color: mediumblue;
   }
 
-  .inpoInputDiv {
-    width: 700px;
-    float: right;
-    padding-top: 60px;
-  }
   .starLeftSpan {
     position: absolute;
     width: 24px;
@@ -74,22 +91,17 @@ const Main = styled.main`
   .gradeDiv {
     display: inline-flex;
     flex-direction: row;
+    line-height: 50px;
+    margin-left: 15px;
   }
 
   .imagesDiv {
     display: flex;
-
-    img {
-      width: 300px;
-      height: 200px;
-      margin: 0px 10px;
-      margin-bottom: 10px;
-    }
   }
   .mainImageDiv,
   .nullMainImageDiv {
-    width: 400px;
-    height: 300px;
+    width: 560px;
+    height: 420px;
     border: 1px solid black;
     margin-left: 20px;
     display: inline-flex;
@@ -125,16 +137,24 @@ const Main = styled.main`
     }
   }
 
+  .productInpoDiv {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
   .imageSpan {
     position: relative;
     width: 300px;
     height: 200px;
     margin: 0px 10px;
     margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
 
     img {
       width: 100%;
       height: 100%;
+      border-radius: 10px;
     }
     svg {
       position: absolute;
@@ -146,6 +166,9 @@ const Main = styled.main`
     }
   }
   .inpoInputDiv {
+    width: 700px;
+    float: right;
+    padding-top: 110px;
     input,
     select {
       display: inline;
@@ -156,7 +179,30 @@ const Main = styled.main`
       width: 400px;
     }
   }
-  h2 {
+
+  .productContent {
+    margin-top: 10px;
+  }
+
+  .productImage {
+    margin-top: 10px;
+  }
+
+  .writeCancle,
+  .boardWrite {
+    float: right;
+    width: 100px;
+    height: 40px;
+  }
+
+  .writeCancle {
+    margin-right: 15px;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 `;
 
@@ -178,10 +224,18 @@ const CreateProductBoard = () => {
   const [files, setFiles] = useState([]);
 
   const [imgSrc, setImgSrc] = useState([]);
+
+  const [animalCategories, setAnimalCategories] = useState([]);
+
+  const viewAnimalCategory = async () => {
+    const response = await getAnimalCategories();
+    setAnimalCategories(response.data);
+  };
+
   const imageCreate = (e) => {
     const images = Array.from(e.target.files);
-    if (images.length > 3) {
-      alert("이미지는 최대 3장 까지 등록 가능합니다");
+    if (images.length > 4) {
+      alert("이미지는 최대 4장 까지 등록 가능합니다.");
       e.target.value = "";
       setFiles([]);
       setImgSrc([]);
@@ -222,27 +276,55 @@ const CreateProductBoard = () => {
   };
 
   const createBoard = async () => {
-    const formData = new FormData();
-    formData.append("productBoardTitle", title);
-    formData.append("productName", productName);
-    formData.append("productPrice", price);
-    formData.append("productBoardGrade", grade);
-    formData.append("productBoardContent", content);
-    formData.append("animalCategoryCode", animal);
-    formData.append("productCategory", productCategory);
-    formData.append("userId", user.userId);
-
-    if (productMainFile instanceof File) {
-      formData.append("productMainFile", productMainFile);
+    if (title === "") {
+      alert("제목을 입력해주세요.");
+      return false;
+    } else if (productName == "") {
+      alert("제품명을 입력해주세요.");
+      return false;
+    } else if (productCategory == "") {
+      alert("제품 분류를 입력해주세요.");
+      return false;
+    } else if (animal == "") {
+      alert("사용 동물을 선택해주세요.");
+      return false;
+    } else if (price == "") {
+      alert("가격을 입력해주세요.");
+      return false;
+    } else if (grade == "") {
+      alert("평점을 입력해주세요.");
+      return false;
+    } else if (content == "") {
+      alert("내용을 입력해주세요.");
+      return false;
+    } else if (files.length !== 0 && JSON.stringify(productMainFile) === "{}") {
+      alert("썸네일로 사용할 이미지를 선택해주세요.");
+      return false;
     }
+    if (window.confirm("게시물을 등록하시겠습니까?")) {
+      const formData = new FormData();
+      formData.append("productBoardTitle", title);
+      formData.append("productName", productName);
+      formData.append("productPrice", price);
+      formData.append("productBoardGrade", grade);
+      formData.append("productBoardContent", content);
+      formData.append("animalCategoryCode", animal);
+      formData.append("productCategory", productCategory);
+      formData.append("userId", user.userId);
 
-    files.forEach((file, index) => {
-      formData.append(`files[${index}]`, file);
-    });
+      if (productMainFile instanceof File) {
+        formData.append("productMainFile", productMainFile);
+      }
 
-    await addProductBoard(formData);
+      files.forEach((file, index) => {
+        formData.append(`files[${index}]`, file);
+      });
 
-    navigate("/compagno/product-board");
+      await addProductBoard(formData);
+
+      navigate("/compagno/product-board");
+      window.alert("게시물이 등록되었습니다. ");
+    }
   };
 
   useEffect(() => {
@@ -250,6 +332,7 @@ const CreateProductBoard = () => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
+    viewAnimalCategory();
   }, []);
 
   const mainSelectImage = useRef("");
@@ -276,14 +359,19 @@ const CreateProductBoard = () => {
   return (
     <Main>
       <div className="createDiv">
-        <h1>제품 정보 공유 게시판</h1>
+        <Link to={"/compagno/product-board"} className="linkLogo">
+          제품 정보 공유 게시판
+        </Link>
         <Form.Control
           className="titleInput"
           type="text"
           placeholder="제목"
           size="lg"
           onChange={(e) => {
-            setTitle(e.target.value);
+            if (e.target.value.length > 30) {
+              e.target.value = e.target.value.slice(0, 30);
+            }
+            setTitle(e.target.value.trim());
           }}
         />
         <div className="productInpoDiv">
@@ -320,13 +408,21 @@ const CreateProductBoard = () => {
               type="text"
               placeholder="제품명"
               onChange={(e) => {
-                setProductName(e.target.value);
+                if (e.target.value.length > 20) {
+                  e.target.value = e.target.value.slice(0, 20);
+                }
+                setProductName(e.target.value.trim());
               }}
             />
             <Form.Control
               className="cateInput"
               type="text"
-              onChange={(e) => setProductCategory(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length > 12) {
+                  e.target.value = e.target.value.slice(0, 12);
+                }
+                setProductCategory(e.target.value.trim());
+              }}
               placeholder="제품 분류"
             />
             <Form.Select
@@ -339,18 +435,25 @@ const CreateProductBoard = () => {
               <option value="default" disabled="disabled" hidden>
                 동물 선택
               </option>
-              <option value="1">강아지</option>
-              <option value="2">고양이</option>
-              <option value="3">비둘기</option>
-              <option value="4">기타</option>
+              {animalCategories.map((animalCategory) => (
+                <option
+                  value={animalCategory.animalCategoryCode}
+                  key={animalCategory.animalCategoryCode}
+                >
+                  {animalCategory.animalType}
+                </option>
+              ))}
             </Form.Select>
 
             <Form.Control
               className="priceInput"
-              type="text"
+              type="Number"
               placeholder="가격"
               onChange={(e) => {
-                setPrice(e.target.value);
+                if (e.target.value.length > 9) {
+                  e.target.value = e.target.value.slice(0, 9);
+                }
+                setPrice(e.target.value.trim());
               }}
             />
             <div className="gradeDiv">
@@ -549,18 +652,23 @@ const CreateProductBoard = () => {
             placeholder="내용 입력"
             rows={20}
             onChange={(e) => {
-              setContent(e.target.value);
+              if (e.target.value.length > 1900) {
+                e.target.value = e.target.value.slice(0, 1900);
+              }
+              setContent(e.target.value.trim());
             }}
           />
-          <div>
-            이미지 :
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={imageCreate}
-              ref={selectImage}
-            />
+          <div className="productImage">
+            이미지 업로드
+            <Form.Group controlId="formFileMultiple" className="mb-3">
+              <Form.Control
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={imageCreate}
+                ref={selectImage}
+              />
+            </Form.Group>
             <div className="imagesDiv">
               {imgSrc.map((img, i) => (
                 <span className="imageSpan" key={i}>
@@ -576,15 +684,21 @@ const CreateProductBoard = () => {
             </div>
           </div>
         </div>
-        <button
+        <Button
+          className="boardWrite"
           onClick={() => {
             createBoard();
           }}
-          style={{ width: "100px" }}
         >
           글 작성
-        </button>
-        <Link to="/compagno/product-board">메인으로</Link>
+        </Button>
+        <Button
+          className="writeCancle"
+          onClick={() => navigate("/compagno/product-board")}
+          variant="secondary"
+        >
+          취소
+        </Button>
       </div>
     </Main>
   );

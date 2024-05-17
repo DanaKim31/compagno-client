@@ -109,10 +109,10 @@ const Header = () => {
               게시판
             </div>
             <div className="dropdown-content">
-              <a href="/compagno/animal-board">콘테스트</a>
+              <a href="/compagno/animal-board">자유게시판</a>
               <a href="/compagno/product-board">제품정보 공유</a>
               <a href="/compagno/content">반려동물 동반</a>
-              <a href="/compagno/neighborBoard">우리동네 게시판</a>
+              <a href="/compagno/neighborBoard">우리동네</a>
               <a href="/compagno/userQna">질문 게시판</a>
             </div>
           </div>
@@ -139,7 +139,7 @@ const Header = () => {
                 <span className="dropbtn">마이페이지</span>
                 <div className="dropdown-content">
                   <a href="/compagno/mypage/myinfo">계정정보 수정</a>
-                  <a href="/compagno/mypage/myanimalfav">활동 내역</a>
+                  <a href="/compagno/mypage/myadoption">활동 내역</a>
                 </div>
               </div>
               <div>

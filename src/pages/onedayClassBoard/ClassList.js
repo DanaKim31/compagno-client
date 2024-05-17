@@ -128,12 +128,7 @@ const ClassList = () => {
     return state.user;
   });
   const [onedayClasses, setOnedayClasses] = useState([]); // 내가 가저올 원데이 클래스 리스트들 관련 변수랑 함수
-  // ========== 페이징 처리 ============
-  // const [count, setCount] = useState();
-  // const [page, setPage] = useState(1);
-  // const [oneClass, setOneClass] = useState({});
 
-  //   ======== 비동기처리로된 원데이 클래스 리스트 정보 =======
   const onedayClassAPI = async () => {
     const result = await viewAllClass();
     setOnedayClasses(result.data);
@@ -151,12 +146,6 @@ const ClassList = () => {
     }
     onedayClassAPI();
   }, []);
-
-  // const handlePageChange = async (page) => {
-  //   await setPage(page);
-  //   const response = await viewAllClass();
-  //   // set;
-  // };
 
   const create = () => {
     navigate("/compagno/onedayClassBoard/create");
@@ -179,7 +168,6 @@ const ClassList = () => {
         <div className="viewAll">
           {onedayClasses.map((onedayClass) => (
             <div
-              // key={onedayClass.odcCode}
               className="oneClass"
               onClick={() => Detail(onedayClass.odcCode)}
             >
@@ -194,8 +182,7 @@ const ClassList = () => {
                   />
                 ))}
               </div>
-              <div>사용자 : {user.userNickname}</div>
-              {/* <div>사용자 : {user.userImg}</div> */}
+
               <div className="info">
                 {/* 나머지 클래스 정보 */}
                 <div className="title">제목 : {onedayClass.odcTitle}</div>

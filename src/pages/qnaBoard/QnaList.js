@@ -17,12 +17,40 @@ import styled from "styled-components";
 import { Form } from "react-bootstrap";
 
 const Div = styled.div`
+@font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  // ========  버튼 관련
+  .content a {
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid;
+    color: rgb(32, 61, 59);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .content a:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
   position: relative;
   top: 150px;
+
   #topbar {
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+    margin: 0 auto;
+    width: 70%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     padding-top: 5px;
     height: 90px;
 
@@ -35,13 +63,23 @@ const Div = styled.div`
   Table {
     width: 70%;
     margin: 0 auto;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
   }
   .paging {
     width: 100%;
     padding-top: 30px;
     text-align: center;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
+
     button {
+      width: 25px;
+      height: 28px;
       border-radius: 5px;
+      border: 1px solid gray;
+      background-color: white;
+      color: black;
       margin: 5px;
       font-weight: bolder;
     }
@@ -49,16 +87,26 @@ const Div = styled.div`
   #search {
     display: flex;
     height: 35px;
+    font-family: "TAEBAEKmilkyway";
+    font-weight: bold;
 
     select {
       border-radius: 7px;
       border: 1px solid gray;
+    font-weight: bold;
+      option{
+        font-family: "TAEBAEKmilkyway";
+        font-weight: bold;
+      }
     }
+    
     input {
       margin-left: 7px;
       margin-right: 7px;
       border-radius: 7px;
       border: 1px solid gray;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
     }
     button {
       width: 120px;
@@ -77,7 +125,7 @@ const Table = styled.table`
     th {
       height: 70px;
       padding-top: 20px;
-      border: 1px solid;
+      border-bottom: 2px solid;
     }
   }
   tbody {
@@ -85,7 +133,6 @@ const Table = styled.table`
     td {
       height: 50px;
       padding-top: 10px;
-      border: 1px solid;
       a {
         color: black;
         text-decoration: none;

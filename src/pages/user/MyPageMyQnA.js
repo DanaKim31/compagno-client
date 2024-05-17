@@ -11,11 +11,24 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Paging from "../../components/user/MyPagePagination";
 import useDidMountEffect from "../../components/user/useDidMountEffect";
+import moment from "moment";
+import "moment/locale/ko";
 
 const Div = styled.div`
+  // ======== 폰트 관련
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
   display: flex;
   height: 100vh;
   padding-top: 112px;
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
 
   .myQnaMain {
     width: calc(100vw - 300px);
@@ -29,6 +42,12 @@ const Div = styled.div`
       justify-content: center;
       align-items: center;
       flex-direction: column;
+
+      #headText {
+        width: 1100px;
+        padding-bottom: 15px;
+        font-weight: bold;
+      }
 
       .myQnaList {
         thead th {
@@ -105,7 +124,6 @@ const MyPageMyQnA = () => {
 
       setQnaList(qnaData);
       setQnaCount(countQnaData);
-      console.log(qnaData);
     } else if (user.userRole == "ROLE_ADMIN") {
       // 매니저일때
       const mResponse = await getManageQnaList(page);
@@ -115,7 +133,6 @@ const MyPageMyQnA = () => {
 
       setManageQnaList(mQnaData);
       setManageQnaCount(countMQnaData);
-      console.log(mQnaData);
     }
   };
   // -----------------------------------------------------------------------------------
@@ -137,6 +154,9 @@ const MyPageMyQnA = () => {
         <div className="contentZone">
           {user.userRole == "ROLE_USER" ? (
             <>
+              <div id="headText">
+                <h1>내 질문 목록</h1>
+              </div>
               <table className="myQnaList">
                 <thead>
                   <tr>
@@ -151,7 +171,7 @@ const MyPageMyQnA = () => {
                     <tr key={qna.qnaQCode}>
                       <td>{qna.qnaQTitle}</td>
                       <td>{qna.userNickname}</td>
-                      <td>{qna.qnaQDate}</td>
+                      <td>{moment(qna.qnaQDate).format("YYYY-MM-DD")}</td>
                       <td>{qna.qnaQStatus}</td>
                     </tr>
                   ))}
@@ -175,7 +195,7 @@ const MyPageMyQnA = () => {
                     <tr key={mQna.qnaQCode}>
                       <td>{mQna.qnaQTitle}</td>
                       <td>{mQna.userNickname}</td>
-                      <td>{mQna.qnaQDate}</td>
+                      <td>{moment(mQna.qnaQDate).format("YYYY-MM-DD")}</td>
                       <td>{mQna.qnaQStatus}</td>
                     </tr>
                   ))}

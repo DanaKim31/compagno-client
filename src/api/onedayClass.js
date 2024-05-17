@@ -37,8 +37,8 @@ export const viewClass = async (code) => {
 };
 
 // Put방식 => 원데이 클래스 게시물 수정 (인증 필요)
-export const updateClass = async (date) => {
-  return await authorize.put("ClassBoard", date);
+export const updateClass = async (data) => {
+  return await authorize.put("ClassBoard", data);
 };
 
 // Delete방식 => 원데이 클래스 삭제 (인증 필요)

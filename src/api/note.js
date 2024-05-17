@@ -26,30 +26,44 @@ export const createNote = async (data) => {
 };
 
 // 쪽지 전체 보기(검색+페이징+정렬)
-export const viewAllNote = async (page) => {
-  return await authorize.get("note?page=" + page);
+// @GetMapping("/note/viewAll/{nickName}")
+export const viewAllNote = async (nickName) => {
+  return await authorize.get("note/viewAll/" + nickName);
 };
 
+// 전체 보기(페이징처리x)
+//     @GetMapping("/note/viewAllNotPage/{nickName}")]
+// export const viewAllNotPage = async (nickName) => {
+//   return await authorize.get("note/viewAllNotPage/" + nickName);
+// };
+
 // 쪽지 1개 보기
-export const viewOnteNote = async (code) => {
+// http://localhost:8080/compagno/note/18
+export const viewOneNote = async (code) => {
   return await authorize.get("note/" + code);
 };
 
 // 보낸 편지함
+//    @GetMapping("/note/sendBox/{sender}")
 export const sendBox = async (name) => {
   return await authorize.get("note/sendBox/" + name);
 };
 
 // 받은 편지함
-export const receiverBox = async (name) => {
+//   @GetMapping("/note/receiveBox/{receiver}")
+export const receivBox = async (name) => {
   return await authorize.get("note/receiveBox/" + name);
 };
 
-// 검색
-// http://localhost:8080/compagno/note/search?noteRegiDate=2024-04-11&page=2
-// export const searchNote = async (option) => {
-//   return await instance.get(url);
-// };
+// 중요 쪽지
+// http://localhost:8080/compagno/note/star?noteCode=2
+export const starSenderUpdate = async (code) => {
+  return await authorize.put("note/starSender?noteCode=" + code);
+};
+
+export const starReceiverUpdate = async (code) => {
+  return await authorize.put("note/starReceiver?noteCode=" + code);
+};
 
 // 보내는 이 삭제
 export const deleteSender = async (code) => {

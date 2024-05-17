@@ -73,7 +73,7 @@ const Paging = ({ page, count, setPage }) => {
     <Div>
       <Pagination
         activePage={page} // 현재 페이지
-        itemsCountPerPage={5}
+        itemsCountPerPage={10}
         totalItemsCount={count} // 총 갯수
         pageRangeDisplayed={5}
         prevPageText={"‹"}

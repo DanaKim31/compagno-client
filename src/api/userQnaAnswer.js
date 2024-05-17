@@ -29,7 +29,6 @@ export const addUserAnswer = (data) => {
 
 // 2. 상위 답변 출력
 export const getUserAnswers = async (no) => {
-  console.log(no);
   return await instance.get("userQuestion/answer/" + no);
 };
 

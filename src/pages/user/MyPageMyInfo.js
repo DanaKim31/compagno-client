@@ -2,18 +2,27 @@ import styled from "styled-components";
 import MyPageSidebar from "../../components/user/MyPageSidebar";
 import { userSave, userLogout } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { updateUser, quitUser, myPageInfo } from "../../api/user";
+import { updateUser, quitUser } from "../../api/user";
 import { Form, Button } from "react-bootstrap";
-import { FaRegEdit } from "react-icons/fa";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
   display: flex;
   height: 100vh;
   padding-top: 112px;
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
 
   .info-zone {
     width: calc(100vw - 300px);
@@ -39,7 +48,7 @@ const Div = styled.div`
       .info-image {
         width: 300px;
         height: 300px;
-        border-radius: 50px;
+        border-radius: 50%;
       }
     }
 
@@ -59,7 +68,7 @@ const Div = styled.div`
           img {
             width: 200px;
             height: 200px;
-            border-radius: 50px;
+            border-radius: 50%;
           }
         }
       }
@@ -369,8 +378,6 @@ const MyPageMyInfo = () => {
             <div className="info-edit">
               <h1>회원 정보 수정</h1>
               <div className="changeMyInfo">
-                {/* <img src={imgUrl} className="defaultProfile" /> */}
-
                 <Form.Group controlId="formFile" className="mb-3">
                   <label className="profileImage">
                     <img
@@ -444,6 +451,9 @@ const MyPageMyInfo = () => {
                 <Button onClick={editMyInfo}>회원 정보 수정</Button>
               </div>
             </div>
+          </Tab>
+          <Tab eventKey="changePwd" title="암호 변경">
+            <div className="info-pwd"></div>
           </Tab>
           <Tab eventKey="quit" title="회원 탈퇴">
             <div className="info-quit">

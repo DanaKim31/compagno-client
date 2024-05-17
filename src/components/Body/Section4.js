@@ -1,12 +1,19 @@
 import "../../assets/style.css";
+
 const Section4 = () => {
   return (
     <>
       <section id="section4">
         <div className="container">
-          <div className="row row-cols-2">
+          <div
+            className="row row-cols-2"
+            style={{ position: "relative", bottom: "25px" }}
+          >
             <div className="col">
-              <h1>동물 등록</h1>
+              <div style={{ display: "flex" }}>
+                <h1>동물 등록</h1>
+                <a className="btn">다양한 활동을 원하시나요 ?</a>
+              </div>
               <img src="" alt="" />
               <p>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas,
@@ -16,7 +23,10 @@ const Section4 = () => {
               </p>
             </div>
             <div className="col">
-              <h1>구조 동물</h1>
+              <div>
+                <h1>구조 동물</h1>
+                <a className="btn">다양한 활동을 원하시나요 ?</a>
+              </div>
               <img src="" alt="" />
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
@@ -26,7 +36,11 @@ const Section4 = () => {
               </p>
             </div>
             <div className="col">
-              <h1>제품 등록</h1>
+              <div>
+                {" "}
+                <h1>제품 등록</h1>
+                <a className="btn">다양한 활동을 원하시나요 ?</a>
+              </div>
               <img src="" alt="" />
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
@@ -36,9 +50,12 @@ const Section4 = () => {
               </p>
             </div>
             <div className="col">
-              <h1>다양한 게시판</h1>
+              <div>
+                <h1>다양한 게시판</h1>
+                <a className="btn">다양한 활동을 원하시나요 ?</a>
+              </div>
               <img src="" alt="" />
-              <p>
+              <p style={{ marginTop: "15px" }}>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Eligendi, tempora culpa! Recusandae ab, explicabo debitis
                 similique ad ex facilis porro non nostrum! Magni repellat itaque

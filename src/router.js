@@ -49,6 +49,13 @@ import MyPageMyQnA from "./pages/user/MyPageMyQnA";
 import AdopBoardView from "./pages/adoptionBoard/AdopBoardView";
 import AdopBoardUpdate from "./pages/adoptionBoard/AdopBoardUpdate";
 import ClassDetail from "./pages/onedayClassBoard/ClassDetail";
+import MyPageAdoption from "./pages/user/MyPageAdoption";
+import MyPageUserQna from "./pages/user/MyPageUserQna";
+import MyPageNeighbor from "./pages/user/MyPageNeighbor";
+import MyPageOneday from "./pages/user/MyPageOneday";
+import MyPageLost from "./pages/user/MyPageLost";
+import MyPageSitter from "./pages/user/MyPageSitter";
+import ClassUpdate from "./pages/onedayClassBoard/ClassUpdate";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +80,12 @@ const router = createBrowserRouter([
           { path: "myproductfav", element: <MyPageFavProduct /> },
           { path: "mynote", element: <MyPageMyNote /> },
           { path: "myqna", element: <MyPageMyQnA /> },
+          { path: "myadoption", element: <MyPageAdoption /> },
+          { path: "myuserqna", element: <MyPageUserQna /> },
+          { path: "myneighbor", element: <MyPageNeighbor /> },
+          { path: "myonedayclass", element: <MyPageOneday /> },
+          { path: "mylost", element: <MyPageLost /> },
+          { path: "mysitter", element: <MyPageSitter /> },
         ],
       },
       {
@@ -185,6 +198,7 @@ const router = createBrowserRouter([
           { index: true, element: <ClassList /> },
           { path: "create", element: <CreateClass /> },
           { path: "detail/:code", element: <ClassDetail /> },
+          { path: "update/:code", element: <ClassUpdate /> },
         ],
       },
       {

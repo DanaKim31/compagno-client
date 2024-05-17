@@ -75,3 +75,7 @@ export const editProductBoardComment = async (data) => {
 export const delProductBoardcomment = async (no) => {
   return await authorize.delete("productBoard/comment/" + no);
 };
+
+export const getAnimalCategories = async () => {
+  return await instance.get("productBoard/animalCategory");
+};

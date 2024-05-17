@@ -23,6 +23,7 @@ const StyledDiv = styled.div`
     font-family: "TAEBAEKmilkyway";
     font-size: 1rem;
     color: rgb(32, 61, 59);
+    font-weight: bold;
   }
 
   h1 {
@@ -147,14 +148,18 @@ const CreateClass = () => {
   const navigate = useNavigate();
   // 유저 정보
   const dispatch = useDispatch();
-  const user = useSelector((state) => {
+  const [user, setUser] = useState({});
+
+  // 유저정보 가지고 오기
+  const info = useSelector((state) => {
     return state.user;
   });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token !== null) {
-      dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
+    if (Object.keys(info).length === 0) {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    } else {
+      setUser(info);
     }
   }, []);
 
@@ -175,23 +180,31 @@ const CreateClass = () => {
     formData.append("file", odcMainImage);
     formData.append("odcStartDate", odcStartDate);
     formData.append("odcLastDate", odcLastDate);
-    await addOnedayClass(formData);
-    navigate("/compagno/onedayClassBoard");
+
+    if (odcTitle == "" || odcTitle == undefined) {
+      alert("등록할 클래스명을 적어주세요");
+    } else if (odcTitle.length > 30) {
+      alert("30자 내외로 작성 바랍니다");
+    } else if (odcContent == "" || odcContent == undefined) {
+      alert("자세한 클래스 내용을 적어주세요");
+    } else if (odcStartDate == "" || odcStartDate == undefined) {
+      alert("시작 날짜를 정해주세요");
+    } else if (odcLastDate == "" || odcLastDate == undefined) {
+      alert("마지막 날짜를 정해주세요");
+    } else if (odcAccompaying == "" || odcAccompaying == undefined) {
+      alert("동반여부에 관련 체크를 정해주세요");
+    } else if (odcMainImage == "" || odcMainImage == undefined) {
+      alert("클래스 관련 메인 이미지를 1개 택해주세요");
+    } else {
+      await addOnedayClass(formData);
+      navigate("/compagno/onedayClassBoard");
+    }
   };
 
   const onBack = () => {
     navigate("/compagno/onedayClassBoard");
   };
-
-  // ============================================================== 날짜
-  // const [startDate, setStartDate] = useState(new Date());
-  // const [endDate, setEndDate] = useState(new Date());
-
-  // ========== OnCreate 함수에다가 비동기 처리된 클래스 추가관련 로직들 =============
-
-  // const []
-
-  // =======================================
+  console.log(user);
   return (
     <div>
       <StyledDiv>
@@ -204,6 +217,7 @@ const CreateClass = () => {
               placeholder="제목을 입력하세요"
               value={odcTitle}
               className="text"
+              maxLength={35}
               onChange={(e) => setOdcTitle(e.target.value)}
             />
           </div>
@@ -249,7 +263,7 @@ const CreateClass = () => {
           <div className="contentin">
             <h2>자세한 내용 관련</h2>
             <textarea
-              type="textarea"
+              type="text"
               placeholder="내용을 입력하세요"
               value={odcContent}
               className="content"

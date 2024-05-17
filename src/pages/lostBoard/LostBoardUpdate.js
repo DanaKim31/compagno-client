@@ -189,14 +189,28 @@ const Div = styled.div`
     margin: 30px 0;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
-    .okBtn,
-    .delBtn {
-      margin: 0 20px;
-      width: 80px;
-      height: 35px;
-      font-size: 0.8rem;
-      font-family: "TAEBAEKmilkyway";
+    button {
+      width: 100px;
+      height: 40px;
+      border-radius: 10px;
+      border: none;
+      background-color: #94b29b;
       font-weight: bold;
+      font-size: 1rem;
+      margin: 0px 10px;
+      &:hover {
+        background-color: white;
+        border: 3px solid #94b29b;
+      }
+    }
+    :nth-child(2) {
+      background-color: black;
+      color: white;
+      &:hover {
+        background-color: white;
+        border: 3px solid black;
+        color: black;
+      }
     }
   }
 `;

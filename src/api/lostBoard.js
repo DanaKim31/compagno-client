@@ -26,6 +26,12 @@ export const createlostBoard = async (data) => {
   return await authorize.post("lostBoard", data);
 };
 
+// 조회수 추가
+// http://localhost:8080/compagno/public/lostBoard/viewCount?lostBoardCode=3
+export const viewCountLostBoard = async (code) => {
+  return await instance.put("lostBoard/viewCount?lostBoardCode=" + code);
+};
+
 // 전체 보기+검색&정렬+페이징
 // http://localhost:8080/compagno/public/lostBoard?page={}&
 export const viewAllLostBoard = async (page) => {

@@ -524,7 +524,7 @@ header a {
   font-size: 1.6rem;
   width: 88vh;
   position: relative;
-  right: 174px;
+  right: 158px;
   bottom: 21px;
   height: 481px;
 }
@@ -597,6 +597,18 @@ header a {
   width: 64vh;
   height: 31vh;
 }
+
+.btn {
+  text-decoration: none;
+  border-radius: 5px;
+  border: 2px solid;
+  color: rgb(32, 61, 59);
+  text-decoration: none;
+  padding: 10px;
+  font-size: 1rem;
+  align-items: center;
+}
+
 /* =================== 가로로 움직이는 =================== */
 
 #section5 {
@@ -688,8 +700,7 @@ span img {
   top: 90px;
 }
 
-.marquee div {
-  display: block;
+.marquee > div {
   width: 377%;
   height: 35vh;
   position: absolute;
@@ -697,7 +708,8 @@ span img {
   animation: marquee 12s linear infinite;
 }
 
-.marquee span {
+.marquee > div > div,
+.marquee > div > span {
   float: left;
 }
 
@@ -814,17 +826,17 @@ span img {
 }
 
 .text span {
-  float: right;
+  float: left;
   width: 100%;
   font-size: 10rem;
 }
 
 @keyframes text {
   0% {
-    right: 0%;
+    left: 10%;
   }
   100% {
-    right: -108%;
+    left: -108%;
   }
 }
 
@@ -892,7 +904,7 @@ span img {
   color: white;
   border: 1px solid;
   border-radius: 15px;
-  font-size: 3rem;
+  font-size: 2rem;
   padding: 10px;
   padding-right: 10px;
   margin: 10px;
