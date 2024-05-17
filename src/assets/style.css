@@ -763,7 +763,7 @@ span img {
   height: 50%;
 }
 
-.content a {
+.content button {
   text-decoration: none;
   border-radius: 5px;
   border: 2px solid;
@@ -774,7 +774,7 @@ span img {
   align-items: center;
 }
 
-.content a:hover {
+.content button:hover {
   background-color: rgb(32, 61, 59);
   color: white;
 }
