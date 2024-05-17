@@ -16,7 +16,7 @@ const Div = styled.div`
   height: 100vh;
   padding-top: 112px;
 
-  .note-zone {
+  .noteHeader {
     width: calc(100vw - 300px);
     box-sizing: border-box;
     display: flex;
@@ -91,69 +91,95 @@ const Desc = styled.div`
 `;
 
 const MyPageMyNote = () => {
-  const [currentTab, clickTab] = useState(0);
-  const noteBar = [
-    {
-      name: (
-        <>
-          <BsEnvelopePaper
-            style={{ marginRight: "15px", fontSize: "1.3rem" }}
-          />
-          전체 쪽지함
-        </>
-      ),
-      content: <NoteViewAll />,
-    },
-    {
-      name: (
-        <>
-          <RiFolderReceivedLine
-            style={{ marginRight: "15px", fontSize: "1.3rem" }}
-          />
-          받은 쪽지함
-        </>
-      ),
-      content: <NoteViewReceiveBox />,
-    },
-    {
-      name: (
-        <>
-          <RiFolderSharedLine
-            style={{ marginRight: "15px", fontSize: "1.3rem" }}
-          />
-          보낸 쪽지함
-        </>
-      ),
-      content: <NoteViewSendBox />,
-    },
-    {
-      name: (
-        <>
-          <FaStar style={{ marginRight: "15px", fontSize: "1.3rem" }} />
-          중요 쪽지함
-        </>
-      ),
-      content: <NoteViewStar />,
-    },
-  ];
-  const selectMenuHandler = (index) => {
-    clickTab(index);
-  };
+  // const [currentTab, clickTab] = useState(0);
+  // const noteBar = [
+  //   {
+  //     name: (
+  //       <>
+  //         <BsEnvelopePaper
+  //           style={{ marginRight: "15px", fontSize: "1.3rem" }}
+  //         />
+  //         전체 쪽지함
+  //       </>
+  //     ),
+  //     content: <NoteViewAll />,
+  //   },
+  //   {
+  //     name: (
+  //       <>
+  //         <RiFolderReceivedLine
+  //           style={{ marginRight: "15px", fontSize: "1.3rem" }}
+  //         />
+  //         받은 쪽지함
+  //       </>
+  //     ),
+  //     content: <NoteViewReceiveBox />,
+  //   },
+  //   {
+  //     name: (
+  //       <>
+  //         <RiFolderSharedLine
+  //           style={{ marginRight: "15px", fontSize: "1.3rem" }}
+  //         />
+  //         보낸 쪽지함
+  //       </>
+  //     ),
+  //     content: <NoteViewSendBox />,
+  //   },
+  //   {
+  //     name: (
+  //       <>
+  //         <FaStar style={{ marginRight: "15px", fontSize: "1.3rem" }} />
+  //         중요 쪽지함
+  //       </>
+  //     ),
+  //     content: <NoteViewStar />,
+  //   },
+  // ];
+  // const selectMenuHandler = (index) => {
+  //   clickTab(index);
+  // };
 
   return (
     <Div>
       <MyPageSidebar />
-      <div className="note-zone">
-        <div
+      <TabMenu>
+        <div className="noteHeader">
+          <a href="/compagno/mypage/mynote/viewAll">
+            <BsEnvelopePaper
+              style={{ marginRight: "15px", fontSize: "1.3rem" }}
+            />
+            전체 쪽지함
+          </a>
+          <a href="/compagno/mypage/mynote/viewReceiveBox">
+            <RiFolderSharedLine
+              style={{ marginRight: "15px", fontSize: "1.3rem" }}
+            />
+            받은 쪽지함
+          </a>
+          <a href="/compagno/mypage/mynote/viewSendBox">
+            <RiFolderSharedLine
+              style={{ marginRight: "15px", fontSize: "1.3rem" }}
+            />
+            보낸 쪽지함
+          </a>
+          <a href="/compagno/mypage/mynote/viewStar">
+            <FaStar style={{ marginRight: "15px", fontSize: "1.3rem" }} />
+            중요 쪽지함
+          </a>
+        </div>
+      </TabMenu>
+
+      {/* <div
           id="noteAll"
           style={{
             width: "100%",
             alignItems: "center",
             display: "flex",
             flexDirection: "column",
-          }}
-        >
-          <TabMenu>
+          }} */}
+
+      {/* <TabMenu>
             {noteBar.map((note, index) => (
               <li
                 className={index === currentTab ? "submenu focused" : "submenu"}
@@ -163,9 +189,8 @@ const MyPageMyNote = () => {
               </li>
             ))}
           </TabMenu>
-          <Desc>{noteBar[currentTab].content}</Desc>
-        </div>
-      </div>
+          <Desc>{noteBar[currentTab].content}</Desc> */}
+      {/* </div> */}
     </Div>
   );
 };

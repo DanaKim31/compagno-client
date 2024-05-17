@@ -174,10 +174,7 @@ const NoteViewDetail = (props) => {
         </div>
       </div>
 
-      <div
-        id="noteContent"
-        style={{ marginTop: "40px", marginBottom: "40px", height: "70%" }}
-      >
+      <div id="noteContent" style={{ margin: "40px 20px", height: "70%" }}>
         {note.noteContent}
       </div>
       {modalIsOpen ? (

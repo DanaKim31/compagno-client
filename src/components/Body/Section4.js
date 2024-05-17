@@ -27,12 +27,27 @@ const Section4 = () => {
                 <h1>구조 동물</h1>
                 <a className="btn">다양한 활동을 원하시나요 ?</a>
               </div>
-              <img src="" alt="" />
+              <img
+                src="/img/동물입양메인.png"
+                alt="adoption image"
+                style={{ objectFit: "contain" }}
+              />
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
-                molestias fugiat, ad exercitationem nobis minima expedita in
-                suscipit rem? Error necessitatibus possimus ducimus blanditiis
-                quae eveniet assumenda aspernatur nihil temporibus.
+                <span>
+                  [입양 공고 게시판]
+                  <br /> 개나 고양이를 키우고 싶다면 유기동물 보호시설에서
+                  보호하고 있는 유기동물을 입양하는게 어떨까요? 동물을 입양한
+                  당신이 자랑스럽습니다!
+                </span>
+                <br />
+                <br />
+                <span>
+                  [동물 분실 게시판]
+                  <br />
+                  동물 분실 관련 정보를 공유하는 공간입니다. 동물보호법상
+                  동물소유자가 하는 동물분실신고는 해당 메뉴에서 하시기
+                  바랍니다.{" "}
+                </span>
               </p>
             </div>
             <div className="col">

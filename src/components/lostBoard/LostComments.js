@@ -596,25 +596,39 @@ const Comments = () => {
                                     style={{
                                       fontSize: "0.8rem",
                                       paddingTop: "5px",
+                                      display: "flex",
                                     }}
                                   >
                                     {/* {bottom.user.userNickname} */}
                                     <MyToggleBar
                                       name={bottom.user.userNickname}
                                     />
+                                    {lost.userId == bottom.user.userId ? (
+                                      <span
+                                        id="bottomWriter"
+                                        style={{
+                                          marginLeft: "9px",
+                                          border: "1px solid green",
+                                          fontWeight: "bold",
+                                          borderRadius: "30px",
+                                          padding: "3px 5px",
+                                          fontSize: "0.5rem",
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          height: "60%",
+                                        }}
+                                      >
+                                        작성자
+                                      </span>
+                                    ) : (
+                                      <></>
+                                    )}
                                   </span>
                                   {/* 게시글 작성자와 댓글 작성자가 같을 때 -> 작성자 표시 */}
-                                  {lost.userId == bottom.user.userId ? (
-                                    <div
-                                      id="bottomWriterBtn"
-                                      style={{
-                                        display: "flex",
-                                        height: "27px",
-                                        width: "79%",
-                                        justifyContent: "space-between",
-                                        paddingTop: "6px",
-                                      }}
-                                    >
+
+                                  {/* {lost.userId == bottom.user.userId ? (
+                                    
                                       <span
                                         id="bottomWriter"
                                         style={{
@@ -629,11 +643,12 @@ const Comments = () => {
                                         작성자
                                       </span>
 
-                                      {/* 수정 버튼을 클릭 안했을 때 */}
-                                    </div>
+                                
+                                    
                                   ) : (
                                     <></>
-                                  )}
+                                  )} */}
+
                                   {user.userId == bottom.user.userId &&
                                   edit.lostParentCode !=
                                     comment.lostCommentCode ? (
@@ -965,12 +980,20 @@ const Comments = () => {
                 value={num}
                 onClick={(e) => setPage(Number(e.target.value))}
                 style={{
-                  borderRadius: "50%",
-                  width: "30px",
-                  height: "30px",
-                  border: "none",
+                  // borderRadius: "50%",
+                  // width: "30px",
+                  // height: "30px",
+                  // border: "none",
+                  // fontWeight: "bold",
+                  // backgroundColor: "#cbd6ce",
                   fontWeight: "bold",
-                  backgroundColor: "#cbd6ce",
+                  width: "25px",
+                  height: "28px",
+                  borderRadius: "5px",
+                  border: "1px solid gray",
+                  backgroundColor: "white",
+                  color: "black",
+                  margin: "5px",
                 }}
               >
                 {num}

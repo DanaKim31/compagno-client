@@ -91,7 +91,7 @@ const NoteCreate = (props) => {
       alert("제목은 필수입니다.");
     } else {
       createNote(formData);
-      // navigate("/compagno/mypage/mynote");
+      navigate("/compagno/mypage/mynote");
       window.location.reload();
     }
   };

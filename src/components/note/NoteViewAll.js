@@ -2,7 +2,7 @@ import {
   viewAllNote,
   starSenderUpdate,
   starReceiverUpdate,
-  viewAllNotPage,
+  delCount,
 } from "../../api/note";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -21,7 +21,43 @@ import {
 import NoteViewDetail from "./NoteViewDetail";
 import { FaRegFileLines } from "react-icons/fa6";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import NoteHeaderTap from "./NoteHeaderTab";
+import MyPageSidebar from "../user/MyPageSidebar";
 
+const DivTotal = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  display: flex;
+  height: 100vh;
+  padding-top: 112px;
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+
+  .myNoteViewAll {
+    width: calc(100vw - 300px);
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    .contentZone {
+      width: 100%;
+      /* height: calc(100vh - 66px); */
+      height: 94%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  .detailEnter:hover {
+    color: #94b29b;
+  }
+`;
 const Div = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
@@ -31,7 +67,6 @@ const Div = styled.div`
     font-style: normal;
   }
   font-family: "TAEBAEKmilkyway";
-  /* border: 1px solid black; */
   width: 100%;
   height: 100%;
   font-weight: bold;
@@ -42,16 +77,23 @@ const Div = styled.div`
     font-weight: bold;
   }
   #pageBtn {
-    font-weight: bold;
+    /* font-weight: bold;
     border-radius: 50%;
-    /* border: 1px solid; */
     border: none;
     color: rgb(32, 61, 59);
     width: 25px;
     height: 25px;
     font-size: 0.8rem;
     margin: 0px 5px;
-    background-color: #cbd6ce;
+    background-color: #cbd6ce; */
+    font-weight: bold;
+    width: 25px;
+    height: 28px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    background-color: white;
+    color: black;
+    margin: 5px;
   }
 `;
 const ModalContariner = styled.div`
@@ -64,7 +106,7 @@ const ModalContariner = styled.div`
   }
   font-family: "TAEBAEKmilkyway";
   border: 1px solid black;
-  width: 100%;
+  width: 80%;
   font-weight: bold;
   /* height: 300px; */
   height: 80%;
@@ -109,7 +151,6 @@ const NoteViewAll = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
   const [allCount, setAllCount] = useState(0);
-  const [num, setNum] = useState(0);
   const notesAPI = async () => {
     let response = await viewAllNote(
       user.userNickname +
@@ -127,37 +168,18 @@ const NoteViewAll = () => {
     setNotes(response.data.content);
     setAllCount(response.data.totalElements);
     setTotalPage(response.data.totalPages);
-
-    // for (let i = 0; i < response.data.content.length; i++) {
-    //   console.log(i);
-    //   console.log(response.data.content[i].deletedBySender);
-    //   if (
-    //     response.data.content[i].deletedBySender == true ||
-    //     response.data.content[i].deletedByReceiver == true
-    //   ) {
-    //     setNum(num + 1);
-    //   }
-    // }
+  };
+  // 삭제 된 쪽지 수
+  const [num, setNum] = useState(0);
+  const numAPI = async () => {
+    const response = await delCount(user.userNickname);
+    setNum(response.data);
   };
 
-  // const numAPI = async () => {
-  //   let response = await viewAllNotPage(user.userNickname);
-  //   console.log(response.data);
-  //   for (let i = 0; i < response.data.content.length; i++) {
-  //     console.log(i);
-  //     console.log(response.data.content[i].deletedBySender);
-  //     if (
-  //       response.data.content[i].deletedBySender == true ||
-  //       response.data.content[i].deletedByReceiver == true
-  //     ) {
-  //       setNum(num + 1);
-  //     }
-  //   }
-  // };
-  // console.log(num);
-  // useEffect(() => {
-  //   numAPI();
-  // }, []);
+  useEffect(() => {
+    numAPI();
+  }, [user]);
+
   let lastPage = 0;
   let firstPage = 0;
   let pageList = [];
@@ -205,271 +227,304 @@ const NoteViewAll = () => {
   };
 
   return (
-    <>
-      {!openDetail ? (
-        <>
-          <Div>
-            <div
-              className="search"
-              style={{
-                border: "1px dashed green",
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                borderRadius: "20px",
-                paddingBottom: "20px",
-              }}
-            >
-              <div
-                id="searchPerson"
+    <DivTotal>
+      <MyPageSidebar />
+      <div className="myNoteViewAll">
+        <NoteHeaderTap />
+        <div className="contentZone" style={{ height: "100%" }}>
+          {!openDetail ? (
+            <>
+              <Div
                 style={{
                   display: "flex",
-                  justifyContent: "space-evenly",
-                  width: "100%",
-                  paddingTop: "20px",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <div id="searchSender">
-                  <label>
-                    보내는 사람
-                    <input
-                      type="text"
-                      onChange={(e) => setSender(e.target.value)}
-                      style={{ marginLeft: "15px" }}
-                    />
-                  </label>
-                </div>
-                <div id="searchReceiver">
-                  <label>
-                    받는 사람
-                    <input
-                      type="text"
-                      onChange={(e) => setReceiver(e.target.value)}
-                      style={{ marginLeft: "15px" }}
-                    />
-                  </label>
-                </div>
-              </div>
-
-              <div
-                id="searchTitleDate"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  width: "100%",
-                  paddingTop: "20px",
-                }}
-              >
-                <div id="searchTitle">
-                  <label>
-                    제목
-                    <input
-                      type="text"
-                      onChange={(e) => setNoteTitle(e.target.value)}
-                      style={{ marginLeft: "15px" }}
-                    />
-                  </label>
-                </div>
-
-                <div id="searchNoteRegiDate">
-                  <label>
-                    날짜
-                    <input
-                      type="date"
-                      max={moment().format("YYYY-MM-DD")}
-                      onChange={(e) => setNoteRegiDate(e.target.value)}
-                      style={{ marginLeft: "15px" }}
-                    />
-                  </label>
-                </div>
-              </div>
-              <div id="searchBtn" style={{ marginTop: "20px" }}>
-                <button
-                  onClick={notesAPI}
+                <div
+                  className="search"
                   style={{
-                    border: "none",
-                    borderRadius: "10px",
-                    width: "75px",
-                    height: "30px",
-                    backgroundColor: "#94b29b",
+                    border: "1px dashed green",
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    borderRadius: "20px",
+                    paddingBottom: "20px",
+                    width: "85%",
+                    alignItems: "center",
                   }}
                 >
-                  <IoSearch />
-                  <span>조회</span>
-                </button>
-              </div>
-            </div>
-            <div
-              id="totalNotes"
-              style={{
-                display: "flex",
-                paddingTop: "15px",
-                marginLeft: "15px",
-                marginBottom: "15px",
-                alignItems: "center",
-              }}
-            >
-              <BsEnvelopePaper />
-              <span style={{ marginLeft: "10px" }}>총 {allCount - num}개</span>
-            </div>
-            <table style={{ width: "100%", height: "60%" }}>
-              <thead
-                style={{ height: "30px", borderBottom: "1px dashed black" }}
-              >
-                <tr>
-                  <th>중요</th>
-                  <th>보내는 사람</th>
-                  <th>제목</th>
-                  <th>내용</th>
-                  <th>받는 사람</th>
-                  <th>날짜</th>
-                  <th>첨부파일 유무</th>
-                </tr>
-              </thead>
-              <tbody>
-                {notes.map((note) => (
-                  <tr key={note.noteCode}>
-                    {(note.deletedBySender == 1 &&
-                      note.sender == user.userNickname) ||
-                    (note.deletedByReceiver == 1 &&
-                      note.receiver == user.userNickname) ? (
-                      <></>
-                    ) : (
-                      <>
-                        <td>
-                          {/* 보낸 이 일 때 */}
-                          {note.sender == user.userNickname ? (
-                            <>
-                              {note.starSender == 1 ? (
-                                <FaStar
-                                  onClick={() => starSenderCheck(note.noteCode)}
-                                  style={{
-                                    color: "yellow",
-                                    cursor: "pointer",
-                                  }}
-                                />
-                              ) : (
-                                <FaRegStar
-                                  onClick={() => starSenderCheck(note.noteCode)}
-                                  style={{ cursor: "pointer" }}
-                                />
-                              )}
-                            </>
-                          ) : (
-                            //  받는 이 일 때
-                            <>
-                              {note.starReceiver == 1 ? (
-                                <FaStar
-                                  onClick={() =>
-                                    starReceiverCheck(note.noteCode)
-                                  }
-                                  style={{
-                                    color: "yellow",
-                                    cursor: "pointer",
-                                  }}
-                                />
-                              ) : (
-                                <FaRegStar
-                                  onClick={() =>
-                                    starReceiverCheck(note.noteCode)
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                />
-                              )}
-                            </>
-                          )}
-                        </td>
+                  <div
+                    id="searchPerson"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      width: "100%",
+                      paddingTop: "20px",
+                    }}
+                  >
+                    <div id="searchSender">
+                      <label>
+                        보내는 사람
+                        <input
+                          type="text"
+                          onChange={(e) => setSender(e.target.value)}
+                          style={{ marginLeft: "15px" }}
+                        />
+                      </label>
+                    </div>
+                    <div id="searchReceiver">
+                      <label>
+                        받는 사람
+                        <input
+                          type="text"
+                          onChange={(e) => setReceiver(e.target.value)}
+                          style={{ marginLeft: "15px" }}
+                        />
+                      </label>
+                    </div>
+                  </div>
 
-                        <td>{note.sender}</td>
-                        <td
-                          onClick={() => onDetail(note.noteCode)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          {note.noteTitle}
-                        </td>
-                        <td
-                          onClick={() => onDetail(note.noteCode)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          {note.noteContent}
-                        </td>
-                        <td>{note.receiver}</td>
-                        <td>
-                          {moment(note.noteRegiDate).format("YY-MM-DD hh:mm")}
-                        </td>
-                        <td>
-                          {note.files.length !== 0 ? (
-                            <FaRegFileLines
+                  <div
+                    id="searchTitleDate"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      width: "100%",
+                      paddingTop: "20px",
+                    }}
+                  >
+                    <div id="searchTitle">
+                      <label>
+                        제목
+                        <input
+                          type="text"
+                          onChange={(e) => setNoteTitle(e.target.value)}
+                          style={{ marginLeft: "15px" }}
+                        />
+                      </label>
+                    </div>
+
+                    <div id="searchNoteRegiDate">
+                      <label>
+                        날짜
+                        <input
+                          type="date"
+                          max={moment().format("YYYY-MM-DD")}
+                          onChange={(e) => setNoteRegiDate(e.target.value)}
+                          style={{ marginLeft: "15px" }}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <div id="searchBtn" style={{ marginTop: "20px" }}>
+                    <button
+                      onClick={notesAPI}
+                      style={{
+                        border: "none",
+                        borderRadius: "10px",
+                        width: "75px",
+                        height: "30px",
+                        backgroundColor: "#94b29b",
+                      }}
+                    >
+                      <IoSearch />
+                      <span>조회</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  id="totalNotes"
+                  style={{
+                    display: "flex",
+                    paddingTop: "15px",
+                    marginLeft: "15px",
+                    marginBottom: "15px",
+                    alignItems: "center",
+                    width: "85%",
+                  }}
+                >
+                  <BsEnvelopePaper />
+                  <span style={{ marginLeft: "10px" }}>
+                    총 {allCount - num}개
+                  </span>
+                </div>
+                <table style={{ width: "85%", height: "60%" }}>
+                  <thead
+                    style={{ height: "30px", borderBottom: "1px dashed black" }}
+                  >
+                    <tr>
+                      <th>중요</th>
+                      <th>보내는 사람</th>
+                      <th>제목</th>
+                      <th>내용</th>
+                      <th>받는 사람</th>
+                      <th>날짜</th>
+                      <th>첨부파일 유무</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {notes.map((note) => (
+                      <tr key={note.noteCode}>
+                        {(note.deletedBySender == 1 &&
+                          note.sender == user.userNickname) ||
+                        (note.deletedByReceiver == 1 &&
+                          note.receiver == user.userNickname) ? (
+                          <></>
+                        ) : (
+                          <>
+                            <td>
+                              {/* 보낸 이 일 때 */}
+                              {note.sender == user.userNickname ? (
+                                <>
+                                  {note.starSender == 1 ? (
+                                    <FaStar
+                                      onClick={() =>
+                                        starSenderCheck(note.noteCode)
+                                      }
+                                      style={{
+                                        color: "yellow",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  ) : (
+                                    <FaRegStar
+                                      onClick={() =>
+                                        starSenderCheck(note.noteCode)
+                                      }
+                                      style={{ cursor: "pointer" }}
+                                    />
+                                  )}
+                                </>
+                              ) : (
+                                //  받는 이 일 때
+                                <>
+                                  {note.starReceiver == 1 ? (
+                                    <FaStar
+                                      onClick={() =>
+                                        starReceiverCheck(note.noteCode)
+                                      }
+                                      style={{
+                                        color: "yellow",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  ) : (
+                                    <FaRegStar
+                                      onClick={() =>
+                                        starReceiverCheck(note.noteCode)
+                                      }
+                                      style={{ cursor: "pointer" }}
+                                    />
+                                  )}
+                                </>
+                              )}
+                            </td>
+
+                            <td>{note.sender}</td>
+                            <td
                               onClick={() => onDetail(note.noteCode)}
                               style={{ cursor: "pointer" }}
-                            />
-                          ) : (
-                            <></>
-                          )}
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                              className="detailEnter"
+                            >
+                              {note.noteTitle}
+                            </td>
+                            <td
+                              onClick={() => onDetail(note.noteCode)}
+                              style={{ cursor: "pointer" }}
+                              className="detailEnter"
+                            >
+                              {note.noteContent}
+                            </td>
+                            <td>{note.receiver}</td>
+                            <td>
+                              {moment(note.noteRegiDate).format(
+                                "YY-MM-DD hh:mm"
+                              )}
+                            </td>
+                            <td>
+                              {note.files.length !== 0 ? (
+                                <FaRegFileLines
+                                  onClick={() => onDetail(note.noteCode)}
+                                  style={{ cursor: "pointer" }}
+                                />
+                              ) : (
+                                <></>
+                              )}
+                            </td>
+                          </>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
 
-            <div className="paging" style={{ marginTop: "15px" }}>
-              <FaAnglesLeft className="iconPaging" onClick={() => setPage(1)} />
-              <FaAngleLeft
-                className="iconPaging"
-                onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
-              />
-              {pages.map((num, index) => (
-                <button
-                  key={index}
-                  value={num}
-                  onClick={(e) => setPage(Number(e.target.value))}
-                  id="pageBtn"
+                <div className="paging" style={{ marginTop: "15px" }}>
+                  <FaAnglesLeft
+                    className="iconPaging"
+                    onClick={() => setPage(1)}
+                  />
+                  <FaAngleLeft
+                    className="iconPaging"
+                    onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
+                  />
+                  {pages.map((num, index) => (
+                    <button
+                      key={index}
+                      value={num}
+                      onClick={(e) => setPage(Number(e.target.value))}
+                      id="pageBtn"
+                    >
+                      {num}
+                    </button>
+                  ))}
+
+                  <FaAngleRight
+                    className="iconPaging"
+                    onClick={
+                      () =>
+                        page < totalPage
+                          ? setPage(page + 1)
+                          : setPage(totalPage) // 현재 페이지에서 한칸 뒤로
+                    }
+                  />
+                  <FaAnglesRight
+                    className="iconPaging"
+                    onClick={() => setPage(totalPage)}
+                  />
+                </div>
+              </Div>
+            </>
+          ) : (
+            <>
+              {" "}
+              <ModalContariner>
+                <div
+                  style={{ position: "absolute", top: "29.4%", left: "25%" }}
                 >
-                  {num}
-                </button>
-              ))}
-
-              <FaAngleRight
-                className="iconPaging"
-                onClick={
-                  () =>
-                    page < totalPage ? setPage(page + 1) : setPage(totalPage) // 현재 페이지에서 한칸 뒤로
-                }
-              />
-              <FaAnglesRight
-                className="iconPaging"
-                onClick={() => setPage(totalPage)}
-              />
-            </div>
-          </Div>
-        </>
-      ) : (
-        <>
-          {" "}
-          <ModalContariner>
-            <div style={{ position: "absolute", top: "25.5%", left: "25%" }}>
-              <button
-                onClick={() => setOpenDetail(false)}
-                style={{
-                  border: "none",
-                  borderRadius: "10px",
-                  margin: "0px 10px",
-                  width: "50px",
-                  fontWeight: "bold",
-                  backgroundColor: "gray",
-                  color: "white",
-                }}
-              >
-                목록
-              </button>
-            </div>
-            <NoteViewDetail name={code} />
-          </ModalContariner>
-        </>
-      )}
-    </>
+                  <button
+                    onClick={() => setOpenDetail(false)}
+                    style={{
+                      border: "none",
+                      borderRadius: "10px",
+                      margin: "0px 10px",
+                      width: "50px",
+                      fontWeight: "bold",
+                      backgroundColor: "gray",
+                      color: "white",
+                    }}
+                  >
+                    목록
+                  </button>
+                </div>
+                <NoteViewDetail name={code} />
+              </ModalContariner>
+            </>
+          )}
+        </div>
+      </div>
+    </DivTotal>
   );
 };
 export default NoteViewAll;

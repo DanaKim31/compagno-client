@@ -177,12 +177,20 @@ const Div = styled.div`
   .paging {
     margin-bottom: 100px;
     button {
-      border: none;
+      /* border: none;
       border-radius: 50%;
       width: 30px;
       height: 30px;
       font-weight: bold;
-      background-color: #cbd6ce;
+      background-color: #cbd6ce; */
+      font-weight: bold;
+      width: 25px;
+      height: 28px;
+      border-radius: 5px;
+      border: 1px solid gray;
+      background-color: white;
+      color: black;
+      margin: 5px;
     }
     .iconPaging {
       cursor: pointer;
