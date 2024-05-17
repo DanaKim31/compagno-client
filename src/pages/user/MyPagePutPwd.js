@@ -20,10 +20,13 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
 
   .headText {
     width: 30%;
+    font-weight: bold;
+  }
+
+  #headerText {
     font-weight: bold;
   }
 
@@ -43,6 +46,8 @@ const Div = styled.div`
     span {
       width: 100%;
       height: 30px;
+      font-size: 0.9rem;
+      color: red;
     }
 
     button {
@@ -175,7 +180,7 @@ const MyPagePutPwd = () => {
   return (
     <Div>
       <div className="headText">
-        <h1>비밀번호 변경</h1>
+        <h1 id="headerText">비밀번호 변경</h1>
         <p>변경할 비밀번호를 입력해주세요</p>
       </div>
       <div className="inputPwd">

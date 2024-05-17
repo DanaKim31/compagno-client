@@ -9,6 +9,7 @@ import Tabs from "react-bootstrap/Tabs";
 import { updateUser, quitUser } from "../../api/user";
 import { Form, Button } from "react-bootstrap";
 import MyPagePutPwd from "./MyPagePutPwd";
+import { MdEdit } from "react-icons/md";
 
 const Div = styled.div`
   @font-face {
@@ -48,6 +49,12 @@ const Div = styled.div`
         background-color: transparent;
       }
     }
+
+    .editHeader {
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
     // 정보 조회
     .info-content {
       margin-top: 100px;
@@ -57,25 +64,24 @@ const Div = styled.div`
       justify-content: space-around;
       align-items: center;
       padding-bottom: 20px;
-      border-width: 2px 2px 60px 2px;
+      border-width: 2px 2px 50px 2px;
       border-color: #94b29b;
       border-style: solid;
-      /* border-bottom: #94b29b solid 60px; */
       border-radius: 50px;
-
       font-size: 1.2rem;
 
       .info-image {
         width: 300px;
         height: 300px;
         border-radius: 50%;
+        object-fit: cover;
       }
     }
 
     // 정보 수정
 
     .info-edit {
-      width: 1000px;
+      width: 820px;
 
       .changeMyInfo {
         display: flex;
@@ -87,73 +93,134 @@ const Div = styled.div`
           align-items: center;
           margin-right: 100px;
 
-          img {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
+          .profileImage {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            margin-bottom: 30px;
+
+            #editPicIcon {
+              left: 860px;
+              position: fixed;
+              font-size: 2.5rem;
+              cursor: pointer;
+            }
+
+            img {
+              width: 200px;
+              height: 200px;
+              border-radius: 50%;
+              cursor: pointer;
+              object-fit: cover;
+            }
           }
 
           .picBtn {
-            width: fit-content;
+            width: 200px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            border: 2px solid;
+            color: rgb(32, 61, 59);
+            text-decoration: none;
+            padding: 10px;
+            font-size: 1rem;
+            align-items: center;
+            font-weight: bold;
+          }
+
+          .picBtn:hover {
+            background-color: rgb(32, 61, 59);
+            color: white;
+            font-weight: bold;
           }
         }
 
         .info-edit-text {
-          width: 80%;
+          width: 50%;
+          display: flex;
+          flex-direction: column;
 
           input {
             font-weight: bold;
             border: 1px solid black;
           }
+
+          span {
+            margin-top: 5px;
+            width: 100%;
+            height: 30px;
+            font-size: 0.9rem;
+            color: red;
+          }
+        }
+      }
+      .editBtn {
+        width: 82%;
+        border-radius: 5px;
+        border: 2px solid;
+        color: rgb(32, 61, 59);
+        background-color: rgb(240, 240, 240);
+        text-decoration: none;
+        padding: 10px;
+        font-size: 1rem;
+        align-items: center;
+        font-weight: bold;
+      }
+
+      .editBtn:hover {
+        background-color: rgb(32, 61, 59);
+        color: white;
+        font-weight: bold;
+      }
+    }
+
+    .info-quit {
+      width: 800px;
+
+      #quitHeadText {
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .quitInstructionText {
+        list-style: decimal;
+
+        li {
+          margin-bottom: 10px;
         }
       }
 
-      /* .changeMyInfo {
-        width: 1000px;
-        height: 500px;
-
+      #checkZone {
         display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
 
-        .editBtn {
+        input,
+        button {
           font-weight: bold;
+        }
+
+        button {
           border-radius: 5px;
-          border: none;
-          color: rgb(32, 61, 59);
+          width: 500px;
+          background-color: rgb(32, 61, 59);
+          color: white;
           text-decoration: none;
           padding: 10px;
           font-size: 1rem;
           align-items: center;
         }
 
-        .editBtn:hover {
-          font-weight: bold;
-          background-color: rgb(32, 61, 59);
-          color: white;
+        button:disabled {
+          background-color: rgb(240, 240, 240);
+          color: black;
         }
 
-        .profileImage {
-          cursor: pointer;
-
-          img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-          }
+        .forQuitInput {
+          width: 500px;
+          margin-bottom: 20px;
         }
-      } */
-    }
-
-    .info-quit {
-      #quitInstructions {
-        width: 100%;
-        border: 1px solid skyblue;
-        list-style-type: circle;
-      }
-
-      .forQuitInput {
-        width: 340px;
       }
     }
   }
@@ -182,19 +249,14 @@ const MyPageMyInfo = () => {
   };
 
   // 개인정보 변경용 정규표현식
-  const pwdRegexp = /^[a-zA-Z0-9!-~]{8,14}$/; // 비밀번호
   const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 이메일
   const phoneRegexp = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/; // 전화번호
 
   // 정보 변경 정규표현식 미충족시 출력할 경고문구
-  const pwdText = "영어 대소문자, 숫자 및 특수문자 포함 8~16자"; // 비밀번호
-  const pwdChkText = "동일한 비밀번호 입력 요망"; // 비밀번호체크
-  const emailText = "올바른 이메일 양식 입력 요망"; // 이메일
-  const phoneText = "하이픈(-) 포함해서 입력 요망"; // 전화번호
+  const emailText = "올바른 이메일 양식을 입력해주세요"; // 이메일
+  const phoneText = "하이픈(-) 포함해서 올바르게 입력해주세요"; // 전화번호
 
   // 정보 변경 경고문구 초기화
-  const [userPwdSpan, setUserPwdSpan] = useState("");
-  const [userPwdCheckSpan, setUserPwdCheckSpan] = useState("");
   const [userEmailSpan, setUserEmailSpan] = useState("");
   const [userPhoneSpan, setUserPhoneSpan] = useState("");
 
@@ -254,27 +316,6 @@ const MyPageMyInfo = () => {
       setPImageFile(null);
     }
   };
-  {
-    /* ---------------------------------------------------- */
-  }
-
-  // 입력한 비밀번호 정규표현식으로 체크하는 함수
-  const onChangePwd = () => {
-    if (pwdRegexp.test(user.userPwd) || user.userPwd === "") {
-      setUserPwdSpan("");
-    } else {
-      setUserPwdSpan(pwdText);
-    }
-  };
-
-  // 동일한 비멀번호 입력 체크하는 함수
-  const onChangeChkPwd = () => {
-    if (user.userPwd === user.userPwdCheck || user.userPwdCheck === "") {
-      setUserPwdCheckSpan("");
-    } else {
-      setUserPwdCheckSpan(pwdChkText);
-    }
-  };
 
   // 입력한 이메일 정규표현식으로 체크하는 함수
   const onChangeEmail = () => {
@@ -302,16 +343,6 @@ const MyPageMyInfo = () => {
     }
   };
 
-  // 비밀번호 체크 정규표현식 실행하는 useEffect
-  // useEffect(() => {
-  //   onChangePwd();
-  // }, [user.userPwd]);
-
-  // 동일 비밀번호 체크 정규표현식 실행하는 useEffect
-  // useEffect(() => {
-  //   onChangeChkPwd();
-  // }, [user.userPwdCheck]);
-
   // 이메일 체크 정규표현식 실행하는 useEffect
   useEffect(() => {
     onChangeEmail();
@@ -324,20 +355,6 @@ const MyPageMyInfo = () => {
 
   // 회원정보 수정 클릭시 작동 함수
   const editMyInfo = async () => {
-    // if (
-    //   !pwdRegexp.test(user.userPwd) ||
-    //   user.userPwd === "" ||
-    //   user.userPwd === undefined
-    // ) {
-    //   alert("올바른 비밀번호를 입력했는지 확인해주세요");
-    // } else if (
-    //   user.userPwd !== user.userPwdCheck ||
-    //   user.userPwdCheck === "" ||
-    //   user.userPwdCheck === undefined
-    // ) {
-    //   alert("동일한 비밀번호를 입력했는지 확인해주세요");
-    // } else
-
     if (
       !emailRegexp.test(user.userEmail) ||
       user.userEmail === "" ||
@@ -448,7 +465,7 @@ const MyPageMyInfo = () => {
             </div>
           </Tab>
           <Tab eventKey="profile" title="정보 수정">
-            <h1>회원 정보 수정</h1>
+            <h1 className="editHeader">회원 정보 수정</h1>
             <div className="info-edit">
               <div className="changeMyInfo">
                 <Form.Group controlId="formFile" className="mb-3">
@@ -462,6 +479,7 @@ const MyPageMyInfo = () => {
                         }
                         htmlFor="pic"
                       />
+                      <MdEdit id="editPicIcon" />
                       <Form.Control
                         type="file"
                         accept="image/*"
@@ -476,31 +494,7 @@ const MyPageMyInfo = () => {
                   </div>
 
                   <div className="info-edit-text">
-                    {/* <Form.Control
-                      type="password"
-                      value={user.userPwd}
-                      placeholder=""
-                      onChange={(e) => {
-                        setUser((prev) => ({
-                          ...prev,
-                          userPwd: e.target.value,
-                          userId: info.userId,
-                        }));
-                      }}
-                    />
-                    <span className="regExpMessage">{userPwdSpan}</span>
-                    <Form.Control
-                      type="password"
-                      value={user.userPwdCheck}
-                      onChange={(e) => {
-                        setUser((prev) => ({
-                          ...prev,
-                          userPwdCheck: e.target.value,
-                        }));
-                      }}
-                    />
-                    <span className="regExpMessage">{userPwdCheckSpan}</span> */}
-
+                    <h3>전화번호 수정</h3>
                     <Form.Control
                       type="text"
                       value={user.userPhone}
@@ -513,6 +507,7 @@ const MyPageMyInfo = () => {
                     />
                     <span className="regExpMessage">{userPhoneSpan}</span>
 
+                    <h3>이메일 수정</h3>
                     <Form.Control
                       type="text"
                       value={user.userEmail}
@@ -537,38 +532,56 @@ const MyPageMyInfo = () => {
           </Tab>
           <Tab eventKey="quit" title="회원 탈퇴">
             <div className="info-quit">
-              <ul id="quitInstructions">
-                <h1>Compagno 탈퇴 전 확인하세요.</h1>
-                <li>회원탈퇴시 사이트 접근이 제한됩니다.</li>
-                <li>타 유저의 게시글에 작성한 댓글은 삭제되지 않습니다.</li>
-                <li>6개월 후 모든 정보가 삭제되며, 복구가 불가능합니다.</li>
-              </ul>
-              <label>
+              <h1 id="quitHeadText">Compagno 탈퇴 전 확인하세요.</h1>
+              <div id="quitInstructions">
+                <h3>회원 탈퇴 및 정보 보존 정책</h3>
+                <ol className="quitInstructionText">
+                  <li>
+                    회원 탈퇴 시, 본 사이트의 모든 서비스 및 기능에 대한 접근이
+                    제한됩니다. 회원 탈퇴 후에도 개인 정보 보호 및 보안 정책은
+                    유지됩니다.
+                  </li>
+                  <li>
+                    탈퇴 전에 작성된 타 유저의 게시물에 달린 댓글은 탈퇴 후에도
+                    삭제되지 않습니다. 이는 타인의 컨텐츠에 대한 존중과 함께
+                    본인의 의견을 보존하는 것을 목적으로 합니다.
+                  </li>
+                  <li>
+                    회원 탈퇴 후 6개월 이내에 모든 개인 정보가 영구적으로
+                    삭제됩니다. 이는 회원 탈퇴에 대한 최종적인 조치로, 삭제된
+                    정보는 복구가 불가능합니다. 탈퇴 후에도 이전에 제공한 정보가
+                    일부 서비스 또는 기능에서 잠재적으로 사용될 수 있음을
+                    유의하시기 바랍니다.
+                  </li>
+                </ol>
+              </div>
+              <div id="checkZone">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="quitAgree"
+                    checked={quitCheckBox}
+                    onChange={clickCheckBox}
+                  />
+                  유의사항을 확인했습니다.
+                </label>
                 <input
-                  type="checkbox"
-                  name="quitAgree"
-                  checked={quitCheckBox}
-                  onChange={clickCheckBox}
+                  className="forQuitInput"
+                  type="password"
+                  disabled={quitButton}
+                  placeholder="현재 비밀번호를 입력해주세요"
+                  value={approveInfo.userPwd}
+                  onChange={(e) =>
+                    setApproveInfo({
+                      userId: info.userId,
+                      userPwd: e.target.value,
+                    })
+                  }
                 />
-                유의사항을 확인했습니다.
-              </label>
-              <br />
-              <input
-                className="forQuitInput"
-                type="password"
-                disabled={quitButton}
-                placeholder="현재 비밀번호를 입력해주세요"
-                value={approveInfo.userPwd}
-                onChange={(e) =>
-                  setApproveInfo({
-                    userId: info.userId,
-                    userPwd: e.target.value,
-                  })
-                }
-              />
-              <button disabled={quitButton} onClick={clickQuitBtn}>
-                회원 탈퇴
-              </button>
+                <button disabled={quitButton} onClick={clickQuitBtn}>
+                  회원 탈퇴
+                </button>
+              </div>
             </div>
           </Tab>
         </Tabs>
