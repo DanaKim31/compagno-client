@@ -53,10 +53,6 @@ const Header = () => {
     }
   }, []);
 
-  // useDidMountEffect(() => {
-  //   console.log(user);
-  // }, [user]);
-
   // 로그아웃 기능 작동 (유저관련)
   const logout = (e) => {
     e.preventDefault(); // 원래 기능을 막는다, 여기서는 a 태그의 리다이렉트 기능을 막음
@@ -141,13 +137,8 @@ const Header = () => {
             <>
               {" "}
               <div className="dropdown">
-                <span className="dropbtn">마이페이지</span>
+                <span className="dropbtn">{user.userNickname}</span>
                 <div className="dropdown-content">
-                  {/* <img
-                    className="headerProfileImage"
-                    src={"http://192.168.10.28:8081/" + user.userImg}
-                  ></img>
-                  <p>{user.userId}</p> */}
                   <a href="/compagno/mypage/myinfo">계정정보 수정</a>
                   <a href="/compagno/mypage/myadoption">활동 내역</a>
                 </div>
