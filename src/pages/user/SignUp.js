@@ -29,6 +29,11 @@ const Div = styled.div`
     display: flex;
     margin-bottom: 5px;
 
+    .idChkSpan,
+    .nickChkSpan {
+      margin-left: 10px;
+    }
+
     .idChkZone {
       width: 100%;
       display: flex;
