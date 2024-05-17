@@ -47,6 +47,10 @@ export const deleteSitterBoard = async (code) => {
   return await authorize.delete("sitter/" + code);
 };
 
+export const sitterBoardBookmark = async (data) => {
+  return await authorize.post("sitter/bookmark", data);
+};
+
 // 게시판 카테고리 보기
 export const getCategories = async () => {
   return await instance.get("sitter/category");

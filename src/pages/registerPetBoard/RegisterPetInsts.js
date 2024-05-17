@@ -7,6 +7,7 @@ import {
 } from "../../api/registerPetBoard";
 import { TbCopy } from "react-icons/tb";
 import styled from "styled-components";
+import Toast from "../../components/registerPet/Toast";
 
 const Div = styled.div`
   @font-face {
@@ -83,6 +84,7 @@ const Div = styled.div`
     margin: auto;
     padding: 20px;
     border-top: 1px solid gray;
+    position: relative;
 
     .title {
       display: flex;
@@ -101,6 +103,7 @@ const Div = styled.div`
       svg {
         margin-bottom: 16px;
         margin-left: 5px;
+        margin-right: 10px;
         color: gray;
       }
 
@@ -109,49 +112,33 @@ const Div = styled.div`
         cursor: pointer;
       }
     }
+
+    .toast {
+    }
   }
 `;
 
 const RegisterPetInsts = () => {
   const [insts, setInsts] = useState([]);
+  const [toast, setToast] = useState(false);
+  const [addr, setAddr] = useState("");
   // ========================== 유저 ==========================
   const dispatch = useDispatch();
   const user = useSelector((state) => {
     return state.user;
   });
-  // ========================== 검색 조건 ==========================
-  const [selectedProvince, setSelectedProvince] = useState([]);
-  const [selectedDistrict, setSelectedDistrict] = useState([]);
-  const [province, setProvince] = useState(0);
-  const [district, setDistrict] = useState(0);
   // ========================== 페이징 ==========================
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const [sort, setSort] = useState(1);
-
   const instsAPI = async () => {
     setLoading(true);
-    const result = await getInsts(page + "&sortBy=" + sort);
+    const result = await getInsts(page);
     const newData = result.data.content;
     console.log(newData);
     setInsts((prev) => [...prev, ...newData]);
     setPage((prev) => prev + 1);
     setLoading(false);
-  };
-
-  const provinceAPI = async () => {
-    const result = await getProvinces();
-    setSelectedProvince(result.data);
-  };
-
-  const districtAPI = async (code) => {
-    if (code !== "") {
-      const result = await getDistricts(code);
-      setSelectedDistrict(result.data);
-    } else {
-      setSelectedDistrict([]);
-    }
   };
 
   useEffect(() => {
@@ -168,21 +155,16 @@ const RegisterPetInsts = () => {
     return () => {
       window.removeEventListener("scroll", scroll);
     };
-  }, [page, loading, sort]);
-
-  const handleProvinceChange = (e) => {
-    districtAPI(e.target.value);
-    setProvince(e.target.value);
-  };
-
-  const handleDistrictChange = (e) => {
-    setDistrict(e.target.value);
-  };
+  }, [page, loading]);
 
   useEffect(() => {
-    provinceAPI();
     instsAPI();
   }, []);
+
+  const copyAddr = async (instId, addr) => {
+    await navigator.clipboard.writeText(addr);
+    setToast((prev) => ({ ...prev, [instId]: true }));
+  };
 
   return (
     <Div>
@@ -227,7 +209,20 @@ const RegisterPetInsts = () => {
             <span>주소</span>
             <div id="addr">
               <p>{inst.regiInstAddr}</p>
-              <TbCopy />
+              <TbCopy
+                onClick={() => copyAddr(inst.regiBoardCode, inst.regiInstAddr)}
+              />
+              {toast[inst.regiBoardCode] && (
+                <Toast
+                  setToast={(value) =>
+                    setToast((prev) => ({
+                      ...prev,
+                      [inst.regiBoardCode]: value,
+                    }))
+                  }
+                  text="클립보드에 복사되었습니다!"
+                />
+              )}
             </div>
           </div>
         </div>

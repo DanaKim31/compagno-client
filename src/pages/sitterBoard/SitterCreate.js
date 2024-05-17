@@ -402,12 +402,12 @@ const SitterCreate = () => {
         <div className="information">
           <div className="writer">
             <span id="title">작성자</span>
-            <input type="text" value={user.userNickname} readOnly />
+            <input type="text" value={user.userNickname || ""} readOnly />
           </div>
 
           <div className="register-date">
             <span id="title">작성일</span>
-            <input type="text" value={today} readOnly />
+            <input type="text" value={today || ""} readOnly />
           </div>
         </div>
 

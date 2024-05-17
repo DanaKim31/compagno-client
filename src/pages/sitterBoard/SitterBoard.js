@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getSitterBoards,
+  sitterBoardBookmark,
   getCategories,
   getAnimalCategories,
-  getSitterBoards,
   getProvinces,
   getDistricts,
 } from "../../api/sitterBoard";
@@ -14,6 +15,7 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { userSave } from "../../store/user";
 import styled from "styled-components";
 
@@ -190,6 +192,7 @@ const Div = styled.div`
 
 const SitterBoard = () => {
   const [sitterBoards, setSitterBoards] = useState({});
+  const token = localStorage.getItem("token");
   // ========== 검색조건 ==========
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
@@ -272,6 +275,18 @@ const SitterBoard = () => {
       result = await getDistricts(code);
       setSelectedDistrict(result.data);
     }
+  };
+
+  const bookmark = async (code) => {
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      return false;
+    }
+    await sitterBoardBookmark({
+      sitterBoardCode: code,
+      userId: user.userId,
+    });
+    getSitterBoards();
   };
 
   useEffect(() => {
@@ -436,6 +451,7 @@ const SitterBoard = () => {
             <th>작성자</th>
             <th>작성일</th>
             <th>조회수</th>
+            <th>북마크</th>
           </tr>
         </thead>
         <tbody>
@@ -472,6 +488,27 @@ const SitterBoard = () => {
                 ).getMinutes()}`}</span>
               </td>
               <td>{sitter.sitterViewCount}</td>
+              <td>
+                {sitter.bookmark?.filter(
+                  (bookmark) => bookmark.user.userId === user.userId
+                ).length === 0 ? (
+                  <FaRegHeart
+                    className="bookmark"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      bookmark(sitter.sitterBoardCode);
+                    }}
+                  />
+                ) : (
+                  <FaHeart
+                    className="bookmark bookmarkChecked"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      bookmark(sitter.sitterBoardCode);
+                    }}
+                  />
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
