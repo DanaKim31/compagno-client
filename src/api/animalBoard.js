@@ -38,9 +38,14 @@ export const viewBoardList = async (page, category, sort) => {
   console.log(url);
   return await instance.get(url);
 };
-// 좋아요 랭킹 불러오기
+// 좋아요 랭킹/animalBoard/ 불러오기
 export const viewRanker = async () => {
   return await instance.get("animal-board/weeklyRank");
+};
+
+// 좋아요 랭킹/favList만/ 불러오기
+export const viewFavList = async () => {
+  return await instance.get("animal-board/weeklyRank-fav");
 };
 // 글 검색 카테고리 불러오기
 export const viewCategory = async () => {
