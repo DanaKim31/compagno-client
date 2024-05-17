@@ -66,6 +66,11 @@ export const getliked = async (page, liked) => {
   return await authorize.get(url);
 };
 
+// 3-0. 상세보기 시 조회수 증가
+export const updateviewcount = async(no) => {
+  return await instance.put("userQuestion/" + no);
+}
+
 // 3. 상세보기 출력
 export const getUserQuestion = async (no) => {
   return await instance.get("userQuestion/" + no);

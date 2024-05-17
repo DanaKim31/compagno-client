@@ -640,9 +640,9 @@ const UserQuestionDetail = () => {
                           src={"http://192.168.10.28.8081/" + question.userImg}
                         />
                         <div>
-                          <p>
+                          <div>
                             <MyToggleBar name={question.userNickname} />
-                          </p>
+                          </div>
                           <p>아이디 : {question.userNickname}</p>
                         </div>
                       </div>

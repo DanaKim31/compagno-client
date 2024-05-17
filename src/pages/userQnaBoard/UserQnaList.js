@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { userSave } from "../../store/user";
-import { getUserQuestions, getliked } from "../../api/userQnaQuestion";
+import { getUserQuestions, getliked, updateviewcount } from "../../api/userQnaQuestion";
 import { getUserAnswers } from "../../api/userQnaAnswer";
 import { Button, Form } from "react-bootstrap";
 import {
@@ -297,6 +297,10 @@ const UserQnaList = () => {
     }
   };
 
+  const viewcount = async(code) => {
+    await updateviewcount(code);
+  }
+
   return (
     <Div>
       <div id="topbar">
@@ -421,6 +425,7 @@ const UserQnaList = () => {
                 <td>
                   <a
                     href={`/compagno/userQna/detail/${question.userQuestionBoardCode}`}
+                    onClick={() => viewcount(question.userQuestionBoardCode)}
                   >
                     {question.userQuestionBoardTitle}
                   </a>

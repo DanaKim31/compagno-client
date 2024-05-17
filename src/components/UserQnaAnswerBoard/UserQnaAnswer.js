@@ -431,7 +431,6 @@ const UserQnaAnswer = ({ question }) => {
             {user.userId !== undefined ? (
               <>
                 {/* 답변이 없는 경우 */}
-                <p>답변 없는디요</p>
                 <div id="answerregister">
                   <Form.Control
                     type="textarea"
@@ -461,11 +460,11 @@ const UserQnaAnswer = ({ question }) => {
                           <div id="profile">
                             <img
                               alt=""
-                              key={topChoose.userQuestionBoardCode}
-                              src={"http://localhost:8081/" + question.userImg}
-                              // src={
-                              //   "http://192.168.10.28:8081/" + topChoose.userImg
-                              // }
+                              key={topChoose.userAnswerBoardCode}
+                              // src={"http://localhost:8081/" + question.userImg}
+                              src={
+                                "http://192.168.10.28:8081/" + topChoose.userImg
+                              }
                             />
                             <div>
                               <MyToggleBar
@@ -518,13 +517,13 @@ const UserQnaAnswer = ({ question }) => {
                                 <img
                                   alt=""
                                   key={question.userQuestionBoardCode}
-                                  src={
-                                    "http://localhost:8081/" + question.userImg
-                                  }
                                   // src={
-                                  //   "http://192.168.10.28:8081/" +
-                                  //   reanswer.user.userImg
+                                  //   "http://localhost:8081/" + question.userImg
                                   // }
+                                  src={
+                                    "http://192.168.10.28:8081/" +
+                                    reanswer.user.userImg
+                                  }
                                 />
                                 <div>
                                   <MyToggleBar
@@ -578,14 +577,14 @@ const UserQnaAnswer = ({ question }) => {
                                     <img
                                       alt=""
                                       key={topChoose.userAnswerBoardCode}
-                                      src={
-                                        "http://localhost:8081/" +
-                                        question.userImg
-                                      }
                                       // src={
-                                      //   "http://192.168.10.28:8081/" +
-                                      //   topChoose.userImg
+                                      //   "http://localhost:8081/" +
+                                      //   question.userImg
                                       // }
+                                      src={
+                                        "http://192.168.10.28:8081/" +
+                                        topChoose.userImg
+                                      }
                                     />
                                     <div>
                                       <MyToggleBar
@@ -691,10 +690,10 @@ const UserQnaAnswer = ({ question }) => {
                         <img
                           alt=""
                           key={answer.userQuestionBoardCode}
-                          src={"http://localhost:8081/" + question.userImg}
-                          // src={
-                          //   "http://192.168.10.28:8081/" + answer.user.userImg
-                          // }
+                          // src={"http://localhost:8081/" + question.userImg}
+                          src={
+                            "http://192.168.10.28:8081/" + answer.user.userImg
+                          }
                         />
                         <MyToggleBar name={answer.user.userNickname} />
                       </div>
@@ -825,13 +824,13 @@ const UserQnaAnswer = ({ question }) => {
                               <img
                                 alt=""
                                 key={question.userQuestionBoardCode}
-                                src={
-                                  "http://localhost:8081/" + question.userImg
-                                }
                                 // src={
-                                //   "http://192.168.10.28:8081/" +
-                                //   reanswer.user.userImg
+                                //   "http://localhost:8081/" + question.userImg
                                 // }
+                                src={
+                                  "http://192.168.10.28:8081/" +
+                                  reanswer.user.userImg
+                                }
                               />
                               <div>
                                 <MyToggleBar
@@ -871,9 +870,9 @@ const UserQnaAnswer = ({ question }) => {
                             editA === null ? (
                               <>
                                 {/* 글 작성자 본인! */}
-                                <div>
-                                  {reanswer.user.userId}
-                                  <span id="writer">작성자</span>
+                                <div id="profile">
+                                  <MyToggleBar name={question.userNickname} />
+                                  <p id="writer">작성자</p>
                                 </div>
                               </>
                             ) : (
@@ -882,14 +881,14 @@ const UserQnaAnswer = ({ question }) => {
                                   <img
                                     alt=""
                                     key={question.userQuestionBoardCode}
-                                    src={
-                                      "http://localhost:8081/" +
-                                      question.userImg
-                                    }
                                     // src={
-                                    //   "http://192.168.10.28:8081/" +
+                                    //   "http://localhost:8081/" +
                                     //   question.userImg
                                     // }
+                                    src={
+                                      "http://192.168.10.28:8081/" +
+                                      question.userImg
+                                    }
                                   />
                                   <div>
                                     <MyToggleBar
