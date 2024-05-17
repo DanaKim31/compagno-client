@@ -19,6 +19,8 @@ import useDidMountEffect from "../../assets/useDidMountEffect";
 import MyToggleBar from "../../components/note/MyToggleBar";
 import { Form } from "react-bootstrap";
 import styled from "styled-components";
+import { FaRegLightbulb } from "react-icons/fa6";
+import { FaLightbulb } from "react-icons/fa6";
 
 const Div = styled.div`
   padding-bottom: 100px;
@@ -49,11 +51,16 @@ const Div = styled.div`
   }
 
   #writer {
-    background-color: #94b29b;
+    background-color: #94B29B;
     border: none;
-    border-radius: 5px;
+    border-radius: 7px;
     margin: 10px;
-    padding: 2px;
+    height: 25px;
+    font-size: 12px;
+    margin-top: 5px;
+    padding-top: 3px;
+    padding-right: 5px;
+    padding-left: 5px;
   }
 
   // 채택된 상위 답변
@@ -123,17 +130,21 @@ const Div = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 20px;
+    h3{
+      font-weight: bold;
+    }
     #topbarright {
       #choosebutton {
-        margin-top: 20px;
       }
       button {
         margin: 0px;
-        margin-left: 10px;
       }
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      p{
+        margin-right: 10px;
+      }
     }
   }
   /* content */
@@ -146,6 +157,9 @@ const Div = styled.div`
     display: flex;
     padding: 30px;
     margin: 20px auto;
+    input{
+      font-weight: bold;
+    }
   }
   
   #reansweredit {
@@ -161,7 +175,18 @@ const Div = styled.div`
       width: 80px;
     }
     display: flex;
+
   }
+  #editdeletebutton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;  
+#buttons{
+  width: 150px;
+  display: flex;
+justify-content: space-evenly;
+}
+    }
 
   #reanswerregister {
     font-family: "TAEBAEKmilkyway";
@@ -471,7 +496,7 @@ const UserQnaAnswer = ({ question }) => {
                     <div id="choosetopbar">
                       <div id="default">
                         <div>
-                          <h3>채택된 답변</h3>
+                          <h3><FaLightbulb style={{color:"#FFCC01"}}/>&nbsp; 채택된 답변</h3>
                           <div id="profile">
                             <img
                               alt=""
@@ -549,7 +574,7 @@ const UserQnaAnswer = ({ question }) => {
 
                               <div>
                                 {editA !== null ? (
-                                  <>{/* 수정중 */}</>
+                                  <>{/* 수정중 */}<p>수정중</p></>
                                 ) : (
                                   <>
                                     {/* 안 수정중 */}
@@ -581,6 +606,7 @@ const UserQnaAnswer = ({ question }) => {
                               editA === null ? (
                                 <>
                                   {/* 글 작성자 본인! */}
+
                                   <div>
                                     {topChoose.user.userId}
                                     <span id="writer">작성자</span>
@@ -711,6 +737,9 @@ const UserQnaAnswer = ({ question }) => {
                           }
                         />
                         <MyToggleBar name={answer.user.userNickname} />
+                        {question.userId === answer.user.userId ? (<>                                <div id="profile">
+                                  <p id="writer">작성자</p>
+                                </div></>) :(<></>)}
                       </div>
                       <div id="topbarright">
                         <p>
@@ -886,6 +915,18 @@ const UserQnaAnswer = ({ question }) => {
                               <>
                                 {/* 글 작성자 본인! */}
                                 <div id="profile">
+                                <img
+                                    alt=""
+                                    key={question.userQuestionBoardCode}
+                                    // src={
+                                    //   "http://localhost:8081/" +
+                                    //   question.userImg
+                                    // }
+                                    src={
+                                      "http://192.168.10.28:8081/" +
+                                      answer.user.userImg
+                                    }
+                                  />
                                   <MyToggleBar name={question.userNickname} />
                                   <p id="writer">작성자</p>
                                 </div>
@@ -902,7 +943,7 @@ const UserQnaAnswer = ({ question }) => {
                                     // }
                                     src={
                                       "http://192.168.10.28:8081/" +
-                                      question.userImg
+                                      reanswer.user.userImg
                                     }
                                   />
                                   <div>

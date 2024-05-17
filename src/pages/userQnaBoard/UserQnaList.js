@@ -202,6 +202,25 @@ const Table = styled.table`
       }
     }
   }
+  #code{
+      width: 150px;
+    }
+    #status{
+      width: 150px;
+    }
+    #id{
+      width: 230px;
+    }
+    #date{
+      width: 230px;
+    }
+    #likecount{
+      width: 150px;
+    }
+    #view{
+      width: 150px;
+    }
+    
 `;
 
 const UserQnaList = () => {
@@ -421,10 +440,10 @@ const UserQnaList = () => {
           {questions?.content?.map((question) => {
             return (
               <tr key={question.userQuestionBoardCode}>
-                <td>{question.userQuestionBoardCode}</td>
-                <td>{question.userQuestionBoardStatus}</td>
+                <td id="code">{question.userQuestionBoardCode}</td>
+                <td id="status">{question.userQuestionBoardStatus}</td>
 
-                <td>
+                <td id="title">
                   <a
                     href={`/compagno/userQna/detail/${question.userQuestionBoardCode}`}
                     onClick={() => viewcount(question.userQuestionBoardCode)}
@@ -433,12 +452,12 @@ const UserQnaList = () => {
                   </a>
                   <span>[{question.userQuestionBoardCount}]</span>
                 </td>
-                <td>{question.userId}</td>
+                <td id="id">{question.userId}</td>
                 {/* qnaQDate가 null일 때 DateUpdate로 출력 */}
                 {question.userQuestionBoardDate === "" ||
                 question.userQuestionBoardDate == null ? (
                   <>
-                    <td>
+                    <td id="date">
                       {moment(question.userQuestionBoardDateUpdate).format(
                         "YY-MM-DD hh:mm"
                       )}
@@ -446,15 +465,15 @@ const UserQnaList = () => {
                   </>
                 ) : (
                   <>
-                    <td>
+                    <td id="date">
                       {moment(question.userQuestionBoardDate).format(
                         "YY-MM-DD hh:mm"
                       )}
                     </td>
                   </>
                 )}
-                <td>{question.likecount}</td>
-                <td>{question.viewcount}</td>
+                <td id="likecount">{question.likecount}</td>
+                <td id="view">{question.viewcount}</td>
               </tr>
             );
           })}

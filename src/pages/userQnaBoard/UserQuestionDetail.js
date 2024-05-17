@@ -184,6 +184,10 @@ const Div = styled.div`
     }
   }
   // content
+  #content{
+    height: 80px;
+    padding: 30px;
+  }
   p {
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
@@ -540,7 +544,7 @@ const UserQuestionDetail = () => {
                   </div>
                   <hr />
                   {/* 상세 정보 */}
-                  <div id="desc">
+                  <div id="content">
                     <p>{question.userQuestionBoardContent}</p>
                   </div>
                   <div id="images">
@@ -619,7 +623,7 @@ const UserQuestionDetail = () => {
                     }
                   />
                 ))}
-                <div id="desc">
+                <div id="content">
                   <p>{question.userQuestionBoardContent}</p>
                 </div>
                 <hr />
@@ -681,7 +685,7 @@ const UserQuestionDetail = () => {
                   </div>
                 </div>
 
-                <div id="desc">
+                <div id="content">
                   <p>{question.userQuestionBoardContent}</p>
                 </div>
                 <div id="images">

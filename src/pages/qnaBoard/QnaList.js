@@ -47,7 +47,7 @@ const Div = styled.div`
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
     margin: 0 auto;
-    width: 70%;
+    width: 60%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -58,7 +58,7 @@ const Div = styled.div`
     }
   }
   Table {
-    width: 70%;
+    width: 60%;
     margin: 0 auto;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
@@ -159,6 +159,18 @@ const Table = styled.table`
         color: black;
         text-decoration: none;
       }
+    }
+    #code{
+      width: 80px;
+    }
+    #status{
+      width: 80px;
+    }
+    #id{
+      width: 200px;
+    }
+    #date{
+      width: 200px;
     }
   }
 `;
@@ -345,10 +357,10 @@ const QnaList = () => {
           {questions?.content?.map((question) => {
             return (
               <tr key={question.qnaQCode}>
-                <td>{question.qnaQCode}</td>
-                <td>{question.qnaQStatus}</td>
+                <td id="code">{question.qnaQCode}</td>
+                <td id="status">{question.qnaQStatus}</td>
 
-                <td>
+                <td id="title">
                   {question.secret === "" || question.secret == null ? (
                     // 비밀번호가 걸려있지 않을 때
                     <a href={`/compagno/question/detail/${question.qnaQCode}`}>
@@ -394,17 +406,17 @@ const QnaList = () => {
                     </>
                   )}
                 </td>
-                <td>{question.userId}</td>
+                <td id="id">{question.userId}</td>
                 {/* qnaQDate가 null일 때 DateUpdate로 출력 */}
                 {question.qnaQDate === "" || question.qnaQDate == null ? (
                   <>
-                    <td>
+                    <td id="date">
                       {moment(question.qnaQDateUpdate).format("YY-MM-DD hh:mm")}
                     </td>
                   </>
                 ) : (
                   <>
-                    <td>
+                    <td id="date">
                       {moment(question.qnaQDate).format("YY-MM-DD hh:mm")}
                     </td>
                   </>
