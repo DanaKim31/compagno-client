@@ -298,22 +298,37 @@ const NoteViewReceiveBox = () => {
                     </button>
                   </div>
                 </div>
-                <div
-                  id="totalNotes"
-                  style={{
-                    display: "flex",
-                    paddingTop: "15px",
-                    marginLeft: "15px",
-                    marginBottom: "15px",
-                    alignItems: "center",
-                    width: "85%",
-                  }}
-                >
-                  <BsEnvelopePaper />
-                  <span style={{ marginLeft: "10px" }}>
-                    총 {allCount - num}개
-                  </span>
-                </div>
+
+                {sender == "" && noteTitle == "" && noteRegiDate == "" ? (
+                  <div
+                    id="totalNotes"
+                    style={{
+                      display: "flex",
+                      paddingTop: "15px",
+                      marginLeft: "15px",
+                      marginBottom: "15px",
+                      alignItems: "center",
+                      width: "85%",
+                    }}
+                  >
+                    <BsEnvelopePaper />
+                    <span style={{ marginLeft: "10px" }}>
+                      총 {allCount - num}개
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    id="totalNotes"
+                    style={{
+                      display: "flex",
+                      paddingTop: "15px",
+                      marginLeft: "15px",
+                      marginBottom: "25px",
+                      alignItems: "center",
+                      width: "85%",
+                    }}
+                  ></div>
+                )}
 
                 <table style={{ width: "85%", height: "60%" }}>
                   <thead

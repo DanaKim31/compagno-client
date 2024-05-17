@@ -52,7 +52,6 @@ const NoteHeaderTap = () => {
     // console.log(location.pathname);
     setNowLoca(location.pathname);
   }, [location]);
-  console.log(nowLoca);
 
   const [click, setClick] = useState("");
   const navigate = useNavigate();
