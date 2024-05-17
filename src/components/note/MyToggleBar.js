@@ -5,6 +5,7 @@ import { userSave } from "../../store/user";
 import styled from "styled-components";
 import Modal from "react-modal";
 import NoteCreate from "./NoteCreate";
+import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
   display: flex;
@@ -95,8 +96,13 @@ const MyToggleBar = (props) => {
   }, []);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const navigate = useNavigate();
   const sendNote = () => {
-    setModalIsOpen(!modalIsOpen);
+    if (Object.keys(user).length === 0) {
+      navigate("/compagno/login");
+    } else {
+      setModalIsOpen(!modalIsOpen);
+    }
   };
   return (
     <>
@@ -107,12 +113,14 @@ const MyToggleBar = (props) => {
           ) : (
             <>{props.name}</>
           )}
+
           {isOpen ? (
             <BsCaretUpFill onClick={handleToggle} />
           ) : (
             <BsCaretDownFill onClick={handleToggle} />
           )}
         </div>
+
         <div
           id="noteToggle"
           style={{
