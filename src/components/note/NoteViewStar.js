@@ -53,6 +53,9 @@ const DivTotal = styled.div`
       align-items: center;
     }
   }
+  .detailEnter:hover {
+    color: #94b29b;
+  }
 `;
 const Div = styled.div`
   @font-face {
@@ -434,12 +437,14 @@ const NoteViewStar = () => {
                             <td
                               onClick={() => onDetail(note.noteCode)}
                               style={{ cursor: "pointer" }}
+                              className="detailEnter"
                             >
                               {note.noteTitle}
                             </td>
                             <td
                               onClick={() => onDetail(note.noteCode)}
                               style={{ cursor: "pointer" }}
+                              className="detailEnter"
                             >
                               {note.noteContent}
                             </td>
