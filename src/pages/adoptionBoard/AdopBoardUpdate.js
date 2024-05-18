@@ -333,7 +333,6 @@ const UpdateAdopBoard = () => {
     }
   };
 
-  console.log(existImages);
   // 수정 완료
   const okUpdate = async () => {
     const formData = new FormData();
@@ -353,14 +352,14 @@ const UpdateAdopBoard = () => {
     formData.append("adopCenterName", adopCenterName);
     formData.append("adopCenterPhone", adopCenterPhone);
     formData.append("adopRegiDate", adopRegiDate);
-    console.log(images); // 새로 받은 거
+    // 새로 받은 것
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
     });
+    // 기존 것
     existImages.forEach((existImg, index) => {
       formData.append(`image[${index}]`, existImg.adopImage);
     });
-    console.log(existImages); // 기존에 있는 거
 
     // not null 조건
     if (
@@ -389,9 +388,6 @@ const UpdateAdopBoard = () => {
     navigate("/compagno/adoptionBoard/view/" + code);
   };
 
-  useEffect(() => {
-    console.log(typeof adopRegiDate);
-  }, [adopRegiDate]);
   return (
     <Div>
       <div className="contentHeader">

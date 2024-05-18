@@ -56,11 +56,11 @@ import ClassUpdate from "./pages/onedayClassBoard/ClassUpdate";
 import ViewAllNoticeBoard from "./pages/noticeBoard/ViewAllNoticeBoard";
 import NoticeBoardDetail from "./pages/noticeBoard/NoticeBoardDetail";
 import CreateNoticeBoard from "./pages/noticeBoard/CreateNoticeBoard";
-import NoteViewAll from "./components/note/NoteViewAll";
-import NoteViewReceiveBox from "./components/note/NoteViewReceiveBox";
-import NoteViewSendBox from "./components/note/NoteViewSendBox";
-import NoteViewStar from "./components/note/NoteViewStar";
 import UpdateNoticeBoard from "./pages/noticeBoard/UpdateNoticeBoard";
+import NoteViewAll from "./pages/note/NoteViewAll";
+import NoteViewReceiveBox from "./pages/note/NoteViewReceiveBox";
+import NoteViewSendBox from "./pages/note/NoteViewSendBox";
+import NoteViewStar from "./pages/note/NoteViewStar";
 
 const router = createBrowserRouter([
   {
@@ -85,7 +85,6 @@ const router = createBrowserRouter([
           { path: "myproductfav", element: <MyPageFavProduct /> },
           {
             path: "mynote",
-            // element: <MyPageMyNote />,
             children: [
               { index: true, element: <NoteViewAll /> },
               { path: "viewReceiveBox", element: <NoteViewReceiveBox /> },

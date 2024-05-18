@@ -18,12 +18,11 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
-import NoteViewDetail from "./NoteViewDetail";
 import { FaRegFileLines } from "react-icons/fa6";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import NoteHeaderTap from "./NoteHeaderTab";
-import MyPageSidebar from "../user/MyPageSidebar";
-
+import NoteHeaderTap from "../../components/note/NoteHeaderTab";
+import MyPageSidebar from "../../components/user/MyPageSidebar";
+import NoteViewDetail from "../../components/note/NoteViewDetail";
 const DivTotal = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
@@ -77,15 +76,6 @@ const Div = styled.div`
     font-weight: bold;
   }
   #pageBtn {
-    /* font-weight: bold;
-    border-radius: 50%;
-    border: none;
-    color: rgb(32, 61, 59);
-    width: 25px;
-    height: 25px;
-    font-size: 0.8rem;
-    margin: 0px 5px;
-    background-color: #cbd6ce; */
     font-weight: bold;
     width: 25px;
     height: 28px;
@@ -94,6 +84,10 @@ const Div = styled.div`
     background-color: white;
     color: black;
     margin: 5px;
+    &:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
+    }
   }
 `;
 const ModalContariner = styled.div`
@@ -183,10 +177,6 @@ const NoteViewAll = () => {
   let lastPage = 0;
   let firstPage = 0;
   let pageList = [];
-
-  useEffect(() => {
-    notesAPI();
-  }, []);
 
   useEffect(() => {
     notesAPI();
@@ -334,22 +324,41 @@ const NoteViewAll = () => {
                     </button>
                   </div>
                 </div>
-                <div
-                  id="totalNotes"
-                  style={{
-                    display: "flex",
-                    paddingTop: "15px",
-                    marginLeft: "15px",
-                    marginBottom: "15px",
-                    alignItems: "center",
-                    width: "85%",
-                  }}
-                >
-                  <BsEnvelopePaper />
-                  <span style={{ marginLeft: "10px" }}>
-                    총 {allCount - num}개
-                  </span>
-                </div>
+
+                {sender == "" &&
+                receiver == "" &&
+                noteTitle == "" &&
+                noteRegiDate == "" ? (
+                  <div
+                    id="totalNotes"
+                    style={{
+                      display: "flex",
+                      paddingTop: "15px",
+                      marginLeft: "15px",
+                      marginBottom: "15px",
+                      alignItems: "center",
+                      width: "85%",
+                    }}
+                  >
+                    <BsEnvelopePaper />
+                    <span style={{ marginLeft: "10px" }}>
+                      총 {allCount - num}개
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    id="totalNotes"
+                    style={{
+                      display: "flex",
+                      paddingTop: "15px",
+                      marginLeft: "15px",
+                      marginBottom: "25px",
+                      alignItems: "center",
+                      width: "85%",
+                    }}
+                  ></div>
+                )}
+
                 <table style={{ width: "85%", height: "60%" }}>
                   <thead
                     style={{ height: "30px", borderBottom: "1px dashed black" }}
@@ -384,7 +393,7 @@ const NoteViewAll = () => {
                                         starSenderCheck(note.noteCode)
                                       }
                                       style={{
-                                        color: "yellow",
+                                        color: "#FFCC01",
                                         cursor: "pointer",
                                       }}
                                     />
@@ -406,7 +415,7 @@ const NoteViewAll = () => {
                                         starReceiverCheck(note.noteCode)
                                       }
                                       style={{
-                                        color: "yellow",
+                                        color: "#FFCC01",
                                         cursor: "pointer",
                                       }}
                                     />

@@ -1,13 +1,16 @@
 import {
-  receivBox,
+  viewAllNote,
+  starSenderUpdate,
   starReceiverUpdate,
-  delReceiverCount,
+  starCount,
 } from "../../api/note";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import "moment/locale/ko";
-import NoteViewDetail from "./NoteViewDetail";
+import { useNavigate } from "react-router-dom";
+
 import { BsEnvelopePaper } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
 import {
@@ -16,12 +19,11 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
-import styled from "styled-components";
-import { FaStar, FaRegStar } from "react-icons/fa";
+import NoteViewDetail from "../../components/note/NoteViewDetail";
 import { FaRegFileLines } from "react-icons/fa6";
-import MyPageSidebar from "../user/MyPageSidebar";
-import NoteHeaderTap from "./NoteHeaderTab";
-
+import { FaStar, FaRegStar } from "react-icons/fa";
+import MyPageSidebar from "../../components/user/MyPageSidebar";
+import NoteHeaderTap from "../../components/note/NoteHeaderTab";
 const DivTotal = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
@@ -37,7 +39,7 @@ const DivTotal = styled.div`
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
 
-  .myReceiveBox {
+  .myStarBox {
     width: calc(100vw - 300px);
     display: flex;
     flex-direction: column;
@@ -55,7 +57,40 @@ const DivTotal = styled.div`
     color: #94b29b;
   }
 `;
-
+const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "TAEBAEKmilkyway";
+  /* border: 1px solid black; */
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+  input {
+    font-weight: bold;
+  }
+  span {
+    font-weight: bold;
+  }
+  #pageBtn {
+    font-weight: bold;
+    width: 25px;
+    height: 28px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    background-color: white;
+    color: black;
+    margin: 5px;
+    &:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
+    }
+  }
+`;
 const ModalContariner = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
@@ -71,6 +106,7 @@ const ModalContariner = styled.div`
   /* height: 300px; */
   height: 80%;
 `;
+
 const ModalNoteWrite = styled.div`
   position: fixed;
   left: 50%;
@@ -83,47 +119,10 @@ const ModalNoteWrite = styled.div`
   z-index: 100;
   transform: translate(-50%, -50%);
 `;
-const Div = styled.div`
-  @font-face {
-    font-family: "TAEBAEKmilkyway";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
-      format("woff2");
-    font-weight: normal;
-    font-style: normal;
-  }
-  font-family: "TAEBAEKmilkyway";
-  width: 100%;
-  height: 100%;
-  font-weight: bold;
-  input {
-    font-weight: bold;
-  }
-  span {
-    font-weight: bold;
-  }
-  #pageBtn {
-    /* font-weight: bold;
-    border-radius: 50%;
-    border: none;
-    color: rgb(32, 61, 59);
-    width: 25px;
-    height: 25px;
-    font-size: 0.8rem;
-    margin: 0px 5px;
-    background-color: #cbd6ce; */
-    font-weight: bold;
-    width: 25px;
-    height: 28px;
-    border-radius: 5px;
-    border: 1px solid gray;
-    background-color: white;
-    color: black;
-    margin: 5px;
-  }
-`;
-const NoteViewReceiveBox = () => {
+const NoteViewStar = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
+  // 유저정보 가지고 오기
   const info = useSelector((state) => {
     return state.user;
   });
@@ -137,6 +136,7 @@ const NoteViewReceiveBox = () => {
 
   // 검색
   const [sender, setSender] = useState("");
+  const [receiver, setReceiver] = useState("");
   const [noteTitle, setNoteTitle] = useState("");
   const [noteRegiDate, setNoteRegiDate] = useState("");
 
@@ -147,25 +147,32 @@ const NoteViewReceiveBox = () => {
   const [allCount, setAllCount] = useState(0);
 
   const notesAPI = async () => {
-    let response = await receivBox(
+    let response = await viewAllNote(
       user.userNickname +
         "?page=" +
         page +
         "&sender=" +
         sender +
+        "&receiver=" +
+        receiver +
         "&noteTitle=" +
         noteTitle +
         "&noteRegiDate=" +
         noteRegiDate
     );
     setNotes(response.data.content);
-    setAllCount(response.data.totalElements);
+    // setAllCount(response.data.totalElements);
+    setAllCount(num);
     setTotalPage(response.data.totalPages);
   };
 
   let lastPage = 0;
   let firstPage = 0;
   let pageList = [];
+
+  useEffect(() => {
+    notesAPI();
+  }, []);
 
   useEffect(() => {
     notesAPI();
@@ -185,6 +192,7 @@ const NoteViewReceiveBox = () => {
   }, [totalPage]);
 
   //1개 보기
+  const navigate = useNavigate();
   const [code, setCode] = useState(0);
   const [openDetail, setOpenDetail] = useState(false);
   const onDetail = (e) => {
@@ -198,23 +206,34 @@ const NoteViewReceiveBox = () => {
     setModalIsOpen(!modalIsOpen);
   };
 
+  // 중요 표시
+  // sender
+  const starSenderCheck = (code) => {
+    window.location.reload();
+    starSenderUpdate(code);
+  };
+
   // receiver
   const starReceiverCheck = (code) => {
     window.location.reload();
     starReceiverUpdate(code);
   };
+
+  // 중요 쪽지 수
   const [num, setNum] = useState(0);
   const numAPI = async () => {
-    const response = await delReceiverCount(user.userNickname);
+    const response = await starCount(user.userNickname);
     setNum(response.data);
   };
+
   useEffect(() => {
     numAPI();
   }, [user]);
+
   return (
     <DivTotal>
       <MyPageSidebar />
-      <div className="myReceiveBox">
+      <div className="myStarBox">
         <NoteHeaderTap />
         <div className="contentZone" style={{ height: "94%" }}>
           {!openDetail ? (
@@ -236,22 +255,22 @@ const NoteViewReceiveBox = () => {
                     flexDirection: "column",
                     borderRadius: "20px",
                     paddingBottom: "20px",
-                    paddingTop: "30px",
                     width: "85%",
                     alignItems: "center",
                   }}
                 >
                   <div
-                    id="searchItems"
+                    id="searchPerson"
                     style={{
                       display: "flex",
                       justifyContent: "space-evenly",
                       width: "100%",
+                      paddingTop: "20px",
                     }}
                   >
                     <div id="searchSender">
                       <label>
-                        보낸 사람
+                        보내는 사람
                         <input
                           type="text"
                           onChange={(e) => setSender(e.target.value)}
@@ -259,6 +278,27 @@ const NoteViewReceiveBox = () => {
                         />
                       </label>
                     </div>
+                    <div id="searchReceiver">
+                      <label>
+                        받는 사람
+                        <input
+                          type="text"
+                          onChange={(e) => setReceiver(e.target.value)}
+                          style={{ marginLeft: "15px" }}
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  <div
+                    id="searchTitleDate"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      width: "100%",
+                      paddingTop: "20px",
+                    }}
+                  >
                     <div id="searchTitle">
                       <label>
                         제목
@@ -272,7 +312,7 @@ const NoteViewReceiveBox = () => {
 
                     <div id="searchNoteRegiDate">
                       <label>
-                        받은 날짜
+                        날짜
                         <input
                           type="date"
                           max={moment().format("YYYY-MM-DD")}
@@ -298,22 +338,38 @@ const NoteViewReceiveBox = () => {
                     </button>
                   </div>
                 </div>
-                <div
-                  id="totalNotes"
-                  style={{
-                    display: "flex",
-                    paddingTop: "15px",
-                    marginLeft: "15px",
-                    marginBottom: "15px",
-                    alignItems: "center",
-                    width: "85%",
-                  }}
-                >
-                  <BsEnvelopePaper />
-                  <span style={{ marginLeft: "10px" }}>
-                    총 {allCount - num}개
-                  </span>
-                </div>
+
+                {sender == "" &&
+                receiver == "" &&
+                noteTitle == "" &&
+                noteRegiDate == "" ? (
+                  <div
+                    id="totalNotes"
+                    style={{
+                      display: "flex",
+                      paddingTop: "15px",
+                      marginLeft: "15px",
+                      marginBottom: "15px",
+                      alignItems: "center",
+                      width: "85%",
+                    }}
+                  >
+                    <BsEnvelopePaper />
+                    <span style={{ marginLeft: "10px" }}>총 {num}개</span>
+                  </div>
+                ) : (
+                  <div
+                    id="totalNotes"
+                    style={{
+                      display: "flex",
+                      paddingTop: "15px",
+                      marginLeft: "15px",
+                      marginBottom: "25px",
+                      alignItems: "center",
+                      width: "85%",
+                    }}
+                  ></div>
+                )}
 
                 <table style={{ width: "85%", height: "60%" }}>
                   <thead
@@ -321,38 +377,76 @@ const NoteViewReceiveBox = () => {
                   >
                     <tr>
                       <th>중요</th>
-                      <th>보낸 사람</th>
+                      <th>보내는 사람</th>
                       <th>제목</th>
                       <th>내용</th>
-                      <th>받은 날짜</th>
+                      <th>받는 사람</th>
+                      <th>날짜</th>
                       <th>첨부파일 유무</th>
                     </tr>
                   </thead>
                   <tbody>
                     {notes.map((note) => (
                       <tr key={note.noteCode}>
-                        {note.deletedByReceiver == 0 ? (
+                        {(note.deletedBySender == 0 &&
+                          note.sender == user.userNickname &&
+                          note.starSender == 1) ||
+                        (note.deletedByReceiver == 0 &&
+                          note.receiver == user.userNickname &&
+                          note.starReceiver == 1) ? (
                           <>
                             <td>
-                              {note.starReceiver == 1 ? (
-                                <FaStar
-                                  onClick={() =>
-                                    starReceiverCheck(note.noteCode)
+                              {/* 보낸 이 일 때 */}
+                              {note.sender == user.userNickname ? (
+                                <>
+                                  {
+                                    // star == true &&
+                                    // starCode == note.noteCode &&
+                                    note.starSender == 1 ? (
+                                      <FaStar
+                                        onClick={() =>
+                                          starSenderCheck(note.noteCode)
+                                        }
+                                        style={{
+                                          color: "#FFCC01",
+                                          cursor: "pointer",
+                                        }}
+                                      />
+                                    ) : (
+                                      <FaRegStar
+                                        onClick={() =>
+                                          starSenderCheck(note.noteCode)
+                                        }
+                                        style={{ cursor: "pointer" }}
+                                      />
+                                    )
                                   }
-                                  style={{
-                                    color: "yellow",
-                                    cursor: "pointer",
-                                  }}
-                                />
+                                </>
                               ) : (
-                                <FaRegStar
-                                  onClick={() =>
-                                    starReceiverCheck(note.noteCode)
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                />
+                                //  받는 이 일 때
+                                <>
+                                  {note.starReceiver == 1 ? (
+                                    <FaStar
+                                      onClick={() =>
+                                        starReceiverCheck(note.noteCode)
+                                      }
+                                      style={{
+                                        color: "#FFCC01",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  ) : (
+                                    <FaRegStar
+                                      onClick={() =>
+                                        starReceiverCheck(note.noteCode)
+                                      }
+                                      style={{ cursor: "pointer" }}
+                                    />
+                                  )}
+                                </>
                               )}
                             </td>
+
                             <td>{note.sender}</td>
                             <td
                               onClick={() => onDetail(note.noteCode)}
@@ -368,6 +462,7 @@ const NoteViewReceiveBox = () => {
                             >
                               {note.noteContent}
                             </td>
+                            <td>{note.receiver}</td>
                             <td>
                               {moment(note.noteRegiDate).format(
                                 "YY-MM-DD hh:mm"
@@ -459,4 +554,4 @@ const NoteViewReceiveBox = () => {
     </DivTotal>
   );
 };
-export default NoteViewReceiveBox;
+export default NoteViewStar;

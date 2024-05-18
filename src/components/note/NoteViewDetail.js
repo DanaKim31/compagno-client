@@ -48,14 +48,12 @@ const NoteViewDetail = (props) => {
   const [note, setNote] = useState({});
   const noteAPI = async () => {
     const response = await viewOneNote(props.name);
-    console.log(response.data);
     setNote(response.data);
   };
   useEffect(() => {
     noteAPI();
   }, []);
 
-  console.log(note);
   const navigate = useNavigate();
   // 삭제하기
   const delNote = async (data) => {

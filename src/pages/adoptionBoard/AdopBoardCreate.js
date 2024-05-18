@@ -341,7 +341,6 @@ const CreateAdopBoard = () => {
     navigate("/compagno/adoptionBoard/viewAll");
   };
 
-  console.log(adopRegiDate);
   return (
     <Div>
       <div className="allContents">

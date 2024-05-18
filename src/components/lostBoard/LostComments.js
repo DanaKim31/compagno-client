@@ -39,6 +39,11 @@ const Div = styled.div`
   justify-content: center;
   position: relative;
   top: 180px;
+
+  #pageBtn:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
 `;
 const Comments = () => {
   // 유저정보 가지고온다
@@ -73,9 +78,6 @@ const Comments = () => {
   const commentsAPI = async () => {
     const response = await viewCommentLost(code, page);
     const responseAll = await viewAllCommentLost(code);
-    // console.log(response.data);
-    // console.log(response.data.length);
-    // console.log(responseAll.data);
     setTotalComments(responseAll.data.length);
     setTotalPage(Math.ceil(responseAll.data.length / 5));
     setComments(response.data);
@@ -156,22 +158,6 @@ const Comments = () => {
     setEdit({});
     commentsAPI();
   };
-
-  // const updateBottomComment = async () => {
-  //   setEdit({
-  //     lostBoardCode: code,
-  //     commentDate: moment().format("YYYY-MM-DD hh:mm:ss"),
-  //     user: {
-  //       userId: user.userId,
-  //       userNickname: user.userNickname,
-  //       userImg: user.userImg,
-  //     },
-  //   });
-  //   console.log(edit);
-  //   await updateCommentLost(edit);
-  //   setEdit({});
-  //   commentsAPI();
-  // };
 
   //수정 취소
   const delUpdate = () => {
@@ -627,28 +613,6 @@ const Comments = () => {
                                   </span>
                                   {/* 게시글 작성자와 댓글 작성자가 같을 때 -> 작성자 표시 */}
 
-                                  {/* {lost.userId == bottom.user.userId ? (
-                                    
-                                      <span
-                                        id="bottomWriter"
-                                        style={{
-                                          marginLeft: "9px",
-                                          border: "1px solid green",
-                                          fontWeight: "bold",
-                                          borderRadius: "30px",
-                                          padding: "3px 5px",
-                                          fontSize: "0.5rem",
-                                        }}
-                                      >
-                                        작성자
-                                      </span>
-
-                                
-                                    
-                                  ) : (
-                                    <></>
-                                  )} */}
-
                                   {user.userId == bottom.user.userId &&
                                   edit.lostParentCode !=
                                     comment.lostCommentCode ? (
@@ -980,12 +944,6 @@ const Comments = () => {
                 value={num}
                 onClick={(e) => setPage(Number(e.target.value))}
                 style={{
-                  // borderRadius: "50%",
-                  // width: "30px",
-                  // height: "30px",
-                  // border: "none",
-                  // fontWeight: "bold",
-                  // backgroundColor: "#cbd6ce",
                   fontWeight: "bold",
                   width: "25px",
                   height: "28px",
@@ -995,6 +953,7 @@ const Comments = () => {
                   color: "black",
                   margin: "5px",
                 }}
+                id="pageBtn"
               >
                 {num}
               </button>

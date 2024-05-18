@@ -240,8 +240,7 @@ const CreateLostBoard = () => {
     } else {
       setImages(files);
       setLostAnimalImage(files[0]);
-      console.log(images);
-      console.log(lostAnimalImage);
+
       let file;
       for (let i = 0; i < files.length; i++) {
         file = files[i];
@@ -251,16 +250,8 @@ const CreateLostBoard = () => {
           setImgSrc([...images]);
           setLostAnimalImage("images[0]");
         };
-        console.log(lostAnimalImage);
         reader.readAsDataURL(file);
       }
-      // file = files[0];
-      // const reader = new FileReader();
-      // reader.onload = () => {
-      //   images[0] = reader.result;
-      //   setLostAnimalImage({ images });
-      //   console.log(lostAnimalImage);
-      // };
     }
   };
 

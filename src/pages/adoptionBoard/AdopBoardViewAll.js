@@ -13,6 +13,7 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import { HiMiniBellAlert } from "react-icons/hi2";
 
 const Div = styled.div`
   @font-face {
@@ -34,8 +35,7 @@ const Div = styled.div`
   /* 제목+게시글작성버튼 */
   .contentHeader {
     width: 70%;
-    display: flex;
-    justify-content: space-between;
+
     h2 {
       font-weight: bold;
       font-size: 2.5rem;
@@ -206,6 +206,10 @@ const Div = styled.div`
       color: black;
       margin: 5px;
     }
+    button:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
+    }
     .iconPaging {
       cursor: pointer;
     }
@@ -297,10 +301,27 @@ const ViewAllAdopBoard = () => {
   return (
     <Div>
       <div className="contentHeader">
-        <h2>동물 입양 게시판</h2>
-        <button id="addBtn" onClick={onCreate}>
-          게시글 작성
-        </button>
+        <div
+          style={{
+            border: "3px dashed black",
+            marginBottom: "30px",
+            padding: "5px 10px",
+            width: "70%",
+          }}
+        >
+          <HiMiniBellAlert style={{ fontSize: "1.5rem", color: "#FFCC01" }} />
+          &nbsp;&nbsp;
+          <span style={{ fontSize: "1.2rem" }}>
+            <span style={{ color: "green" }}>동물 입양 상담</span>은 기재된
+            신고자 혹은 보호센터에 연락바랍니다.
+          </span>
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <h2>동물 입양 게시판</h2>
+          <button id="addBtn" onClick={onCreate}>
+            게시글 작성
+          </button>
+        </div>
       </div>
       {/* 검색창 */}
       <div className="searching">

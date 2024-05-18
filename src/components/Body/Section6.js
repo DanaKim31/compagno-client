@@ -41,14 +41,18 @@ const Section6 = () => {
               <br /> Users can also attach files and send and receive various
               types of documents through the note function.
               <br /> Important notes can be managed separately.
-              <br /> Any note that you want to delete will ultimately be deleted
-              if both users delete it.
+            </p>
+            <p>
+              홈페이지의 쪽지 기능으로 사용자간 쉽게 소통할 수 있습니다. <br />
+              상대의 프로필을 통해 쪽지를 전송 할 수 있습니다.
+              <br />
+              쪽지함에서 전체 쪽지들을 관리 할 수 있습니다.
             </p>
             {/* <a href="">유저들과의 쪽지를 원하시나요</a> */}
             <button onClick={sendNote}>유저들과의 쪽지를 원하시나요</button>
           </div>
           <div className="photo">
-            <img src="/img/section6-(1).jpg" alt="logo image" />
+            <img src="/img/section6-1.jpg" alt="logo image" />
             <img src="/img/section6-(2).jpg" alt="logo image" />
           </div>
         </div>

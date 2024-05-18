@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import "moment/locale/ko";
-import NoteViewDetail from "./NoteViewDetail";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
 import {
@@ -15,9 +14,9 @@ import {
 import styled from "styled-components";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
-import MyPageSidebar from "../user/MyPageSidebar";
-import NoteHeaderTap from "./NoteHeaderTab";
-
+import NoteViewDetail from "../../components/note/NoteViewDetail";
+import MyPageSidebar from "../../components/user/MyPageSidebar";
+import NoteHeaderTap from "../../components/note/NoteHeaderTab";
 const DivTotal = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";
@@ -86,15 +85,6 @@ const Div = styled.div`
     font-weight: bold;
   }
   #pageBtn {
-    /* font-weight: bold;
-    border-radius: 50%;
-    border: none;
-    color: rgb(32, 61, 59);
-    width: 25px;
-    height: 25px;
-    font-size: 0.8rem;
-    margin: 0px 5px;
-    background-color: #cbd6ce; */
     font-weight: bold;
     width: 25px;
     height: 28px;
@@ -103,6 +93,10 @@ const Div = styled.div`
     background-color: white;
     color: black;
     margin: 5px;
+    &:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
+    }
   }
 `;
 
@@ -282,22 +276,38 @@ const NoteViewSendBox = () => {
                     </button>
                   </div>
                 </div>
-                <div
-                  id="totalNotes"
-                  style={{
-                    display: "flex",
-                    paddingTop: "15px",
-                    marginLeft: "15px",
-                    marginBottom: "15px",
-                    alignItems: "center",
-                    width: "85%",
-                  }}
-                >
-                  <BsEnvelopePaper />
-                  <span style={{ marginLeft: "10px" }}>
-                    총 {allCount - num}개
-                  </span>
-                </div>
+
+                {receiver == "" && noteTitle == "" && noteRegiDate == "" ? (
+                  <div
+                    id="totalNotes"
+                    style={{
+                      display: "flex",
+                      paddingTop: "15px",
+                      marginLeft: "15px",
+                      marginBottom: "15px",
+                      alignItems: "center",
+                      width: "85%",
+                    }}
+                  >
+                    <BsEnvelopePaper />
+                    <span style={{ marginLeft: "10px" }}>
+                      총 {allCount - num}개
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    id="totalNotes"
+                    style={{
+                      display: "flex",
+                      paddingTop: "15px",
+                      marginLeft: "15px",
+                      marginBottom: "25px",
+                      alignItems: "center",
+                      width: "85%",
+                    }}
+                  ></div>
+                )}
+
                 <table style={{ width: "85%", height: "60%" }}>
                   <thead
                     style={{ height: "30px", borderBottom: "1px dashed black" }}
@@ -325,7 +335,7 @@ const NoteViewSendBox = () => {
                                 <FaStar
                                   onClick={() => starSenderCheck(note.noteCode)}
                                   style={{
-                                    color: "yellow",
+                                    color: "#FFCC01",
                                     cursor: "pointer",
                                   }}
                                 />

@@ -133,12 +133,7 @@ const Div = styled.div`
       height: 100%;
     }
     #regiDate {
-      /* display: flex; */
-      /* justify-content: right; */
-      /* width: 100%; */
       span {
-        /* border: 1px solid black;
-        border-radius: 13px; */
         width: 75px;
         display: flex;
         justify-content: center;
@@ -177,12 +172,6 @@ const Div = styled.div`
   .paging {
     margin-bottom: 100px;
     button {
-      /* border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-weight: bold;
-      background-color: #cbd6ce; */
       font-weight: bold;
       width: 25px;
       height: 28px;
@@ -191,6 +180,10 @@ const Div = styled.div`
       background-color: white;
       color: black;
       margin: 5px;
+    }
+    button:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
     }
     .iconPaging {
       cursor: pointer;
@@ -265,18 +258,18 @@ const ViewAllLostBoard = () => {
 
   // totalPage가 바뀔 때 마다 실행
   useEffect(() => {
-    lastPage = Math.ceil(page / 5) * 5; // 나는 한 화면에 1~5, 6~10 등 5개로 나뉘어서 보이기 때문에 5로 설정
+    lastPage = Math.ceil(page / 5) * 5;
     firstPage = lastPage - 4;
 
     if (totalPage < lastPage) {
-      lastPage = totalPage; // 전체 페이지가 마지막 페이지보다 작은 경우엔 전체 페이지 수가 마지막 페이지 수랑 같음
+      lastPage = totalPage;
     }
     // setPrev(firstPage > 1);
     // setNext(lastPage < totalPage);
     for (let i = firstPage; i <= lastPage; i++) {
-      pageList.push(i); // 처음 i는 firstPage, 범위는 lastPage로 반복문 돌려서 i값을 넣은 list 만들기
+      pageList.push(i);
     }
-    setPages(pageList); // 해당 list 배열을 setPages에 담기
+    setPages(pageList);
   }, [totalPage]);
 
   const navigate = useNavigate();

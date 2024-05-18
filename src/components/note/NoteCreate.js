@@ -7,7 +7,6 @@ import moment from "moment";
 import "moment/locale/ko";
 import { useNavigate } from "react-router-dom";
 import { FaRegPaperPlane } from "react-icons/fa6";
-import MyPageMyNote from "../../pages/user/MyPageMyNote";
 
 const Div = styled.div`
   @font-face {
