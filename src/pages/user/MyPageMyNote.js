@@ -1,15 +1,16 @@
 import MyPageSidebar from "../../components/user/MyPageSidebar";
 import styled from "styled-components";
 import { useState } from "react";
-import NoteViewAll from "../../components/note/NoteViewAll";
 import NoteCreate from "../../components/note/NoteCreate";
 import { FaRegPaperPlane } from "react-icons/fa6";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { RiFolderSharedLine, RiFolderReceivedLine } from "react-icons/ri";
 import NoteViewSendBox from "../../components/note/NoteViewSendBox";
-import NoteViewReceiveBox from "../../components/note/NoteViewReceiveBox";
+
+import NoteViewReceiveBox from "../note/NoteViewReceiveBox";
 import { FaStar } from "react-icons/fa";
 import NoteViewStar from "../../components/note/NoteViewStar";
+import NoteViewAll from "../note/NoteViewAll";
 
 const Div = styled.div`
   display: flex;

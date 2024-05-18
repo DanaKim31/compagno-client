@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import "moment/locale/ko";
-import NoteViewDetail from "./NoteViewDetail";
+
+import NoteViewDetail from "../../components/note/NoteViewDetail";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
 import {
@@ -19,8 +20,8 @@ import {
 import styled from "styled-components";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
-import MyPageSidebar from "../user/MyPageSidebar";
-import NoteHeaderTap from "./NoteHeaderTab";
+import MyPageSidebar from "../../components/user/MyPageSidebar";
+import NoteHeaderTap from "../../components/note/NoteHeaderTab";
 
 const DivTotal = styled.div`
   @font-face {
