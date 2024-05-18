@@ -4,12 +4,10 @@ const getToken = () => {
   return localStorage.getItem("token");
 };
 
-// 인증이 필요 x
 const instance = axios.create({
   baseURL: "http://localhost:8080/compagno/public/",
 });
 
-// 인증 필요 o
 const authorize = axios.create({
   baseURL: "http://localhost:8080/compagno/",
 });
@@ -22,6 +20,7 @@ authorize.interceptors.request.use((config) => {
   return config;
 });
 
+// 답변 가져오기
 export const getAnswer = async (no) => {
   return await instance.get("question/" + no + "/answer");
 };

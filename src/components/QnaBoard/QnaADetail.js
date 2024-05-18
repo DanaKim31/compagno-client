@@ -1,4 +1,4 @@
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -11,6 +11,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import styled from "styled-components";
+
 const Div = styled.div`
   // ======== 폰트 관련
   @font-face {
@@ -46,6 +47,9 @@ const Div = styled.div`
     font-weight: bold;
     input {
       font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+    textarea{
       font-weight: bold;
     }
   }
@@ -192,7 +196,6 @@ const QnaADetail = () => {
 
     formData.append("qnaQCode", qnaQCode);
     formData.append("qnaATitle", title);
-    console.log(title);
     formData.append("qnaAContent", content);
     images.forEach((image, index) => {
       formData.append(`files[${index}]`, image);
@@ -252,32 +255,16 @@ const QnaADetail = () => {
   const deleteImage = (code) => {
     setEditA((prev) => {
       const images = prev.images.filter((image) => image.qnaQImgCode !== code);
-      console.log(images);
       return { ...prev, images: images };
     });
   };
 
-  // // 2-4. 수정 추가 이미지 미리보기 및 관리
-  // const preview = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   setImages((prev) => [...prev, ...files]);
-
-  //   const imageLists = e.target.files;
-  //   let imageUrlLists = [...showImages];
-
-  //   for (let i = 0; i < imageLists.length; i++) {
-  //     const currentImageUrl = URL.createObjectURL(imageLists[i]);
-  //     imageUrlLists.push(currentImageUrl);
-  //   }
-  //   setShowImages(imageUrlLists);
-  // };
-
-  // 2-5. 수정 삭제 이미지 관리
+  // 2-4. 수정 삭제 이미지 관리
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
   };
 
-  // 답변 취소
+  // 2-5. 답변 취소
   const cancelAnswer = () => {
     setEditA(null);
   };
@@ -285,7 +272,6 @@ const QnaADetail = () => {
   // 3. DELETE ========================================================
   const onDeleteAnswer = async (code) => {
     await deleteAnswer(code);
-    console.log(code);
     answerAPI();
     setEditA(null);
     answerAPI();
@@ -322,7 +308,7 @@ const QnaADetail = () => {
               </div>
 
               <div id="buttons">
-                <div id="list">
+                <div>
                   <button onClick={() => navigate("/compagno/question")}>
                     목록
                   </button>

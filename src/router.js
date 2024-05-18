@@ -3,8 +3,6 @@ import Layout from "./components/Layout";
 import QnaRegister from "./pages/qnaBoard/QnaRegister";
 import QnaList from "./pages/qnaBoard/QnaList";
 import QnaQDetail from "./components/QnaBoard/QnaQDetail";
-import ManageQuestions from "./components/QnaBoard/ManagerQuestion";
-import MyQuestions from "./components/QnaBoard/MyQuestion";
 import UserQnaList from "./pages/userQnaBoard/UserQnaList";
 import UserQuestionRegister from "./pages/userQnaBoard/UserQuestionRegister";
 import UserQuestionDetail from "./pages/userQnaBoard/UserQuestionDetail";
@@ -42,7 +40,6 @@ import ClassList from "./pages/onedayClassBoard/ClassList";
 import CreateClass from "./pages/onedayClassBoard/CreateClass";
 import NeighborUpdate from "./pages/neighborBoard/NeighborUpdate";
 import SitterUpdate from "./pages/sitterBoard/SitterUpdate";
-import MyPageMyNote from "./pages/user/MyPageMyNote";
 import AdopBoardViewAll from "./pages/adoptionBoard/AdopBoardViewAll";
 import AdopBoardCreate from "./pages/adoptionBoard/AdopBoardCreate";
 import MyPageMyQnA from "./pages/user/MyPageMyQnA";
@@ -131,8 +128,6 @@ const router = createBrowserRouter([
             path: "detail/:qnaQCode",
             element: <QnaQDetail />,
           },
-          { path: "manage", element: <ManageQuestions /> },
-          { path: "mypage", element: <MyQuestions /> },
         ],
       },
       {

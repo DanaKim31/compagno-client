@@ -128,7 +128,6 @@ const ContentList = () => {
 
   const [category, setCategory] = useState("");
 
-  // useLocation, useSearchParams
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
@@ -140,7 +139,6 @@ const ContentList = () => {
     setSubCate(query.get("subCate"));
     setMainReg(query.get("mainReg"));
 
-    console.log(query.get("keyword"));
     if (query.get("keyword") === null) {
       setKeyword("");
     } else {

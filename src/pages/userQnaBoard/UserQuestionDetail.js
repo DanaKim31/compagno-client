@@ -309,7 +309,6 @@ const UserQuestionDetail = () => {
         formData.append(`files[${index}]`, image);
       });
 
-      // setEditQ("images", showImages);
       await updateUserQuestion(formData);
       setImages([]);
       setEditQ(null);
@@ -342,14 +341,12 @@ const UserQuestionDetail = () => {
       imageUrlLists.push(currentImageUrl);
     }
     setShowImages(imageUrlLists);
-    // setImages에 .. filtering 해야하나..
   };
 
   // 2-5. 수정 삭제 이미지 관리
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
     setImages(images.filter((_, index) => index !== id));
-    console.log(showImages.filter((_, index) => index !== id));
   };
 
   // 3. A UPDATE ===================================================
@@ -615,7 +612,12 @@ const UserQuestionDetail = () => {
                   </div>
                 </div>
 
+                <hr/>
+                <div id="content">
+                  <p>{question.userQuestionBoardContent}</p>
+                </div>
                 {/* 상세 정보 */}
+                <div id="images">
                 {question.images?.map((image) => (
                   <img
                     alt=""
@@ -627,10 +629,8 @@ const UserQuestionDetail = () => {
                     }
                   />
                 ))}
-                <div id="content">
-                  <p>{question.userQuestionBoardContent}</p>
                 </div>
-                <hr />
+                <hr/>
                 <UserQnaAnswer question={question} />
               </>
             ) : (
@@ -663,7 +663,7 @@ const UserQuestionDetail = () => {
                         </div>
                       </div>
 
-                      <div>
+                      <div id="desc">
                         <p>조회수 : {question.viewcount}</p>
 
                         {/* 좋아요 */}

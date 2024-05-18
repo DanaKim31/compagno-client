@@ -37,8 +37,6 @@ export const getUserQuestions = async (
   sort
 ) => {
   let url = "userQuestion?page=" + page;
-  console.log(select);
-console.log(keyword);
   if (sort !== undefined && sort !== 0) {
     url += "&sort=" + sort;
   }
@@ -60,7 +58,6 @@ console.log(keyword);
 // 2-1. 좋아요한 글만 보기 출력
 export const getliked = async (page, liked) => {
   let url = "userQuestion?page=1";
-  console.log(liked);
   if (liked !== undefined && liked === true) {
     url += "&liked=true";
   }

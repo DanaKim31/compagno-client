@@ -82,6 +82,9 @@ const Div = styled.div`
     height: 500px;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
+    textarea{
+      font-weight: bold;
+    }
     
       #title{
         display: flex;
@@ -96,6 +99,9 @@ const Div = styled.div`
         #secret{
           width: 30%;
           margin-right: 50px;
+        }
+        #conttent{
+          font-weight: bold;
         }
       }
     input{
@@ -237,7 +243,7 @@ const QnaRegister = () => {
           
 
 
-        <div>
+        <div id="content">
           <p>내용</p>
           <Form.Control
             as="textarea"

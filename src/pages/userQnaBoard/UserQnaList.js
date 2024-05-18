@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { userSave } from "../../store/user";
 import { getUserQuestions, getliked, updateviewcount } from "../../api/userQnaQuestion";
 import { getUserAnswers } from "../../api/userQnaAnswer";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import {
   FaAnglesLeft,
   FaAngleLeft,
