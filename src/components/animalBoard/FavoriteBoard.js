@@ -10,10 +10,20 @@ import { AdLogic } from "../../api/AdLogic";
 import styled from "styled-components";
 
 const Div = styled.div`
+  .like-container {
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    width: 110px;
+    padding: 3px;
+    text-align: center;
+  }
+
   .addFav {
+    color: pink;
     cursor: pointer;
   }
   .delFav {
+    color: red;
     cursor: pointer;
   }
 `;
@@ -96,15 +106,17 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
   return (
     <Div>
       {boolean ? (
-        <>
-          true
+        <div className="like-container">
+          좋아요!&nbsp;&nbsp;
           <FaHeart className="delFav" onClick={delFav} />
-        </>
+          {count}
+        </div>
       ) : (
-        <>
-          false
+        <div className="like-container">
+          좋아요!&nbsp;&nbsp;
           <FaRegHeart className="addFav" onClick={addFav} />
-        </>
+          {count}
+        </div>
       )}
       {/* {count} */}
     </Div>

@@ -101,9 +101,11 @@ const TableList = ({ board }) => {
               userId={board.user.userId}
               boardCode={board.animalBoardCode}
               animalBoardAPI={() => animalBoardAPI()}
+              count={board.animalBoardFavoriteCount}
             />
           </div>
         </div>
+
         <div className="image-box">
           <img
             className="image-thumbnail"
