@@ -221,8 +221,7 @@ const NoteViewAll = () => {
     window.location.reload();
     starReceiverUpdate(code);
   };
-  console.log(allCount);
-  console.log(num);
+
   return (
     <DivTotal>
       <MyPageSidebar />

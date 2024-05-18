@@ -73,9 +73,6 @@ const Comments = () => {
   const commentsAPI = async () => {
     const response = await viewCommentLost(code, page);
     const responseAll = await viewAllCommentLost(code);
-    // console.log(response.data);
-    // console.log(response.data.length);
-    // console.log(responseAll.data);
     setTotalComments(responseAll.data.length);
     setTotalPage(Math.ceil(responseAll.data.length / 5));
     setComments(response.data);
@@ -156,22 +153,6 @@ const Comments = () => {
     setEdit({});
     commentsAPI();
   };
-
-  // const updateBottomComment = async () => {
-  //   setEdit({
-  //     lostBoardCode: code,
-  //     commentDate: moment().format("YYYY-MM-DD hh:mm:ss"),
-  //     user: {
-  //       userId: user.userId,
-  //       userNickname: user.userNickname,
-  //       userImg: user.userImg,
-  //     },
-  //   });
-  //   console.log(edit);
-  //   await updateCommentLost(edit);
-  //   setEdit({});
-  //   commentsAPI();
-  // };
 
   //수정 취소
   const delUpdate = () => {
@@ -626,28 +607,6 @@ const Comments = () => {
                                     )}
                                   </span>
                                   {/* 게시글 작성자와 댓글 작성자가 같을 때 -> 작성자 표시 */}
-
-                                  {/* {lost.userId == bottom.user.userId ? (
-                                    
-                                      <span
-                                        id="bottomWriter"
-                                        style={{
-                                          marginLeft: "9px",
-                                          border: "1px solid green",
-                                          fontWeight: "bold",
-                                          borderRadius: "30px",
-                                          padding: "3px 5px",
-                                          fontSize: "0.5rem",
-                                        }}
-                                      >
-                                        작성자
-                                      </span>
-
-                                
-                                    
-                                  ) : (
-                                    <></>
-                                  )} */}
 
                                   {user.userId == bottom.user.userId &&
                                   edit.lostParentCode !=

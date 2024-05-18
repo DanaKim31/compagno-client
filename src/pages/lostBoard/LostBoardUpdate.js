@@ -354,14 +354,6 @@ const LostBoardUpdate = () => {
     setExistImages(imagesss);
   };
 
-  // 수정 사진 클릭 삭제
-  // const delUpdateImage = (id) => {
-  //   const imasdfsdf = imgSrc.filter((_, index) => index !== id);
-  //   console.log(imasdfsdf);
-  //   setImages(images.filter((_, index) => index !== id));
-  //   console.log(images);
-  // };
-
   const okUpdate = async () => {
     const formData = new FormData();
     formData.append("lostBoardCode", lostBoardCode);
@@ -380,14 +372,14 @@ const LostBoardUpdate = () => {
     formData.append("lostAnimalFeature", lostAnimalFeature);
     formData.append("lostAnimalRFID", lostAnimalRFID);
     formData.append("lostRegiDate", lostRegiDate);
-    console.log(images); // 새로 받은 거
+    // 새로 받은 거
     images.forEach((image, index) => {
       formData.append(`images[${index}]`, image);
     });
     existImages.forEach((existImg, index) => {
       formData.append(`image[${index}]`, existImg.lostImage);
     });
-    console.log(existImages); // 기존에 있는 거
+    // 기존에 있는 거
     // not null 조건
     if (
       lostDate == "" ||

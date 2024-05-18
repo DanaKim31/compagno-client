@@ -223,7 +223,7 @@ const ViewLostBoard = () => {
   useEffect(() => {
     viewsAPI();
   }, []);
-  console.log(lost);
+
   return (
     <>
       <Div>
