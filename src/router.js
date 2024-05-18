@@ -42,7 +42,6 @@ import ClassList from "./pages/onedayClassBoard/ClassList";
 import CreateClass from "./pages/onedayClassBoard/CreateClass";
 import NeighborUpdate from "./pages/neighborBoard/NeighborUpdate";
 import SitterUpdate from "./pages/sitterBoard/SitterUpdate";
-import MyPageMyNote from "./pages/user/MyPageMyNote";
 import AdopBoardViewAll from "./pages/adoptionBoard/AdopBoardViewAll";
 import AdopBoardCreate from "./pages/adoptionBoard/AdopBoardCreate";
 import MyPageMyQnA from "./pages/user/MyPageMyQnA";
