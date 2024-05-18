@@ -314,6 +314,13 @@ justify-content: space-evenly;
   button:hover {
     background-color: #94b29b;
   }
+
+  #list{
+    display:flex;
+    justify-content: center;
+    font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+  }
 `;
 
 const UserQnaAnswer = ({ question }) => {
@@ -537,6 +544,9 @@ const UserQnaAnswer = ({ question }) => {
                     onChange={(e) => setContent(e.target.value)}
                   />
                   <button onClick={UseranswerSubmit}>등록</button>
+                </div>
+                <div id="list">
+                  <button onClick={() => navigate("/compagno/userQna")}>목록</button>
                 </div>
               </>
             ) : (
@@ -1124,6 +1134,9 @@ const UserQnaAnswer = ({ question }) => {
                     onChange={(e) => setContent(e.target.value)}
                   />
                   <button onClick={UseranswerSubmit}>등록</button>
+                </div>
+                <div id="list">
+                  <button onClick={() => navigate("/compagno/userQna")}>목록</button>
                 </div>
               </>
             )}

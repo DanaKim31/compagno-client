@@ -210,7 +210,7 @@ const QnaRegister = () => {
       setPwd(1);
     } else {
       setPwd(0);
-      setSecret(null);
+      setSecret("");
     }
   };
 
@@ -243,7 +243,9 @@ const QnaRegister = () => {
               value={secret}
               style={{marginTop:"20px"}}
               onChange={(e) => setSecret(e.target.value)}
-              /></>) : (<></>)}
+              /></>) : (<>
+              
+              </>)}
           </div>
 
         </div>
