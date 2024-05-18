@@ -44,7 +44,9 @@ const Section5 = () => {
       const shuffleArray = (array) => {
         return array.sort(() => Math.random() - 0.5);
       };
-      const noneFilteredArr = shuffleArray(ads).slice(0, 12);
+      const noneFilteredArr = shuffleArray(
+        ads.filter((ad) => ad.productBoardGrade >= 3.5)
+      ).slice(0, 12);
       setRandomAds(noneFilteredArr);
       console.log(noneFilteredArr);
     }

@@ -9,7 +9,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import WeeklyRank from "../../components/animalBoard/WeeklyRank";
 ///////////////////
-import { viewBoardList, viewCategory, viewRanker } from "../../api/animalBoard";
+import { viewBoardList, viewCategory } from "../../api/animalBoard";
 import { IoIosArrowUp } from "react-icons/io";
 import { GoTriangleDown } from "react-icons/go";
 import { BsCardList } from "react-icons/bs";

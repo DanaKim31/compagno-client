@@ -73,10 +73,9 @@ const CardList = ({ board, user }) => {
               <FavoriteBoard
                 userId={user.userId}
                 boardCode={board.animalBoardCode}
-                count={board.animalBoardFavoriteCount}
+                count={count.animalBoardFavoriteCount}
                 animalBoardAPI={() => animalBoardAPI()}
               />
-              <div>{count.animalBoardFavoriteCount}</div>
             </div>
           </Card.Title>
           <Card.Text style={{ width: "100%" }}></Card.Text>

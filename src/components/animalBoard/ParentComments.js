@@ -310,7 +310,7 @@ const ParentComments = ({
                       <div className="user-action-container">
                         <div className="animal-board-comment-userability">
                           <p>
-                            {comment.user.userNickname}
+                            <MyToggleBar name={comment.user.userNickname} />
                             {detailInfo.user.userId === comment.user.userId ? (
                               <>
                                 <FaPencilAlt className="writer" />
@@ -351,7 +351,6 @@ const ParentComments = ({
                           ) : (
                             <></>
                           )}
-                          <MyToggleBar name={comment.user.userId} />
                         </div>
                         <div>{comment.animalCommentContent}</div>
                       </div>

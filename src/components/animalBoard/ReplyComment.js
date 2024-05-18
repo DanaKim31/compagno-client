@@ -9,8 +9,9 @@ import { Form, InputGroup, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
-import { updateComment, getComments } from "../../api/animalBoard";
+import { updateComment } from "../../api/animalBoard";
 import { FaPencilAlt } from "react-icons/fa";
+import MyToggleBar from "../note/MyToggleBar";
 import moment from "moment";
 const InnerComment = styled.div`
   display: flex;
@@ -204,7 +205,7 @@ const ReplyComment = ({
                 <div className="user-action-container">
                   <div className="animal-board-comment-userability">
                     <p>
-                      {reply.user.userNickname}
+                      <MyToggleBar name={reply.user.userNickname} />
                       {boardAuthor === reply.user.userId ? (
                         <>
                           <FaPencilAlt className="writer" />

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "react-bootstrap/Image";
 import { PiMedalFill } from "react-icons/pi";
-import { viewFavList, viewRanker } from "../../api/animalBoard";
+import { latestFavCount, viewFavList, viewRanker } from "../../api/animalBoard";
 import useDidMountEffect from "../../assets/useDidMountEffect";
 const RankProfile = styled.div`
   width: 80%;
@@ -71,41 +71,6 @@ const WeeklyRank = () => {
   };
   console.log(favList);
 
-  // 9시간 빼기
-
-  // 1시간별 날짜 정렬 => 좋아요정렬 => 중복제거
-  // 그룹화할 시간 간격 설정 (1시간)
-  const favFilter = () => {
-    console.log("!");
-    const hourInterval = 1;
-    // 날짜별로 정렬
-    const sortedByDate = favList.sort(
-      (current, next) => current.animalFavoriteDate - next.animalFavoriteDate
-    );
-    console.log(sortedByDate);
-
-    // 한 시간 간격으로 그룹화
-    const groupedByHour = sortedByDate.reduce((acc, fav) => {
-      const hourKey = new Date(
-        Math.floor(
-          new Date(fav.animalFavoriteDate).getTime() /
-            (hourInterval * 60 * 60 * 1000)
-        ) *
-          (hourInterval * 60 * 60 * 1000)
-      );
-      //`${hourKey.getFullYear()}-${(hourKey.getMonth() + 1).toString().padStart(2, '0')}-${hourKey.getDate().toString().padStart(2, '0')}T${hourKey.getHours().toString().padStart(2, '0')}`;
-      const hourStr = hourKey.toISOString().substring(0, 13);
-      if (!acc[hourStr]) {
-        acc[hourStr] = { hour: hourStr, totalLikes: 0, favs: [] };
-      }
-      acc[hourStr].favs.push(fav);
-      // acc[hourStr].totalLikes = acc[hourStr].favs.length;
-      return acc;
-    }, {});
-
-    console.log(groupedByHour);
-  };
-
   // 중복 제거
   const [filteredRankers, setFilteredRanker] = useState([]);
   const uniqueTop3Members = () => {
@@ -117,9 +82,23 @@ const WeeklyRank = () => {
       .slice(0, 3);
     setFilteredRanker(response);
   };
-  //
 
-  console.log(filteredRankers);
+  // (전체 favCount - latestCount) + latestCount
+  const [RankersWithlatestCount, setLatestCount] = useState([]);
+  const favLatestCount = async () => {
+    const promises = filteredRankers.map(async (ranker) => {
+      const response = await latestFavCount(ranker.animalBoardCode);
+      return {
+        ranker: ranker,
+        latest: response.data,
+      };
+    });
+    // console.log(promises);
+    const results = await Promise.all(promises);
+    setLatestCount(results);
+  };
+
+  console.log(RankersWithlatestCount);
   useEffect(() => {
     favRankAPI();
     favListAPI();
@@ -128,15 +107,15 @@ const WeeklyRank = () => {
     uniqueTop3Members();
   }, [rankers]);
   useDidMountEffect(() => {
-    favFilter();
+    favLatestCount();
   }, [favList]);
 
   return (
     <RankProfile>
-      {filteredRankers.map((ranker) => (
-        <div key={ranker.animalBoardCode} className="ranker-image-container">
+      {RankersWithlatestCount.map((item, index) => (
+        <div key={index} className="ranker-image-container">
           <Image
-            src={`http://192.168.10.28:8081/${ranker.user.userImg}`}
+            src={`http://192.168.10.28:8081/${item.ranker.user?.userImg}`}
             roundedCircle
           />
           <div className="medal-container">
@@ -144,14 +123,15 @@ const WeeklyRank = () => {
           </div>
 
           <p>
-            {ranker.user.userNickname +
+            {item.ranker.user?.userNickname +
               "님의  " +
-              ranker.animalBoardTitle +
+              item.ranker.animalBoardTitle +
               "!"}
           </p>
           <p>
-            조회 수 : {ranker.animalBoardView} | 좋아요 :{" "}
-            {ranker.animalBoardFavoriteCount}
+            조회 수 : {item.ranker.animalBoardView} | 좋아요 :{" "}
+            {item.ranker.animalBoardFavoriteCount - item?.latest}
+            {item?.latest !== "" ? `+${item?.latest}` : ""}
           </p>
         </div>
       ))}
