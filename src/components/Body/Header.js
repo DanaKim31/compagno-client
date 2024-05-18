@@ -101,13 +101,15 @@ const Header = () => {
                 <div className="dropdown-content">
                   {user.userRole == "ROLE_USER" ? (
                     <>
-                      <a href="/compagno/mypage/myinfo">계정정보 수정</a>
-                      <a href="/compagno/mypage/myadoption">활동 내역</a>
+                      <a href="/compagno/mypage/myinfo">내 정보</a>
+                      <a href="/compagno/mypage/myadoption">내 활동 내역</a>
+                      <a href="/compagno/mypage/mynote">쪽지함</a>
                     </>
                   ) : (
                     <>
                       <a href="/compagno/mypage/myinfo">계정정보 수정</a>
                       <a href="/compagno/mypage/myqna">미답변 QnA</a>
+                      <a href="/compagno/mypage/mynote">쪽지함</a>
                     </>
                   )}
                 </div>
@@ -121,7 +123,7 @@ const Header = () => {
           ) : (
             <>
               <div className="user">
-                <a href="/compagno/signup">sigup</a>
+                <a href="/compagno/signup">signup</a>
                 <a href="/compagno/login">login</a>
               </div>
             </>

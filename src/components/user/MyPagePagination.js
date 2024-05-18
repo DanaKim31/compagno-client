@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const Div = styled.div`
   cursor: pointer;
+
   .pagination {
     display: flex;
     justify-content: center;
@@ -16,18 +17,14 @@ const Div = styled.div`
 
   ul.pagination li {
     display: inline-block;
-    width: 30px;
+    width: 25px;
     height: 30px;
     border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    margin: 0px 3px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
-  }
-
-  ul.pagination li {
-    border-radius: 50px;
-    margin: 0px 5px;
   }
 
   ul.pagination li a {
@@ -36,23 +33,18 @@ const Div = styled.div`
     font-size: 1rem;
   }
 
-  ul.pagination li.active a {
-    color: white;
+  ul.pagination li:hover {
+    background-color: #94b29b;
   }
 
-  ul.pagination li.active {
-    background-color: #337ab7;
-  }
-
-  ul.pagination li a:hover,
-  ul.pagination li a.active {
-    color: black;
-  }
-
-  .page-selection {
-    width: 48px;
+  ul.pagination li:nth-child(1),
+  ul.pagination li:nth-child(2),
+  ul.pagination li:nth-last-child(1),
+  ul.pagination li:nth-last-child(2) {
+    border: none;
+    background-color: transparent;
+    width: 15px;
     height: 30px;
-    color: #337ab7;
   }
 
   li.currentPage {
