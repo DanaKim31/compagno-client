@@ -47,6 +47,11 @@ export const deleteNeighborBoard = async (code) => {
   return await authorize.delete("neighbor/" + code);
 };
 
+// 북마크
+export const neighborBoardBookmark = async (data) => {
+  return await authorize.post("neighbor/bookmark", data);
+};
+
 // 동물 카테고리 보기
 export const getAnimalCategories = async () => {
   return await instance.get("neighbor/animal-category");

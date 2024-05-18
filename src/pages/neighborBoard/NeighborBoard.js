@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getNeighborBoards,
+  neighborBoardBookmark,
   getProvinces,
   getDistricts,
   getAnimalCategories,
@@ -13,6 +14,7 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { userSave } from "../../store/user";
 import styled from "styled-components";
 
@@ -183,6 +185,7 @@ const Div = styled.div`
 
 const NeighborBoard = () => {
   const [neighborBoards, setNeighborBoards] = useState({});
+  const token = localStorage.getItem("token");
   // ========== 검색조건 ==========
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
@@ -254,6 +257,18 @@ const NeighborBoard = () => {
       result = await getDistricts(code);
       setSelectedDistrict(result.data);
     }
+  };
+
+  const bookmark = async (code) => {
+    if (token === null) {
+      alert("로그인 화면으로 이동합니다.");
+      return false;
+    }
+    await neighborBoardBookmark({
+      neighborBoardCode: code,
+      userId: user.userId,
+    });
+    neighborBoardAPI();
   };
 
   useEffect(() => {
@@ -403,6 +418,7 @@ const NeighborBoard = () => {
             <th>작성자</th>
             <th>작성일</th>
             <th>조회수</th>
+            <th>북마크</th>
           </tr>
         </thead>
         <tbody>
@@ -431,6 +447,27 @@ const NeighborBoard = () => {
                 neighbor.neighborBoardRegiDate
               ).getDate()}`}</td>
               <td>{neighbor.neighborBoardViewCount}</td>
+              <td>
+                {neighbor.bookmark?.filter(
+                  (bookmark) => bookmark.user.userId === user.userId
+                ).length === 0 ? (
+                  <FaRegHeart
+                    className="bookmark"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      bookmark(neighbor.neighborBoardCode);
+                    }}
+                  />
+                ) : (
+                  <FaHeart
+                    className="bookmark bookmarkChecked"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      bookmark(neighbor.neighborBoardCode);
+                    }}
+                  />
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

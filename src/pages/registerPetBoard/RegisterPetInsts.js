@@ -5,7 +5,7 @@ import {
   getProvinces,
   getDistricts,
 } from "../../api/registerPetBoard";
-import { TbCopy } from "react-icons/tb";
+import { BiSolidCopy } from "react-icons/bi";
 import styled from "styled-components";
 import Toast from "../../components/registerPet/Toast";
 
@@ -209,7 +209,7 @@ const RegisterPetInsts = () => {
             <span>주소</span>
             <div id="addr">
               <p>{inst.regiInstAddr}</p>
-              <TbCopy
+              <BiSolidCopy
                 onClick={() => copyAddr(inst.regiBoardCode, inst.regiInstAddr)}
               />
               {toast[inst.regiBoardCode] && (

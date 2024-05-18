@@ -245,7 +245,6 @@ const SitterBoard = () => {
         "&sortBy=" +
         sort
     );
-    console.log(result.data);
     setSitterBoards(result.data);
     setTotalPage(result.data.totalPages);
   };
@@ -266,7 +265,6 @@ const SitterBoard = () => {
   };
 
   const districtAPI = async (code) => {
-    console.log(code);
     let result = null;
     if (code == "") {
       setSelectedDistrict("전체");
@@ -279,14 +277,14 @@ const SitterBoard = () => {
 
   const bookmark = async (code) => {
     if (token === null) {
-      alert("로그인이 필요합니다.");
+      alert("로그인 화면으로 이동합니다.");
       return false;
     }
     await sitterBoardBookmark({
       sitterBoardCode: code,
       userId: user.userId,
     });
-    getSitterBoards();
+    sitterBoardAPI();
   };
 
   useEffect(() => {
@@ -329,7 +327,7 @@ const SitterBoard = () => {
     if (Object.keys(user).length !== 0) {
       navigate("/compagno/sitterBoard/register");
     } else {
-      alert("로그인 해주세요오오오옹");
+      alert("로그인 페이지로 이동합니다.");
       navigate("/compagno/login");
     }
   };

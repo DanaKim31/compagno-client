@@ -47,6 +47,7 @@ export const deleteSitterBoard = async (code) => {
   return await authorize.delete("sitter/" + code);
 };
 
+// 북마크
 export const sitterBoardBookmark = async (data) => {
   return await authorize.post("sitter/bookmark", data);
 };
