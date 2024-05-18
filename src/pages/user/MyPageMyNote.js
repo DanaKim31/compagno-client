@@ -8,7 +8,7 @@ import { RiFolderSharedLine, RiFolderReceivedLine } from "react-icons/ri";
 import NoteViewSendBox from "../note/NoteViewReceiveBox";
 import NoteViewReceiveBox from "../note/NoteViewReceiveBox";
 import { FaStar } from "react-icons/fa";
-import NoteViewStar from "../../components/note/NoteViewStar";
+import NoteViewStar from "../note/NoteViewStar";
 import NoteViewAll from "../note/NoteViewAll";
 
 const Div = styled.div`

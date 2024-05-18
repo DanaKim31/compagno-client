@@ -19,11 +19,11 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
-import NoteViewDetail from "./NoteViewDetail";
+import NoteViewDetail from "../../components/note/NoteViewDetail";
 import { FaRegFileLines } from "react-icons/fa6";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import MyPageSidebar from "../user/MyPageSidebar";
-import NoteHeaderTap from "./NoteHeaderTab";
+import MyPageSidebar from "../../components/user/MyPageSidebar";
+import NoteHeaderTap from "../../components/note/NoteHeaderTab";
 const DivTotal = styled.div`
   @font-face {
     font-family: "TAEBAEKmilkyway";

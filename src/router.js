@@ -64,7 +64,7 @@ import NoteViewAll from "./pages/note/NoteViewAll";
 
 import NoteViewReceiveBox from "./pages/note/NoteViewReceiveBox";
 import NoteViewSendBox from "./pages/note/NoteViewSendBox";
-import NoteViewStar from "./components/note/NoteViewStar";
+import NoteViewStar from "./pages/note/NoteViewStar";
 
 const router = createBrowserRouter([
   {
