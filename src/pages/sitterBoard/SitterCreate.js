@@ -210,17 +210,6 @@ const SitterCreate = () => {
     return state.user;
   });
 
-  // =================== 오늘 날짜 ===================
-  const [today, setToday] = useState("");
-  const dateInformation = () => {
-    const today = moment().format("YYYY-MM-DD");
-    setToday(today);
-  };
-
-  useEffect(() => {
-    dateInformation();
-  }, []);
-
   // =================== 게시글 등록 ===================
   const [sitterBoard, setSitterBoard] = useState({});
   const [sitterCategories, setSitterCategories] = useState([]);
@@ -235,7 +224,13 @@ const SitterCreate = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
-
+  const [sitterRegiDate, setSitterRegiDate] = useState("");
+  const nowDate = () => {
+    setSitterRegiDate(moment().format("yyyy-MM-DD HH:mm:ss"));
+  };
+  useEffect(() => {
+    nowDate();
+  }, []);
   const [imgSrc, setImgSrc] = useState([]);
   const registerImage = (e) => {
     const images = Array.from(e.target.files);
@@ -261,6 +256,7 @@ const SitterCreate = () => {
     formData.append("sitterTitle", title);
     formData.append("sitterContent", content);
     formData.append("user", user.userNickname);
+    formData.append("sitterRegiDate", sitterRegiDate);
     files.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
@@ -322,11 +318,6 @@ const SitterCreate = () => {
     alert("🚨 작성한 내용이 저장되지 않고 목록으로 돌아갑니다.");
     navigate("/compagno/sitterBoard");
   };
-
-  // const registerBtn = async () => {
-  //   await registerSitterBoard(sitterBoard);
-  //   navigate("/compagno/sitterBoard");
-  // };
 
   return (
     <Div>
@@ -407,7 +398,11 @@ const SitterCreate = () => {
 
           <div className="register-date">
             <span id="title">작성일</span>
-            <input type="text" value={today || ""} readOnly />
+            <input
+              type="text"
+              value={moment(sitterRegiDate).format("YYYY-MM-DD")}
+              readOnly
+            />
           </div>
         </div>
 

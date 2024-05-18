@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   getSitterBoard,
   deleteSitterBoard,
+  sitterBoardBookmark,
   getSitterComments,
   registerSitterComment,
   registerSitterReply,
@@ -13,6 +14,7 @@ import MyToggleBar from "../../components/note/MyToggleBar";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import { Form, Button } from "react-bootstrap";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -68,7 +70,13 @@ const Div = styled.div`
       .board-btns {
         display: flex;
         justify-content: space-between;
-        width: 130px;
+        align-items: center;
+        width: 180px;
+
+        .bookmark {
+          font-size: 2rem;
+          margin-right: 10px;
+        }
 
         button {
           width: 60px;
@@ -272,13 +280,11 @@ const SitterDetail = () => {
 
   const sitterBoardAPI = async () => {
     const result = await getSitterBoard(code);
-    console.log(result.data);
     setSitterBoard(result.data);
   };
 
   const sitterCommentsAPI = async () => {
     const result = await getSitterComments(code);
-    console.log(result.data);
     setComments(result.data);
   };
 
@@ -288,12 +294,20 @@ const SitterDetail = () => {
     }
     sitterBoardAPI(code);
     sitterCommentsAPI();
-    // if (Object.keys(user).length === 0) {
-    //   setUser(JSON.parse(localStorage.getItem("user")));
-    // } else {
-    //   setUser(user);
-    // }
   }, []);
+
+  // ================= 북마크 =================
+  const bookmark = async (code) => {
+    if (token === null) {
+      alert("로그인 화면으로 이동합니다.");
+      return false;
+    }
+    await sitterBoardBookmark({
+      sitterBoardCode: code,
+      userId: user.userId,
+    });
+    sitterBoardAPI();
+  };
 
   // ================= 게시글 수정 =================
   const updateBoard = () => {
@@ -371,6 +385,26 @@ const SitterDetail = () => {
 
           {user.userNickname === sitterBoard.user?.userNickname && (
             <div className="board-btns">
+              {sitterBoard.bookmark?.filter(
+                (bookmark) => bookmark.user.userId === user.userId
+              ).length === 0 ? (
+                <FaRegBookmark
+                  className="bookmark"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    bookmark(sitterBoard.sitterBoardCode);
+                  }}
+                />
+              ) : (
+                <FaBookmark
+                  className="bookmark bookmarkChecked"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    bookmark(sitterBoard.sitterBoardCode);
+                  }}
+                />
+              )}
+
               <button
                 onClick={() => {
                   deleteBoard();

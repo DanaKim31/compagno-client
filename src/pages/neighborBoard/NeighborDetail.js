@@ -8,11 +8,13 @@ import {
   registerNeighborReply,
   updateNeighborComment,
   deleteNeighborComment,
+  neighborBoardBookmark,
 } from "../../api/neighborBoard";
 import MyToggleBar from "../../components/note/MyToggleBar";
 import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import { Form, Button } from "react-bootstrap";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -55,7 +57,13 @@ const Div = styled.div`
       .board-btns {
         display: flex;
         justify-content: space-between;
-        width: 130px;
+        align-items: center;
+        width: 180px;
+
+        .bookmark {
+          font-size: 2rem;
+          margin-right: 10px;
+        }
 
         button {
           width: 60px;
@@ -270,6 +278,19 @@ const NeighborDetail = () => {
     neighborCommentAPI();
   }, []);
 
+  // ================= 북마크 =================
+  const bookmark = async (code) => {
+    if (token === null) {
+      alert("로그인 화면으로 이동합니다.");
+      return false;
+    }
+    await neighborBoardBookmark({
+      neighborBoardCode: code,
+      userId: user.userId,
+    });
+    neighborBoardAPI();
+  };
+
   // ================= 게시글 수정 =================
   const updateBoard = () => {
     navigate("/compagno/neighborBoard/edit/" + code);
@@ -333,6 +354,26 @@ const NeighborDetail = () => {
           <div className="board-title">{neighborBoard.neighborBoardTitle}</div>
           {user.userNickname === neighborBoard.user?.userNickname && (
             <div className="board-btns">
+              {neighborBoard.bookmark?.filter(
+                (bookmark) => bookmark.user.userId === user.userId
+              ).length === 0 ? (
+                <FaRegBookmark
+                  className="bookmark"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    bookmark(neighborBoard.neighborBoardCode);
+                  }}
+                />
+              ) : (
+                <FaBookmark
+                  className="bookmark bookmarkChecked"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    bookmark(neighborBoard.neighborBoardCode);
+                  }}
+                />
+              )}
+
               <button
                 onClick={() => {
                   deleteBoard();

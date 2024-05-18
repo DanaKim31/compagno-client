@@ -14,7 +14,7 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 import { userSave } from "../../store/user";
 import styled from "styled-components";
 
@@ -123,6 +123,7 @@ const Div = styled.div`
         padding: 5px;
         border-radius: 5px;
         margin-right: 20px;
+        border: 1px solid #7f7f7fff;
       }
     }
   }
@@ -438,7 +439,12 @@ const NeighborBoard = () => {
                   {neighbor.neighborBoardTitle}
                 </a>
               </td>
-              <td>{neighbor.user.userNickname}</td>
+              <td>
+                {neighbor.user.userNickname +
+                  "  (" +
+                  neighbor.user.userId +
+                  ")"}
+              </td>
               <td>{`${new Date(
                 neighbor.neighborBoardRegiDate
               ).getFullYear()}-${new Date(
@@ -451,7 +457,7 @@ const NeighborBoard = () => {
                 {neighbor.bookmark?.filter(
                   (bookmark) => bookmark.user.userId === user.userId
                 ).length === 0 ? (
-                  <FaRegHeart
+                  <FaRegBookmark
                     className="bookmark"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -459,7 +465,7 @@ const NeighborBoard = () => {
                     }}
                   />
                 ) : (
-                  <FaHeart
+                  <FaBookmark
                     className="bookmark bookmarkChecked"
                     onClick={(e) => {
                       e.stopPropagation();

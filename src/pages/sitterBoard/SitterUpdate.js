@@ -15,6 +15,7 @@ import moment from "moment";
 import { IoClose } from "react-icons/io5";
 import { Button } from "react-bootstrap";
 import styled from "styled-components";
+import "moment/locale/ko";
 
 const Div = styled.div`
   @font-face {
@@ -71,10 +72,19 @@ const Div = styled.div`
 
       select {
         height: 38px;
-        width: 185px;
+        width: 200px;
         padding-left: 10px;
         margin-right: 50px;
         border-radius: 5px;
+      }
+
+      input {
+        height: 38px;
+        padding-left: 10px;
+        border-radius: 5px;
+        border: 1px solid gray;
+        margin-right: 50px;
+        background: #f6f6f6ff;
       }
     }
 
@@ -214,18 +224,25 @@ const SitterUpdate = () => {
     return state.user;
   });
 
-  // =================== 오늘 날짜 ===================
-  const [today, setToday] = useState("");
-  const dateInformation = () => {
-    const today = moment().format("YYYY-MM-DD");
-    setToday(today);
-  };
-
   useEffect(() => {
     dateInformation();
   }, []);
 
+  const viewSitterBoard = async () => {
+    const response = (await getSitterBoard(code)).data;
+    setBoardCategory(response.sitterCategory.sitterCategoryCode);
+    setAnimalCategory(response.animalCategoryCode.animalCategoryCode);
+    setSelectedDistrict(response.location.locationCode);
+    // {moment(response.sitterRegiDate).format("yyyy-MM-DD hh:mm:ss")}
+    setRegisterDate(response.sitterRegiDate);
+    setTitle(response.sitterTitle);
+    setContent(response.sitterContent);
+    setPrevImgSrc(response.images);
+    setPrevImg(response.images);
+  };
+
   const { code } = useParams();
+  const [sitterBoard, setSitterBoard] = useState({});
   const [sitterCategories, setSitterCategories] = useState([]);
   const [boardCategory, setBoardCategory] = useState("");
   const [animalCategories, setAnimalCategories] = useState([]);
@@ -236,6 +253,12 @@ const SitterUpdate = () => {
   const [district, setDistrict] = useState(0);
   const [registerDate, setRegisterDate] = useState("");
   const [updateDate, setUpdateDate] = useState("");
+  const dateInformation = () => {
+    setUpdateDate(moment().format("YYYY-MM-DD"));
+  };
+  useEffect(() => {
+    dateInformation();
+  }, []);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
@@ -248,8 +271,7 @@ const SitterUpdate = () => {
     formData.append("sitterBoardCode", code);
     formData.append("sitterCategory", boardCategory);
     formData.append("animalCategoryCode", animalCategory);
-    formData.append("locationCode", district);
-    formData.append("sitterRegiDate", registerDate);
+    formData.append("locationCode", selectedDistrict);
     formData.append("sitterUpdateDate", updateDate);
     formData.append("sitterTitle", title);
     formData.append("sitterContent", content);
@@ -266,18 +288,9 @@ const SitterUpdate = () => {
     navigate("/compagno/sitterBoard");
   };
 
-  const viewSitterBoard = async () => {
-    const response = (await getSitterBoard(code)).data;
-    setBoardCategory(response.sitterCategory.sitterCategoryCode);
-    setAnimalCategory(response.animalCategoryCode.animalCategoryCode);
-    setSelectedProvince(response.location.parent.locationCode);
-    setSelectedDistrict(response.location.locationCode);
-    setRegisterDate(response.sitterRegiDate);
-    setUpdateDate(response.sitterUpdateDate);
-    setTitle(response.sitterTitle);
-    setContent(response.sitterContent);
-    setPrevImgSrc(response.images);
-    setPrevImg(response.images);
+  const sitterBoardAPI = async () => {
+    const result = await getSitterBoard(code);
+    setSitterBoard(result.data);
   };
 
   const categoryAPI = async () => {
@@ -309,20 +322,12 @@ const SitterUpdate = () => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
+    sitterBoardAPI(code);
     viewSitterBoard();
     categoryAPI();
     animalCategoryAPI();
     provinceAPI();
   }, []);
-
-  const handleProvinceChange = (e) => {
-    districtAPI(e.target.value);
-    setProvince(e.target.value);
-  };
-
-  const handleDistrictChange = (e) => {
-    setDistrict(e.target.value);
-  };
 
   const registerImage = (e) => {
     const images = Array.from(e.target.files);
@@ -366,27 +371,15 @@ const SitterUpdate = () => {
         <div className="location-category">
           <div id="province">
             <span id="title">시/도</span>
-            <select onChange={handleProvinceChange}>
-              {/* {selectedProvince?.map((province) => (
-            <option key={province.locationCode} value={province.locationCode}>
-              {province.locationName}
-            </option>
-          ))} */}
-            </select>
+            <input
+              value={sitterBoard.location?.parent?.locationName}
+              readOnly
+            />
           </div>
 
           <div id="district">
             <span id="title">시/군/구</span>
-            {/* {selectedProvince && ( */}
-            <select onChange={handleDistrictChange}>
-              {/* <option value="">전체</option>
-            {selectedDistrict?.map((district) => (
-              <option key={district.locationCode} value={district.locationCode}>
-                {district.locationName}
-              </option>
-            ))} */}
-            </select>
-            {/* )} */}
+            <input value={sitterBoard.location?.locationName} readOnly />
           </div>
 
           <div id="sitter-category">
@@ -438,20 +431,14 @@ const SitterUpdate = () => {
             <span id="title">작성일</span>
             <input
               type="text"
-              value={
-                `${new Date(registerDate).getFullYear()}-${new Date(
-                  registerDate
-                ).getMonth()}-${new Date(registerDate).getDate()}   ${new Date(
-                  registerDate
-                ).getHours()}:${new Date(registerDate).getMinutes()}` || ""
-              }
+              value={moment(registerDate).format("YYYY-MM-DD HH:mm")}
               readOnly
             />
           </div>
 
           <div className="update-date">
             <span id="title">수정일</span>
-            <input type="text" value={today || ""} readOnly />
+            <input type="text" value={updateDate} readOnly />
           </div>
         </div>
 

@@ -70,10 +70,19 @@ const Div = styled.div`
 
       select {
         height: 38px;
-        width: 185px;
+        width: 200px;
         padding-left: 10px;
         margin-right: 50px;
         border-radius: 5px;
+      }
+
+      input {
+        height: 38px;
+        padding-left: 10px;
+        border-radius: 5px;
+        border: 1px solid gray;
+        margin-right: 50px;
+        background: #f6f6f6ff;
       }
     }
 
@@ -223,7 +232,19 @@ const NeighborUpdate = () => {
   useEffect(() => {
     dateInformation();
   }, []);
-
+  const viewNeighborBoard = async () => {
+    const response = (await getNeighborBoard(code)).data;
+    console.log(response);
+    setAnimalCategory(response.animalCategoryCode.animalCategoryCode);
+    // setSelectedProvince(response.location.parent.locationCode);
+    setSelectedDistrict(response.location.locationCode);
+    setRegisterDate(response.neighborBoardRegiDate);
+    setUpdateDate(response.neighborBoardUpdateDate);
+    setTitle(response.neighborBoardTitle);
+    setContent(response.neighborBoardContent);
+    setPrevImgSrc(response.images);
+    setPrevImg(response.images);
+  };
   const { code } = useParams();
   const [animalCategories, setAnimalCategories] = useState([]);
   const [animalCategory, setAnimalCategory] = useState("");
@@ -240,11 +261,13 @@ const NeighborUpdate = () => {
   const [prevImg, setPrevImg] = useState([]);
   const [prevImgSrc, setPrevImgSrc] = useState([]);
 
+  console.log(title);
+  console.log(selectedDistrict);
   const updateBoard = async () => {
     const formData = new FormData();
     formData.append("neighborBoardCode", code);
     formData.append("animalCategoryCode", animalCategory);
-    formData.append("locationCode", district);
+    formData.append("selectedDistrict", selectedDistrict);
     formData.append("neighborBoardRegiDate", registerDate);
     formData.append("neighborBoardUpdateDate", updateDate);
     formData.append("neighborBoardTitle", title);
@@ -260,19 +283,6 @@ const NeighborUpdate = () => {
 
     await updateNeighborBoard(formData);
     navigate("/compagno/neighborBoard");
-  };
-
-  const viewNeighborBoard = async () => {
-    const response = (await getNeighborBoard(code)).data;
-    setAnimalCategory(response.animalCategoryCode.animalCategoryCode);
-    setSelectedProvince(response.location.parent.locationCode);
-    setSelectedDistrict(response.location.locationCode);
-    setRegisterDate(response.neighborBoardRegiDate);
-    setUpdateDate(response.neighborBoardUpdateDate);
-    setTitle(response.neighborBoardTitle);
-    setContent(response.neighborBoardContent);
-    setPrevImgSrc(response.images);
-    setPrevImg(response.images);
   };
 
   const animalCategoryAPI = async () => {
