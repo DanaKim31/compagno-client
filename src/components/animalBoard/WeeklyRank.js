@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "react-bootstrap/Image";
 import { PiMedalFill } from "react-icons/pi";
-import { viewFavList, viewRanker } from "../../api/animalBoard";
+import { latestFavCount, viewFavList, viewRanker } from "../../api/animalBoard";
 import useDidMountEffect from "../../assets/useDidMountEffect";
-import moment from "moment";
 const RankProfile = styled.div`
   width: 80%;
   padding-top: 200px;
@@ -72,42 +71,6 @@ const WeeklyRank = () => {
   };
   console.log(favList);
 
-  // 9시간 빼기
-
-  // 1시간별 날짜 정렬 => 좋아요정렬 => 중복제거
-  // 그룹화할 시간 간격 설정 (1시간)
-  const favFilter = () => {
-    console.log("!");
-    const hourInterval = 1;
-    // 날짜별로 정렬
-    const sortedByDate = favList.sort(
-      (current, next) => current.animalFavoriteDate - next.animalFavoriteDate
-    );
-    console.log(sortedByDate);
-    // moment(board.animalBoardDate).format("MM.DD HH:mm")
-
-    // 한 시간 간격으로 그룹화
-    const groupedByHour = sortedByDate.reduce((acc, fav) => {
-      const hourKey = new Date(
-        Math.floor(
-          new Date(fav.animalFavoriteDate).getTime() /
-            (hourInterval * 60 * 60 * 1000)
-        ) *
-          (hourInterval * 60 * 60 * 1000)
-      );
-      //`${hourKey.getFullYear()}-${(hourKey.getMonth() + 1).toString().padStart(2, '0')}-${hourKey.getDate().toString().padStart(2, '0')}T${hourKey.getHours().toString().padStart(2, '0')}`;
-      const hourStr = hourKey.toISOString().substring(0, 13);
-      if (!acc[hourStr]) {
-        acc[hourStr] = { hour: hourStr, totalLikes: 0, favs: [] };
-      }
-      acc[hourStr].favs.push(fav);
-      // acc[hourStr].totalLikes = acc[hourStr].favs.length;
-      return acc;
-    }, {});
-
-    console.log(groupedByHour);
-  };
-
   // 중복 제거
   const [filteredRankers, setFilteredRanker] = useState([]);
   const uniqueTop3Members = () => {
@@ -119,7 +82,18 @@ const WeeklyRank = () => {
       .slice(0, 3);
     setFilteredRanker(response);
   };
-  //
+
+  // (전체 favCount - latestCount) + latestCount
+  const [latestCount, setLatestCount] = useState([]);
+  const favLatestCount = async () => {
+    const promises = filteredRankers.map(async (ranker) => {
+      const response = await latestFavCount(ranker.animalBoardCode);
+      return response.data;
+    });
+    const results = await Promise.all(promises);
+    setLatestCount(results);
+  };
+  console.log(latestCount);
 
   console.log(filteredRankers);
   useEffect(() => {
@@ -130,7 +104,7 @@ const WeeklyRank = () => {
     uniqueTop3Members();
   }, [rankers]);
   useDidMountEffect(() => {
-    favFilter();
+    favLatestCount();
   }, [favList]);
 
   return (
