@@ -212,8 +212,12 @@ const QnaList = () => {
 
   // 페이지가 변할 때마다 questionAPI() 실행
   useEffect(() => {
-    questionAPI();
+    search();
   }, [page]);
+
+  useEffect(() => {
+    questionAPI();
+  }, []);
 
   // totalPage가 바뀔 때 마다 실행
   useEffect(() => {
