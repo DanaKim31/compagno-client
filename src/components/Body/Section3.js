@@ -1,13 +1,13 @@
 import "../../assets/style.css";
 import { useState, useEffect } from "react";
-// 가로 스크롤 !!
+
 const Section3 = () => {
   const [scroll, setScroll] = useState(0);
 
   useEffect(() => {
     function handleScroll() {
       const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop; // 스크롤 Top값 !!
+        window.pageYOffset || document.documentElement.scrollTop;
       setScroll(scrollTop);
 
       const section2Top = document
@@ -24,7 +24,6 @@ const Section3 = () => {
 
     window.addEventListener("scroll", handleScroll);
 
-    // Clean up the event listener
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -91,20 +90,24 @@ const Section3 = () => {
           </div>
           <div className="son1">
             <h2>04</h2>
-            <p>
-              우리는 Compagno라는 따뜻한 커뮤니티를 통해 반려동물을 사랑하는
-              이들이 모여 소통하고 정보를 공유할 수 있는 공간을 제공합니다.
-              그러나 한국에서는 매년 약 11만 3천 마리의 유기동물이 발생하며, 이
-              중 원래 보호자에게 반환된 비율은 12.4%에 불과합니다. 이러한 상황을
-              고려할 때, 우리는 현행 정책과 법의 한계를 보완하고 보호소 환경을
-              개선하여 유기동물의 삶을 향상시키는 노력이 필요합니다. 이를 통해
-              유기동물들이 더 나은 환경에서 살고, 새로운 가정을 찾아가는 과정이
-              원활해질 것입니다. 우리의 목표는 유기동물에 대한 사회적 인식을
-              높이고, 정책 개선을 통해 이들의 보호를 강화하는 것입니다. 함께하는
-              Compagno의 회원들과 함께, 우리는 유기동물들에게 더 나은 미래를
-              제공하기 위해 노력할 것입니다.
+            <p style={{ position: "relative", top: "20px" }}>
+              저희 Compagno는 반려동물과 주인, 그리고 친구들 간의 소통과 문화를
+              형성하는 따뜻한 커뮤니티입니다.
+              <br />
+              <br />
+              또한, 우리는 유기동물 문제를 해결하고 더 나은 환경을 제공하기 위해
+              끊임없이 노력하고 있습니다. 현재 한국에서는 매년 많은 유기동물이
+              발생하고 있으며, 이러한 문제를 해결하기 위해 제안을 추진하고
+              있습니다.
+              <br /> <br />
+              이를 통해 유기동물들이 건강하고 행복한 삶을 살 수 있도록 지원할
+              것입니다. <br /> <br />
+              Compagno는 유저들 간의 활발한 정보 공유와 활동을 통해 동료, 친구,
+              가족 공동체로 발전해 나가며, 반려동물과의 특별한 동행을 더욱
+              풍요롭게 만들어 갈 것입니다. 함께 성장하며 더 나은 미래를
+              만들어가는 Compagno의 여정에 동참해 주세요.
             </p>
-            <img src="/img/mountain.jpg" alt="logo image" />
+            <img src="/img/마지막으로.png" alt="logo image" />
           </div>
         </div>
       </section>

@@ -516,13 +516,11 @@ header a {
   left: 0;
   top: 0;
   overflow: hidden;
-  /* width: 4522px; */
   color: white;
 }
 
 .sec3 > div {
   background-color: rgb(70, 92, 88);
-  /* opacity: 0.6; */
   width: 2000px;
   position: relative;
   right: 1409px;
@@ -553,13 +551,13 @@ header a {
   height: 100%;
   max-width: 1474px;
   position: relative;
-  bottom: 50px;
+  bottom: 60px;
 }
 .row-cols-2 {
   position: relative;
   width: 130%;
   height: 100vh;
-  left: 102px;
+  left: 165px;
 }
 
 .col {
@@ -581,6 +579,8 @@ header a {
 }
 
 .col img {
+  position: relative;
+  right: 65px;
   width: 64vh;
   height: 31vh;
 }
@@ -895,8 +895,7 @@ span img {
 }
 /* ==================================================== */
 
-.dropbtn:after,
-.navi:after {
+.dropbtn:after {
   content: " ";
   position: absolute;
   left: 0;
@@ -909,47 +908,7 @@ span img {
   z-index: 1;
 }
 
-.navi a:after {
-  content: " ";
-  position: absolute;
-  left: 0;
-  bottom: 0px;
-  width: 0;
-  opacity: 0;
-  height: 2px;
-  background: white;
-  transition: all 0.8s 0s ease;
-  z-index: 1;
-}
-
-.navi a:hover:after {
-  width: 100%;
-  opacity: 1;
-}
-
 .dropbtn:hover:after {
-  width: 100%;
-  opacity: 1;
-}
-
-.navi a {
-  font-size: 1.4rem;
-}
-
-.sn:after {
-  content: " ";
-  position: absolute;
-  left: 0;
-  bottom: 0px;
-  width: 0;
-  opacity: 0;
-  height: 2px;
-  background: white;
-  transition: all 0.8s 0s ease;
-  z-index: 1;
-}
-
-.sn:hover:after {
   width: 100%;
   opacity: 1;
 }
