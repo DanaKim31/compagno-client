@@ -12,6 +12,7 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import { Form, Button } from "react-bootstrap";
+import { IoSearch } from "react-icons/io5";
 
 const Main = styled.main`
   @font-face {
@@ -33,6 +34,15 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   max-width: 1100px;
+
+  h1 {
+    font-size: 2.5;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  h1:hover {
+    color: #94b29b;
+  }
 
   table {
     text-align: center;
@@ -105,6 +115,38 @@ const Main = styled.main`
     width: 100px;
     float: right;
   }
+
+  .searchInput {
+    font-weight: bold;
+    width: 300px;
+    margin-top: 2px;
+    height: 30px;
+    border: 1px solid gray;
+  }
+
+  .searchBtn {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+    width: 90px;
+    height: 35px;
+    margin-left: 5px;
+  }
+
+  .searchWriteNav {
+    width: 100%;
+    text-align: center;
+    input {
+      display: inline;
+    }
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .searchInput {
+    margin: auto;
+  }
 `;
 
 const ViewAllNoticeBoard = () => {
@@ -128,7 +170,6 @@ const ViewAllNoticeBoard = () => {
     const result = await searchNoticeBoard(keyword, page);
     setNoticeBoards(result.data);
     setTotalPage(result.data.totalPages);
-    console.log(result.data);
   };
 
   let lastPage = 0;
@@ -168,18 +209,34 @@ const ViewAllNoticeBoard = () => {
 
   return (
     <Main>
-      <h1>공지 사항</h1>
-      {/* {user.userRole === "ROLE_ADMIN" && (
-        <Button variant="secondary">글 작성</Button>
-      )} */}
-      <nav>
-        <Button
-          className="writeBtn"
-          variant="secondary"
-          onClick={() => navigate("/compagno/notice-board/create")}
-        >
-          글 작성
-        </Button>
+      <h1 onClick={() => navigate("/compagno/notice-board")}>공지 사항</h1>
+      <nav className="searchWriteNav">
+        <span className="searchSpan">
+          <Form.Control
+            className="searchInput"
+            placeholder="검색할 제목을 입력해주세요"
+            onChange={(e) => setKeyword(e.target.value.trim())}
+          />
+          <Button
+            className="searchBtn"
+            onClick={() => {
+              getNoticeBoards();
+            }}
+          >
+            <IoSearch />
+            검색
+          </Button>
+        </span>
+
+        {user.userRole === "ROLE_ADMIN" && (
+          <Button
+            className="writeBtn"
+            variant="secondary"
+            onClick={() => navigate("/compagno/notice-board/create")}
+          >
+            글 작성
+          </Button>
+        )}
       </nav>
       <table>
         <thead>
@@ -257,7 +314,7 @@ const ViewAllNoticeBoard = () => {
             </button>
           )
         )}
-        {page !== totalPage && (
+        {page !== totalPage && totalPage !== 0 && (
           <FaAngleRight
             onClick={
               () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로

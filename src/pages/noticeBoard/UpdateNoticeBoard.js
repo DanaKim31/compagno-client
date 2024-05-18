@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import { userSave } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-import { addNoticeBoard } from "../../api/noticeBoard";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import { editNoticeBoard, getNoticeBoard } from "../../api/noticeBoard";
 import { FaRegCircleXmark } from "react-icons/fa6";
 
 const Main = styled.main`
@@ -89,7 +89,7 @@ const Main = styled.main`
   }
 `;
 
-const CreateNoticeBoard = () => {
+const UpdateNoticeBoard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => {
@@ -99,15 +99,17 @@ const CreateNoticeBoard = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
+  const { code } = useParams();
 
+  const [prevImg, setPrevImg] = useState([]);
+  const [prevImgSrc, setPrevImgSrc] = useState([]);
   const [imgSrc, setImgSrc] = useState([]);
 
   const imageCreate = (e) => {
     const images = Array.from(e.target.files);
-    if (images.length > 5) {
+    if (images.length + prevImgSrc.length > 5) {
       alert("이미지는 최대 5장 까지 등록 가능합니다.");
       e.target.value = "";
-      setFiles([]);
       setImgSrc([]);
     } else {
       setFiles(images);
@@ -132,7 +134,7 @@ const CreateNoticeBoard = () => {
     }
   };
 
-  const createBoard = async () => {
+  const updateBoard = async () => {
     if (title === "") {
       alert("제목을 입력해주세요.");
       return false;
@@ -140,7 +142,7 @@ const CreateNoticeBoard = () => {
       alert("내용을 입력해주세요.");
       return false;
     }
-    if (window.confirm("게시물을 등록하시겠습니까?")) {
+    if (window.confirm("게시물을 수정하시겠습니까?")) {
       const formData = new FormData();
       formData.append("noticeBoardTitle", title);
       formData.append("noticeBoardContent", content);
@@ -150,11 +152,24 @@ const CreateNoticeBoard = () => {
         formData.append(`files[${index}]`, file);
       });
 
-      await addNoticeBoard(formData);
+      prevImgSrc.forEach((image, index) => {
+        formData.append(`images[${index}]`, image.productImage);
+      });
+
+      await editNoticeBoard(formData);
 
       navigate("/compagno/notice-board");
-      window.alert("게시물이 등록되었습니다. ");
+      window.alert("게시물이 수정되었습니다. ");
     }
+  };
+
+  const viewNoticeBoard = async () => {
+    const response = (await getNoticeBoard(code)).data;
+    setTitle(response.noticeBoardTitle);
+    setContent(response.noticeBoardContent);
+
+    setPrevImgSrc(response.images);
+    setPrevImg(response.images);
   };
 
   useEffect(() => {
@@ -162,6 +177,7 @@ const CreateNoticeBoard = () => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
+    viewNoticeBoard();
   }, []);
 
   const selectImage = useRef("");
@@ -184,6 +200,13 @@ const CreateNoticeBoard = () => {
     setFiles(Array.from(selectImage.current.files));
   };
 
+  const deletePrevSrc = (code) => {
+    const images = prevImgSrc.filter(
+      (image) => image.productImageCode !== code
+    );
+    setPrevImgSrc(images);
+  };
+
   return (
     <Main>
       <Link to={"/compagno/notice-board"} className="linkLogo">
@@ -191,6 +214,7 @@ const CreateNoticeBoard = () => {
       </Link>
       <p style={{ margin: "10px", fontSize: "1.1rem" }}>제목</p>
       <Form.Control
+        value={title}
         className="titleInput"
         type="text"
         placeholder="제목"
@@ -204,6 +228,7 @@ const CreateNoticeBoard = () => {
       />
       <p style={{ margin: "10px", fontSize: "1.1rem" }}>내용</p>
       <Form.Control
+        value={content}
         as="textarea"
         placeholder="내용 입력"
         rows={20}
@@ -237,13 +262,21 @@ const CreateNoticeBoard = () => {
               />
             </span>
           ))}
+          {prevImgSrc.map((img, i) => (
+            <span className="imageSpan" key={img.niticeImageCode}>
+              <img src={"http://192.168.10.28:8081/" + img.noticeImage} />
+              <FaRegCircleXmark
+                onClick={() => deletePrevSrc(img.noticeImageCode)}
+              />
+            </span>
+          ))}
         </div>
       </div>
       <div>
         <Button
           className="boardWrite"
           onClick={() => {
-            createBoard();
+            updateBoard();
           }}
         >
           글 작성
@@ -259,4 +292,4 @@ const CreateNoticeBoard = () => {
     </Main>
   );
 };
-export default CreateNoticeBoard;
+export default UpdateNoticeBoard;

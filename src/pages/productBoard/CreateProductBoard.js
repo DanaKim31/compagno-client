@@ -122,9 +122,10 @@ const Main = styled.main`
     svg {
       position: absolute;
       font-size: 2rem;
-      top: 10px;
-      right: 10px;
+      top: -12px;
+      right: -12px;
       cursor: pointer;
+      background-color: white;
     }
   }
 
@@ -147,7 +148,7 @@ const Main = styled.main`
   .imageSpan {
     position: relative;
     width: 300px;
-    height: 200px;
+    height: 300px;
     margin: 0px 10px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -160,11 +161,12 @@ const Main = styled.main`
     }
     svg {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: -8px;
+      right: -8px;
       font-size: 1.5rem;
       color: #212121;
       cursor: pointer;
+      background-color: white;
     }
   }
   .inpoInputDiv {
@@ -312,7 +314,7 @@ const CreateProductBoard = () => {
     } else if (content == "") {
       alert("내용을 입력해주세요.");
       return false;
-    } else if (files.length !== 0 && JSON.stringify(productMainFile) === "{}") {
+    } else if (files.length !== 0 && !(productMainFile instanceof File)) {
       alert("썸네일로 사용할 이미지를 선택해주세요.");
       return false;
     }
@@ -338,7 +340,7 @@ const CreateProductBoard = () => {
       await addProductBoard(formData);
 
       navigate("/compagno/product-board");
-      window.alert("게시물이 등록되었습니다. ");
+      window.alert("게시물이 등록되었습니다.");
     }
   };
 
@@ -375,7 +377,7 @@ const CreateProductBoard = () => {
     <Main>
       <div className="createDiv">
         <Link to={"/compagno/product-board"} className="linkLogo">
-          제품 정보 공유 게시판
+          제품정보 공유 게시판
         </Link>
         <p style={{ marginBottom: "10px", fontSize: "1.1rem" }}>제목</p>
         <Form.Control

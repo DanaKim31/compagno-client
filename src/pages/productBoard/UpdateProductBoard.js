@@ -121,9 +121,10 @@ const Main = styled.main`
     svg {
       position: absolute;
       font-size: 2rem;
-      top: 10px;
-      right: 10px;
+      top: -12px;
+      right: -12px;
       cursor: pointer;
+      background-color: white;
     }
   }
 
@@ -157,11 +158,12 @@ const Main = styled.main`
     }
     svg {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: -8px;
+      right: -8px;
       font-size: 1.5rem;
       color: #212121;
       cursor: pointer;
+      background-color: white;
     }
   }
 
@@ -283,7 +285,7 @@ const UpdateProductBoard = () => {
       return false;
     } else if (
       (files.length !== 0 || prevImgSrc.length !== 0) &&
-      JSON.stringify(productMainFile) === "{}" &&
+      !(productMainFile instanceof File) &&
       mainImgSrc === ""
     ) {
       alert("썸네일로 사용할 이미지를 선택해주세요");
@@ -427,8 +429,6 @@ const UpdateProductBoard = () => {
   };
 
   const imgCancle = () => {
-    console.log(prevImgSrc);
-    console.log(prevImg);
     selectImage.current.value = "";
     setFiles([]);
     setImgSrc([]);
@@ -439,7 +439,7 @@ const UpdateProductBoard = () => {
     <Main>
       <div className="createDiv">
         <Link to={"/compagno/product-board"} className="linkLogo">
-          제품 정보 공유 게시판
+          제품정보 공유 게시판
         </Link>
         <p style={{ marginBottom: "10px", fontSize: "1.1rem" }}>제목</p>
         <Form.Control
@@ -532,6 +532,7 @@ const UpdateProductBoard = () => {
               <Form.Control
                 className="cateInput productInput"
                 type="text"
+                defaultValue={productCategory}
                 onChange={(e) => {
                   if (e.target.value.length > 12) {
                     e.target.value = e.target.value.slice(0, 12);

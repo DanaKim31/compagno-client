@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   getProductBoard,
   getProductBoardComments,
@@ -20,7 +20,7 @@ import { FiCornerDownRight } from "react-icons/fi";
 import MyToggleBar from "../../components/note/MyToggleBar";
 
 const Main = styled.main`
-  min-width: 1700px;
+  min-width: 1903px;
   width: 100%;
 
   padding: 0px 300px;
@@ -158,9 +158,8 @@ const Main = styled.main`
       margin-right: 5px;
     }
 
-    div {
+    div:not(.noteCreate) {
       display: inline-flex;
-      font-size: 0.8rem;
       svg {
         cursor: pointer;
       }
@@ -212,9 +211,9 @@ const Main = styled.main`
   }
 
   .boardUserInfo {
-    div {
+    div:not(.noteCreate) {
       display: inline-flex;
-      font-size: 0.8rem;
+      font-size: 1rem;
     }
     svg {
       cursor: pointer;
@@ -448,11 +447,13 @@ const ProductBoardDetail = () => {
     navigate("/compagno/product-board/edit/" + code);
   };
 
+  const writeCommentInput = useRef("");
+
   return (
     <Main>
       <div className="boardDiv">
         <h1 onClick={() => navigate("/compagno/product-board")}>
-          제품 정보 공유 게시판
+          제품정보 공유 게시판
         </h1>
         <div className="boardTitle">{productBoard.productBoardTitle} </div>
         <div className="boardUserInfo">
@@ -553,10 +554,12 @@ const ProductBoardDetail = () => {
                 }
                 setComment(e.target.value.trim());
               }}
+              ref={writeCommentInput}
             />
             <Button
               onClick={() => {
                 addComment();
+                writeCommentInput.current.value = "";
               }}
             >
               작성
@@ -571,12 +574,9 @@ const ProductBoardDetail = () => {
                   <span className="userInfo">
                     <img
                       className="commentUserImage"
-                      src={
-                        "http://192.168.10.28:8081/" +
-                        productBoard.user?.userImg
-                      }
+                      src={"http://192.168.10.28:8081/" + comment.user?.userImg}
                     />
-                    {comment.user.userNickname} <MyToggleBar />
+                    <MyToggleBar name={comment.user.userNickname} />
                   </span>
                   <span className="commentRegiDate">
                     {moment(comment.productCommentRegiDate).isSame(
@@ -701,11 +701,10 @@ const ProductBoardDetail = () => {
                         <img
                           className="commentUserImage"
                           src={
-                            "http://192.168.10.28:8081/" +
-                            productBoard.user?.userImg
+                            "http://192.168.10.28:8081/" + reply.user?.userImg
                           }
                         />
-                        {reply.user.userNickname} <MyToggleBar />
+                        <MyToggleBar name={reply.user.userNickname} />
                       </span>
                       <span className="commentRegiDate">
                         {moment(reply.productCommentRegiDate).isSame(
@@ -846,11 +845,10 @@ const ProductBoardDetail = () => {
                         <img
                           className="commentUserImage"
                           src={
-                            "http://192.168.10.28:8081/" +
-                            productBoard.user?.userImg
+                            "http://192.168.10.28:8081/" + reply.user?.userImg
                           }
                         />
-                        {reply.user.userNickname} <MyToggleBar />
+                        <MyToggleBar name={reply.user.userNickname} />
                       </span>
 
                       <span className="commentRegiDate">
