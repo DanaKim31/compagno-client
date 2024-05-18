@@ -63,6 +63,7 @@ import NoteViewAll from "./components/note/NoteViewAll";
 import NoteViewReceiveBox from "./components/note/NoteViewReceiveBox";
 import NoteViewSendBox from "./components/note/NoteViewSendBox";
 import NoteViewStar from "./components/note/NoteViewStar";
+import UpdateNoticeBoard from "./pages/noticeBoard/UpdateNoticeBoard";
 
 const router = createBrowserRouter([
   {
@@ -200,6 +201,7 @@ const router = createBrowserRouter([
           { index: true, element: <ViewAllNoticeBoard /> },
           { path: ":code", element: <NoticeBoardDetail /> },
           { path: "create", element: <CreateNoticeBoard /> },
+          { path: "edit/:code", element: <UpdateNoticeBoard /> },
         ],
       },
       {

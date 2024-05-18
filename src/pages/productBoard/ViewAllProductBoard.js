@@ -1,6 +1,7 @@
 import {
   productBoardBookmark,
   searchProductBoard,
+  getAnimalCategories,
 } from "../../api/productBoard";
 import { useState, useEffect } from "react";
 import moment from "moment";
@@ -281,6 +282,7 @@ const ViewAllProductBoard = () => {
   });
 
   const navigate = useNavigate();
+  const [animalCategories, setAnimalCategories] = useState([]);
   const [productBoards, setProductBoards] = useState([]);
   const [page, setPage] = useState(1); // 현재 페이지
   const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지
@@ -323,9 +325,15 @@ const ViewAllProductBoard = () => {
   let firstPage = 0;
   let pageList = [];
 
+  const viewAnimalCategory = async () => {
+    const response = await getAnimalCategories();
+    setAnimalCategories(response.data);
+  };
+
   useEffect(() => {
     getProductBoards();
     paging();
+    viewAnimalCategory();
   }, [page]);
 
   // totalPage가 바뀔 때 마다 실행
@@ -402,7 +410,7 @@ const ViewAllProductBoard = () => {
 
   return (
     <StyledProductBoard>
-      <h1 onClick={() => setPage(1)}>제품 정보 공유 게시판</h1>
+      <h1 onClick={() => setPage(1)}>제품정보 공유 게시판</h1>
       <div className="filterDiv">
         <Form.Control
           size="sm"
@@ -439,10 +447,14 @@ const ViewAllProductBoard = () => {
           <option value="" disabled="disabled" hidden>
             사용 동물 선택
           </option>
-          <option value="1">강아지</option>
-          <option value="2">고양이</option>
-          <option value="3">비둘기</option>
-          <option value="4">기타</option>
+          {animalCategories.map((animalCategory) => (
+            <option
+              value={animalCategory.animalCategoryCode}
+              key={animalCategory.animalCategoryCode}
+            >
+              {animalCategory.animalType}
+            </option>
+          ))}
           <option value="0">전체</option>
         </Form.Select>
         <Form.Control
@@ -855,7 +867,7 @@ const ViewAllProductBoard = () => {
             </button>
           )
         )}
-        {page !== totalPage && (
+        {page !== totalPage && totalPage !== 0 && (
           <FaAngleRight
             onClick={
               () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로

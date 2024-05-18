@@ -170,7 +170,6 @@ const ViewAllNoticeBoard = () => {
     const result = await searchNoticeBoard(keyword, page);
     setNoticeBoards(result.data);
     setTotalPage(result.data.totalPages);
-    console.log(result.data);
   };
 
   let lastPage = 0;
@@ -211,9 +210,6 @@ const ViewAllNoticeBoard = () => {
   return (
     <Main>
       <h1 onClick={() => navigate("/compagno/notice-board")}>공지 사항</h1>
-      {/* {user.userRole === "ROLE_ADMIN" && (
-        <Button variant="secondary">글 작성</Button>
-      )} */}
       <nav className="searchWriteNav">
         <span className="searchSpan">
           <Form.Control
@@ -232,13 +228,15 @@ const ViewAllNoticeBoard = () => {
           </Button>
         </span>
 
-        <Button
-          className="writeBtn"
-          variant="secondary"
-          onClick={() => navigate("/compagno/notice-board/create")}
-        >
-          글 작성
-        </Button>
+        {user.userRole === "ROLE_ADMIN" && (
+          <Button
+            className="writeBtn"
+            variant="secondary"
+            onClick={() => navigate("/compagno/notice-board/create")}
+          >
+            글 작성
+          </Button>
+        )}
       </nav>
       <table>
         <thead>
@@ -316,7 +314,7 @@ const ViewAllNoticeBoard = () => {
             </button>
           )
         )}
-        {page !== totalPage && (
+        {page !== totalPage && totalPage !== 0 && (
           <FaAngleRight
             onClick={
               () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로

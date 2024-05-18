@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   getProductBoard,
   getProductBoardComments,
@@ -447,11 +447,13 @@ const ProductBoardDetail = () => {
     navigate("/compagno/product-board/edit/" + code);
   };
 
+  const writeCommentInput = useRef("");
+
   return (
     <Main>
       <div className="boardDiv">
         <h1 onClick={() => navigate("/compagno/product-board")}>
-          제품 정보 공유 게시판
+          제품정보 공유 게시판
         </h1>
         <div className="boardTitle">{productBoard.productBoardTitle} </div>
         <div className="boardUserInfo">
@@ -552,10 +554,12 @@ const ProductBoardDetail = () => {
                 }
                 setComment(e.target.value.trim());
               }}
+              ref={writeCommentInput}
             />
             <Button
               onClick={() => {
                 addComment();
+                writeCommentInput.current.value = "";
               }}
             >
               작성

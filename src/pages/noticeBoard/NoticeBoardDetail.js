@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -48,7 +48,7 @@ const Main = styled.main`
     font-size: 2.5rem;
     font-weight: bold;
     cursor: pointer;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
   }
   h1:hover {
     color: #94b29b;
@@ -65,6 +65,43 @@ const Main = styled.main`
   .viewCount {
     float: right;
     margin-right: 40px;
+  }
+
+  .boardImage {
+    margin-top: 20px;
+    position: relative;
+    img {
+      object-fit: "fill";
+      margin-left: 9px;
+    }
+    img:nth-child(1) {
+      width: 620px;
+      height: 405px;
+      margin-left: 31px;
+    }
+    img:nth-child(2) {
+      position: absolute;
+      top: 0px;
+    }
+    img:nth-child(3) {
+      position: absolute;
+      top: 0px;
+      right: 31px;
+    }
+    img:nth-child(4) {
+      position: absolute;
+      bottom: 0px;
+    }
+    img:nth-child(5) {
+      position: absolute;
+      bottom: 0px;
+      right: 31px;
+    }
+
+    img:not(:nth-child(1)) {
+      width: 300px;
+      height: 200px;
+    }
   }
 
   .viewCommentsDiv {
@@ -348,8 +385,10 @@ const NoticeBoardDetail = () => {
   };
 
   const editNoticeBoard = () => {
-    // navigate("/compagno/notice-board/edit/" + code);
+    navigate("/compagno/notice-board/edit/" + code);
   };
+
+  const writeCommentInput = useRef("");
 
   return (
     <Main>
@@ -385,7 +424,14 @@ const NoticeBoardDetail = () => {
             ))}
           </div>
         )}
-
+        <div className="boardImage">
+          {noticeBoard.images?.map((image) => (
+            <img
+              key={image.productImageCode}
+              src={"http://192.168.10.28:8081/" + image.productImage}
+            />
+          ))}
+        </div>
         <div className="boardContent">{noticeBoard.noticeBoardContent}</div>
       </div>
       <nav className="boardBtnNav">
@@ -437,9 +483,11 @@ const NoticeBoardDetail = () => {
                 }
                 setComment(e.target.value.trim());
               }}
+              ref={writeCommentInput}
             />
             <Button
               onClick={() => {
+                writeCommentInput.current.value = "";
                 addComment();
               }}
             >

@@ -121,9 +121,10 @@ const Main = styled.main`
     svg {
       position: absolute;
       font-size: 2rem;
-      top: 10px;
-      right: 10px;
+      top: -12px;
+      right: -12px;
       cursor: pointer;
+      background-color: white;
     }
   }
 
@@ -157,11 +158,12 @@ const Main = styled.main`
     }
     svg {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: -8px;
+      right: -8px;
       font-size: 1.5rem;
       color: #212121;
       cursor: pointer;
+      background-color: white;
     }
   }
 
@@ -437,7 +439,7 @@ const UpdateProductBoard = () => {
     <Main>
       <div className="createDiv">
         <Link to={"/compagno/product-board"} className="linkLogo">
-          제품 정보 공유 게시판
+          제품정보 공유 게시판
         </Link>
         <p style={{ marginBottom: "10px", fontSize: "1.1rem" }}>제목</p>
         <Form.Control
