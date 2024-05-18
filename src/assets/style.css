@@ -100,6 +100,7 @@ header a {
   opacity: 0.7;
   text-align: center;
   width: 146px;
+  font-weight: bold;
 }
 
 .dropdown:hover .dropdown-content {
@@ -254,11 +255,10 @@ header a {
   width: 0;
   opacity: 0;
   height: 1px;
-  /* 여기가 언더라인 색깔 */
   background: black;
-  transition: all 0.6s 0s ease;
+  transition: all 0.8s 0s ease;
 }
-/* 언더라인 줄 길이 */
+
 #overlay nav ul li a:hover:after {
   width: 100%;
   opacity: 1;
@@ -507,6 +507,8 @@ header a {
   right: 158px;
   bottom: 21px;
   height: 481px;
+  display: flex;
+  align-items: center;
 }
 
 .sec3 {
@@ -663,7 +665,7 @@ header a {
 
 .odcdetail {
   position: relative;
-  left: 44%;
+  left: 57%;
   bottom: 57px;
 }
 
@@ -704,10 +706,10 @@ span img {
 
 @keyframes marquee {
   0% {
-    left: -5%;
+    left: 5%;
   }
   100% {
-    left: -100%;
+    left: -95%;
   }
 }
 
@@ -790,7 +792,7 @@ span img {
 /* ================================================================ */
 
 #section7 {
-  height: 69vh;
+  height: 67vh;
   position: relative;
 }
 .text {
@@ -807,7 +809,7 @@ span img {
   bottom: 28px;
   position: absolute;
   overflow: hidden;
-  animation: text 10s linear infinite;
+  animation: text 20s linear infinite;
 }
 
 .text span {
@@ -818,7 +820,7 @@ span img {
 
 @keyframes text {
   0% {
-    left: 10%;
+    left: 5%;
   }
   100% {
     left: -108%;
@@ -834,15 +836,29 @@ span img {
   font-family: "TAEBAEKmilkyway";
   font-weight: bold;
   color: white;
+  height: 45vh;
 }
 
 .sns a {
   color: white;
-  padding: 50px;
+}
+
+.person a {
+  color: white;
+  text-decoration: none;
+}
+
+.person a:hover {
+  opacity: 0.5;
+  color: black;
 }
 
 .person p {
-  padding: 15px;
+  padding: 30px;
+}
+
+.person div {
+  text-align: center;
 }
 
 .info a {
@@ -852,8 +868,88 @@ span img {
   padding: 10px;
 }
 
-.info a:hover,
-.sns a:hover,
+.URL a {
+  position: relative;
+  top: 130px;
+  left: 200px;
+  font-size: 1.4rem;
+}
+
 .URL a:hover {
+  opacity: 0.5;
+  color: black;
+}
+
+.com:hover {
+  opacity: 0.5;
+}
+
+.barCode:hover {
+  opacity: 0.5;
+  color: black;
+}
+
+.info a:hover,
+.sns a:hover {
   color: rgb(33, 55, 70);
+}
+/* ==================================================== */
+
+.dropbtn:after,
+.navi:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 5px;
+  width: 0;
+  opacity: 0;
+  height: 2px;
+  background: rgb(33, 55, 70);
+  transition: all 0.8s 0s ease;
+  z-index: 1;
+}
+
+.navi a:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  width: 0;
+  opacity: 0;
+  height: 2px;
+  background: white;
+  transition: all 0.8s 0s ease;
+  z-index: 1;
+}
+
+.navi a:hover:after {
+  width: 100%;
+  opacity: 1;
+}
+
+.dropbtn:hover:after {
+  width: 100%;
+  opacity: 1;
+}
+
+.navi a {
+  font-size: 1.4rem;
+}
+
+.sn:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  width: 0;
+  opacity: 0;
+  height: 2px;
+  background: white;
+  transition: all 0.8s 0s ease;
+  z-index: 1;
+}
+
+.sn:hover:after {
+  width: 100%;
+  opacity: 1;
 }

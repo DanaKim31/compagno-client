@@ -19,65 +19,97 @@ const Footer = () => {
           </div>
 
           <div className="footer">
-            <div
-              className="fote1"
+            <p
+              className="com"
               style={{
-                textAlign: "center",
-                position: "relative",
-                top: "30px",
+                fontSize: "3.5rem",
+                position: "absolute",
+                transform: "rotate(270deg)",
+                bottom: "165px",
+                left: "-100px",
               }}
             >
-              <p style={{ fontSize: "3rem", fontWeight: "lighter" }}>
-                Stay up to date at all times
-              </p>
-              <div
-                className="sns"
-                style={{
-                  fontSize: "1.2rem",
-                  textDecoration: "none",
-                }}
-              >
-                <a href="">facebook</a>
-                <a href="">LinkedinIn</a>
-                <a href="">instagram</a>
-                <a href="">Youtube</a>
-              </div>
-            </div>
+              {" "}
+              Compagno ){" "}
+            </p>
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-around",
-                paddingTop: "50px",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  textAlign: "center",
-                  width: "39%",
-                }}
-              >
+              <div style={{}}>
                 <div>
+                  <div
+                  // style={{ position: "relative", top: "100px", height: "40px" }}
+                  >
+                    <div className="URL" style={{ display: "flex" }}>
+                      <p
+                        style={{
+                          fontSize: "2rem",
+                          position: "absolute",
+                          bottom: "310px",
+                          left: "128px",
+                        }}
+                      >
+                        Development-related Code Information
+                      </p>
+                      <p
+                        style={{
+                          position: "relative",
+                          top: "135px",
+                          left: "120px",
+                        }}
+                      >
+                        p ) + 603 7985 8288{" "}
+                      </p>
+                      <p
+                        style={{
+                          position: "relative",
+                          top: "135px",
+                          left: "190px",
+                        }}
+                      >
+                        {" "}
+                        GitHub :{" "}
+                      </p>
+                      <a
+                        href="https://github.com/DanaKim31/compagno-client"
+                        style={{ textDecoration: "none", color: "white" }}
+                      >
+                        Client{" "}
+                      </a>
+
+                      <a
+                        href="https://github.com/DanaKim31/compagno-server"
+                        style={{
+                          textDecoration: "none",
+                          color: "white",
+                          position: "relative",
+                          left: "220px",
+                        }}
+                      >
+                        {" "}
+                        Sever{" "}
+                      </a>
+                    </div>
+                  </div>
                   <div
                     className="info"
                     style={{
-                      display: "inline-block",
-                      left: "100px",
                       position: "relative",
-                      bottom: "100px",
+                      top: "180px",
+                      left: "90px",
                     }}
                   >
                     <p
                       style={{
                         fontSize: "2rem",
-                        textAlign: "center",
-                        position: "relative",
                       }}
                     >
                       Navigator
                     </p>
-                    <div style={{ display: "inline-grid" }}>
+                    <div style={{}} className="navi">
                       <a href="">Home</a>
                       <a href="">User</a>
                       <a href="">Board</a>
@@ -86,112 +118,137 @@ const Footer = () => {
                     </div>
                   </div>
                 </div>
-                <div
-                  style={{ position: "relative", top: "100px", height: "40px" }}
-                >
-                  <p style={{ fontSize: "2rem" }}> Compagno ) </p>
-                  <div className="URL">
-                    <p>p ) + 603 7985 8288 </p>
-                    GitHub :
-                    <a
-                      href="https://github.com/DanaKim31/compagno-client"
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      {" "}
-                      Client{" "}
-                    </a>
-                    <a
-                      href="https://github.com/DanaKim31/compagno-server"
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      {" "}
-                      / Sever{" "}
-                    </a>
-                  </div>
-                </div>
 
                 {/* 여기는 조원들 이름과 이메일 정보 */}
               </div>
               <div
                 style={{
                   position: "relative",
-                  top: "43px",
-                  left: "40px",
+                  top: "80px",
                 }}
               >
-                <p style={{ fontSize: "2rem" }}></p>
                 <div
                   className="person"
                   style={{
                     display: "flex",
                     position: "relative",
-                    left: "80px",
+                    left: "140px",
                   }}
                 >
-                  <p>
-                    김다은 / DanaKim
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    손민정
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    권예빈
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
+                  <div>
+                    <a href="https://github.com/DanaKim31">김다은 : GitHub ></a>
+                    <p>E-mail : danakim731@gmail.com</p>
+                  </div>
+                  <div>
+                    <a href="https://github.com/sohnminjeong">
+                      손민정 : GitHub >
+                    </a>
+                    <p>E-Mail : sonmj0424@naver.com</p>
+                  </div>
+                  <div>
+                    <a href="https://">권예빈 : GitHub ></a>
+                    <p>E-mail : danakim731@gmail.com</p>
+                  </div>
                 </div>
-                <div className="person" style={{ display: "flex" }}>
-                  <p>
-                    이상현
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    정동준
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    정회영
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    김현수
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
+                <div
+                  className="person"
+                  style={{
+                    display: "flex",
+                    position: "relative",
+                    // bottom: "20px",
+                  }}
+                >
+                  <div>
+                    <a href="https://github.com/sohnminjeong">
+                      이상현 : GitHub >
+                    </a>
+                    <p>E-Mail : yogu970126@gmail.com</p>
+                  </div>
+                  <div>
+                    <a href="https://github.com/jungdj221">정동준 : GitHub ></a>
+                    <p>E-Mail : jungdj2002@gmail.com</p>
+                  </div>
+                  <div>
+                    <a href="https://github.com/jungdj221">정회영 : GitHub ></a>
+                    <p>E-Mail : yogu970126@gmail.com</p>
+                  </div>
+                  <div>
+                    <a href="https://github.com/jungdj221">김현수 : GitHub ></a>
+                    <p>E-Mail : kjwgustn123@naver.com</p>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "140px",
+                    transform: "rotate(90deg)",
+                    right: "-115px",
+                    fontSize: "4rem",
+                  }}
+                  className="barCode"
+                >
+                  ||||||||||||||
                 </div>
               </div>
             </div>
             <div
               style={{
                 display: "flex",
-                justifyContent: "space-evenly",
-                // paddingTop: "50px",
+                justifyContent: "space-between",
+                top: "120px",
+                position: "relative",
               }}
             >
               <p
                 style={{
                   fontSize: "1.2rem",
                   position: "relative",
-                  right: "350px",
+                  left: "50px",
                 }}
               >
                 © 6, Teheran-ro 14-gil, Gangnam-gu, Seoul, Republic of Korea{" "}
               </p>
-              <p
+              <div
+                className="fote1"
                 style={{
+                  // textAlign: "center",
                   position: "relative",
-                  left: "350px",
                 }}
               >
-                SINCE : 2024 F&B Project
-              </p>
+                <div
+                  className="sns"
+                  style={{
+                    fontSize: "1.2rem",
+                    textDecoration: "none",
+                    width: "100vh",
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <a href="" className="sn">
+                    facebook
+                  </a>
+                  <a href="" className="sx">
+                    LinkedinIn
+                  </a>
+                  <a href="" className="s">
+                    instagram
+                  </a>
+                  <a href="" className="s">
+                    Youtube
+                  </a>
+                </div>
+              </div>
+              <div>
+                <p
+                  style={{
+                    position: "relative",
+                    right: "50px",
+                  }}
+                >
+                  SINCE : 2024 F&B Project
+                </p>
+              </div>
             </div>
           </div>
         </section>

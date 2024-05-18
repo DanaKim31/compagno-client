@@ -195,7 +195,7 @@ const CreateClass = () => {
     } else if (odcAccompaying == "" || odcAccompaying == undefined) {
       alert("동반여부에 관련 체크를 정해주세요");
     } else if (odcMainImage == "" || odcMainImage == undefined) {
-      alert("클래스 관련 메인 이미지를 1개 택해주세요");
+      alert("클래스관련 메인 이미지를 1개 택해주세요");
     } else {
       await addOnedayClass(formData);
       navigate("/compagno/onedayClassBoard");

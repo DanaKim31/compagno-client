@@ -49,7 +49,9 @@ const Section6 = () => {
               쪽지함에서 전체 쪽지들을 관리 할 수 있습니다.
             </p>
             {/* <a href="">유저들과의 쪽지를 원하시나요</a> */}
-            <button onClick={sendNote}>유저들과의 쪽지를 원하시나요</button>
+            <button onClick={sendNote} style={{ fontWeight: "bold" }}>
+              유저들과의 쪽지를 원하시나요
+            </button>
           </div>
           <div className="photo">
             <img src="/img/section6-1.jpg" alt="logo image" />

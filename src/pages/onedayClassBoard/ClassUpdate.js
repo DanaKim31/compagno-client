@@ -115,7 +115,6 @@ const ClassUpdate = () => {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
     oneClassAPI();
-    // console.log(moment().format("YYYY-MM-DD HH:mm:SS"));
   }, []);
 
   // 1 . 기존에 있던 정보들 먼저 삭제 하고 !!
@@ -223,7 +222,6 @@ const ClassUpdate = () => {
                   style={{ width: "78px" }}
                 />
               </div>
-              {/* {odcClass.user.userNickname} */}
               <p> 이메일 : {user.userEmail}</p>
             </div>
             <p
