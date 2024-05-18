@@ -5,8 +5,7 @@ import NoteCreate from "../../components/note/NoteCreate";
 import { FaRegPaperPlane } from "react-icons/fa6";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { RiFolderSharedLine, RiFolderReceivedLine } from "react-icons/ri";
-import NoteViewSendBox from "../../components/note/NoteViewSendBox";
-
+import NoteViewSendBox from "../note/NoteViewReceiveBox";
 import NoteViewReceiveBox from "../note/NoteViewReceiveBox";
 import { FaStar } from "react-icons/fa";
 import NoteViewStar from "../../components/note/NoteViewStar";
