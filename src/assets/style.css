@@ -507,6 +507,8 @@ header a {
   right: 158px;
   bottom: 21px;
   height: 481px;
+  display: flex;
+  align-items: center;
 }
 
 .sec3 {
@@ -839,11 +841,24 @@ span img {
 
 .sns a {
   color: white;
-  /* padding: 50px; */
+}
+
+.person a {
+  color: white;
+  text-decoration: none;
+}
+
+.person a:hover {
+  opacity: 0.5;
+  color: black;
 }
 
 .person p {
   padding: 30px;
+}
+
+.person div {
+  text-align: center;
 }
 
 .info a {
@@ -860,8 +875,18 @@ span img {
   font-size: 1.4rem;
 }
 
+.URL a:hover {
+  opacity: 0.5;
+  color: black;
+}
+
 .com:hover {
   opacity: 0.5;
+}
+
+.barCode:hover {
+  opacity: 0.5;
+  color: black;
 }
 
 .info a:hover,
@@ -896,12 +921,35 @@ span img {
   transition: all 0.8s 0s ease;
   z-index: 1;
 }
+
 .navi a:hover:after {
   width: 100%;
   opacity: 1;
 }
 
 .dropbtn:hover:after {
+  width: 100%;
+  opacity: 1;
+}
+
+.navi a {
+  font-size: 1.4rem;
+}
+
+.sn:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  width: 0;
+  opacity: 0;
+  height: 2px;
+  background: white;
+  transition: all 0.8s 0s ease;
+  z-index: 1;
+}
+
+.sn:hover:after {
   width: 100%;
   opacity: 1;
 }

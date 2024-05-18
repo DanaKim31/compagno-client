@@ -36,49 +36,61 @@ const Footer = () => {
               style={{
                 display: "flex",
                 justifyContent: "space-around",
-                // paddingTop: "50px",
               }}
             >
-              <div
-                style={
-                  {
-                    // display: "flex",
-                    // justifyContent: "space-between",
-                    // textAlign: "center",
-                    // width: "39%",
-                  }
-                }
-              >
+              <div style={{}}>
                 <div>
                   <div
                   // style={{ position: "relative", top: "100px", height: "40px" }}
                   >
-                    <div className="URL">
+                    <div className="URL" style={{ display: "flex" }}>
                       <p
                         style={{
                           fontSize: "2rem",
                           position: "absolute",
                           bottom: "310px",
+                          left: "128px",
                         }}
                       >
                         Development-related Code Information
                       </p>
-                      <p style={{ position: "relative", top: "120px" }}>
+                      <p
+                        style={{
+                          position: "relative",
+                          top: "135px",
+                          left: "120px",
+                        }}
+                      >
                         p ) + 603 7985 8288{" "}
                       </p>
-
+                      <p
+                        style={{
+                          position: "relative",
+                          top: "135px",
+                          left: "190px",
+                        }}
+                      >
+                        {" "}
+                        GitHub :{" "}
+                      </p>
                       <a
                         href="https://github.com/DanaKim31/compagno-client"
                         style={{ textDecoration: "none", color: "white" }}
                       >
-                        GitHub : Client{" "}
+                        Client{" "}
                       </a>
+
                       <a
                         href="https://github.com/DanaKim31/compagno-server"
-                        style={{ textDecoration: "none", color: "white" }}
+                        style={{
+                          textDecoration: "none",
+                          color: "white",
+                          position: "relative",
+                          left: "220px",
+                        }}
                       >
                         {" "}
-                        / Sever{" "}
+                        Sever{" "}
                       </a>
                     </div>
                   </div>
@@ -86,7 +98,8 @@ const Footer = () => {
                     className="info"
                     style={{
                       position: "relative",
-                      top: "150px",
+                      top: "180px",
+                      left: "90px",
                     }}
                   >
                     <p
@@ -96,14 +109,7 @@ const Footer = () => {
                     >
                       Navigator
                     </p>
-                    <div
-                      style={
-                        {
-                          // display: "inline-grid",
-                        }
-                      }
-                      className="navi"
-                    >
+                    <div style={{}} className="navi">
                       <a href="">Home</a>
                       <a href="">User</a>
                       <a href="">Board</a>
@@ -126,64 +132,62 @@ const Footer = () => {
                   style={{
                     display: "flex",
                     position: "relative",
-                    right: "140px",
+                    left: "140px",
                   }}
                 >
-                  <p>
-                    김다은 / DanaKim
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    손민정
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    권예빈
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
+                  <div>
+                    <a href="https://github.com/DanaKim31">김다은 : GitHub ></a>
+                    <p>E-mail : danakim731@gmail.com</p>
+                  </div>
+                  <div>
+                    <a href="https://github.com/sohnminjeong">
+                      손민정 : GitHub >
+                    </a>
+                    <p>E-Mail : sonmj0424@naver.com</p>
+                  </div>
+                  <div>
+                    <a href="https://">권예빈 : GitHub ></a>
+                    <p>E-mail : danakim731@gmail.com</p>
+                  </div>
                 </div>
                 <div
                   className="person"
                   style={{
                     display: "flex",
                     position: "relative",
-                    bottom: "20px",
+                    // bottom: "20px",
                   }}
                 >
-                  <p>
-                    이상현
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    정동준
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    정회영
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
-                  <p>
-                    김현수
-                    <br />T +010-xxxx-xxxx <br />
-                    kh123@naver.com
-                  </p>
+                  <div>
+                    <a href="https://github.com/sohnminjeong">
+                      이상현 : GitHub >
+                    </a>
+                    <p>E-Mail : yogu970126@gmail.com</p>
+                  </div>
+                  <div>
+                    <a href="https://github.com/jungdj221">정동준 : GitHub ></a>
+                    <p>E-Mail : jungdj2002@gmail.com</p>
+                  </div>
+                  <div>
+                    <a href="https://github.com/jungdj221">정회영 : GitHub ></a>
+                    <p>E-Mail : yogu970126@gmail.com</p>
+                  </div>
+                  <div>
+                    <a href="https://github.com/jungdj221">김현수 : GitHub ></a>
+                    <p>E-Mail : kjwgustn123@naver.com</p>
+                  </div>
                 </div>
                 <div
                   style={{
                     position: "absolute",
-                    bottom: "180px",
+                    bottom: "140px",
                     transform: "rotate(90deg)",
-                    right: "-190px",
+                    right: "-115px",
                     fontSize: "4rem",
                   }}
+                  className="barCode"
                 >
-                  ||||||||||||||||
+                  ||||||||||||||
                 </div>
               </div>
             </div>
@@ -191,7 +195,7 @@ const Footer = () => {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                top: "85px",
+                top: "120px",
                 position: "relative",
               }}
             >
@@ -221,10 +225,18 @@ const Footer = () => {
                     justifyContent: "space-around",
                   }}
                 >
-                  <a href="">facebook</a>
-                  <a href="">LinkedinIn</a>
-                  <a href="">instagram</a>
-                  <a href="">Youtube</a>
+                  <a href="" className="sn">
+                    facebook
+                  </a>
+                  <a href="" className="sx">
+                    LinkedinIn
+                  </a>
+                  <a href="" className="s">
+                    instagram
+                  </a>
+                  <a href="" className="s">
+                    Youtube
+                  </a>
                 </div>
               </div>
               <div>

@@ -71,7 +71,7 @@ const Section1 = () => {
     <>
       <section id="section1">
         <p className="fadeup">Compagno .</p>
-        <h1 className="fadeup">우린 동물를 지키고 사랑합니다</h1>
+        <h1 className="fadeup">우린 동물을 지키고 사랑합니다</h1>
         <div className="reveal">
           <div className="image-wrap">
             <img src="/img/Section1.jpg" alt="logo image" />
