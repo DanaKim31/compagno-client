@@ -527,7 +527,7 @@ const MyPageMyInfo = () => {
           <Tab eventKey="editPwd" title="암호 변경">
             <MyPagePutPwd />
           </Tab>
-          {user.userRole == "ROLE_USER" ? (
+          {info.userRole === "ROLE_USER" ? (
             <Tab eventKey="quit" title="회원 탈퇴">
               <div className="info-quit">
                 <h1 id="quitHeadText">Compagno 탈퇴 전 확인하세요.</h1>

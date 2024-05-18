@@ -88,7 +88,7 @@ const Div = styled.div`
 const SignUp = () => {
   // 정규표현식
   const idRegexp = /^[a-zA-Z][a-zA-Z0-9]{7,14}$/; // 아이디
-  const pwdRegexp = /^[a-zA-Z0-9!-~]{8,14}$/; // 비밀번호
+  const pwdRegexp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/; // 비밀번호
   const nameRegexp = /^[a-zA-Z가-힣]{2,20}$/; // 이름
   const nickRegexp = /^[a-zA-Z0-9가-힣]{3,20}$/; // 닉네임
   const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 이메일
@@ -135,7 +135,11 @@ const SignUp = () => {
 
   // 입력한 비밀번호 정규표현식으로 체크하는 함수
   const onChangePwd = () => {
-    if (pwdRegexp.test(user.userPwd) || user.userPwd === "") {
+    if (
+      pwdRegexp.test(user.userPwd) ||
+      user.userPwd === "" ||
+      user.userPwd === undefined
+    ) {
       setUserPwdSpan("");
     } else {
       setUserPwdSpan(pwdText);
@@ -283,9 +287,9 @@ const SignUp = () => {
   // 조건을 만족하면 회원가입 버튼 작동
   const register = async () => {
     if (!idRegexp.test(user.userId) || user.userId === "") {
-      alert("조건 불만족! 아이디 입력 확인");
+      alert("아이디를 알맞게 입력해주세요.");
     } else if (checkId == 8) {
-      alert("아이디 중복확인을 해주세요");
+      alert("아이디 중복확인을 해주세요.");
     } else if (checkId != 0) {
       alert("사용 불가한 아이디입니다.");
     } else if (
