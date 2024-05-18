@@ -1,8 +1,8 @@
 import { getQuestion, updateQuestion, delQuestion } from "../../api/Question";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import styled from "styled-components";
 import { userSave } from "../../store/user";
 import QnaADetail from "./QnaADetail";
@@ -175,8 +175,6 @@ const QnaQDetail = () => {
   const [content, setContent] = useState("");
   const [editA, setEditA] = useState(null);
 
-  const fileRef = useRef();
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { qnaQCode } = useParams();
@@ -191,7 +189,6 @@ const QnaQDetail = () => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
-    // 1. Question 세팅 (불러오기)
     questionAPI();
   }, []);
 
@@ -211,50 +208,47 @@ const QnaQDetail = () => {
 
   // 2-2. 수정 폼 제출
   const questionUpdate = async () => {
-    const formData = new FormData();
-
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userImg", user.userImg);
-    setUserImg(user.userImg);
-
-    formData.append("qnaQCode", editQ.qnaQCode);
-    formData.append("qnaQTitle", editQ.qnaQTitle);
-    formData.append("qnaQContent", editQ.qnaQContent);
-
-    if (editQ.images.length + images.length <= 3) {
-      editQ.images?.forEach((image, index) => {
-        formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
-        formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
-        formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
-      });
-      // 새로 추가된 이미지
-      images.forEach((image, index) => {
-        formData.append(`files[${index}]`, image);
-      });
-
-      // setEditQ("images", showImages);
-      await updateQuestion(formData);
-      setImages([]);
-      setEditQ(null);
-      questionAPI();
+    if(editQ.qnaQTitle === "" || editQ.qnaQTitle === undefined){
+alert("제목을 입력해주세요!");
+    } else if(editQ.qnaQContent === "" || editQ.qnaQContent === undefined){
+      alert("내용을 입력해주세요!");
     } else {
-      alert("파일 업로드는 최대 3개까지만 가능합니다!");
-    }
+      const formData = new FormData();
 
-    //   // 새로 추가된 이미지
-    //   images.forEach((image, index) => {
-    //     formData.append(`files[${index}]`, image);
-    //   });
-    //   await updateQuestion(formData);
-    //   setImages([]);
-    //   setEditQ(null);
-    //   questionAPI();
-    // }
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userImg", user.userImg);
+      setUserImg(user.userImg);
+  
+      formData.append("qnaQCode", editQ.qnaQCode);
+      formData.append("qnaQTitle", editQ.qnaQTitle);
+      formData.append("qnaQContent", editQ.qnaQContent);
+  
+      if (editQ.images.length + images.length <= 3) {
+        editQ.images?.forEach((image, index) => {
+          formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
+          formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
+          formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
+        });
+        // 새로 추가된 이미지
+        images.forEach((image, index) => {
+          formData.append(`files[${index}]`, image);
+        });
+  
+        await updateQuestion(formData);
+        setImages([]);
+        setEditQ(null);
+        questionAPI();
+      } else {
+        alert("파일 업로드는 최대 3개까지만 가능합니다!");
+      }
+    }
+    
+    
   };
 
   // 2-3. 이미지 선택 시 이미지 삭제
@@ -278,25 +272,15 @@ const QnaQDetail = () => {
       imageUrlLists.push(currentImageUrl);
     }
     setShowImages(imageUrlLists);
-    // setImages에 .. filtering 해야하나..
   };
 
   // 2-5. 수정 삭제 이미지 관리
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
     setImages(images.filter((_, index) => index !== id));
-    // fileRef.current = showImages.filter((_, index) => index !== id).length;
-    // console.log(fileRef);
-    console.log(showImages.filter((_, index) => index !== id));
   };
 
-  // 3. A UPDATE ===================================================
-  // 3-1. 답변 수정 클릭 시 정보를 담은 폼 화면이 나옴!
-  const onUpdateAnswer = async (answer) => {
-    setEditA(answer);
-  };
-
-  // 4. DELETE ========================================================
+  // 3. DELETE ========================================================
   const onDeleteQuestion = (qnaQCode) => {
     delQuestion(qnaQCode);
     questionAPI();
@@ -413,10 +397,7 @@ const QnaQDetail = () => {
                             }
                           />
                           <div>
-                            <p>
                               <MyToggleBar name={question.userNickname} />
-                            </p>
-                            <p>아이디 : {question.userId}</p>
                           </div>
                         </div>
                         <div>
@@ -548,10 +529,7 @@ const QnaQDetail = () => {
                             }
                           />
                           <div>
-                            <p>
                               <MyToggleBar name={question.userNickname} />
-                            </p>
-                            <p>아이디 : {question.userId}</p>
                           </div>
                         </div>
                         <div>

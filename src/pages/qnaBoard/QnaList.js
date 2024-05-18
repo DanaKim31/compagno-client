@@ -212,8 +212,12 @@ const QnaList = () => {
 
   // 페이지가 변할 때마다 questionAPI() 실행
   useEffect(() => {
-    questionAPI();
+    search();
   }, [page]);
+
+  useEffect(() => {
+    questionAPI();
+  }, []);
 
   // totalPage가 바뀔 때 마다 실행
   useEffect(() => {
@@ -237,12 +241,9 @@ const QnaList = () => {
 
   const search = async () => {
     const response = await getQuestions(page, select, keyword);
-    console.log(response.data);
     setQuestions(response.data);
     setTotalPage(response.data?.totalPages);
   };
-
-  // const [counts, setCounts] = useState(1); // 데이터 총 갯수
 
   // 입력한 비밀번호
   const [secretPwd, setSecret] = useState("");
@@ -255,8 +256,6 @@ const QnaList = () => {
     const [pwd, setPwd] = useState("");
 
     const pwdCheck = () => {
-      console.log(secretPwd === pwd);
-      console.log(code);
       if (secretPwd === pwd) {
         navigate("/compagno/question/detail/" + code);
       } else {
@@ -385,7 +384,6 @@ const QnaList = () => {
                               setModalShow(true);
                               setSecret(question.secret);
                               setCode(question.qnaQCode);
-                              console.log(question.secret);
                             }}
                           >
                             {question.secret === "" ||

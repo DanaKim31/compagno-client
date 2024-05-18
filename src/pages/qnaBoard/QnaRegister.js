@@ -82,6 +82,9 @@ const Div = styled.div`
     height: 500px;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
+    textarea{
+      font-weight: bold;
+    }
     
       #title{
         display: flex;
@@ -96,6 +99,9 @@ const Div = styled.div`
         #secret{
           width: 30%;
           margin-right: 50px;
+        }
+        #conttent{
+          font-weight: bold;
         }
       }
     input{
@@ -160,32 +166,40 @@ const QnaRegister = () => {
   };
 
   const add = async () => {
-    const formData = new FormData();
 
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userImg", user.userImg);
-    setUserImg(user.userImg);
-
-    formData.append("qnaQTitle", title);
-
-    formData.append("qnaQContent", content);
-
-    formData.append("secret", secret);
-
-    if (images.length > 3) {
-      alert("파일 업로드는 최대 3개까지 가능합니다!");
+    if(title === "" || title === undefined){
+      alert("제목을 입력해주세요!");
+    } else if(content === "" || content === undefined){
+      alert("내용을 입력해주세요!");
     } else {
-      images.forEach((image, index) => {
-        formData.append(`files[${index}]`, image);
-      });
-      await addQuestion(formData);
-      navigate("/compagno/question");
+      const formData = new FormData();
+
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userImg", user.userImg);
+      setUserImg(user.userImg);
+  
+      formData.append("qnaQTitle", title);
+  
+      formData.append("qnaQContent", content);
+  
+      formData.append("secret", secret);
+  
+      if (images.length > 3) {
+        alert("파일 업로드는 최대 3개까지 가능합니다!");
+      } else {
+        images.forEach((image, index) => {
+          formData.append(`files[${index}]`, image);
+        });
+        await addQuestion(formData);
+        navigate("/compagno/question");
+      }
     }
+    
   };
 
   const [pwd, setPwd] = useState(0);
@@ -207,7 +221,6 @@ const QnaRegister = () => {
       <h1>질문 등록하기</h1>
 
     <div id="register">
-
       <div id="input">
         <div id="title">
           <div>
@@ -234,10 +247,8 @@ const QnaRegister = () => {
           </div>
 
         </div>
-          
-
-
-        <div>
+        
+        <div id="content">
           <p>내용</p>
           <Form.Control
             as="textarea"

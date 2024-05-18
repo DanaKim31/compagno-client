@@ -26,6 +26,5 @@ export const getContents = async (
 };
 
 export const getContent = async (num) => {
-  console.log(num);
   return await instance.get("content/" + num);
 };

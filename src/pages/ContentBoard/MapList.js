@@ -18,12 +18,6 @@ const MapList = ({ content }) => {
     setLat(maplist[0]?.latlng.lat);
     setLng(maplist[0]?.latlng.lng);
 
-    // const latt = maplist[0].latlng.La;
-    // console.log(latt);
-
-    // console.log(maplist[0]);
-    // const latt = JSON.stringify(maplist[0].LatLng);
-    // console.log(latt);
   }, [content]);
 
   return (

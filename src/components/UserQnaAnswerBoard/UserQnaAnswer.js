@@ -63,6 +63,19 @@ const Div = styled.div`
     padding-left: 5px;
   }
 
+  #rewriter{
+    background-color: #94B29B;
+    border: none;
+    border-radius: 7px;
+    margin: 10px;
+    height: 25px;
+    font-size: 12px;
+    margin-top: 5px;
+    padding-top: 3px;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
   // 채택된 상위 답변
   #topanswer {
     font-family: "TAEBAEKmilkyway";
@@ -84,6 +97,24 @@ const Div = styled.div`
         margin-right: 10px;
       }
     }
+  }
+  #topChoosereanswerregistercontent {
+      display: flex;
+      height: 50px;
+      input{
+        font-weight: bold;
+      }
+      button {
+        width: 80px;
+        height: 41px;
+        margin-left: 10px;
+        padding-right: 10px;
+      }
+      margin: 10px 110px;
+    }
+
+  #topreanswerwriter{
+    display: flex;
   }
 
   // 상위 답변
@@ -203,7 +234,10 @@ justify-content: space-evenly;
     input{
       font-weight: bold;
     }
-    #reanswerregistercontent {
+
+
+  }
+  #reanswerregistercontent {
       display: flex;
       height: 50px;
       input{
@@ -216,7 +250,7 @@ justify-content: space-evenly;
         padding-right: 10px;
       }
     }
-  }
+
 
   /* 프로필 */
   #profile {
@@ -326,41 +360,52 @@ const UserQnaAnswer = ({ question }) => {
   // 1. CREATE ==========================
   // 1.1 상위 답변 작성
   const UseranswerSubmit = async () => {
-    const formData = new FormData();
+    if(content === "" || content === undefined){
+      alert("내용을 입력하세요!");
+    } else {
+      const formData = new FormData();
 
-    formData.append("userQuestionBoardCode", userQuestionBoardCode);
-
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userAnswerContent", content);
-
-    await addUserAnswer(formData);
-    answersAPI();
-    setContent("");
+      formData.append("userQuestionBoardCode", userQuestionBoardCode);
+  
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userAnswerContent", content);
+  
+      await addUserAnswer(formData);
+      answersAPI();
+      setContent("");
+    }
+    
   };
 
-  // 1.2 하위 답변 수정
+  // 1.2 하위 답변 작성
   const UserReanswerSubmit = async () => {
-    const formData = new FormData();
-    formData.append("userQuestionBoardCode", userQuestionBoardCode);
-
-    formData.append("answerParentCode", code);
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userAnswerContent", reanswerContent);
-
-    await addUserAnswer(formData);
-    answersAPI();
-    setReanswerContent("");
-    setCode(0);
+    if(reanswerContent === "" || reanswerContent === undefined){
+      alert("내용을 입력하세요!");
+    } else {
+      const formData = new FormData();
+      formData.append("userQuestionBoardCode", userQuestionBoardCode);
+  
+      formData.append("answerParentCode", code);
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userAnswerContent", reanswerContent);
+  
+      await addUserAnswer(formData);
+      answersAPI();
+      chooseAPI();
+      setReanswerContent("");
+      setCode(0);
+    }
+    
   };
 
   // 1-3. 하위 답변 취소
@@ -375,21 +420,26 @@ const UserQnaAnswer = ({ question }) => {
   };
 
   const userAnswerUpdate = async () => {
-    const formData = new FormData();
+    if (editA.userAnswerContent === "" || editA.userAnswerContent === undefined){
+      alert("내용을 입력하세요!");
+    } else {
+      const formData = new FormData();
 
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userQuestionBoardCode", editA.userQuestionBoardCode);
-    formData.append("userAnswerBoardCode", editA.userAnswerBoardCode);
-
-    formData.append("userAnswerContent", editA.userAnswerContent);
-    await updateUserAnswer(formData);
-    setEditA(null);
-    answersAPI();
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userQuestionBoardCode", editA.userQuestionBoardCode);
+      formData.append("userAnswerBoardCode", editA.userAnswerBoardCode);
+  
+      formData.append("userAnswerContent", editA.userAnswerContent);
+      await updateUserAnswer(formData);
+      setEditA(null);
+      answersAPI();
+    }
+    
   };
 
   // 2-2. 상위 답변 수정
@@ -405,22 +455,27 @@ const UserQnaAnswer = ({ question }) => {
 
   // 2-4. 하위 답변 수정
   const userReAnswerUpdate = async () => {
-    const formData = new FormData();
+    if(editA.userAnswerContent === "" || editA.userAnswerContent === undefined){
+      alert("내용을 입력하세요!");
+    } else {
+      const formData = new FormData();
 
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userQuestionBoardCode", editA.userQuestionBoardCode);
-    formData.append("userAnswerBoardCode", editA.userAnswerBoardCode);
-    formData.append("answerParentCode", code);
-
-    formData.append("userAnswerContent", editA.userAnswerContent);
-    await updateUserAnswer(formData);
-    setEditA(null);
-    answersAPI();
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userQuestionBoardCode", editA.userQuestionBoardCode);
+      formData.append("userAnswerBoardCode", editA.userAnswerBoardCode);
+      formData.append("answerParentCode", code);
+  
+      formData.append("userAnswerContent", editA.userAnswerContent);
+      await updateUserAnswer(formData);
+      setEditA(null);
+      answersAPI();
+    }
+    
   };
 
   // 2-3. 하위 답변 수정 취소
@@ -432,6 +487,7 @@ const UserQnaAnswer = ({ question }) => {
   const onDeleteUserAnswer = async (no) => {
     await deleteUserAnswer(no);
     answersAPI();
+    chooseAPI();
   };
 
   // 4-1. 답변 채택하기=========================
@@ -441,8 +497,6 @@ const UserQnaAnswer = ({ question }) => {
 
   // 채택된 답변이 없을 경우에만 버튼이 보여야 함..
   const choose = async (answer) => {
-    console.log(answer);
-
     const formData = new FormData();
 
     formData.append("userQuestionBoardCode", answer.userQuestionBoardCode);
@@ -467,7 +521,6 @@ const UserQnaAnswer = ({ question }) => {
     const response = await getChoose(userQuestionBoardCode);
     setTopChoose(response.data);
   };
-
   return (
     <Div>
       <div>
@@ -553,7 +606,7 @@ const UserQnaAnswer = ({ question }) => {
 
                     {/* 채택된 답변 하위 답변 출력하기 */}
                     {topChoose.answers?.map((reanswer) => (
-                      <div key={topChoose.userAnswerBoardCode} id="reanswer">
+                      <div key={reanswer.userAnswerBoardCode} id="reanswer">
                         <div id="reanswertopbar">
                           {user.userId === reanswer.user.userId ? (
                             <>
@@ -561,7 +614,7 @@ const UserQnaAnswer = ({ question }) => {
                               <div id="profile">
                                 <img
                                   alt=""
-                                  key={question.userQuestionBoardCode}
+                                  key={reanswer.userAnswerBoardCode}
                                   // src={
                                   //   "http://localhost:8081/" + question.userImg
                                   // }
@@ -574,6 +627,9 @@ const UserQnaAnswer = ({ question }) => {
                                   <MyToggleBar
                                     name={reanswer.user.userNickname}
                                   />
+                                  {question.userId === reanswer.user.userId ? (<>
+                                  <p id="topreanswerwriter">작성자</p>
+                                </>) :(<></>)}
                                 </div>
                               </div>
 
@@ -614,7 +670,9 @@ const UserQnaAnswer = ({ question }) => {
 
                                   <div>
                                     {topChoose.user.userId}
-                                    <span id="writer">작성자</span>
+                                    {question.userId === reanswer.user.userId ? (<>
+                                  <p id="topreanswerwriter">작성자</p>
+                                </>) :(<></>)}
                                   </div>
                                 </>
                               ) : (
@@ -629,13 +687,16 @@ const UserQnaAnswer = ({ question }) => {
                                       // }
                                       src={
                                         "http://192.168.10.28:8081/" +
-                                        topChoose.userImg
+                                        reanswer.user.userImg
                                       }
                                     />
-                                    <div>
+                                    <div id="topreanswerwriter">
                                       <MyToggleBar
-                                        name={topChoose.user.userNickname}
+                                        name={reanswer.user.userNickname}
                                       />
+                                      {question.userId === reanswer.user.userId ? (<>
+                                  <p id="rewriter">작성자</p>
+                                </>) :(<></>)}
                                     </div>
                                   </div>
                                 </>
@@ -699,7 +760,7 @@ const UserQnaAnswer = ({ question }) => {
                     </div>
                     {code === topChoose.userAnswerBoardCode ? (
                       <>
-                        <div id="reanswerregistercontent">
+                        <div id="topChoosereanswerregistercontent">
                           <Form.Control
                             type="textarea"
                             placeholder="하위댓글 작성"
@@ -742,9 +803,9 @@ const UserQnaAnswer = ({ question }) => {
                           }
                         />
                         <MyToggleBar name={answer.user.userNickname} />
-                        {question.userId === answer.user.userId ? (<>                                <div id="profile">
+                        {question.userId === answer.user.userId ? (<>                               
                                   <p id="writer">작성자</p>
-                                </div></>) :(<></>)}
+                                </>) :(<></>)}
                       </div>
                       <div id="topbarright">
                         <p>
@@ -885,6 +946,9 @@ const UserQnaAnswer = ({ question }) => {
                                 <MyToggleBar
                                   name={reanswer.user.userNickname}
                                 />
+                                {question.userId === reanswer.user.userId ? (<>                             
+                                  <p id="rewriter">작성자</p>
+                                </>) :(<></>)}
                               </div>
                             </div>
                             <div>
@@ -933,7 +997,7 @@ const UserQnaAnswer = ({ question }) => {
                                     }
                                   />
                                   <MyToggleBar name={question.userNickname} />
-                                  <p id="writer">작성자</p>
+                                  <p id="rewriter">작성자</p>
                                 </div>
                               </>
                             ) : (

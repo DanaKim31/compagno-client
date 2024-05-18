@@ -1,4 +1,4 @@
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -11,6 +11,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import styled from "styled-components";
+
 const Div = styled.div`
   // ======== 폰트 관련
   @font-face {
@@ -48,6 +49,9 @@ const Div = styled.div`
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
+    textarea{
+      font-weight: bold;
+    }
   }
 
   #input {
@@ -56,6 +60,9 @@ const Div = styled.div`
     height: 350px;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
+    textarea{
+      font-weight: bold;
+    }
     input {
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
@@ -182,23 +189,29 @@ const QnaADetail = () => {
   // 1. CREATE =======================================================
   // 1-1. 폼 전송
   const answerSubmit = async () => {
-    const formData = new FormData();
+    if(title === "" || title === undefined){
+      alert("제목을 입력하세요");
+    } else if(content === "" || content === undefined){
+      alert("내용을 입력하세요");
+    } else{
+      const formData = new FormData();
 
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("qnaQCode", qnaQCode);
-    formData.append("qnaATitle", title);
-    console.log(title);
-    formData.append("qnaAContent", content);
-    images.forEach((image, index) => {
-      formData.append(`files[${index}]`, image);
-    });
-    await addAnswer(formData);
-    answerAPI();
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("qnaQCode", qnaQCode);
+      formData.append("qnaATitle", title);
+      formData.append("qnaAContent", content);
+      images.forEach((image, index) => {
+        formData.append(`files[${index}]`, image);
+      });
+      await addAnswer(formData);
+      answerAPI();
+    }
+    
   };
 
   // 1-2. 이미지 변경
@@ -222,62 +235,52 @@ const QnaADetail = () => {
 
   // // 2-2. 수정 폼 제출
   const answerUpdate = async () => {
-    const formData = new FormData();
+    if(editA.qnaATitle === "" || editA.qnaATitle === undefined){
+      alert("제목을 입력하세요");
+    } else if(editA.qnaAContent === "" || editA.qnaAContent === undefined){
+      alert("내용을 입력하세요");
+    } else {
+      const formData = new FormData();
 
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("qnaQCode", editA.qnaQCode);
-    formData.append("qnaACode", editA.qnaACode);
-    formData.append("qnaATitle", editA.qnaATitle);
-    formData.append("qnaAContent", editA.qnaAContent);
-
-    editA.images?.forEach((image, index) => {
-      formData.append(`images[${index}].qnaAImgCode`, image.qnaAImgCode);
-      formData.append(`images[${index}].qnaAUrl`, image.qnaAUrl);
-      formData.append(`images[${index}].qnaACode`, editA.qnaACode);
-    });
-
-    images.forEach((image, index) => {
-      formData.append(`files[${index}]`, image);
-    });
-
-    await updateAnswer(formData);
-    setImages([]);
-    setEditA(null);
-    answerAPI();
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("qnaQCode", editA.qnaQCode);
+      formData.append("qnaACode", editA.qnaACode);
+      formData.append("qnaATitle", editA.qnaATitle);
+      formData.append("qnaAContent", editA.qnaAContent);
+  
+      editA.images?.forEach((image, index) => {
+        formData.append(`images[${index}].qnaAImgCode`, image.qnaAImgCode);
+        formData.append(`images[${index}].qnaAUrl`, image.qnaAUrl);
+        formData.append(`images[${index}].qnaACode`, editA.qnaACode);
+      });
+  
+      images.forEach((image, index) => {
+        formData.append(`files[${index}]`, image);
+      });
+  
+      await updateAnswer(formData);
+      setImages([]);
+      setEditA(null);
+      answerAPI();
+    }
   };
 
   // 2-3. 이미지 선택 시 이미지 삭제
   const deleteImage = (code) => {
     setEditA((prev) => {
       const images = prev.images.filter((image) => image.qnaQImgCode !== code);
-      console.log(images);
       return { ...prev, images: images };
     });
   };
 
-  // // 2-4. 수정 추가 이미지 미리보기 및 관리
-  // const preview = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   setImages((prev) => [...prev, ...files]);
-
-  //   const imageLists = e.target.files;
-  //   let imageUrlLists = [...showImages];
-
-  //   for (let i = 0; i < imageLists.length; i++) {
-  //     const currentImageUrl = URL.createObjectURL(imageLists[i]);
-  //     imageUrlLists.push(currentImageUrl);
-  //   }
-  //   setShowImages(imageUrlLists);
-  // };
-
-  // 2-5. 수정 삭제 이미지 관리
+  // 2-4. 수정 삭제 이미지 관리
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
   };
 
-  // 답변 취소
+  // 2-5. 답변 취소
   const cancelAnswer = () => {
     setEditA(null);
   };
@@ -285,7 +288,6 @@ const QnaADetail = () => {
   // 3. DELETE ========================================================
   const onDeleteAnswer = async (code) => {
     await deleteAnswer(code);
-    console.log(code);
     answerAPI();
     setEditA(null);
     answerAPI();
@@ -322,7 +324,7 @@ const QnaADetail = () => {
               </div>
 
               <div id="buttons">
-                <div id="list">
+                <div>
                   <button onClick={() => navigate("/compagno/question")}>
                     목록
                   </button>

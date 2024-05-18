@@ -93,8 +93,6 @@ const Content = () => {
   const [mainReg, setMainReg] = useState(0);
   const [keyword, setKeyword] = useState("");
 
-  //   const [filterReg, setFilterReg] = useState([]);
-
   const selectMainCate = [
     { value: 0, name: "카테고리 선택" },
     { value: 1, name: "반려의료" },
@@ -103,7 +101,6 @@ const Content = () => {
     { value: 4, name: "반려동물 서비스" },
   ];
 
-  // 셀렉트 박스 (mainCate onChange=> filter 처리..)
   const selectSubCate = [
     { value: 0, name: "서브 카테고리 선택" },
     { value: 1, name: "동물약국", parent: 1 },

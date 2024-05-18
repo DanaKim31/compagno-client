@@ -71,6 +71,7 @@ const Div = styled.div`
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
       #like {
+        font-size: 1.4rem;
         text-align: right;
       }
     }
@@ -140,6 +141,19 @@ const Div = styled.div`
     height: 350px;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
+    #select{
+      display: flex;
+    }
+    select{
+      height: 30px;
+      margin-left: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+    option{
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
     input {
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
@@ -167,6 +181,18 @@ const Div = styled.div`
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
+  }
+
+  #editbuttons{
+    display: flex;
+    justify-content: center;;
+    margin-top: 100px;
+    button{
+      margin: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+
   }
 
   #topbarr {
@@ -272,50 +298,59 @@ const UserQuestionDetail = () => {
 
   // 2-2. 수정 폼 제출
   const questionUpdate = async () => {
-    const formData = new FormData();
-
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userImg", user.userImg);
-    setUserImg(user.userImg);
-
-    formData.append("userQuestionBoardCode", editQ.userQuestionBoardCode);
-    formData.append("userQuestionBoardTitle", editQ.userQuestionBoardTitle);
-    formData.append("userQuestionBoardContent", editQ.userQuestionBoardContent);
-
-    if (editQ.images.length + images.length <= 3) {
-      editQ.images?.forEach((image, index) => {
-        formData.append(
-          `images[${index}].userQuestionImgCode`,
-          image.userQuestionImgCode
-        );
-        formData.append(
-          `images[${index}].userQuestionImgUrl`,
-          image.userQuestionImgUrl
-        );
-        formData.append(
-          `images[${index}].userQuestionBoardCode`,
-          editQ.userQuestionBoardCode
-        );
-      });
-
-      // 새로 추가된 이미지
-      images.forEach((image, index) => {
-        formData.append(`files[${index}]`, image);
-      });
-
-      // setEditQ("images", showImages);
-      await updateUserQuestion(formData);
-      setImages([]);
-      setEditQ(null);
-      questionAPI();
+    if(editQ.userQuestionBoardTitle === "" || editQ.userQuestionBoardTitle === undefined){
+      alert("제목을 입력하세요!");
+    } else if(editQ.userQuestionBoardContent === "" || editQ.userQuestionBoardContent === undefined){
+      alert("내용을 입력하세요!");
     } else {
-      alert("파일 업로드는 최대 3개까지만 가능합니다!");
+      const formData = new FormData();
+
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userImg", user.userImg);
+      setUserImg(user.userImg);
+  
+      formData.append("userQuestionBoardCode", editQ.userQuestionBoardCode);
+      formData.append("userQuestionBoardTitle", editQ.userQuestionBoardTitle);
+      formData.append("userQuestionBoardContent", editQ.userQuestionBoardContent);
+
+
+      formData.append("animalCategoryCode", editQ.animalCategoryCode);
+  
+      if (editQ.images.length + images.length <= 3) {
+        editQ.images?.forEach((image, index) => {
+          formData.append(
+            `images[${index}].userQuestionImgCode`,
+            image.userQuestionImgCode
+          );
+          formData.append(
+            `images[${index}].userQuestionImgUrl`,
+            image.userQuestionImgUrl
+          );
+          formData.append(
+            `images[${index}].userQuestionBoardCode`,
+            editQ.userQuestionBoardCode
+          );
+        });
+  
+        // 새로 추가된 이미지
+        images.forEach((image, index) => {
+          formData.append(`files[${index}]`, image);
+        });
+  
+        await updateUserQuestion(formData);
+        setImages([]);
+        setEditQ(null);
+        questionAPI();
+      } else {
+        alert("파일 업로드는 최대 3개까지만 가능합니다!");
+      }
     }
+    
   };
 
   // 2-3. 이미지 선택 시 이미지 삭제
@@ -341,14 +376,12 @@ const UserQuestionDetail = () => {
       imageUrlLists.push(currentImageUrl);
     }
     setShowImages(imageUrlLists);
-    // setImages에 .. filtering 해야하나..
   };
 
   // 2-5. 수정 삭제 이미지 관리
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
     setImages(images.filter((_, index) => index !== id));
-    console.log(showImages.filter((_, index) => index !== id));
   };
 
   // 3. A UPDATE ===================================================
@@ -436,6 +469,15 @@ const UserQuestionDetail = () => {
                   </div>
                   <div id="input">
                     {/* 수정 폼 */}
+                    <div id="select">
+                      <p>동물</p>
+                      <select value={editQ.animalCategoryCode} onChange={(e) => setEditQ((prev) => ({...prev, animalCategoryCode: e.target.value}))}>
+                        <option value={0}>전체</option>
+                        <option value={1}>개</option>
+                        <option value={2}>고양이</option>
+                        <option value={3}>기타</option>
+                      </select>
+                    </div>
                     <div id="title">
                       <p>제목</p>
                       <Form.Control
@@ -476,7 +518,7 @@ const UserQuestionDetail = () => {
                     </div>
                   </div>
                   {/* 수정, 취소 버튼 */}
-                  <div id="buttons">
+                  <div id="editbuttons">
                     <button onClick={questionUpdate}>수정</button>
                     <button
                       onClick={() => {
@@ -522,8 +564,11 @@ const UserQuestionDetail = () => {
                         question.userQuestionBoardStatus == null ? (
                           <>
                             {/* 상태가 N: 수정, 삭제 버튼 */}
+
                             <div id="status">
-                              <button
+                              {question.userQuestionBoardCount !== 0 ? (<>
+                              </>) : (<>
+                                <button
                                 onClick={() => onUpdateQuestion(question)}
                               >
                                 수정
@@ -536,7 +581,8 @@ const UserQuestionDetail = () => {
                                 }
                               >
                                 삭제
-                              </button>
+                              </button></>)}
+                              
                             </div>
                           </>
                         ) : (
@@ -614,7 +660,12 @@ const UserQuestionDetail = () => {
                   </div>
                 </div>
 
+                <hr/>
+                <div id="content">
+                  <p>{question.userQuestionBoardContent}</p>
+                </div>
                 {/* 상세 정보 */}
+                <div id="images">
                 {question.images?.map((image) => (
                   <img
                     alt=""
@@ -626,10 +677,8 @@ const UserQuestionDetail = () => {
                     }
                   />
                 ))}
-                <div id="content">
-                  <p>{question.userQuestionBoardContent}</p>
                 </div>
-                <hr />
+                <hr/>
                 <UserQnaAnswer question={question} />
               </>
             ) : (
@@ -662,7 +711,7 @@ const UserQuestionDetail = () => {
                         </div>
                       </div>
 
-                      <div>
+                      <div id="desc">
                         <p>조회수 : {question.viewcount}</p>
 
                         {/* 좋아요 */}
