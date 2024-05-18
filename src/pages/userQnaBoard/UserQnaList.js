@@ -387,7 +387,7 @@ const UserQnaList = () => {
       </div>
       <div id="topbarsecond">
         <span>전체 {questions?.totalElements}건</span>
-        {user.userId !== undefined ? (
+        {user.userId !== undefined && user.userRole !== 'ROLE_ADMIN' ? (
           <div id="like">
             <div className="form-check form-switch">
               <input
