@@ -39,6 +39,11 @@ const Div = styled.div`
   justify-content: center;
   position: relative;
   top: 180px;
+
+  #pageBtn:hover {
+    background-color: rgb(32, 61, 59);
+    color: white;
+  }
 `;
 const Comments = () => {
   // 유저정보 가지고온다
@@ -939,12 +944,6 @@ const Comments = () => {
                 value={num}
                 onClick={(e) => setPage(Number(e.target.value))}
                 style={{
-                  // borderRadius: "50%",
-                  // width: "30px",
-                  // height: "30px",
-                  // border: "none",
-                  // fontWeight: "bold",
-                  // backgroundColor: "#cbd6ce",
                   fontWeight: "bold",
                   width: "25px",
                   height: "28px",
@@ -954,6 +953,7 @@ const Comments = () => {
                   color: "black",
                   margin: "5px",
                 }}
+                id="pageBtn"
               >
                 {num}
               </button>

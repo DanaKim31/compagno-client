@@ -181,6 +181,10 @@ const Div = styled.div`
       color: black;
       margin: 5px;
     }
+    button:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
+    }
     .iconPaging {
       cursor: pointer;
     }

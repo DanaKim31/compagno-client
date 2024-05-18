@@ -77,15 +77,6 @@ const Div = styled.div`
     font-weight: bold;
   }
   #pageBtn {
-    /* font-weight: bold;
-    border-radius: 50%;
-    border: none;
-    color: rgb(32, 61, 59);
-    width: 25px;
-    height: 25px;
-    font-size: 0.8rem;
-    margin: 0px 5px;
-    background-color: #cbd6ce; */
     font-weight: bold;
     width: 25px;
     height: 28px;
@@ -94,6 +85,10 @@ const Div = styled.div`
     background-color: white;
     color: black;
     margin: 5px;
+    &:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
+    }
   }
 `;
 const ModalContariner = styled.div`

@@ -120,6 +120,10 @@ const Div = styled.div`
     background-color: white;
     color: black;
     margin: 5px;
+    &:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
+    }
   }
 `;
 const NoteViewReceiveBox = () => {

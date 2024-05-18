@@ -39,6 +39,12 @@ const Div = styled.div`
   justify-content: center;
   position: relative;
   top: 180px;
+  #btnPage {
+    &:hover {
+      background-color: rgb(32, 61, 59);
+      color: white;
+    }
+  }
 `;
 
 const Comments = () => {
@@ -365,7 +371,6 @@ const Comments = () => {
                           >
                             {" "}
                             <MyToggleBar name={comment.user.userNickname} />
-                            {/* {comment.user.userNickname} */}
                           </p>
                           <div
                             style={{ display: "flex", alignItems: "center" }}
@@ -631,37 +636,6 @@ const Comments = () => {
                                     )}
                                   </span>
                                   {/* 게시글 작성자와 댓글 작성자가 같을 때 -> 작성자 표시 */}
-
-                                  {/* {adop.userId == bottom.user.userId ? (
-                                    // <div
-                                    //   id="bottomWriterBtn"
-                                    //   style={{
-                                    //     display: "flex",
-                                    //     height: "27px",
-                                    //     width: "79%",
-                                    //     justifyContent: "space-between",
-                                    //     paddingTop: "6px",
-                                    //   }}
-                                    // >
-                                      <span
-                                        id="bottomWriter"
-                                        style={{
-                                          marginLeft: "9px",
-                                          border: "1px solid green",
-                                          fontWeight: "bold",
-                                          borderRadius: "30px",
-                                          padding: "3px 5px",
-                                          fontSize: "0.5rem",
-                                        }}
-                                      >
-                                        작성자
-                                      </span>
-
-                                      
-                                    // </div>
-                                  ) : (
-                                    <></>
-                                  )} */}
 
                                   {user.userId == bottom.user.userId &&
                                   edit.adopParentCode !=
@@ -995,17 +969,11 @@ const Comments = () => {
           {pages.map((num, index) => (
             <>
               <button
+                id="btnPage"
                 key={index}
                 value={num}
                 onClick={(e) => setPage(Number(e.target.value))}
                 style={{
-                  // borderRadius: "50%",
-                  // width: "30px",
-                  // height: "30px",
-                  // border: "none",
-                  // fontWeight: "bold",
-                  // backgroundColor: "#cbd6ce",
-
                   fontWeight: "bold",
                   width: "25px",
                   height: "28px",
