@@ -355,7 +355,7 @@ const NoteViewReceiveBox = () => {
                                     starReceiverCheck(note.noteCode)
                                   }
                                   style={{
-                                    color: "yellow",
+                                    color: "#FFCC01",
                                     cursor: "pointer",
                                   }}
                                 />

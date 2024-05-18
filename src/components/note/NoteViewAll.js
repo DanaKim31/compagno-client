@@ -400,7 +400,7 @@ const NoteViewAll = () => {
                                         starSenderCheck(note.noteCode)
                                       }
                                       style={{
-                                        color: "yellow",
+                                        color: "#FFCC01",
                                         cursor: "pointer",
                                       }}
                                     />
@@ -422,7 +422,7 @@ const NoteViewAll = () => {
                                         starReceiverCheck(note.noteCode)
                                       }
                                       style={{
-                                        color: "yellow",
+                                        color: "#FFCC01",
                                         cursor: "pointer",
                                       }}
                                     />

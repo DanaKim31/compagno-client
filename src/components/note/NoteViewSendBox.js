@@ -341,7 +341,7 @@ const NoteViewSendBox = () => {
                                 <FaStar
                                   onClick={() => starSenderCheck(note.noteCode)}
                                   style={{
-                                    color: "yellow",
+                                    color: "#FFCC01",
                                     cursor: "pointer",
                                   }}
                                 />
