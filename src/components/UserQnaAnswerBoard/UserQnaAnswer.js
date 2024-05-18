@@ -360,42 +360,52 @@ const UserQnaAnswer = ({ question }) => {
   // 1. CREATE ==========================
   // 1.1 상위 답변 작성
   const UseranswerSubmit = async () => {
-    const formData = new FormData();
+    if(content === "" || content === undefined){
+      alert("내용을 입력하세요!");
+    } else {
+      const formData = new FormData();
 
-    formData.append("userQuestionBoardCode", userQuestionBoardCode);
-
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userAnswerContent", content);
-
-    await addUserAnswer(formData);
-    answersAPI();
-    setContent("");
+      formData.append("userQuestionBoardCode", userQuestionBoardCode);
+  
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userAnswerContent", content);
+  
+      await addUserAnswer(formData);
+      answersAPI();
+      setContent("");
+    }
+    
   };
 
   // 1.2 하위 답변 작성
   const UserReanswerSubmit = async () => {
-    const formData = new FormData();
-    formData.append("userQuestionBoardCode", userQuestionBoardCode);
-
-    formData.append("answerParentCode", code);
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userAnswerContent", reanswerContent);
-
-    await addUserAnswer(formData);
-    answersAPI();
-    chooseAPI();
-    setReanswerContent("");
-    setCode(0);
+    if(reanswerContent === "" || reanswerContent === undefined){
+      alert("내용을 입력하세요!");
+    } else {
+      const formData = new FormData();
+      formData.append("userQuestionBoardCode", userQuestionBoardCode);
+  
+      formData.append("answerParentCode", code);
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userAnswerContent", reanswerContent);
+  
+      await addUserAnswer(formData);
+      answersAPI();
+      chooseAPI();
+      setReanswerContent("");
+      setCode(0);
+    }
+    
   };
 
   // 1-3. 하위 답변 취소
@@ -410,21 +420,26 @@ const UserQnaAnswer = ({ question }) => {
   };
 
   const userAnswerUpdate = async () => {
-    const formData = new FormData();
+    if (editA.userAnswerContent === "" || editA.userAnswerContent === undefined){
+      alert("내용을 입력하세요!");
+    } else {
+      const formData = new FormData();
 
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userQuestionBoardCode", editA.userQuestionBoardCode);
-    formData.append("userAnswerBoardCode", editA.userAnswerBoardCode);
-
-    formData.append("userAnswerContent", editA.userAnswerContent);
-    await updateUserAnswer(formData);
-    setEditA(null);
-    answersAPI();
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userQuestionBoardCode", editA.userQuestionBoardCode);
+      formData.append("userAnswerBoardCode", editA.userAnswerBoardCode);
+  
+      formData.append("userAnswerContent", editA.userAnswerContent);
+      await updateUserAnswer(formData);
+      setEditA(null);
+      answersAPI();
+    }
+    
   };
 
   // 2-2. 상위 답변 수정
@@ -440,22 +455,27 @@ const UserQnaAnswer = ({ question }) => {
 
   // 2-4. 하위 답변 수정
   const userReAnswerUpdate = async () => {
-    const formData = new FormData();
+    if(editA.userAnswerContent === "" || editA.userAnswerContent === undefined){
+      alert("내용을 입력하세요!");
+    } else {
+      const formData = new FormData();
 
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userQuestionBoardCode", editA.userQuestionBoardCode);
-    formData.append("userAnswerBoardCode", editA.userAnswerBoardCode);
-    formData.append("answerParentCode", code);
-
-    formData.append("userAnswerContent", editA.userAnswerContent);
-    await updateUserAnswer(formData);
-    setEditA(null);
-    answersAPI();
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userQuestionBoardCode", editA.userQuestionBoardCode);
+      formData.append("userAnswerBoardCode", editA.userAnswerBoardCode);
+      formData.append("answerParentCode", code);
+  
+      formData.append("userAnswerContent", editA.userAnswerContent);
+      await updateUserAnswer(formData);
+      setEditA(null);
+      answersAPI();
+    }
+    
   };
 
   // 2-3. 하위 답변 수정 취소

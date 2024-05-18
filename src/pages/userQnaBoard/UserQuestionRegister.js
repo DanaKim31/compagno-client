@@ -161,32 +161,40 @@ const UserQuestionRegister = () => {
 
   // 등록할 폼 정보 폼데이터 형식에 담아서 추가하는 api 호출
   const add = async () => {
-    const formData = new FormData();
 
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userImg", user.userImg);
-    setUserImg(user.userImg);
-
-    formData.append("animalCategoryCode", animalCatecode);
-
-    formData.append("userQuestionBoardTitle", title);
-
-    formData.append("userQuestionBoardContent", content);
-
-    if (images.length > 3) {
-      alert("파일 업로드는 최대 3개까지 가능합니다!");
+    if(title === "" || title === undefined){
+      alert("제목을 입력해주세요!")
+    } else if (content === "" || title === undefined){
+      alert("내용을 입력해주세요!");
     } else {
-      images.forEach((image, index) => {
-        formData.append(`files[${index}]`, image);
-      });
-      await addUserQuestion(formData);
-      navigate("/compagno/userQna");
+      const formData = new FormData();
+
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userImg", user.userImg);
+      setUserImg(user.userImg);
+  
+      formData.append("animalCategoryCode", animalCatecode);
+  
+      formData.append("userQuestionBoardTitle", title);
+  
+      formData.append("userQuestionBoardContent", content);
+  
+      if (images.length > 3) {
+        alert("파일 업로드는 최대 3개까지 가능합니다!");
+      } else {
+        images.forEach((image, index) => {
+          formData.append(`files[${index}]`, image);
+        });
+        await addUserQuestion(formData);
+        navigate("/compagno/userQna");
+      }
     }
+
   };
 
   return (

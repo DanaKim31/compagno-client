@@ -273,49 +273,56 @@ const UserQuestionDetail = () => {
 
   // 2-2. 수정 폼 제출
   const questionUpdate = async () => {
-    const formData = new FormData();
-
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userImg", user.userImg);
-    setUserImg(user.userImg);
-
-    formData.append("userQuestionBoardCode", editQ.userQuestionBoardCode);
-    formData.append("userQuestionBoardTitle", editQ.userQuestionBoardTitle);
-    formData.append("userQuestionBoardContent", editQ.userQuestionBoardContent);
-
-    if (editQ.images.length + images.length <= 3) {
-      editQ.images?.forEach((image, index) => {
-        formData.append(
-          `images[${index}].userQuestionImgCode`,
-          image.userQuestionImgCode
-        );
-        formData.append(
-          `images[${index}].userQuestionImgUrl`,
-          image.userQuestionImgUrl
-        );
-        formData.append(
-          `images[${index}].userQuestionBoardCode`,
-          editQ.userQuestionBoardCode
-        );
-      });
-
-      // 새로 추가된 이미지
-      images.forEach((image, index) => {
-        formData.append(`files[${index}]`, image);
-      });
-
-      await updateUserQuestion(formData);
-      setImages([]);
-      setEditQ(null);
-      questionAPI();
+    if(editQ.userQuestionBoardTitle === "" || editQ.userQuestionBoardTitle === undefined){
+      alert("제목을 입력하세요!");
+    } else if(editQ.userQuestionBoardContent === "" || editQ.userQuestionBoardContent === undefined){
+      alert("내용을 입력하세요!");
     } else {
-      alert("파일 업로드는 최대 3개까지만 가능합니다!");
+      const formData = new FormData();
+
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userImg", user.userImg);
+      setUserImg(user.userImg);
+  
+      formData.append("userQuestionBoardCode", editQ.userQuestionBoardCode);
+      formData.append("userQuestionBoardTitle", editQ.userQuestionBoardTitle);
+      formData.append("userQuestionBoardContent", editQ.userQuestionBoardContent);
+  
+      if (editQ.images.length + images.length <= 3) {
+        editQ.images?.forEach((image, index) => {
+          formData.append(
+            `images[${index}].userQuestionImgCode`,
+            image.userQuestionImgCode
+          );
+          formData.append(
+            `images[${index}].userQuestionImgUrl`,
+            image.userQuestionImgUrl
+          );
+          formData.append(
+            `images[${index}].userQuestionBoardCode`,
+            editQ.userQuestionBoardCode
+          );
+        });
+  
+        // 새로 추가된 이미지
+        images.forEach((image, index) => {
+          formData.append(`files[${index}]`, image);
+        });
+  
+        await updateUserQuestion(formData);
+        setImages([]);
+        setEditQ(null);
+        questionAPI();
+      } else {
+        alert("파일 업로드는 최대 3개까지만 가능합니다!");
+      }
     }
+    
   };
 
   // 2-3. 이미지 선택 시 이미지 삭제
@@ -520,8 +527,12 @@ const UserQuestionDetail = () => {
                         question.userQuestionBoardStatus == null ? (
                           <>
                             {/* 상태가 N: 수정, 삭제 버튼 */}
+
                             <div id="status">
-                              <button
+                              {question.userQuestionBoardCount !== 0 ? (<>
+                                답변 수 : {question.userQuestionBoardCount}
+                              </>) : (<>
+                                <button
                                 onClick={() => onUpdateQuestion(question)}
                               >
                                 수정
@@ -534,7 +545,8 @@ const UserQuestionDetail = () => {
                                 }
                               >
                                 삭제
-                              </button>
+                              </button></>)}
+                              
                             </div>
                           </>
                         ) : (

@@ -165,6 +165,7 @@ const Div = styled.div`
       padding: 0px;
     }
   }
+
   button {
     border: none;
     border-radius: 5px;
@@ -388,14 +389,14 @@ const UserQnaList = () => {
         <span>전체 {questions?.totalElements}건</span>
         {user.userId !== undefined ? (
           <div id="like">
-            <div class="form-check form-switch">
+            <div className="form-check form-switch">
               <input
-                class="form-check-input"
+                className="form-check-input"
                 type="checkbox"
                 id="flexSwitchCheckDefault"
                 onChange={(e) => filtering(e)}
               />
-              <label class="form-check-label" for="flexSwitchCheckDefault">
+              <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
                 좋아요한 글만 보기
               </label>
             </div>

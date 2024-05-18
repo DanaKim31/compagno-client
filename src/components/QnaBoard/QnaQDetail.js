@@ -208,39 +208,47 @@ const QnaQDetail = () => {
 
   // 2-2. 수정 폼 제출
   const questionUpdate = async () => {
-    const formData = new FormData();
-
-    formData.append("userId", user.userId);
-    setUserId(user.userId);
-
-    formData.append("userNickname", user.userNickname);
-    setUserNickname(user.userNickname);
-
-    formData.append("userImg", user.userImg);
-    setUserImg(user.userImg);
-
-    formData.append("qnaQCode", editQ.qnaQCode);
-    formData.append("qnaQTitle", editQ.qnaQTitle);
-    formData.append("qnaQContent", editQ.qnaQContent);
-
-    if (editQ.images.length + images.length <= 3) {
-      editQ.images?.forEach((image, index) => {
-        formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
-        formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
-        formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
-      });
-      // 새로 추가된 이미지
-      images.forEach((image, index) => {
-        formData.append(`files[${index}]`, image);
-      });
-
-      await updateQuestion(formData);
-      setImages([]);
-      setEditQ(null);
-      questionAPI();
+    if(editQ.qnaQTitle === "" || editQ.qnaQTitle === undefined){
+alert("제목을 입력해주세요!");
+    } else if(editQ.qnaQContent === "" || editQ.qnaQContent === undefined){
+      alert("내용을 입력해주세요!");
     } else {
-      alert("파일 업로드는 최대 3개까지만 가능합니다!");
+      const formData = new FormData();
+
+      formData.append("userId", user.userId);
+      setUserId(user.userId);
+  
+      formData.append("userNickname", user.userNickname);
+      setUserNickname(user.userNickname);
+  
+      formData.append("userImg", user.userImg);
+      setUserImg(user.userImg);
+  
+      formData.append("qnaQCode", editQ.qnaQCode);
+      formData.append("qnaQTitle", editQ.qnaQTitle);
+      formData.append("qnaQContent", editQ.qnaQContent);
+  
+      if (editQ.images.length + images.length <= 3) {
+        editQ.images?.forEach((image, index) => {
+          formData.append(`images[${index}].qnaQImgCode`, image.qnaQImgCode);
+          formData.append(`images[${index}].qnaQUrl`, image.qnaQUrl);
+          formData.append(`images[${index}].qnaQCode`, editQ.qnaQCode);
+        });
+        // 새로 추가된 이미지
+        images.forEach((image, index) => {
+          formData.append(`files[${index}]`, image);
+        });
+  
+        await updateQuestion(formData);
+        setImages([]);
+        setEditQ(null);
+        questionAPI();
+      } else {
+        alert("파일 업로드는 최대 3개까지만 가능합니다!");
+      }
     }
+    
+    
   };
 
   // 2-3. 이미지 선택 시 이미지 삭제
@@ -389,10 +397,7 @@ const QnaQDetail = () => {
                             }
                           />
                           <div>
-                            <p>
                               <MyToggleBar name={question.userNickname} />
-                            </p>
-                            <p>아이디 : {question.userId}</p>
                           </div>
                         </div>
                         <div>
@@ -524,10 +529,7 @@ const QnaQDetail = () => {
                             }
                           />
                           <div>
-                            <p>
                               <MyToggleBar name={question.userNickname} />
-                            </p>
-                            <p>아이디 : {question.userId}</p>
                           </div>
                         </div>
                         <div>
