@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { countComment } from "../../api/animalBoard";
+import { countComment, viewDetail } from "../../api/animalBoard";
+import FavoriteBoard from "./FavoriteBoard";
 
 const TableParticle = styled.div`
   display: flex;
@@ -20,6 +21,12 @@ const TableParticle = styled.div`
     }
     .title {
       font-size: 1.5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .detail {
+    }
+    .fav-bard {
     }
   }
 
@@ -56,6 +63,10 @@ const TableList = ({ board }) => {
   const goDetail = (boardCode) => {
     navigate(`/compagno/animal-board/${boardCode}`);
   };
+  const animalBoardAPI = async () => {
+    const response = await viewDetail(board.animalBoardCode);
+    setCount(response.data);
+  };
   // 댓글 수
   const [count, setCount] = useState(0);
   const countCommentAPI = async () => {
@@ -81,9 +92,16 @@ const TableList = ({ board }) => {
           <div className="detail">
             {board.user.userNickname +
               " |  " +
-              moment(board.animalBoardDate).format("MM.DD HH:mm") +
+              moment(board.animalBoardDate).format("YYYY.MM.DD HH:mm") +
               " | 조회 " +
               board.animalBoardView}
+          </div>
+          <div className="fav-board">
+            <FavoriteBoard
+              userId={board.user.userId}
+              boardCode={board.animalBoardCode}
+              animalBoardAPI={() => animalBoardAPI()}
+            />
           </div>
         </div>
         <div className="image-box">

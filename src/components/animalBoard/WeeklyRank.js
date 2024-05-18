@@ -84,18 +84,21 @@ const WeeklyRank = () => {
   };
 
   // (전체 favCount - latestCount) + latestCount
-  const [latestCount, setLatestCount] = useState([]);
+  const [RankersWithlatestCount, setLatestCount] = useState([]);
   const favLatestCount = async () => {
     const promises = filteredRankers.map(async (ranker) => {
       const response = await latestFavCount(ranker.animalBoardCode);
-      return response.data;
+      return {
+        ranker: ranker,
+        latest: response.data,
+      };
     });
+    // console.log(promises);
     const results = await Promise.all(promises);
     setLatestCount(results);
   };
-  console.log(latestCount);
 
-  console.log(filteredRankers);
+  console.log(RankersWithlatestCount);
   useEffect(() => {
     favRankAPI();
     favListAPI();
@@ -109,10 +112,10 @@ const WeeklyRank = () => {
 
   return (
     <RankProfile>
-      {filteredRankers.map((ranker) => (
-        <div key={ranker.animalBoardCode} className="ranker-image-container">
+      {RankersWithlatestCount.map((item, index) => (
+        <div key={index} className="ranker-image-container">
           <Image
-            src={`http://192.168.10.28:8081/${ranker.user.userImg}`}
+            src={`http://192.168.10.28:8081/${item.ranker.user?.userImg}`}
             roundedCircle
           />
           <div className="medal-container">
@@ -120,14 +123,15 @@ const WeeklyRank = () => {
           </div>
 
           <p>
-            {ranker.user.userNickname +
+            {item.ranker.user?.userNickname +
               "님의  " +
-              ranker.animalBoardTitle +
+              item.ranker.animalBoardTitle +
               "!"}
           </p>
           <p>
-            조회 수 : {ranker.animalBoardView} | 좋아요 :{" "}
-            {ranker.animalBoardFavoriteCount}
+            조회 수 : {item.ranker.animalBoardView} | 좋아요 :{" "}
+            {item.ranker.animalBoardFavoriteCount - item?.latest}
+            {item?.latest !== "" ? `+${item?.latest}` : ""}
           </p>
         </div>
       ))}
