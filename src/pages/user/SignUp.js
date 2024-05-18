@@ -4,6 +4,14 @@ import { registerUser, checkDupId, checkDupNick } from "../../api/user";
 import { useNavigate } from "react-router-dom";
 
 const Div = styled.div`
+  @font-face {
+    font-family: "TAEBAEKmilkyway";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+
   display: flex;
   flex-direction: column;
   justify-content: center;
