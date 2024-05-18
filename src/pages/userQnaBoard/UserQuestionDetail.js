@@ -141,6 +141,19 @@ const Div = styled.div`
     height: 350px;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
+    #select{
+      display: flex;
+    }
+    select{
+      height: 30px;
+      margin-left: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+    option{
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
     input {
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
@@ -168,6 +181,18 @@ const Div = styled.div`
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
+  }
+
+  #editbuttons{
+    display: flex;
+    justify-content: center;;
+    margin-top: 100px;
+    button{
+      margin: 10px;
+      font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+    }
+
   }
 
   #topbarr {
@@ -292,6 +317,9 @@ const UserQuestionDetail = () => {
       formData.append("userQuestionBoardCode", editQ.userQuestionBoardCode);
       formData.append("userQuestionBoardTitle", editQ.userQuestionBoardTitle);
       formData.append("userQuestionBoardContent", editQ.userQuestionBoardContent);
+
+
+      formData.append("animalCategoryCode", editQ.animalCategoryCode);
   
       if (editQ.images.length + images.length <= 3) {
         editQ.images?.forEach((image, index) => {
@@ -441,6 +469,15 @@ const UserQuestionDetail = () => {
                   </div>
                   <div id="input">
                     {/* 수정 폼 */}
+                    <div id="select">
+                      <p>동물</p>
+                      <select value={editQ.animalCategoryCode} onChange={(e) => setEditQ((prev) => ({...prev, animalCategoryCode: e.target.value}))}>
+                        <option value={0}>전체</option>
+                        <option value={1}>개</option>
+                        <option value={2}>고양이</option>
+                        <option value={3}>기타</option>
+                      </select>
+                    </div>
                     <div id="title">
                       <p>제목</p>
                       <Form.Control
@@ -481,7 +518,7 @@ const UserQuestionDetail = () => {
                     </div>
                   </div>
                   {/* 수정, 취소 버튼 */}
-                  <div id="buttons">
+                  <div id="editbuttons">
                     <button onClick={questionUpdate}>수정</button>
                     <button
                       onClick={() => {
@@ -530,7 +567,6 @@ const UserQuestionDetail = () => {
 
                             <div id="status">
                               {question.userQuestionBoardCount !== 0 ? (<>
-                                답변 수 : {question.userQuestionBoardCount}
                               </>) : (<>
                                 <button
                                 onClick={() => onUpdateQuestion(question)}
