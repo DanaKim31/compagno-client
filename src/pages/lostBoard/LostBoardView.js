@@ -289,10 +289,11 @@ const ViewLostBoard = () => {
                                 marginRight: "10px",
                                 alignContent: "center",
                               }}
-                              src={lost.lostAnimalImage?.replace(
-                                "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                                "http://192.168.10.28:8081/lostBoard/"
-                              )}
+                              src={"http://192.168.10.28:8081/" + lost.userImg}
+                              // src={lost.lostAnimalImage?.replace(
+                              //   "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                              //   "http://192.168.10.28:8081/lostBoard/"
+                              // )}
                             />
                             <span
                               style={{
@@ -301,7 +302,6 @@ const ViewLostBoard = () => {
                                 fontWeight: "bold",
                               }}
                             >
-                              {/* {lost.userNickname} */}
                               <MyToggleBar name={lost.userNickname} />
                             </span>
                           </div>

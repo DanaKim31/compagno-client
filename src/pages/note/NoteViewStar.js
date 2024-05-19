@@ -3,6 +3,7 @@ import {
   starSenderUpdate,
   starReceiverUpdate,
   starCount,
+  viewStarBox,
 } from "../../api/note";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -147,7 +148,7 @@ const NoteViewStar = () => {
   const [allCount, setAllCount] = useState(0);
 
   const notesAPI = async () => {
-    let response = await viewAllNote(
+    let response = await viewStarBox(
       user.userNickname +
         "?page=" +
         page +

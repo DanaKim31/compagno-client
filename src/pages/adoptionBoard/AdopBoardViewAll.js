@@ -146,8 +146,6 @@ const Div = styled.div`
     margin-top: 40px;
 
     .contentDetail {
-      /* border: 1px solid black; */
-      /* border-radius: 10px; */
       border-top: 1px dashed green;
       border-bottom: 1px dashed green;
       #animalKind {
@@ -167,8 +165,6 @@ const Div = styled.div`
         }
       }
       #regiDate {
-        /* display: flex; */
-        /* justify-content: right; */
         margin-top: 10px;
         span {
           padding-top: 5px;
@@ -191,12 +187,6 @@ const Div = styled.div`
   .paging {
     margin-bottom: 30px;
     button {
-      /* border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-weight: bold;
-      background-color: #cbd6ce; */
       font-weight: bold;
       width: 25px;
       height: 28px;
@@ -234,7 +224,7 @@ const ViewAllAdopBoard = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [pages, setPages] = useState([]);
 
-  // 검색  -- 추후
+  // 검색
   const [searchKind, setSearchKind] = useState("");
   const [searchGender, setSearchGender] = useState("");
   const [searchNeuter, setSearchNeuter] = useState("");
@@ -403,17 +393,17 @@ const ViewAllAdopBoard = () => {
             >
               <h4 id="animalKind">{adop.adopAnimalKind}</h4>
               <div id="imageBox">
-                <img
-                  id="mainImage"
-                  // src={adop.adopAnimalImage?.replace(
-                  //   "C:",
-                  //   "http://localhost:8081"
-                  // )}
-                  src={adop.adopAnimalImage?.replace(
-                    "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
-                    "http://192.168.10.28:8081/adoptionBoard/"
-                  )}
-                />
+                {adop.adopAnimalImage == "" || adop.adopAnimalImage == null ? (
+                  <img src="/img/noImage.jpg" id="mainImage" />
+                ) : (
+                  <img
+                    id="mainImage"
+                    src={adop.adopAnimalImage?.replace(
+                      "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
+                      "http://192.168.10.28:8081/adoptionBoard/"
+                    )}
+                  />
+                )}
               </div>
 
               <div
@@ -461,11 +451,10 @@ const ViewAllAdopBoard = () => {
             {num}
           </button>
         ))}
-
         <FaAngleRight
           className="iconPaging"
-          onClick={
-            () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
+          onClick={() =>
+            page < totalPage ? setPage(page + 1) : setPage(totalPage)
           }
         />
         <FaAnglesRight

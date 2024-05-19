@@ -433,7 +433,7 @@ const CreateAdopBoard = () => {
               <label>
                 <input
                   type="checkbox"
-                  value="모름"
+                  value="알수없음"
                   onChange={(e) => genderCheck(e.target.value)}
                   className="gender"
                 />

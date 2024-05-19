@@ -386,17 +386,17 @@ const ViewAllLostBoard = () => {
             >
               <h4 id="animalName">{lost.lostAnimalName}</h4>
               <div id="imageBox">
-                <img
-                  id="mainImage"
-                  // src={lost.lostAnimalImage?.replace(
-                  //   "C:",
-                  //   "http://localhost:8081"
-                  // )}
-                  src={lost.lostAnimalImage?.replace(
-                    "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
-                    "http://192.168.10.28:8081/lostBoard/"
-                  )}
-                />
+                {lost.lostAnimalImage == "" || lost.lostAnimalImage == null ? (
+                  <img src="/img/noImage.jpg" id="mainImage" />
+                ) : (
+                  <img
+                    id="mainImage"
+                    src={lost.lostAnimalImage?.replace(
+                      "\\\\DESKTOP-U0CNG13\\upload\\lostBoard",
+                      "http://192.168.10.28:8081/lostBoard/"
+                    )}
+                  />
+                )}
               </div>
               <div
                 className="topContents"

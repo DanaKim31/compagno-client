@@ -335,7 +335,7 @@ const NoteViewReceiveBox = () => {
                   ></div>
                 )}
 
-                <table style={{ width: "85%", height: "60%" }}>
+                <table style={{ width: "85%", height: "50vh" }}>
                   <thead
                     style={{ height: "30px", borderBottom: "1px dashed black" }}
                   >

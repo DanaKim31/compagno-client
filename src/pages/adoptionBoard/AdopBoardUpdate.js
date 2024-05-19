@@ -265,6 +265,7 @@ const UpdateAdopBoard = () => {
       }
     }
   };
+
   // 중성화 기존 선택
   const defaultNeuter = () => {
     const checkboxes = document.getElementsByClassName("neuter");
@@ -366,7 +367,8 @@ const UpdateAdopBoard = () => {
       adopAnimalKind == "" ||
       adopAnimalGender == "" ||
       adopAnimalNeuter == "" ||
-      adopAnimalFindplace == ""
+      adopAnimalFindplace == "" ||
+      adopAnimalFeature == ""
     ) {
       alert("필수 입력란을 확인해주세요.");
     } else {
@@ -537,7 +539,9 @@ const UpdateAdopBoard = () => {
                   />
                 </div>
                 <div id="feature">
-                  <label>동물 특징</label>
+                  <label>
+                    동물 특징<span>*</span>
+                  </label>
                   <input
                     type="text"
                     value={adopAnimalFeature}
@@ -562,11 +566,6 @@ const UpdateAdopBoard = () => {
                         <img
                           alt=""
                           key={image.adopImageCode}
-                          // src={image.adopImage?.replace(
-                          //   "C:",
-                          //   "http://localhost:8081"
-                          // )}
-
                           src={image.adopImage?.replace(
                             "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
                             "http://192.168.10.28:8081/adoptionBoard/"

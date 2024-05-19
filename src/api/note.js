@@ -30,6 +30,11 @@ export const createNote = async (data) => {
 export const viewAllNote = async (nickName) => {
   return await authorize.get("note/viewAll/" + nickName);
 };
+// 중요 쪽지함
+//   @GetMapping("/note/viewAll/starBox/{nickName}")
+export const viewStarBox = async (nickName) => {
+  return await authorize.get("note/viewAll/starBox/" + nickName);
+};
 
 // 전체 보기 중 삭제 쪽지
 // http://localhost:8080/compagno/note/delCount/hand0000
