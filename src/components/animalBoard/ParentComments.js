@@ -19,19 +19,20 @@ import MyToggleBar from "../note/MyToggleBar";
 import Writer from "./Writer";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
+import AllReplies from "./AllReplies";
 const Comment = styled.div`
-  /* background-color: red; */
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
 
   margin: auto;
   width: 70%;
   .animal-board-write-comment {
+    padding-top: 20px;
     width: 100%;
     border-top: 1px solid lightgrey;
     .additional-comment-info {
       display: flex;
+      padding-bottom: 20px;
       .back-to-list {
         border: 1px solid lightgray;
         border-radius: 10px;
@@ -64,6 +65,9 @@ const Comment = styled.div`
   }
   img {
     width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
   }
   .dropdown {
     display: block;
@@ -153,6 +157,9 @@ const Comment = styled.div`
     }
   }
 `;
+const Div = styled.div`
+  padding-bottom: 100px;
+`;
 const ParentComments = ({
   user,
   token,
@@ -160,7 +167,6 @@ const ParentComments = ({
   detailInfo,
   animalBoardAPI,
   commentsBoolean,
-  // countCommentAPI,
 }) => {
   // 댓글 불러오기
   const navigate = useNavigate();
@@ -671,6 +677,23 @@ const ParentComments = ({
           )}
         </div>
       </Comment>
+      {Object.keys(comments).length > 3 ? (
+        <>
+          <Div>
+            <AllReplies
+              user={user}
+              token={token}
+              animalBoardCode={animalBoardCode}
+              detailInfo={detailInfo}
+              animalBoardAPI={() => animalBoardAPI()}
+              // countInfo={commentCounts}
+              // countAPI={() => countAPI()}
+            />
+          </Div>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

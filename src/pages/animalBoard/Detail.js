@@ -7,7 +7,6 @@ import styled from "styled-components";
 import React from "react";
 import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
 import { viewCount } from "../../api/animalBoard";
-import AllReplies from "../../components/animalBoard/AllReplies";
 import ParentComments from "../../components/animalBoard/ParentComments";
 import { fluctuationByDetailM, fluctuationByDetailP } from "../../api/AdLogic";
 import { getCurrentPoint } from "../../api/ad";
@@ -231,16 +230,6 @@ const AnimalDetail = () => {
         detailInfo={detailInfo}
         animalBoardAPI={() => animalBoardAPI()}
         commentsBoolean={true}
-      />
-
-      <AllReplies
-        user={user}
-        token={token}
-        animalBoardCode={animalBoardCode}
-        detailInfo={detailInfo}
-        animalBoardAPI={() => animalBoardAPI()}
-        commentsBoolean={false}
-        // commentSum={}
       />
     </Div>
   );
