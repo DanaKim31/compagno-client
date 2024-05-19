@@ -143,7 +143,7 @@ const MyPageUserQna = () => {
           <table className="myUserQnaList">
             <thead>
               <tr>
-                <th className="th1">제 목</th>
+                <th className="th1">제목</th>
                 <th className="th1">내용</th>
                 <th>답변 여부</th>
                 <th>작성일</th>
