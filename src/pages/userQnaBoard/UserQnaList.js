@@ -297,6 +297,7 @@ const UserQnaList = () => {
   const [sort, setSort] = useState(0);
   const [liked, setLiked] = useState(true);
 
+  // 검색 후 리스트 출력 함수
   const search = async () => {
     const response = await getUserQuestions(
       page,
@@ -311,6 +312,7 @@ const UserQnaList = () => {
 
   };
 
+  // 좋아요 출력 함수
   const filtering = async (e) => {
     const isChecked = e.target.checked;
     setLiked(isChecked);
@@ -319,12 +321,13 @@ const UserQnaList = () => {
       setQuestions(response.data);
       setTotalPage(response.data?.totalPages);
     } else {
-      const response = await getliked(page, false); // 체크 해제 시에도 데이터를 가져올 필요가 있는지 확인해야 합니다.
+      const response = await getliked(page, false); // 체크 해제 시에도 데이터를 가져올 필요가 있는지 확인해야
       setQuestions(response.data);
       setTotalPage(response.data?.totalPages);
     }
   };
 
+  // 조회수 업데이트 함수
   const viewcount = async(code) => {
     await updateviewcount(code);
   }
