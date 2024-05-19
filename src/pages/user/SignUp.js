@@ -273,6 +273,12 @@ const SignUp = () => {
   const onChangeNickChkSpan = () => {
     if (checkNick === 8) {
       setCheckNickSpan("");
+    } else if (
+      user.userNickname === null ||
+      user.userNickname === undefined ||
+      user.userNickname === ""
+    ) {
+      setCheckNickSpan("닉네임을 입력해주세요");
     } else if (checkNick === 0) {
       setCheckNickSpan("사용 가능한 닉네임입니다!");
     } else {
@@ -320,9 +326,9 @@ const SignUp = () => {
     } else if (checkNick == 8) {
       alert("닉네임 중복확인을 해주세요");
     } else if (
-      checkNick != 0 ||
       user.userNickname === null ||
-      user.userNickname === undefined
+      user.userNickname === undefined ||
+      checkNick != 0
     ) {
       alert("사용 불가한 닉네임입니다.");
     } else if (
