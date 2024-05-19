@@ -248,17 +248,18 @@ const Div = styled.div`
 `;
 
 const NeighborDetail = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { code } = useParams();
   const [neighborBoard, setNeighborBoard] = useState({});
   const token = localStorage.getItem("token");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-  const [commentEdit, setCommentEdit] = useState(null);
-  const [commentEditContent, setCommentEditConent] = useState("");
   const [replyCode, setReplyCode] = useState(0);
   const [replyContent, setReplyContent] = useState("");
+  const [commentEditCode, setCommentEditCode] = useState(0);
+  const [commentEditContent, setCommentEditConent] = useState("");
 
   // ================= 유저정보 =================
   const user = useSelector((state) => {
@@ -304,9 +305,11 @@ const NeighborDetail = () => {
 
   // ================= 게시글 삭제 =================
   const deleteBoard = async () => {
-    await deleteNeighborBoard(code);
-    alert("게시글이 삭제됐습니다.");
-    navigate("/compagno/neighborBoard");
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      await deleteNeighborBoard(code);
+      navigate("/compagno/neighborBoard");
+      alert("게시글이 삭제되었습니다.");
+    }
   };
 
   // ================= 목록으로 돌아가기 =================
@@ -319,6 +322,9 @@ const NeighborDetail = () => {
     if (token === null) {
       alert("로그인이 필요합니다.");
       navigate("/compagno/login");
+    }
+    if (comment == "") {
+      alert("내용을 입력해주세요.");
     } else {
       await registerNeighborComment({
         neighborBoardCode: code,
@@ -334,8 +340,10 @@ const NeighborDetail = () => {
 
   // ================= 댓글 삭제 =================
   const deleteComment = async (code) => {
-    await deleteNeighborComment(code);
-    neighborCommentAPI();
+    if (window.confirm("댓글을 삭제하시겠습니까?")) {
+      await deleteNeighborComment(code);
+      neighborCommentAPI();
+    }
   };
 
   // ================= 댓글 수정 =================
@@ -344,12 +352,34 @@ const NeighborDetail = () => {
     neighborCommentAPI();
   };
 
-  const cancelEdit = () => {
-    setCommentEdit(null);
-  };
+  // const cancelEdit = () => {
+  //   setCommentEdit(0);
+  // };
 
   const commentUpdate = async () => {};
-  console.log(comments);
+
+  // ================= 대댓글 등록 =================
+  const registerReply = async () => {
+    if (token === null) {
+      alert("로그인이 필요합니다.");
+      navigate("/compagno/login");
+    }
+    if (replyContent == "") {
+      alert("내용을 입력해주세요.");
+    } else {
+      await registerNeighborComment({
+        neighborBoardCode: code,
+        neighborCommentParentCode: replyCode,
+        neighborCommentContent: replyContent,
+        user: {
+          userNickname: user.userNickname,
+        },
+      });
+      setReplyCode(0);
+      setReplyContent("");
+      neighborCommentAPI();
+    }
+  };
 
   return (
     <Div>

@@ -322,9 +322,11 @@ const SitterDetail = () => {
 
   // ================= 게시글 삭제 =================
   const deleteBoard = async () => {
-    await deleteSitterBoard(code);
-    alert("게시글이 삭제됐습니다.");
-    navigate("/compagno/sitterBoard");
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      await deleteSitterBoard(code);
+      navigate("/compagno/sitterBoard");
+      alert("게시글이 삭제되었습니다.");
+    }
   };
 
   // ================= 목록으로 돌아가기 =================
