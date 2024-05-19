@@ -40,9 +40,7 @@ const Footer = () => {
             >
               <div style={{}}>
                 <div>
-                  <div
-                  // style={{ position: "relative", top: "100px", height: "40px" }}
-                  >
+                  <div>
                     <div className="URL" style={{ display: "flex" }}>
                       <p
                         style={{
@@ -110,16 +108,14 @@ const Footer = () => {
                       Navigator
                     </p>
                     <div style={{}} className="navi">
-                      <a href="">Home</a>
-                      <a href="">User</a>
-                      <a href="">Board</a>
-                      <a href="">Notice</a>
-                      <a href="">Service</a>
+                      <a href="/compagno">Home</a>
+                      <a href="/compagno/mypage/myinfo">User</a>
+                      <a href="/compagno/userQna">Board</a>
+                      <a href="/compagno/notice-board">Notice</a>
+                      <a href="/compagno/sitterBoard">Service</a>
                     </div>
                   </div>
                 </div>
-
-                {/* 여기는 조원들 이름과 이메일 정보 */}
               </div>
               <div
                 style={{
@@ -146,7 +142,7 @@ const Footer = () => {
                     <p>E-Mail : sonmj0424@naver.com</p>
                   </div>
                   <div>
-                    <a href="https://">권예빈 : GitHub ></a>
+                    <a href="https://github.com/gwon428">권예빈 : GitHub ></a>
                     <p>E-mail : danakim731@gmail.com</p>
                   </div>
                 </div>
@@ -155,13 +151,10 @@ const Footer = () => {
                   style={{
                     display: "flex",
                     position: "relative",
-                    // bottom: "20px",
                   }}
                 >
                   <div>
-                    <a href="https://github.com/sohnminjeong">
-                      이상현 : GitHub >
-                    </a>
+                    <a href="https://github.com/SHLee334">이상현 : GitHub ></a>
                     <p>E-Mail : yogu970126@gmail.com</p>
                   </div>
                   <div>
@@ -169,11 +162,13 @@ const Footer = () => {
                     <p>E-Mail : jungdj2002@gmail.com</p>
                   </div>
                   <div>
-                    <a href="https://github.com/jungdj221">정회영 : GitHub ></a>
-                    <p>E-Mail : yogu970126@gmail.com</p>
+                    <a href="https://github.com/JeongHoeYeong">
+                      정회영 : GitHub >
+                    </a>
+                    <p>E-Mail : ghldud5@gmail.com</p>
                   </div>
                   <div>
-                    <a href="https://github.com/jungdj221">김현수 : GitHub ></a>
+                    <a href="https://github.com/hnsso">김현수 : GitHub ></a>
                     <p>E-Mail : kjwgustn123@naver.com</p>
                   </div>
                 </div>
@@ -182,7 +177,7 @@ const Footer = () => {
                     position: "absolute",
                     bottom: "140px",
                     transform: "rotate(90deg)",
-                    right: "-115px",
+                    right: "-100px",
                     fontSize: "4rem",
                   }}
                   className="barCode"
@@ -211,7 +206,6 @@ const Footer = () => {
               <div
                 className="fote1"
                 style={{
-                  // textAlign: "center",
                   position: "relative",
                 }}
               >
@@ -225,16 +219,22 @@ const Footer = () => {
                     justifyContent: "space-around",
                   }}
                 >
-                  <a href="" className="sn">
+                  <a
+                    href="https://www.facebook.com/?locale=ko_KR"
+                    className="sn"
+                  >
                     facebook
                   </a>
-                  <a href="" className="sx">
+                  <a href="https://kr.linkedin.com/" className="sx">
                     LinkedinIn
                   </a>
-                  <a href="" className="s">
+                  <a href="https://www.instagram.com/" className="s">
                     instagram
                   </a>
-                  <a href="" className="s">
+                  <a
+                    href="https://www.youtube.com/?app=desktop&hl=ko&gl=KR"
+                    className="s"
+                  >
                     Youtube
                   </a>
                 </div>

@@ -7,9 +7,12 @@ const Section4 = () => {
         <div className="container">
           <div
             className="row row-cols-2"
-            style={{ position: "relative", bottom: "25px" }}
+            style={{
+              position: "relative",
+              bottom: "50px",
+            }}
           >
-            <div className="col">
+            <div className="col" style={{ alignItems: "center" }}>
               <div style={{ display: "flex" }}>
                 <h1>동물 등록</h1>
               </div>
@@ -39,21 +42,16 @@ const Section4 = () => {
                 style={{ objectFit: "contain" }}
               />
               <p>
-                <span>
-                  [입양 공고]
-                  <br /> 개나 고양이를 키우고 싶다면 유기동물 보호시설에서
-                  보호하고 있는 유기동물을 입양하는게 어떨까요? 동물을 입양한
-                  당신이 자랑스럽습니다!
-                </span>
+                [입양 공고]
+                <br /> 개나 고양이를 키우고 싶다면 유기동물 보호시설에서
+                보호하고 있는 유기동물을 입양하는게 어떨까요? 동물을 입양한
+                당신이 자랑스럽습니다!
                 <br />
                 <br />
-                <span>
-                  [실종 공고]
-                  <br />
-                  동물 분실 관련 정보를 공유하는 공간입니다. 동물보호법상
-                  동물소유자가 하는 동물분실신고는 해당 메뉴에서 하시기
-                  바랍니다.{" "}
-                </span>
+                [실종 공고]
+                <br />
+                동물 분실 관련 정보를 공유하는 공간입니다. 동물보호법상
+                동물소유자가 하는 동물분실신고는 해당 메뉴에서 하시기 바랍니다.
               </p>
             </div>
             <div className="col">
@@ -78,13 +76,15 @@ const Section4 = () => {
               <div>
                 <h1>다양한 게시판</h1>
               </div>
-              <img src="" alt="" />
+              <img
+                src="/img/다양한 게시판.jpg"
+                alt="adoption image"
+                style={{ objectFit: "contain" }}
+              />
               <p>
-                반려동물과 함께하는 특별한 순간을 공유하고 지역별 반려동물
-                친화적 장소, 유용한 정보, 그리고 지역 주민들과 소통 할 수
-                있습니다. <br /> 반려동물을 돌보는 전문 펫 시터를 찾거나 다른
-                반려동물을 키우는 사람들과 경험을 나누며, 더 나은 반려동물
-                생활을 위한 정보를 얻어보세요!
+                [게시판정보 공유] <br />
+                반려동물과 특별한 순간을 공유하고 지역별 반려동물 친화적 장소,
+                유용한 정보, 그리고 지역 주민들과 소통 할 수 있습니다. <br />
               </p>
             </div>
           </div>
