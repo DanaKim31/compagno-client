@@ -460,7 +460,6 @@ const UserQnaList = () => {
                   <span>[{question.userQuestionBoardCount}]</span>
                 </td>
                 <td id="id">{question.userId}</td>
-                {/* qnaQDate가 null일 때 DateUpdate로 출력 */}
                 {question.userQuestionBoardDate === "" ||
                 question.userQuestionBoardDate == null ? (
                   <>

@@ -213,7 +213,6 @@ const Div = styled.div`
   }
   // content
   #content{
-    height: 80px;
     padding: 30px;
     padding-left: 70px;
   }

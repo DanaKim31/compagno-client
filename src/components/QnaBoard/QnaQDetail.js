@@ -34,6 +34,11 @@ const Div = styled.div`
     color: white;
   }
 
+  #content{
+    padding: 30px;
+    padding-left: 70px;
+  }
+
   position: relative;
   width: 60%;
   margin: 0 auto;
@@ -433,7 +438,7 @@ alert("제목을 입력해주세요!");
                     </div>
                     <hr />
                     {/* 상세 정보 */}
-                    <div id="desc">
+                    <div id="content">
                       <p>{question.qnaQContent}</p>
                     </div>
                     <div id="images">
@@ -495,7 +500,7 @@ alert("제목을 입력해주세요!");
                       </div>
                     </div>
 
-                    <div id="desc">
+                    <div id="content">
                       <p>{question.qnaQContent}</p>
                     </div>
                     <div id="images">
@@ -566,7 +571,7 @@ alert("제목을 입력해주세요!");
                     </div>
                     <hr />
                     {/* 상세 정보 */}
-                    <div id="desc">
+                    <div id="content">
                       <p>{question.qnaQContent}</p>
                     </div>
                     <div id="images">
