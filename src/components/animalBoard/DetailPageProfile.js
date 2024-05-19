@@ -86,7 +86,12 @@ const DetailPageProfile = ({ author, currentUser }) => {
     navigate(`/compagno/edit-board/${boardCode}`);
   };
   const accessWrite = async (boardCode) => {
-    navigate(`/compagno/write-board/${boardCode}`);
+    if (Object.keys(currentUser).length === 0) {
+      alert("로그인이 필요합니다.");
+      navigate("/compagno/login");
+    } else {
+      navigate(`/compagno/write-board`);
+    }
   };
   return (
     <Div className="author-profile-container">

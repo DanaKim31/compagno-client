@@ -149,7 +149,12 @@ const ClassList = () => {
   }, []);
 
   const create = () => {
-    navigate("/compagno/onedayClassBoard/create");
+    if (Object.keys(user).length === 0) {
+      alert("로그인이 필요합니다.");
+      navigate("/compagno/login");
+    } else {
+      navigate("/compagno/onedayClassBoard/create");
+    }
   };
 
   const Detail = (code) => {

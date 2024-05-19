@@ -224,29 +224,8 @@ const AnimalHome = () => {
       const newData = response.data.content;
       setBoards((prev) => [...prev, ...newData]);
     }
-
-    // if (check) {
-    //   // 더보기 버튼 눌렀을때
-    //   setLoading(true);
-    //   const response = await viewBoardList(page, category, sort);
-    //   console.log(response.data.content);
-    //   const newData = response.data.content;
-    //   setBoards((prev) => [...prev, ...newData]);
-    //   setPage((prev) => prev + 1);
-    // } else {
-    //   // 검색창 눌렀을때
-    //   setPage("");
-    //   setBoards([]);
-    //   const response = await viewBoardList(page, category, sort);
-    //   setBoards(response.data.content);
-    // }
   };
-  // // 랭킹결과표
-  // const [rankers, setRanker] = useState([]);
-  // const favRankAPI = async () => {
-  //   const response = await viewRanker();
-  //   setRanker(response.data);
-  // };
+
   // 정렬 옵션바 띄우기
   const [option, setOption] = useState(false);
   const setOptionBar = () => {
@@ -269,17 +248,14 @@ const AnimalHome = () => {
   const [listBoolean, setListBoolean] = useState(true);
   // 글쓰기 버튼
   const accessWrite = () => {
-    if (user === null || user === undefined) {
-      alert("로그인 후 이용가능합니다.");
+    if (Object.keys(user).length === 0) {
+      alert("로그인이 필요합니다.");
+      navigate("/compagno/login");
     } else {
-      navigate("/compagno/write-board");
+      navigate(`/compagno/write-board`);
     }
   };
-  // const count = Object.keys(boards).length;
-  // console.log(count);
-  // useEffect(() => {
-  //   animalBoardsAPI();
-  // }, [page]);
+
   useDidMountEffect(() => {
     animalBoardsAPI();
   }, [page]);
@@ -290,7 +266,6 @@ const AnimalHome = () => {
     }
     animalBoardsAPI(true);
     categoryAPI();
-    // favRankAPI();
   }, []);
   return (
     <HomeContainer>

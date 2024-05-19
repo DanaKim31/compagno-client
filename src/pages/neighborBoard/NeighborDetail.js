@@ -180,8 +180,8 @@ const Div = styled.div`
       height: 40px;
     }
     button {
-      width: 10%;
-      height: 40px;
+      /* width: 10%; */
+      /* height: 40px; */
       background: black;
       color: white;
       border-radius: 5px;
@@ -474,7 +474,12 @@ const NeighborDetail = () => {
             className="input"
             onChange={(e) => setComment(e.target.value)}
           />
-          <button onClick={registerComment}>등록</button>
+          <button
+            onClick={registerComment}
+            style={{ width: "10%", height: "40px" }}
+          >
+            등록
+          </button>
         </div>
 
         <div className="comment-list">
