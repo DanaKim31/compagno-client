@@ -76,6 +76,11 @@ const Div = styled.div`
     padding-left: 5px;
   }
 
+  #content{
+    padding: 30px;
+    padding-left: 70px;
+  }
+
   // 채택된 상위 답변
   #topanswer {
     font-family: "TAEBAEKmilkyway";
@@ -314,6 +319,13 @@ justify-content: space-evenly;
   button:hover {
     background-color: #94b29b;
   }
+
+  #list{
+    display:flex;
+    justify-content: center;
+    font-family: "TAEBAEKmilkyway";
+      font-weight: bold;
+  }
 `;
 
 const UserQnaAnswer = ({ question }) => {
@@ -537,6 +549,9 @@ const UserQnaAnswer = ({ question }) => {
                     onChange={(e) => setContent(e.target.value)}
                   />
                   <button onClick={UseranswerSubmit}>등록</button>
+                </div>
+                <div id="list">
+                  <button onClick={() => navigate("/compagno/userQna")}>목록</button>
                 </div>
               </>
             ) : (
@@ -920,7 +935,7 @@ const UserQnaAnswer = ({ question }) => {
                     </>
                   ) : (
                     <>
-                      <div id="desc">{answer.userAnswerContent}</div>
+                      <div id="content">{answer.userAnswerContent}</div>
                     </>
                   )}
 
@@ -1052,7 +1067,7 @@ const UserQnaAnswer = ({ question }) => {
                         </>
                       ) : (
                         <>
-                          <div id="desc">{reanswer.userAnswerContent}</div>
+                          <div id="content">{reanswer.userAnswerContent}</div>
                         </>
                       )}
                     </div>
@@ -1124,6 +1139,9 @@ const UserQnaAnswer = ({ question }) => {
                     onChange={(e) => setContent(e.target.value)}
                   />
                   <button onClick={UseranswerSubmit}>등록</button>
+                </div>
+                <div id="list">
+                  <button onClick={() => navigate("/compagno/userQna")}>목록</button>
                 </div>
               </>
             )}

@@ -37,6 +37,8 @@ const Div = styled.div`
     background-color: rgb(32, 61, 59);
     color: white;
   }
+
+
   /* 등록 */
   #register {
     padding: 20px;
@@ -52,6 +54,7 @@ const Div = styled.div`
     textarea{
       font-weight: bold;
     }
+    margin-bottom: 20px;
   }
 
   #input {
@@ -141,7 +144,6 @@ const Div = styled.div`
     padding: 30px;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
-    height: 200px;
   }
   #list {
     display: flex;
@@ -289,8 +291,8 @@ const QnaADetail = () => {
   const onDeleteAnswer = async (code) => {
     await deleteAnswer(code);
     answerAPI();
-    setEditA(null);
-    answerAPI();
+    setTitle(null);
+    setContent(null);
   };
 
   return (
@@ -437,6 +439,11 @@ const QnaADetail = () => {
                   <div id="content">
                     <p>{answer.qnaAContent}</p>
                   </div>
+                  <div id="list">
+                <button onClick={() => navigate("/compagno/question")}>
+                  목록
+                </button>
+              </div>
                 </>
               )}
             </>
