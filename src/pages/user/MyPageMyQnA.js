@@ -147,7 +147,6 @@ const MyPageMyQnA = () => {
 
       setQnaList(qnaData);
       setQnaCount(countQnaData);
-      console.log(qnaData);
     } else if (user.userRole == "ROLE_ADMIN") {
       // 매니저일때
       const mResponse = await getManageQnaList(page);
