@@ -10,14 +10,17 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
 import { updateComment } from "../../api/animalBoard";
-import { FaPencilAlt } from "react-icons/fa";
+
 import MyToggleBar from "../note/MyToggleBar";
 import moment from "moment";
+import Writer from "./Writer";
 const InnerComment = styled.div`
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   width: 800px;
-  padding-left: 40px;
+
+  padding-top: 10px;
   /* background-color: blue; */
   .animal-board-reply {
     display: flex;
@@ -27,13 +30,38 @@ const InnerComment = styled.div`
       display: flex;
       flex-direction: column;
       margin: 10px 0px 30px 10px;
+      .text-area-flexbox {
+        display: flex;
+        .btn-container {
+          .complete {
+            background-color: rgba(219, 235, 231, 1);
+            color: black;
+            border: 1px solid rgb(70, 92, 88);
+            margin-right: 5px;
+            margin-left: 5px;
+
+            &:hover {
+              background-color: rgb(70, 92, 88);
+              color: rgb(244, 245, 219);
+            }
+          }
+          .cancel {
+            background-color: lightgrey;
+            color: black;
+            border: 1px solid grey;
+            &:hover {
+              background-color: whitesmoke;
+            }
+          }
+        }
+      }
       .animal-board-comment-userability {
         margin-bottom: 15px;
         display: flex;
-        .writer {
-          font-size: 1.2rem;
-          color: brown;
+        .comment-user-info {
+          display: flex;
         }
+
         .response {
           cursor: pointer;
         }
@@ -41,6 +69,10 @@ const InnerComment = styled.div`
       .dropdown-toggle {
         cursor: pointer;
       }
+    }
+    .comment-date {
+      padding-top: 8px;
+      font-size: 0.8rem;
     }
   }
 `;
@@ -167,30 +199,37 @@ const ReplyComment = ({
                     <p>
                       {reply.user.userNickname}{" "}
                       {moment(editReply.animalBoardDate).format(
-                        "MM.DD HH:mm  "
+                        "YYYY.MM.DD HH:mm  "
                       )}
                     </p>
                     <FaReplyAll />
-
+                  </div>
+                  <div className="text-area-flexbox">
+                    <textarea
+                      className="update-comment-content"
+                      style={{
+                        width: "600px",
+                        height: "40px",
+                        "border-radius": "10px",
+                        resize: "none",
+                      }}
+                      value={editReply.animalCommentContent}
+                      onChange={(e) =>
+                        setEditReply((prev) => ({
+                          ...prev,
+                          animalCommentContent: e.target.value,
+                        }))
+                      }
+                    ></textarea>
                     <div className="btn-container">
-                      <Button variant="primary" onClick={onUpdateR}>
+                      <Button className="complete" onClick={onUpdateR}>
                         완료
                       </Button>
-                      <Button variant="info" onClick={onCancelR}>
+                      <Button className="cancel" onClick={onCancelR}>
                         취소
                       </Button>
                     </div>
                   </div>
-                  <textarea
-                    className="update-comment-content"
-                    value={editReply.animalCommentContent}
-                    onChange={(e) =>
-                      setEditReply((prev) => ({
-                        ...prev,
-                        animalCommentContent: e.target.value,
-                      }))
-                    }
-                  ></textarea>
                 </div>
               </div>
             </>
@@ -204,17 +243,16 @@ const ReplyComment = ({
                 </label>
                 <div className="user-action-container">
                   <div className="animal-board-comment-userability">
-                    <p>
+                    <div className="comment-user-info">
                       <MyToggleBar name={reply.user.userNickname} />
                       {boardAuthor === reply.user.userId ? (
                         <>
-                          <FaPencilAlt className="writer" />
+                          <Writer />
                         </>
                       ) : (
                         <></>
                       )}{" "}
-                      {moment(reply.animalBoardDate).format("MM.DD HH:mm  ")}
-                    </p>
+                    </div>
                     <FaReplyAll
                       className="response"
                       onClick={() => accessReply(reply)}
@@ -243,6 +281,7 @@ const ReplyComment = ({
                       <></>
                     )}
                   </div>
+
                   <div>
                     {reply.animalCommentTag === null ? (
                       <></>
@@ -255,6 +294,9 @@ const ReplyComment = ({
                     )}
 
                     {reply.animalCommentContent}
+                  </div>
+                  <div className="comment-date">
+                    {moment(reply.animalBoardDate).format("YYYY.MM.DD HH:mm  ")}
                   </div>
                 </div>
               </div>

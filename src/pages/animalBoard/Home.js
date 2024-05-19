@@ -420,7 +420,7 @@ const AnimalHome = () => {
               <div className="table-container">
                 {boards?.map((tableBoard) => (
                   <div key={tableBoard.animalBoardCode}>
-                    <TableList board={tableBoard} />
+                    <TableList board={tableBoard} user={user} />
                   </div>
                 ))}
               </div>

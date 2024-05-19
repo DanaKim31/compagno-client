@@ -4,8 +4,12 @@ import ReplyComment from "./ReplyComment";
 import styled from "styled-components";
 
 const Button = styled.button`
-  color: rgb(244, 245, 219);
-  background-color: rgb(70, 92, 88);
+  /* width: 50px; */
+  &:hover {
+    background-color: rgb(70, 92, 88);
+    color: rgb(244, 245, 219);
+  }
+  color: black;
 `;
 
 const ViewMoreReply = ({

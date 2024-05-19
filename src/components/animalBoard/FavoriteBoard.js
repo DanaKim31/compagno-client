@@ -16,19 +16,27 @@ const Div = styled.div`
     width: 110px;
     padding: 3px;
     text-align: center;
+    cursor: pointer;
+    &:hover {
+      background-color: whitesmoke;
+    }
   }
 
   .addFav {
     color: pink;
-    cursor: pointer;
   }
   .delFav {
     color: red;
-    cursor: pointer;
   }
 `;
 
-const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
+const FavoriteBoard = ({
+  userId,
+  boardCode,
+  count,
+  animalBoardAPI,
+  noOnClick,
+}) => {
   // console.log(userId); // 현재 로그인 한 유저정보 가져와짐
   // console.log(boardCode);
   // 지금 로그인한 유저의 해당글의 좋아요 여부 확인
@@ -104,21 +112,20 @@ const FavoriteBoard = ({ userId, boardCode, count, animalBoardAPI }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boolean]);
   return (
-    <Div>
+    <Div onClick={noOnClick}>
       {boolean ? (
-        <div className="like-container">
+        <div className="like-container" onClick={delFav}>
           좋아요!&nbsp;&nbsp;
-          <FaHeart className="delFav" onClick={delFav} />
+          <FaHeart className="delFav" />
           {count}
         </div>
       ) : (
-        <div className="like-container">
+        <div className="like-container" onClick={addFav} noOnClick>
           좋아요!&nbsp;&nbsp;
-          <FaRegHeart className="addFav" onClick={addFav} />
+          <FaRegHeart className="addFav" />
           {count}
         </div>
       )}
-      {/* {count} */}
     </Div>
   );
 };

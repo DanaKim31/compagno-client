@@ -4,8 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { delBoard } from "../../api/animalBoard";
 import { Image } from "react-bootstrap";
 import MyToggleBar from "../note/MyToggleBar";
+import Writer from "./Writer";
+import moment from "moment";
 
 const Div = styled.div`
+  border-bottom: 1px solid lightgrey;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
   .title-container {
     .title {
       font-size: 2rem;
@@ -36,15 +41,29 @@ const Div = styled.div`
         p {
           margin-right: 30px;
         }
+        .toogle-bar {
+          display: flex;
+        }
       }
-      .writer {
-        font-size: 1.2rem;
-        color: brown;
-      }
+
       .option {
         /* background-color: green; */
         display: flex;
         justify-content: flex-end;
+        button {
+          background-color: white;
+          border: 1px solid lightgray;
+          border-radius: 10px;
+          width: 110px;
+          height: 35px;
+          padding: 3px;
+          margin-left: 5px;
+          text-align: center;
+          cursor: pointer;
+          &:hover {
+            background-color: whitesmoke;
+          }
+        }
       }
     }
   }
@@ -67,7 +86,7 @@ const DetailPageProfile = ({ author, currentUser }) => {
     navigate(`/compagno/edit-board/${boardCode}`);
   };
   const accessWrite = async (boardCode) => {
-    navigate(`/compagno/write-board${boardCode}`);
+    navigate(`/compagno/write-board/${boardCode}`);
   };
   return (
     <Div className="author-profile-container">
@@ -84,13 +103,13 @@ const DetailPageProfile = ({ author, currentUser }) => {
         </label>
         <div className="author-userablity">
           <div className="user-info">
+            <div className="toogle-bar">
+              <MyToggleBar name={author.user.userNickname} /> <Writer />
+            </div>
             <p>
-              <MyToggleBar name={author.user.userNickname} />{" "}
-              <FaPencilAlt className="writer" />
-            </p>
-            <p>
-              {"등록일 : " + author.animalBoardDate} |{" "}
-              {"조회 : " + author.animalBoardView}
+              {"등록일 : " +
+                moment(author.animalBoardDate).format("YYYY.MM.DD HH:mm")}{" "}
+              | {"조회 : " + author.animalBoardView}
             </p>
           </div>
           <div className="option">
