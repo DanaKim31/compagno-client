@@ -118,10 +118,6 @@ const Div = styled.div`
       margin: 10px 110px;
     }
 
-  #topreanswerwriter{
-    display: flex;
-  }
-
   // 상위 답변
   #answer {
     font-family: "TAEBAEKmilkyway";
@@ -638,14 +634,12 @@ const UserQnaAnswer = ({ question }) => {
                                     reanswer.user.userImg
                                   }
                                 />
-                                <div>
                                   <MyToggleBar
                                     name={reanswer.user.userNickname}
                                   />
                                   {question.userId === reanswer.user.userId ? (<>
-                                  <p id="topreanswerwriter">작성자</p>
+                                  <p id="rewriter">작성자</p>
                                 </>) :(<></>)}
-                                </div>
                               </div>
 
                               <div>
@@ -686,7 +680,7 @@ const UserQnaAnswer = ({ question }) => {
                                   <div>
                                     {topChoose.user.userId}
                                     {question.userId === reanswer.user.userId ? (<>
-                                  <p id="topreanswerwriter">작성자</p>
+                                  <p id="rewriter">작성자</p>
                                 </>) :(<></>)}
                                   </div>
                                 </>
@@ -705,14 +699,12 @@ const UserQnaAnswer = ({ question }) => {
                                         reanswer.user.userImg
                                       }
                                     />
-                                    <div id="topreanswerwriter">
                                       <MyToggleBar
                                         name={reanswer.user.userNickname}
                                       />
                                       {question.userId === reanswer.user.userId ? (<>
                                   <p id="rewriter">작성자</p>
                                 </>) :(<></>)}
-                                    </div>
                                   </div>
                                 </>
                               )}
@@ -957,14 +949,12 @@ const UserQnaAnswer = ({ question }) => {
                                   reanswer.user.userImg
                                 }
                               />
-                              <div>
                                 <MyToggleBar
                                   name={reanswer.user.userNickname}
                                 />
                                 {question.userId === reanswer.user.userId ? (<>                             
                                   <p id="rewriter">작성자</p>
                                 </>) :(<></>)}
-                              </div>
                             </div>
                             <div>
                               {editA !== null ? (
