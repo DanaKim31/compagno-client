@@ -214,7 +214,7 @@ const CreateNoticeBoard = () => {
           setContent(e.target.value.trim());
         }}
       />
-      <div className="productImage">
+      <div className="noticeImage">
         <p style={{ margin: "10px", fontSize: "1.1rem" }}>이미지 업로드</p>
         <Form.Group controlId="formFileMultiple" className="mb-3">
           <Form.Control

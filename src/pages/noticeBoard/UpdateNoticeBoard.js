@@ -144,6 +144,7 @@ const UpdateNoticeBoard = () => {
     }
     if (window.confirm("게시물을 수정하시겠습니까?")) {
       const formData = new FormData();
+      formData.append("noticeBoardCode", code);
       formData.append("noticeBoardTitle", title);
       formData.append("noticeBoardContent", content);
       formData.append("userId", user.userId);
@@ -153,7 +154,7 @@ const UpdateNoticeBoard = () => {
       });
 
       prevImgSrc.forEach((image, index) => {
-        formData.append(`images[${index}]`, image.productImage);
+        formData.append(`images[${index}]`, image.noticeImage);
       });
 
       await editNoticeBoard(formData);
@@ -201,9 +202,7 @@ const UpdateNoticeBoard = () => {
   };
 
   const deletePrevSrc = (code) => {
-    const images = prevImgSrc.filter(
-      (image) => image.productImageCode !== code
-    );
+    const images = prevImgSrc.filter((image) => image.noticeImageCode !== code);
     setPrevImgSrc(images);
   };
 
@@ -239,7 +238,7 @@ const UpdateNoticeBoard = () => {
           setContent(e.target.value.trim());
         }}
       />
-      <div className="productImage">
+      <div className="noticeImage">
         <p style={{ margin: "10px", fontSize: "1.1rem" }}>이미지 업로드</p>
         <Form.Group controlId="formFileMultiple" className="mb-3">
           <Form.Control
@@ -263,7 +262,7 @@ const UpdateNoticeBoard = () => {
             </span>
           ))}
           {prevImgSrc.map((img, i) => (
-            <span className="imageSpan" key={img.niticeImageCode}>
+            <span className="imageSpan" key={img.noticeImageCode}>
               <img src={"http://192.168.10.28:8081/" + img.noticeImage} />
               <FaRegCircleXmark
                 onClick={() => deletePrevSrc(img.noticeImageCode)}

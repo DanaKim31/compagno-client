@@ -17,7 +17,7 @@ import {
 import { FiCornerDownRight } from "react-icons/fi";
 
 const Main = styled.main`
-  min-width: 1700px;
+  min-width: 1903px;
   width: 100%;
 
   padding: 0px 300px;
@@ -293,6 +293,7 @@ const NoticeBoardDetail = () => {
   const viewNoticeBoard = async () => {
     const response = await getNoticeBoard(code);
     setNoticeBoard(response.data);
+    console.log(response.data);
   };
 
   const viewNoticeBoardComment = async () => {
@@ -411,27 +412,15 @@ const NoticeBoardDetail = () => {
             조회 수 : {noticeBoard.noticeBoardViewCount}
           </span>
         </div>
-        {noticeBoard.noticeMainImage != undefined && (
-          <div className="boardImage">
-            <img
-              src={"http://192.168.10.28:8081/" + noticeBoard.noticeMainImage}
-            />
-            {noticeBoard.images?.map((image) => (
-              <img
-                key={image.noticeImageCode}
-                src={"http://192.168.10.28:8081/" + image.noticeImage}
-              />
-            ))}
-          </div>
-        )}
         <div className="boardImage">
           {noticeBoard.images?.map((image) => (
             <img
-              key={image.productImageCode}
-              src={"http://192.168.10.28:8081/" + image.productImage}
+              key={image.noticeImageCode}
+              src={"http://192.168.10.28:8081/" + image.noticeImage}
             />
           ))}
         </div>
+
         <div className="boardContent">{noticeBoard.noticeBoardContent}</div>
       </div>
       <nav className="boardBtnNav">
