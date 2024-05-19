@@ -9,8 +9,10 @@ const authorize = axios.create({
 });
 
 // 대행기관 전체보기
-export const getInsts = async (page) => {
-  return await instance.get("register-pet?page=" + page);
+export const getInsts = async (page, select, keyword) => {
+  return await instance.get(
+    "register-pet?page=" + page + "&select=" + select + "&keyword=" + keyword
+  );
 };
 
 // FAQ 전체보기

@@ -122,6 +122,8 @@ const RegisterPetInsts = () => {
   const [insts, setInsts] = useState([]);
   const [toast, setToast] = useState(false);
   const [addr, setAddr] = useState("");
+  const [select, setSelect] = useState(0);
+  const [keyword, setKeyword] = useState("");
   // ========================== 유저 ==========================
   const dispatch = useDispatch();
   const user = useSelector((state) => {
@@ -133,9 +135,8 @@ const RegisterPetInsts = () => {
 
   const instsAPI = async () => {
     setLoading(true);
-    const result = await getInsts(page);
+    const result = await getInsts(page, select, keyword);
     const newData = result.data.content;
-    console.log(newData);
     setInsts((prev) => [...prev, ...newData]);
     setPage((prev) => prev + 1);
     setLoading(false);
@@ -174,20 +175,21 @@ const RegisterPetInsts = () => {
 
       <div className="search-area">
         <div className="keyword">
-          <select>
-            <option>기관명</option>
-            <option>주소</option>
-            <option>대표자명</option>
+          <select onChange={(e) => setSelect(e.target.value)}>
+            <option value={1}>기관명</option>
+            <option value={2}>주소</option>
+            <option value={3}>대표자명</option>
           </select>
           <input
             type="text"
             placeholder="검색어 입력"
             className="search-input"
+            onChange={(e) => setKeyword(e.target.value)}
           />
         </div>
 
         <div className="search-btn">
-          <button>조회</button>
+          <button onClick={instsAPI}>조회</button>
         </div>
       </div>
 

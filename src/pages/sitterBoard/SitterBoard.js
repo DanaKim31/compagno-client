@@ -38,6 +38,10 @@ const Div = styled.div`
     margin-bottom: 100px;
   }
 
+  .header {
+    font-size: 2.5rem;
+  }
+
   .register-search-btn {
     width: 100%;
     display: flex;
@@ -337,6 +341,8 @@ const SitterBoard = () => {
   return (
     <Div>
       <h1>시터 게시판</h1>
+
+      <div className="header">시터 게시판</div>
 
       <div className="register-search-btn">
         <button id="register-btn" onClick={registerBoard}>
