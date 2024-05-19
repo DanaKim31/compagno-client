@@ -441,7 +441,8 @@ const NeighborDetail = () => {
             {neighborBoard.images?.map((image) => (
               <img
                 key={image.neighborImageCode}
-                src={"http://localhost:8081" + image.neighborImage}
+                // src={"http://localhost:8081" + image.neighborImage}
+                src={"http://192.168.10.28:8081/" + image.neighborImage}
               ></img>
             ))}
           </div>

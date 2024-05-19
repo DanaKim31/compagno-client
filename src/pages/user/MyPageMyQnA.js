@@ -147,6 +147,7 @@ const MyPageMyQnA = () => {
 
       setQnaList(qnaData);
       setQnaCount(countQnaData);
+      console.log(qnaData);
     } else if (user.userRole == "ROLE_ADMIN") {
       // 매니저일때
       const mResponse = await getManageQnaList(page);
@@ -200,7 +201,18 @@ const MyPageMyQnA = () => {
                         </a>
                       </td>
                       <td>{qna.userNickname}</td>
-                      <td>{moment(qna.qnaQDate).format("YYYY-MM-DD")}</td>
+                      <td>
+                        {" "}
+                        {qna.qnaQDate !== null ? (
+                          <>{moment(qna.qnaQDate).format("YYYY-MM-DD hh:mm")}</>
+                        ) : (
+                          <>
+                            {moment(qna.qnaQDateUpdate).format(
+                              "YYYY-MM-DD hh:mm"
+                            )}
+                          </>
+                        )}
+                      </td>
                       <td>{qna.qnaQStatus === "N" ? "X" : "O"}</td>
                     </tr>
                   ))}
@@ -229,7 +241,21 @@ const MyPageMyQnA = () => {
                         </a>
                       </td>
                       <td>{mQna.userNickname}</td>
-                      <td>{moment(mQna.qnaQDate).format("YYYY-MM-DD")}</td>
+                      {/* <td>{moment(mQna.qnaQDate).format("YYYY-MM-DD")}</td> */}
+                      <td>
+                        {mQna.qnaQDate !== null ? (
+                          <>
+                            {moment(mQna.qnaQDate).format("YYYY-MM-DD hh:mm")}
+                          </>
+                        ) : (
+                          <>
+                            {moment(mQna.qnaQDateUpdate).format(
+                              "YYYY-MM-DD hh:mm"
+                            )}
+                          </>
+                        )}
+                      </td>
+
                       <td>{mQna.qnaQStatus === "N" ? "X" : "O"}</td>
                     </tr>
                   ))}
