@@ -393,17 +393,17 @@ const ViewAllAdopBoard = () => {
             >
               <h4 id="animalKind">{adop.adopAnimalKind}</h4>
               <div id="imageBox">
-                <img
-                  id="mainImage"
-                  // src={adop.adopAnimalImage?.replace(
-                  //   "C:",
-                  //   "http://localhost:8081"
-                  // )}
-                  src={adop.adopAnimalImage?.replace(
-                    "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
-                    "http://192.168.10.28:8081/adoptionBoard/"
-                  )}
-                />
+                {adop.adopAnimalImage == "" || adop.adopAnimalImage == null ? (
+                  <img src="/img/noImage.jpg" id="mainImage" />
+                ) : (
+                  <img
+                    id="mainImage"
+                    src={adop.adopAnimalImage?.replace(
+                      "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
+                      "http://192.168.10.28:8081/adoptionBoard/"
+                    )}
+                  />
+                )}
               </div>
 
               <div
