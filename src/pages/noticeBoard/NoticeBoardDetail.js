@@ -293,7 +293,6 @@ const NoticeBoardDetail = () => {
   const viewNoticeBoard = async () => {
     const response = await getNoticeBoard(code);
     setNoticeBoard(response.data);
-    console.log(response.data);
   };
 
   const viewNoticeBoardComment = async () => {
