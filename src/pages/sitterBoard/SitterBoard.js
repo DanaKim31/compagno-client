@@ -15,6 +15,7 @@ import {
   FaAngleRight,
   FaAnglesRight,
 } from "react-icons/fa6";
+import moment from "moment";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 import { userSave } from "../../store/user";
 import styled from "styled-components";
@@ -475,18 +476,7 @@ const SitterBoard = () => {
                 {sitter.user.userNickname + "  (" + sitter.user.userId + ")"}
               </td>
               <td>
-                <span id="sitter-date">{`${new Date(
-                  sitter.sitterRegiDate
-                ).getFullYear()}-${new Date(
-                  sitter.sitterRegiDate
-                ).getMonth()}-${new Date(
-                  sitter.sitterRegiDate
-                ).getDate()}`}</span>
-                <span>{`${new Date(
-                  sitter.sitterRegiDate
-                ).getHours()}:${new Date(
-                  sitter.sitterRegiDate
-                ).getMinutes()}`}</span>
+                {moment(sitter.sitterRegiDate).format("YYYY-MM-DD HH:mm")}
               </td>
               <td>{sitter.sitterViewCount}</td>
               <td>

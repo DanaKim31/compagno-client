@@ -59,9 +59,13 @@ const Div = styled.div`
       flex-wrap: wrap;
       margin-bottom: 50px;
 
+      div {
+        margin-bottom: 20px;
+      }
+
       select {
         height: 38px;
-        width: 185px;
+        width: 200px;
         padding-left: 10px;
         margin-right: 50px;
         border-radius: 5px;
@@ -74,22 +78,17 @@ const Div = styled.div`
       margin-bottom: 20px;
       padding-bottom: 50px;
 
+      div {
+        margin-bottom: 20px;
+      }
+
       input {
+        height: 38px;
         padding-left: 10px;
         border-radius: 5px;
         border: 1px solid gray;
         margin-right: 50px;
         background: #f6f6f6ff;
-      }
-
-      .writer {
-        display: flex;
-        flex-direction: row;
-      }
-
-      .register-date {
-        display: flex;
-        flex-direction: row;
       }
     }
 
@@ -105,7 +104,7 @@ const Div = styled.div`
       }
 
       input {
-        width: 90%;
+        width: 95%;
         line-height: 35px;
         padding-left: 10px;
         border-radius: 5px;
@@ -125,7 +124,7 @@ const Div = styled.div`
       }
 
       .content-input {
-        width: 90%;
+        width: 95%;
         padding-left: 10px;
         border-radius: 5px;
         border: 1px solid gray;
@@ -186,17 +185,6 @@ const NeighborCreate = () => {
     return state.user;
   });
 
-  // =================== 오늘 날짜 ===================
-  const [today, setToday] = useState("");
-  const dateInformation = () => {
-    const today = moment().format("YYYY-MM-DD");
-    setToday(today);
-  };
-
-  useEffect(() => {
-    dateInformation();
-  }, []);
-
   // =================== 게시글 등록 ===================
   const [neighborBoard, setNeighborBoard] = useState({});
   const [animalCategories, setAnimalCategories] = useState([]);
@@ -208,6 +196,14 @@ const NeighborCreate = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
+  const [neighborBoardRegiDate, setNeighborBoardRegiDate] = useState("");
+  const nowDate = () => {
+    setNeighborBoardRegiDate(moment().format("yyyy-MM-DD HH:mm:ss"));
+  };
+
+  useEffect(() => {
+    nowDate();
+  }, []);
 
   const [imgSrc, setImgSrc] = useState([]);
   const registerImage = (e) => {
@@ -232,7 +228,8 @@ const NeighborCreate = () => {
     formData.append("locationCode", district);
     formData.append("neighborBoardTitle", title);
     formData.append("neighborBoardContent", content);
-    formData.append("userId", user.userId);
+    formData.append("user", user.userId);
+    formData.append("neighborBoardRegiDate", neighborBoardRegiDate);
     files.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
@@ -283,10 +280,10 @@ const NeighborCreate = () => {
     navigate("/compagno/neighborBoard");
   };
 
-  const registerBtn = async () => {
-    await registerNeighborBoard(neighborBoard);
-    navigate("/compagno/neighborBoard");
-  };
+  // const registerBtn = async () => {
+  //   await registerNeighborBoard(neighborBoard);
+  //   navigate("/compagno/neighborBoard");
+  // };
 
   return (
     <Div>
@@ -352,7 +349,11 @@ const NeighborCreate = () => {
 
           <div className="register-date">
             <span id="title">작성일</span>
-            <input type="text" value={today} readOnly />
+            <input
+              type="text"
+              value={moment(neighborBoardRegiDate).format("YYYY-MM-DD")}
+              readOnly
+            />
           </div>
         </div>
 

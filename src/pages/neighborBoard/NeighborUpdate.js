@@ -13,6 +13,7 @@ import Form from "react-bootstrap/Form";
 import moment from "moment";
 import { IoClose } from "react-icons/io5";
 import { Button } from "react-bootstrap";
+import "moment/locale/ko";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -222,38 +223,29 @@ const NeighborUpdate = () => {
     return state.user;
   });
 
-  // =================== 오늘 날짜 ===================
-  const [today, setToday] = useState("");
-  const dateInformation = () => {
-    const today = moment().format("YYYY-MM-DD");
-    setToday(today);
-  };
-
-  useEffect(() => {
-    dateInformation();
-  }, []);
   const viewNeighborBoard = async () => {
     const response = (await getNeighborBoard(code)).data;
     console.log(response);
     setAnimalCategory(response.animalCategoryCode.animalCategoryCode);
-    // setSelectedProvince(response.location.parent.locationCode);
     setSelectedDistrict(response.location.locationCode);
     setRegisterDate(response.neighborBoardRegiDate);
-    setUpdateDate(response.neighborBoardUpdateDate);
+    // setUpdateDate(response.neighborBoardUpdateDate);
     setTitle(response.neighborBoardTitle);
     setContent(response.neighborBoardContent);
     setPrevImgSrc(response.images);
     setPrevImg(response.images);
   };
+
   const { code } = useParams();
+  const [neighborBoard, setNeighborBoard] = useState({});
   const [animalCategories, setAnimalCategories] = useState([]);
   const [animalCategory, setAnimalCategory] = useState("");
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
-  const [province, setProvince] = useState(0);
-  const [district, setDistrict] = useState(0);
   const [registerDate, setRegisterDate] = useState("");
-  const [updateDate, setUpdateDate] = useState("");
+  // const [updateDate, setUpdateDate] = useState("");
+  const currentUpdateDate = moment().format("yyyy-MM-DD  HH:mm:ss");
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
@@ -261,15 +253,15 @@ const NeighborUpdate = () => {
   const [prevImg, setPrevImg] = useState([]);
   const [prevImgSrc, setPrevImgSrc] = useState([]);
 
-  console.log(title);
-  console.log(selectedDistrict);
   const updateBoard = async () => {
+    const currentUpdateDate = moment().format("yyyy-MM-DD HH:mm:ss");
+
     const formData = new FormData();
     formData.append("neighborBoardCode", code);
     formData.append("animalCategoryCode", animalCategory);
-    formData.append("selectedDistrict", selectedDistrict);
-    formData.append("neighborBoardRegiDate", registerDate);
-    formData.append("neighborBoardUpdateDate", updateDate);
+    formData.append("locationCode", selectedDistrict);
+    // formData.append("neighborBoardRegiDate", registerDate);
+    formData.append("neighborBoardUpdateDate", currentUpdateDate);
     formData.append("neighborBoardTitle", title);
     formData.append("neighborBoardContent", content);
     formData.append("user", user.userId);
@@ -283,6 +275,11 @@ const NeighborUpdate = () => {
 
     await updateNeighborBoard(formData);
     navigate("/compagno/neighborBoard");
+  };
+
+  const neighborBoardAPI = async () => {
+    const result = await getNeighborBoard(code);
+    setNeighborBoard(result.data);
   };
 
   const animalCategoryAPI = async () => {
@@ -309,19 +306,11 @@ const NeighborUpdate = () => {
     if (token !== null) {
       dispatch(userSave(JSON.parse(localStorage.getItem("user"))));
     }
+    neighborBoardAPI(code);
     viewNeighborBoard();
     animalCategoryAPI();
     provinceAPI();
   }, []);
-
-  const handleProvinceChange = (e) => {
-    districtAPI(e.target.value);
-    setProvince(e.target.value);
-  };
-
-  const handleDistrictChange = (e) => {
-    setDistrict(e.target.value);
-  };
 
   const registerImage = (e) => {
     const images = Array.from(e.target.files);
@@ -367,27 +356,15 @@ const NeighborUpdate = () => {
         <div className="location-category">
           <div id="province">
             <span id="title">시/도</span>
-            <select onChange={handleProvinceChange}>
-              {/* {selectedProvince?.map((province) => (
-            <option key={province.locationCode} value={province.locationCode}>
-              {province.locationName}
-            </option>
-          ))} */}
-            </select>
+            <input
+              value={neighborBoard.location?.parent?.locationName}
+              readOnly
+            />
           </div>
 
           <div id="district">
             <span id="title">시/군/구</span>
-            {/* {selectedProvince && ( */}
-            <select onChange={handleDistrictChange}>
-              {/* <option value="">전체</option>
-            {selectedDistrict?.map((district) => (
-              <option key={district.locationCode} value={district.locationCode}>
-                {district.locationName}
-              </option>
-            ))} */}
-            </select>
-            {/* )} */}
+            <input value={neighborBoard.location?.locationName} readOnly />
           </div>
 
           <div id="animal-category">
@@ -420,20 +397,18 @@ const NeighborUpdate = () => {
             <span id="title">작성일</span>
             <input
               type="text"
-              value={
-                `${new Date(registerDate).getFullYear()}-${new Date(
-                  registerDate
-                ).getMonth()}-${new Date(registerDate).getDate()}   ${new Date(
-                  registerDate
-                ).getHours()}:${new Date(registerDate).getMinutes()}` || ""
-              }
+              value={moment(registerDate).format("YYYY-MM-DD  HH:mm")}
               readOnly
             />
           </div>
 
           <div className="update-date">
             <span id="title">수정일</span>
-            <input type="text" value={today || ""} readOnly />
+            <input
+              type="text"
+              value={moment(currentUpdateDate).format("YYYY-MM-DD")}
+              readOnly
+            />
           </div>
         </div>
 

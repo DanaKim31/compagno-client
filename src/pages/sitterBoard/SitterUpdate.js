@@ -224,16 +224,11 @@ const SitterUpdate = () => {
     return state.user;
   });
 
-  useEffect(() => {
-    dateInformation();
-  }, []);
-
   const viewSitterBoard = async () => {
     const response = (await getSitterBoard(code)).data;
     setBoardCategory(response.sitterCategory.sitterCategoryCode);
     setAnimalCategory(response.animalCategoryCode.animalCategoryCode);
     setSelectedDistrict(response.location.locationCode);
-    // {moment(response.sitterRegiDate).format("yyyy-MM-DD hh:mm:ss")}
     setRegisterDate(response.sitterRegiDate);
     setTitle(response.sitterTitle);
     setContent(response.sitterContent);
@@ -249,30 +244,25 @@ const SitterUpdate = () => {
   const [animalCategory, setAnimalCategory] = useState("");
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
-  const [province, setProvince] = useState(0);
-  const [district, setDistrict] = useState(0);
   const [registerDate, setRegisterDate] = useState("");
-  const [updateDate, setUpdateDate] = useState("");
-  const dateInformation = () => {
-    setUpdateDate(moment().format("YYYY-MM-DD"));
-  };
-  useEffect(() => {
-    dateInformation();
-  }, []);
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
   const [imgSrc, setImgSrc] = useState([]);
   const [prevImg, setPrevImg] = useState([]);
   const [prevImgSrc, setPrevImgSrc] = useState([]);
+  const currentUpdateDate = moment().format("yyyy-MM-DD HH:mm:ss");
 
   const updateBoard = async () => {
+    const currentUpdateDate = moment().format("yyyy-MM-DD HH:mm:ss");
+
     const formData = new FormData();
     formData.append("sitterBoardCode", code);
     formData.append("sitterCategory", boardCategory);
     formData.append("animalCategoryCode", animalCategory);
     formData.append("locationCode", selectedDistrict);
-    formData.append("sitterUpdateDate", updateDate);
+    formData.append("sitterUpdateDate", currentUpdateDate);
     formData.append("sitterTitle", title);
     formData.append("sitterContent", content);
     formData.append("userId", user.userId);
@@ -438,7 +428,11 @@ const SitterUpdate = () => {
 
           <div className="update-date">
             <span id="title">수정일</span>
-            <input type="text" value={updateDate} readOnly />
+            <input
+              type="text"
+              value={moment(currentUpdateDate).format("YYYY-MM-DD")}
+              readOnly
+            />
           </div>
         </div>
 

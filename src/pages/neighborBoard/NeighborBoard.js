@@ -16,6 +16,7 @@ import {
 } from "react-icons/fa6";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 import { userSave } from "../../store/user";
+import moment from "moment";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -190,8 +191,6 @@ const NeighborBoard = () => {
   // ========== 검색조건 ==========
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
-  const [province, setProvince] = useState(0);
-  const [district, setDistrict] = useState(0);
   const [animalCategories, setAnimalCategories] = useState([]);
 
   const [searchProvince, setSearchProvince] = useState("");
@@ -445,13 +444,11 @@ const NeighborBoard = () => {
                   neighbor.user.userId +
                   ")"}
               </td>
-              <td>{`${new Date(
-                neighbor.neighborBoardRegiDate
-              ).getFullYear()}-${new Date(
-                neighbor.neighborBoardRegiDate
-              ).getMonth()}-${new Date(
-                neighbor.neighborBoardRegiDate
-              ).getDate()}`}</td>
+              <td>
+                {moment(neighbor.neighborBoardRegiDate).format(
+                  "YYYY-MM-DD  HH:MM"
+                )}
+              </td>
               <td>{neighbor.neighborBoardViewCount}</td>
               <td>
                 {neighbor.bookmark?.filter(

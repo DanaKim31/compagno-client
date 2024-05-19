@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import { Form, Button } from "react-bootstrap";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
+import moment from "moment";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -99,8 +100,13 @@ const Div = styled.div`
         font-weight: bold;
       }
 
-      #date {
-        margin-right: 6px;
+      .date-group {
+        display: flex;
+
+        .update-date {
+          padding-right: 25px;
+          color: darkgray;
+        }
       }
     }
 
@@ -427,21 +433,26 @@ const SitterDetail = () => {
           <div className="writer">
             <MyToggleBar name={sitterBoard.user?.userNickname} />
           </div>
+          <div className="date-group">
+            <div className="update-date">
+              {sitterBoard.sitterUpdateDate && (
+                <>
+                  <span> 수정일 : </span>
+                  <span>
+                    {moment(sitterBoard.sitterUpdateDate).format(
+                      "YYYY-MM-DD  HH:mm"
+                    )}
+                  </span>
+                </>
+              )}
+            </div>
 
-          <div className="register-date">
-            <span>작성일 : </span>
-            <span id="date">
-              {`${new Date(
-                sitterBoard.sitterRegiDate
-              ).getFullYear()}-${new Date(
-                sitterBoard.sitterRegiDate
-              ).getMonth()}-${new Date(sitterBoard.sitterRegiDate).getDate()}`}
-            </span>
-            <span>
-              {`${new Date(sitterBoard.sitterRegiDate).getHours()}:${new Date(
-                sitterBoard.sitterRegiDate
-              ).getMinutes()}`}
-            </span>
+            <div className="register-date">
+              <span>작성일 : </span>
+              <span id="date">
+                {moment(sitterBoard.sitterRegiDate).format("YYYY-MM-DD  HH:mm")}
+              </span>
+            </div>
           </div>
         </div>
 

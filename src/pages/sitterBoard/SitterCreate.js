@@ -67,7 +67,7 @@ const Div = styled.div`
 
       select {
         height: 38px;
-        width: 185px;
+        width: 200px;
         padding-left: 10px;
         margin-right: 50px;
         border-radius: 5px;
@@ -220,7 +220,6 @@ const SitterCreate = () => {
   const [selectedDistrict, setSelectedDistrict] = useState([]);
   const [province, setProvince] = useState(0);
   const [district, setDistrict] = useState(0);
-  const [location, setLocation] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
@@ -228,9 +227,11 @@ const SitterCreate = () => {
   const nowDate = () => {
     setSitterRegiDate(moment().format("yyyy-MM-DD HH:mm:ss"));
   };
+
   useEffect(() => {
     nowDate();
   }, []);
+
   const [imgSrc, setImgSrc] = useState([]);
   const registerImage = (e) => {
     const images = Array.from(e.target.files);

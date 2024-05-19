@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userSave } from "../../store/user";
 import { Form, Button } from "react-bootstrap";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
+import moment from "moment";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -86,8 +87,13 @@ const Div = styled.div`
         font-weight: bold;
       }
 
-      #date {
-        margin-right: 6px;
+      .date-group {
+        display: flex;
+
+        .update-date {
+          padding-right: 25px;
+          color: darkgray;
+        }
       }
     }
 
@@ -396,24 +402,28 @@ const NeighborDetail = () => {
           <div className="writer">
             <MyToggleBar name={neighborBoard.user?.userNickname} />
           </div>
-          <div className="register-date">
-            <span>작성일 : </span>
-            <span id="date">
-              {`${new Date(
-                neighborBoard.neighborBoardRegiDate
-              ).getFullYear()}-${new Date(
-                neighborBoard.neighborBoardRegiDate
-              ).getMonth()}-${new Date(
-                neighborBoard.neighborBoardRegiDate
-              ).getDate()}`}
-            </span>
-            <span id="time">
-              {`${new Date(
-                neighborBoard.neighborBoardRegiDate
-              ).getHours()}:${new Date(
-                neighborBoard.neighborBoardRegiDate
-              ).getMinutes()}`}
-            </span>
+          <div className="date-group">
+            <div className="update-date">
+              {neighborBoard.neighborBoardUpdateDate && (
+                <>
+                  <span> 수정일 : </span>
+                  <span>
+                    {moment(neighborBoard.neighborBoardUpdateDate).format(
+                      "YYYY-MM-DD  HH:mm"
+                    )}
+                  </span>
+                </>
+              )}
+            </div>
+
+            <div className="register-date">
+              <span>작성일 : </span>
+              <span id="date">
+                {moment(neighborBoard.neighborBoardRegiDate).format(
+                  "YYYY-MM-DD  HH:mm"
+                )}
+              </span>
+            </div>
           </div>
         </div>
 
