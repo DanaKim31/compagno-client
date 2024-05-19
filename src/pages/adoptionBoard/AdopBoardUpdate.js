@@ -265,6 +265,7 @@ const UpdateAdopBoard = () => {
       }
     }
   };
+
   // 중성화 기존 선택
   const defaultNeuter = () => {
     const checkboxes = document.getElementsByClassName("neuter");

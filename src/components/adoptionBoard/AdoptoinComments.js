@@ -70,10 +70,10 @@ const Comments = () => {
   }, []);
 
   // 페이징
-  const [page, setPage] = useState(1); // 현재 페이지
-  const [totalComments, setTotalComments] = useState(0); // 총 댓글 수
-  const [totalPage, setTotalPage] = useState(0); // 전체 총 페이지 : 총 댓글수/5
-  const [pages, setPages] = useState([]); // 페이지들
+  const [page, setPage] = useState(1);
+  const [totalComments, setTotalComments] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
+  const [pages, setPages] = useState([]);
 
   // 댓글 보기
   const [comments, setComments] = useState([]);
@@ -94,8 +94,6 @@ const Comments = () => {
     commentsAPI();
   }, [page]);
 
-  // 댓글 페이징 처리
-  // 첫 페이지, 마지막 페이지, 페이지 리스트 초기 셋팅
   let lastPage = 0;
   let firstPage = 0;
   let pageList = [];
@@ -108,7 +106,7 @@ const Comments = () => {
       lastPage = totalPage;
     }
     for (let i = firstPage; i <= lastPage; i++) {
-      pageList.push(i); // 처음 i는 firstPage, 범위는 lastPage로 반복문 돌려서 i값을 넣은 list 만들기
+      pageList.push(i);
     }
     setPages(pageList);
   }, [totalPage]);
@@ -455,13 +453,6 @@ const Comments = () => {
                                 <span
                                   id="bottomWriter"
                                   style={{
-                                    // marginLeft: "9px",
-                                    // fontWeight: "bolder",
-                                    // borderRadius: "30px",
-                                    // padding: "3px 5px",
-                                    // fontSize: "0.5rem",
-                                    // border: "1px solid green",
-
                                     marginLeft: "9px",
                                     border: "1px solid green",
                                     fontWeight: "bold",
@@ -718,7 +709,6 @@ const Comments = () => {
                                     </div>
                                   )}
                                 </div>
-                                {/* 건들일 부분 끝 */}
 
                                 {edit.adopCommentCode ==
                                 bottom.adopCommentCode ? (
@@ -795,6 +785,7 @@ const Comments = () => {
                       )}
                     </div>
                     {/* 대댓글 작성 추가 폼 */}
+
                     {comment.adopCommentCode !=
                     bottomComments.adopParentCode ? (
                       <></>
@@ -892,6 +883,7 @@ const Comments = () => {
                     )}
                     <div id="bottomWriteViewBtn" style={{ display: "flex" }}>
                       {/* 대댓글 쓰기 버튼 : 비회원일 경우 안보이도록 */}
+
                       {Object.keys(user).length == 0 ? (
                         <></>
                       ) : (
@@ -964,7 +956,7 @@ const Comments = () => {
           <FaAngleLeft
             style={{ cursor: "pointer" }}
             className="iconPaging"
-            onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))} // 현재 페이지에서 한칸 앞으로
+            onClick={() => (page > 1 ? setPage(page - 1) : setPage(1))}
           />
           {pages.map((num, index) => (
             <>
@@ -991,8 +983,8 @@ const Comments = () => {
           <FaAngleRight
             style={{ cursor: "pointer" }}
             className="iconPaging"
-            onClick={
-              () => (page < totalPage ? setPage(page + 1) : setPage(totalPage)) // 현재 페이지에서 한칸 뒤로
+            onClick={() =>
+              page < totalPage ? setPage(page + 1) : setPage(totalPage)
             }
           />
           <FaAnglesRight
