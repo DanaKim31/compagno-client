@@ -88,7 +88,7 @@ const Div = styled.div`
 const SignUp = () => {
   // 정규표현식
   const idRegexp = /^[a-zA-Z][a-zA-Z0-9]{7,14}$/; // 아이디
-  const pwdRegexp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/; // 비밀번호
+  const pwdRegexp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/; // 비밀번호
   const nameRegexp = /^[a-zA-Z가-힣]{2,20}$/; // 이름
   const nickRegexp = /^[a-zA-Z0-9가-힣]{3,20}$/; // 닉네임
   const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 이메일
@@ -96,7 +96,8 @@ const SignUp = () => {
 
   // 정규표현식 미충족시 출력할 경고문구
   const idText = "영어 대소문자 및 숫자 포함 8~15자 (단, 첫 글자는 영문자로)"; // 아이디
-  const pwdText = "영어 대소문자, 숫자 및 특수문자 포함 8~16자"; // 비밀번호
+  const pwdText =
+    "영어 대소문자, 숫자 및 특수문자 포함 8~16자(영어, 특수문자, 숫자 각각 1개 이상)"; // 비밀번호
   const pwdChkText = "동일한 비밀번호 입력 요망"; // 비밀번호체크
   const nameText = "영어 대소문자 및 한글 2~20자"; // 이름
   const nickText = "영어 대소문자 및 한글 3~20자"; // 닉네임
@@ -297,41 +298,45 @@ const SignUp = () => {
       user.userPwd === "" ||
       user.userPwd === undefined
     ) {
-      alert("조건 불만족! 비밀번호 입력 확인");
+      alert("비밀번호 입력을 확인해주세요");
     } else if (
       user.userPwd !== user.userPwdCheck ||
       user.userPwdCheck === "" ||
       user.userPwdCheck === undefined
     ) {
-      alert("조건 불만족! 동일 비밀번호 입력 확인");
+      alert("동일 비밀번호 입력을 확인해주세요");
     } else if (
       !nameRegexp.test(user.userPersonName) ||
       user.userPersonName === "" ||
       user.userPersonName === undefined
     ) {
-      alert("조건 불만족! 이름 입력 확인");
+      alert("이름 입력을 확인해주세요");
     } else if (
       !nickRegexp.test(user.userNickname) ||
       user.userNickname === "" ||
       user.userNickname === undefined
     ) {
-      alert("조건 불만족! 닉네임 입력 확인");
+      alert("닉네임 입력을 확인해주세요");
     } else if (checkNick == 8) {
       alert("닉네임 중복확인을 해주세요");
-    } else if (checkNick != 0) {
+    } else if (
+      checkNick != 0 ||
+      user.userNickname === null ||
+      user.userNickname === undefined
+    ) {
       alert("사용 불가한 닉네임입니다.");
     } else if (
       !emailRegexp.test(user.userEmail) ||
       user.userEmail === "" ||
       user.userEmail === undefined
     ) {
-      alert("조건 불만족! 이메일 입력 확인");
+      alert("이메일 입력을 확인해주세요");
     } else if (
       !phoneRegexp.test(user.userPhone) ||
       user.userPhone === "" ||
       user.userPhone === undefined
     ) {
-      alert("조건 불만족! 전화번호 입력 확인");
+      alert("전화번호 입력을 확인해주세요");
     } else {
       await registerUser(user);
       navigate("/compagno");
