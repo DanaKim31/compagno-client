@@ -36,6 +36,9 @@ const HomeContainer = styled.div`
     .category-container {
       .position-standard {
         position: relative;
+        margin-left: 5px;
+        margin-right: 5px;
+        border-radius: 5px;
       }
       .list-container {
         margin-top: 8px;
@@ -107,10 +110,14 @@ const HomeContainer = styled.div`
     font-size: 1.2rem;
     order: -1;
     position: relative;
+    .view-listOption {
+      border-radius: 5px !important;
+    }
     .outer-option {
       /* position: absolute; */
       background-color: rgb(70, 92, 88);
       padding: 4px;
+      /* border-radius: 5px; */
       cursor: pointer;
       &:hover {
         background-color: lightgrey;
@@ -381,7 +388,11 @@ const AnimalHome = () => {
             </button>
           </div>
           <div className="list-option-container">
-            <div className="outer-option" onClick={listViewOption}>
+            <div
+              className="outer-option view-listOption"
+              onClick={listViewOption}
+              style={{ "border-radius": "5px" }}
+            >
               보기
               <GoTriangleDown />
             </div>
@@ -420,7 +431,7 @@ const AnimalHome = () => {
               <div className="table-container">
                 {boards?.map((tableBoard) => (
                   <div key={tableBoard.animalBoardCode}>
-                    <TableList board={tableBoard} />
+                    <TableList board={tableBoard} user={user} />
                   </div>
                 ))}
               </div>

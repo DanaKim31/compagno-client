@@ -24,9 +24,8 @@ const TableParticle = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .detail {
-    }
-    .fav-bard {
+    .fav-board {
+      padding-top: 10px;
     }
   }
 
@@ -57,15 +56,18 @@ const TableParticle = styled.div`
   }
 `;
 
-const TableList = ({ board }) => {
+const TableList = ({ board, user }) => {
   // console.log(tableboards);
   const navigate = useNavigate();
   const goDetail = (boardCode) => {
     navigate(`/compagno/animal-board/${boardCode}`);
   };
+  const [likeCount, setLikeCount] = useState({
+    animalBoardFavoriteCount: board.animalBoardFavoriteCount,
+  });
   const animalBoardAPI = async () => {
     const response = await viewDetail(board.animalBoardCode);
-    setCount(response.data);
+    setLikeCount(response.data);
   };
   // 댓글 수
   const [count, setCount] = useState(0);
@@ -98,10 +100,11 @@ const TableList = ({ board }) => {
           </div>
           <div className="fav-board">
             <FavoriteBoard
-              userId={board.user.userId}
+              userId={user.userId}
               boardCode={board.animalBoardCode}
               animalBoardAPI={() => animalBoardAPI()}
-              count={board.animalBoardFavoriteCount}
+              noOnClick={(event) => event.stopPropagation()}
+              count={likeCount.animalBoardFavoriteCount}
             />
           </div>
         </div>

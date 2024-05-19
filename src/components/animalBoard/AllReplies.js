@@ -20,6 +20,7 @@ const AllReplies = ({
   animalBoardCode,
   detailInfo,
   animalBoardAPI,
+  // countCommentAPI
 }) => {
   // 댓글 전체 보여주기
   const [all, setAll] = useState(false);

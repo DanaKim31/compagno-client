@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
-import { viewDetail } from "../../api/animalBoard";
+import { countComment, viewDetail } from "../../api/animalBoard";
 import styled from "styled-components";
 import React from "react";
 import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
@@ -106,7 +106,12 @@ const AnimalDetail = () => {
   const user = useSelector((state) => {
     return state.user;
   });
-
+  // 댓글수 불러오기
+  // const [commentCounts, setCommentCounts] = useState(0);
+  // const countAPI = async () => {
+  //   const response = await countComment(animalBoardCode);
+  //   setCommentCounts(response.data);
+  // };
   // console.log(user);
   // 현재 게시글 정보 불러오기
   const [detailInfo, setDetail] = useState({
@@ -125,112 +130,7 @@ const AnimalDetail = () => {
     const response = await viewDetail(animalBoardCode);
     setDetail(response.data);
   };
-  // ======================================================================
-  // 댓글 불러오기
-  // const [comments, setComments] = useState([]);
-  // const animalBoardCommentAPI = async () => {
-  //   const response = await getComments(animalBoardCode);
-  //   console.log(response.data);
-  //   setComments(response.data);
-  // };
-  // // 댓글쓰기
-  // const [comment, setComment] = useState({
-  //   animalBoardCode: animalBoardCode,
-  //   animalCommentContent: "",
-  //   user: user,
-  // });
-  // const [animalComment, setAnimalComment] = useState("");
-  // const addComment = async () => {
-  //   console.log(animalComment);
-  //   if (token === null) {
-  //     alert("로그인해주세요");
-  //   } else {
-  //     await writeComment({
-  //       animalBoardCode: animalBoardCode,
-  //       animalCommentContent: animalComment,
-  //       user: {
-  //         userId: user.userId,
-  //       },
-  //     });
-  //     setAnimalComment("");
-  //     animalBoardCommentAPI();
-  //   }
-  // };
-  // //댓글 수정버튼 - 기존 해당 댓글내용 가져오기
-  // const [edit, setEdit] = useState({});
-  // const onUpdate = async (comment) => {
-  //   console.log(comment);
-  //   setEdit({
-  //     animalCommentCode: comment.animalCommentCode,
-  //     animalCommentContent: comment.animalCommentContent,
-  //     animalBoardCode: comment.animalBoardCode,
-  //     animalCommentDate: comment.animalCommentDate,
-  //     user: {
-  //       userId: user.userId,
-  //       userNickname: user.userNickname,
-  //     },
-  //   });
-  // };
-  // //댓글 수정하기
-  // const updateCommentC = async () => {
-  //   await updateComment(edit);
-  //   setEdit({});
-  //   animalBoardCommentAPI();
-  // };
-  // // 댓글 수정 취소
-  // const onCancel = () => {
-  //   setEdit({});
-  // };
-  // // 댓글 삭제
-  // const onDelete = async (commentCodes) => {
-  //   await delComment({
-  //     animalCommentCode: commentCodes.animalCommentCode,
-  //     animalParentCode: commentCodes.animalParentCode,
-  //   });
-  //   animalBoardCommentAPI();
-  // };
 
-  // // 대댓글 달기
-  // const [boolean, setBoolean] = useState(false); // 추후 유저정보 토대로 boolean 예정
-  // const [response, setResponse] = useState({}); // 부모 댓글 정보
-
-  // const accessReply = async (comment) => {
-  //   if (user.userId === undefined || user.userId === null) {
-  //     return alert("로그인이 필요합니다.");
-  //   }
-  //   setResponse(comment); // 현재 클릭한 아이의 댓글정보
-  //   console.log(comment);
-  //   if (boolean) {
-  //     setBoolean(false);
-  //   } else {
-  //     setBoolean(true);
-  //   }
-  // };
-  // const addReply = async (commentCode) => {
-  //   await writeComment({
-  //     animalBoardCode: animalBoardCode,
-  //     animalParentCode: commentCode,
-  //     animalCommentContent: response.animalCommentContent,
-  //     user: {
-  //       userId: user.userId,
-  //     },
-  //     animalCommentTag: response.user.userNickname,
-  //   });
-  //   setResponse({});
-  //   animalBoardCommentAPI();
-  // };
-
-  // // 토글
-  // const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-  //   <HiOutlineDotsHorizontal
-  //     className="dropdown-toggle"
-  //     onClick={(e) => {
-  //       e.preventDefault();
-  //       onClick(e);
-  //     }}
-  //   />
-  // ));
-  //========================================
   // 현재 카테고리 포인트 가져오기
   const [points, setPoints] = useState([]);
   const currentPointAPI = async () => {
@@ -311,17 +211,10 @@ const AnimalDetail = () => {
 
   return (
     <Div>
-      {/* <div className="App"> */}
-      {/* <div className="container"> */}
       <div className="detail-container">
         <DetailPageProfile author={detailInfo} currentUser={user} />
 
         <div className="post__list">
-          {/* <h2>
-                {detailInfo.animalCategory.animalType}
-                {detailInfo.animalBoardTitle}
-              </h2> */}
-
           <div
             className="post__description"
             dangerouslySetInnerHTML={{
@@ -330,8 +223,7 @@ const AnimalDetail = () => {
           />
         </div>
       </div>
-      {/* </div> */}
-      {/* </div> */}
+
       <ParentComments
         user={user}
         token={token}
@@ -340,175 +232,7 @@ const AnimalDetail = () => {
         animalBoardAPI={() => animalBoardAPI()}
         commentsBoolean={true}
       />
-      {/* <Comment className="animal-board-comment-contents">
-        <div className="animal-board-write-comment ">
-          <InputGroup>
-            <Form.Control
-              as="textarea"
-              aria-label="With textarea"
-              value={animalComment}
-              onChange={(e) => setAnimalComment(e.target.value)}
-            />
-            <InputGroup.Text>
-              <FavoriteBoard
-                userId={user.userId}
-                boardCode={animalBoardCode}
-                count={detailInfo.animalBoardFavoriteCount}
-                // addFav={() => addFav()}
-                // delFav={() => delFav()}
-                animalBoardAPI={() => animalBoardAPI()}
-              />
-              {detailInfo.animalBoardFavoriteCount}
-            </InputGroup.Text>
-            <Button variant="secondary" onClick={addComment}>
-              댓글추가!
-            </Button>
-          </InputGroup>
-        </div>
-        {comments.slice(0, 3).map((comment) => (
-          <div className="contents-container" key={comment.animalCommentCode}>
-            {edit.animalCommentCode === comment.animalCommentCode ? (
-              <>
-                <div className="animal-board-comment ">
-                  <label>
-                    <img
-                      src={"http://192.168.10.28:8081/" + comment.user.userImg}
-                    />
-                  </label>
-                  <div className="user-action-container">
-                    <div className="animal-board-comment-userability">
-                      <p>
-                        {edit.user.userNickname}
-                        {moment(edit.animalBoardDate).format("MM.DD HH:mm")}
-                      </p>
 
-                      <FaReply />
-                    </div>
-                    <textarea
-                      className="update-comment-content"
-                      value={edit.animalCommentContent}
-                      onChange={(e) =>
-                        setEdit((prev) => ({
-                          ...prev,
-                          animalCommentContent: e.target.value,
-                        }))
-                      }
-                    ></textarea>
-                  </div>
-                  <div className="btn-container">
-                    <Button
-                      variant="primary"
-                      onClick={() => {
-                        updateCommentC(edit);
-                      }}
-                    >
-                      완료
-                    </Button>
-                    <Button variant="info" onClick={onCancel}>
-                      취소
-                    </Button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="animal-board-comment ">
-                  <label>
-                    <img
-                      src={"http://192.168.10.28:8081/" + comment.user.userImg}
-                    />
-                  </label>
-                  <div className="user-action-container">
-                    <div className="animal-board-comment-userability">
-                      <p>
-                        {comment.user.userNickname}
-                        {detailInfo.user.userId === comment.user.userId ? (
-                          <>
-                            <FaPencilAlt className="writer" />
-                            작성자
-                          </>
-                        ) : (
-                          <></>
-                        )}{" "}
-                        {moment(comment.animalBoardDate).format("MM.DD HH:mm")}
-                      </p>
-                      <FaReply
-                        className="response"
-                        onClick={() => accessReply(comment)}
-                      />
-                      {user.userId === comment.user.userId ? (
-                        <>
-                          <Dropdown>
-                            <Dropdown.Toggle
-                              as={CustomToggle}
-                              id="dropdown-custom-components"
-                            ></Dropdown.Toggle>
-                            <Dropdown.Menu className="dropdown-menu">
-                              <Dropdown.Item onClick={() => onUpdate(comment)}>
-                                수정하기
-                              </Dropdown.Item>
-                              <Dropdown.Item onClick={() => onDelete(comment)}>
-                                삭제하기
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                    <div>{comment.animalCommentContent}</div>
-                  </div>
-                </div>
-                <div className="response-to-comment">
-                  {boolean &&
-                  comment.animalCommentCode === response.animalCommentCode ? (
-                    <>
-                      <InputGroup>
-                        <InputGroup.Text>
-                          @{comment.user.userNickname}
-                        </InputGroup.Text>
-                        <Form.Control
-                          as="textarea"
-                          aria-label="With textarea"
-                          value={response.value}
-                          onChange={(e) =>
-                            setResponse((prev) => ({
-                              ...prev,
-                              animalCommentContent: e.target.value,
-                            }))
-                          }
-                        />
-                        <Button
-                          variant="secondary"
-                          onClick={() => addReply(comment.animalCommentCode)}
-                        >
-                          대댓글추가!
-                        </Button>
-                        <Button
-                          variant="light"
-                          onClick={() => setBoolean(false)}
-                        >
-                          취소
-                        </Button>
-                      </InputGroup>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </>
-            )}
-            <ViewMoreReply
-              comment={comment}
-              receiveComments={() => animalBoardCommentAPI()}
-              boardAuthor={detailInfo.user.userId}
-              currentUser={user.userId}
-            />
-          </div>
-        ))}
-        
-      </Comment> */}
       <AllReplies
         user={user}
         token={token}
@@ -516,6 +240,7 @@ const AnimalDetail = () => {
         detailInfo={detailInfo}
         animalBoardAPI={() => animalBoardAPI()}
         commentsBoolean={false}
+        // commentSum={}
       />
     </Div>
   );

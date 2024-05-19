@@ -9,25 +9,61 @@ import {
   writeComment,
   updateComment,
   delComment,
+  countComment,
 } from "../../api/animalBoard";
 import { InputGroup, Form, Button } from "react-bootstrap";
 import moment from "moment";
-import { FaPencilAlt, FaReply } from "react-icons/fa";
-// import { FaReply } from "react-icons/fa";
+import { FaReply } from "react-icons/fa";
 import styled from "styled-components";
 import MyToggleBar from "../note/MyToggleBar";
+import Writer from "./Writer";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
 const Comment = styled.div`
   /* background-color: red; */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+
   margin: auto;
   width: 70%;
   .animal-board-write-comment {
     width: 100%;
+    border-top: 1px solid lightgrey;
+    .additional-comment-info {
+      display: flex;
+      .back-to-list {
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        width: 110px;
+        padding: 3px;
+        text-align: center;
+        background-color: white;
+        cursor: pointer;
+        &:hover {
+          background-color: whitesmoke;
+        }
+      }
+      .inner-flexbox {
+        margin-left: 20px;
+        display: flex;
+
+        .comment-count {
+          border: 1px solid lightgray;
+          border-radius: 10px;
+          width: 110px;
+          padding: 3px;
+          text-align: center;
+          cursor: pointer;
+          &:hover {
+            background-color: whitesmoke;
+          }
+        }
+      }
+    }
   }
   img {
-    width: 70px;
+    width: 50px;
   }
   .dropdown {
     display: block;
@@ -40,9 +76,16 @@ const Comment = styled.div`
   .contents-container {
     /* background-color: greenyellow; */
     width: 800px;
+    border-bottom: 1px solid lightgrey;
+  }
+  .animal-board-comment-container {
+    padding-left: 20px;
   }
   .animal-board-comment {
-    margin: auto;
+    margin-top: 10px;
+
+    padding-top: 10px;
+    /* margin: auto; */
     display: flex;
 
     .user-action-container {
@@ -51,15 +94,40 @@ const Comment = styled.div`
       margin: 10px 0px 30px 10px;
       /* background-color: red; */
       /* width: 1200px; */
+      .text-area-flexbox {
+        display: flex;
+        .btn-container {
+          .complete {
+            background-color: rgba(219, 235, 231, 1);
+            color: black;
+            border: 1px solid rgb(70, 92, 88);
+            margin-right: 5px;
+            margin-left: 5px;
+
+            &:hover {
+              background-color: rgb(70, 92, 88);
+              color: rgb(244, 245, 219);
+            }
+          }
+          .cancel {
+            background-color: lightgrey;
+            color: black;
+            border: 1px solid grey;
+            &:hover {
+              background-color: whitesmoke;
+            }
+          }
+        }
+      }
       .animal-board-comment-userability {
         margin-bottom: 15px;
         display: flex;
-        .writer {
-          font-weight: 1.2rem;
-          color: brown;
+        .comment-user-info {
+          display: flex;
         }
         .response {
           cursor: pointer;
+          /* justify-content: flex-end; */
         }
       }
       .update-comment-content {
@@ -69,11 +137,16 @@ const Comment = styled.div`
         cursor: pointer;
       }
     }
+    .comment-date {
+      padding-top: 8px;
+      font-size: 0.8rem;
+    }
   }
   .repl-toggle-button {
     border: none;
     border-radius: 15px;
-    width: 300px;
+    width: 100px;
+    margin-left: 10px;
     .repl-toggle {
       cursor: pointer;
       font-size: 1.5rem;
@@ -90,13 +163,20 @@ const ParentComments = ({
   // countCommentAPI,
 }) => {
   // 댓글 불러오기
-
+  const navigate = useNavigate();
   const [comments, setComments] = useState([]);
   const animalBoardCommentAPI = async () => {
     const response = await getComments(animalBoardCode);
     console.log(response.data);
     setComments(response.data);
   };
+  // 댓글수 불러오기
+  const [commentCounts, setCommentCounts] = useState(0);
+  const countAPI = async () => {
+    const response = await countComment(animalBoardCode);
+    setCommentCounts(response.data);
+  };
+  console.log(commentCounts);
   // const commentCounts = Object.keys(comments).length; // 댓글 수
   // 댓글쓰기
   const [comment, setComment] = useState({
@@ -119,7 +199,7 @@ const ParentComments = ({
       });
       setAnimalComment("");
       animalBoardCommentAPI();
-      // countCommentAPI();
+      countAPI();
     }
   };
   //댓글 수정버튼 - 기존 해당 댓글내용 가져오기
@@ -154,7 +234,7 @@ const ParentComments = ({
       animalParentCode: commentCodes.animalParentCode,
     });
     animalBoardCommentAPI();
-    // countCommentAPI();
+    countAPI();
   };
 
   // 대댓글 달기
@@ -185,7 +265,10 @@ const ParentComments = ({
     });
     setResponse({});
     animalBoardCommentAPI();
-    // countCommentAPI();
+    countAPI();
+  };
+  const backToDetail = () => {
+    navigate("/compagno/animal-board");
   };
 
   // 토글
@@ -205,6 +288,7 @@ const ParentComments = ({
   }, [commentsBoolean]);
   useEffect(() => {
     animalBoardCommentAPI();
+    countAPI();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
@@ -214,6 +298,20 @@ const ParentComments = ({
     <>
       <Comment className="animal-board-comment-contents">
         <div className="animal-board-write-comment ">
+          <div className="additional-comment-info">
+            <button className="back-to-list" onClick={backToDetail}>
+              <RxHamburgerMenu /> 목록으로
+            </button>
+            <div className="inner-flexbox">
+              <FavoriteBoard
+                userId={user.userId}
+                boardCode={animalBoardCode}
+                count={detailInfo.animalBoardFavoriteCount}
+                animalBoardAPI={() => animalBoardAPI()}
+              />
+              <div className="comment-count">댓글 수 : {commentCounts}</div>
+            </div>
+          </div>
           <InputGroup>
             <Form.Control
               as="textarea"
@@ -222,354 +320,356 @@ const ParentComments = ({
               onChange={(e) => setAnimalComment(e.target.value)}
             />
 
-            {allCommentsBool ? (
-              <>
-                <InputGroup.Text>
-                  <FavoriteBoard
-                    userId={user.userId}
-                    boardCode={animalBoardCode}
-                    count={detailInfo.animalBoardFavoriteCount}
-                    // addFav={() => addFav()}
-                    // delFav={() => delFav()}
-                    animalBoardAPI={() => animalBoardAPI()}
-                  />
-                  {detailInfo.animalBoardFavoriteCount}
-                </InputGroup.Text>
-              </>
-            ) : (
-              <></>
-            )}
-
             <Button variant="secondary" onClick={addComment}>
               댓글추가!
             </Button>
           </InputGroup>
         </div>
-        {allCommentsBool ? (
-          <>
-            {comments.slice(0, 3).map((comment) => (
-              <div
-                className="contents-container"
-                key={comment.animalCommentCode}
-              >
-                {edit.animalCommentCode === comment.animalCommentCode ? (
-                  <>
-                    <div className="animal-board-comment ">
-                      <label>
-                        <img
-                          src={
-                            "http://192.168.10.28:8081/" + comment.user.userImg
-                          }
-                        />
-                      </label>
-                      <div className="user-action-container">
-                        <div className="animal-board-comment-userability">
-                          <p>
-                            {edit.user.userNickname}
-                            {moment(edit.animalBoardDate).format("MM.DD HH:mm")}
-                          </p>
-
-                          <FaReply />
-                        </div>
-                        <textarea
-                          className="update-comment-content"
-                          value={edit.animalCommentContent}
-                          onChange={(e) =>
-                            setEdit((prev) => ({
-                              ...prev,
-                              animalCommentContent: e.target.value,
-                            }))
-                          }
-                        ></textarea>
-                      </div>
-                      <div className="btn-container">
-                        <Button
-                          variant="primary"
-                          onClick={() => {
-                            updateCommentC(edit);
-                          }}
-                        >
-                          완료
-                        </Button>
-                        <Button variant="info" onClick={onCancel}>
-                          취소
-                        </Button>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="animal-board-comment ">
-                      <label>
-                        <img
-                          src={
-                            "http://192.168.10.28:8081/" + comment.user.userImg
-                          }
-                        />
-                      </label>
-                      <div className="user-action-container">
-                        <div className="animal-board-comment-userability">
-                          <p>
-                            <MyToggleBar name={comment.user.userNickname} />
-                            {detailInfo.user.userId === comment.user.userId ? (
-                              <>
-                                <FaPencilAlt className="writer" />
-                                작성자
-                              </>
-                            ) : (
-                              <></>
-                            )}{" "}
-                            {moment(comment.animalBoardDate).format(
-                              "MM.DD HH:mm"
-                            )}
-                          </p>
-                          <FaReply
-                            className="response"
-                            onClick={() => accessReply(comment)}
+        <div className="animal-board-comment-container">
+          {allCommentsBool ? (
+            <>
+              {comments.slice(0, 3).map((comment) => (
+                <div
+                  className="contents-container"
+                  key={comment.animalCommentCode}
+                >
+                  {edit.animalCommentCode === comment.animalCommentCode ? (
+                    <>
+                      <div className="animal-board-comment ">
+                        <label>
+                          <img
+                            src={
+                              "http://192.168.10.28:8081/" +
+                              comment.user.userImg
+                            }
                           />
-                          {user.userId === comment.user.userId ? (
-                            <>
-                              <Dropdown>
-                                <Dropdown.Toggle
-                                  as={CustomToggle}
-                                  id="dropdown-custom-components"
-                                ></Dropdown.Toggle>
-                                <Dropdown.Menu className="dropdown-menu">
-                                  <Dropdown.Item
-                                    onClick={() => onUpdate(comment)}
-                                  >
-                                    수정하기
-                                  </Dropdown.Item>
-                                  <Dropdown.Item
-                                    onClick={() => onDelete(comment)}
-                                  >
-                                    삭제하기
-                                  </Dropdown.Item>
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </>
-                          ) : (
-                            <></>
-                          )}
-                        </div>
-                        <div>{comment.animalCommentContent}</div>
-                      </div>
-                    </div>
-                    <div className="response-to-comment">
-                      {boolean &&
-                      comment.animalCommentCode ===
-                        response.animalCommentCode ? (
-                        <>
-                          <InputGroup>
-                            <InputGroup.Text>
-                              @{comment.user.userNickname}
-                            </InputGroup.Text>
-                            <Form.Control
-                              as="textarea"
-                              aria-label="With textarea"
-                              value={response.value}
+                        </label>
+                        <div className="user-action-container">
+                          <div className="animal-board-comment-userability">
+                            <p>
+                              {edit.user.userNickname}
+                              {moment(edit.animalBoardDate).format(
+                                "MM.DD HH:mm"
+                              )}
+                            </p>
+
+                            <FaReply />
+                          </div>
+                          <div className="text-area-flexbox">
+                            <textarea
+                              className="update-comment-content"
+                              style={{
+                                width: "600px",
+                                height: "40px",
+                                "border-radius": "10px",
+                                resize: "none",
+                              }}
+                              value={edit.animalCommentContent}
                               onChange={(e) =>
-                                setResponse((prev) => ({
+                                setEdit((prev) => ({
                                   ...prev,
                                   animalCommentContent: e.target.value,
                                 }))
                               }
-                            />
-                            <Button
-                              variant="secondary"
-                              onClick={() =>
-                                addReply(comment.animalCommentCode)
-                              }
-                            >
-                              대댓글추가!
-                            </Button>
-                            <Button
-                              variant="light"
-                              onClick={() => setBoolean(false)}
-                            >
-                              취소
-                            </Button>
-                          </InputGroup>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </>
-                )}
-                <ViewMoreReply
-                  comment={comment}
-                  receiveComments={() => animalBoardCommentAPI()}
-                  boardAuthor={detailInfo.user.userId}
-                  currentUser={user.userId}
-                />
-              </div>
-            ))}
-          </>
-        ) : (
-          <>
-            {comments.map((comment) => (
-              <div
-                className="contents-container"
-                key={comment.animalCommentCode}
-              >
-                {edit.animalCommentCode === comment.animalCommentCode ? (
-                  <>
-                    <div className="animal-board-comment ">
-                      <label>
-                        <img
-                          src={
-                            "http://192.168.10.28:8081/" + comment.user.userImg
-                          }
-                        />
-                      </label>
-                      <div className="user-action-container">
-                        <div className="animal-board-comment-userability">
-                          <p>
-                            {edit.user.userNickname}
-                            {moment(edit.animalBoardDate).format("MM.DD HH:mm")}
-                          </p>
-
-                          <FaReply />
+                            ></textarea>
+                            <div className="btn-container">
+                              <Button
+                                className="complete"
+                                onClick={() => {
+                                  updateCommentC(edit);
+                                }}
+                              >
+                                완료
+                              </Button>
+                              <Button className="cancel" onClick={onCancel}>
+                                취소
+                              </Button>
+                            </div>
+                          </div>
                         </div>
-                        <textarea
-                          className="update-comment-content"
-                          value={edit.animalCommentContent}
-                          onChange={(e) =>
-                            setEdit((prev) => ({
-                              ...prev,
-                              animalCommentContent: e.target.value,
-                            }))
-                          }
-                        ></textarea>
                       </div>
-                      <div className="btn-container">
-                        <Button
-                          variant="primary"
-                          onClick={() => {
-                            updateCommentC(edit);
-                          }}
-                        >
-                          완료
-                        </Button>
-                        <Button variant="info" onClick={onCancel}>
-                          취소
-                        </Button>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="animal-board-comment ">
-                      <label>
-                        <img
-                          src={
-                            "http://192.168.10.28:8081/" + comment.user.userImg
-                          }
-                        />
-                      </label>
-                      <div className="user-action-container">
-                        <div className="animal-board-comment-userability">
-                          <p>
-                            {comment.user.userNickname}
-                            {detailInfo.user.userId === comment.user.userId ? (
+                    </>
+                  ) : (
+                    <>
+                      <div className="animal-board-comment ">
+                        <label>
+                          <img
+                            src={
+                              "http://192.168.10.28:8081/" +
+                              comment.user.userImg
+                            }
+                          />
+                        </label>
+                        <div className="user-action-container">
+                          <div className="animal-board-comment-userability">
+                            <div className="comment-user-info">
+                              <MyToggleBar name={comment.user.userNickname} />
+                              {detailInfo.user.userId ===
+                              comment.user.userId ? (
+                                <>
+                                  <Writer />
+                                </>
+                              ) : (
+                                <></>
+                              )}{" "}
+                            </div>
+                            <FaReply
+                              className="response"
+                              onClick={() => accessReply(comment)}
+                            />
+                            {user.userId === comment.user.userId ? (
                               <>
-                                <FaPencilAlt className="writer" />
-                                작성자
+                                <Dropdown>
+                                  <Dropdown.Toggle
+                                    as={CustomToggle}
+                                    id="dropdown-custom-components"
+                                  ></Dropdown.Toggle>
+                                  <Dropdown.Menu className="dropdown-menu">
+                                    <Dropdown.Item
+                                      onClick={() => onUpdate(comment)}
+                                    >
+                                      수정하기
+                                    </Dropdown.Item>
+                                    <Dropdown.Item
+                                      onClick={() => onDelete(comment)}
+                                    >
+                                      삭제하기
+                                    </Dropdown.Item>
+                                  </Dropdown.Menu>
+                                </Dropdown>
                               </>
                             ) : (
                               <></>
-                            )}{" "}
-                            {moment(comment.animalBoardDate).format(
-                              "MM.DD HH:mm"
                             )}
-                          </p>
-                          <FaReply
-                            className="response"
-                            onClick={() => accessReply(comment)}
-                          />
-                          {user.userId === comment.user.userId ? (
-                            <>
-                              <Dropdown>
-                                <Dropdown.Toggle
-                                  as={CustomToggle}
-                                  id="dropdown-custom-components"
-                                ></Dropdown.Toggle>
-                                <Dropdown.Menu className="dropdown-menu">
-                                  <Dropdown.Item
-                                    onClick={() => onUpdate(comment)}
-                                  >
-                                    수정하기
-                                  </Dropdown.Item>
-                                  <Dropdown.Item
-                                    onClick={() => onDelete(comment)}
-                                  >
-                                    삭제하기
-                                  </Dropdown.Item>
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </>
-                          ) : (
-                            <></>
-                          )}
-                        </div>
-                        <div>{comment.animalCommentContent}</div>
-                      </div>
-                    </div>
-                    <div className="response-to-comment">
-                      {boolean &&
-                      comment.animalCommentCode ===
-                        response.animalCommentCode ? (
-                        <>
-                          <InputGroup>
-                            <InputGroup.Text>
-                              @{comment.user.userNickname}
-                            </InputGroup.Text>
-                            <Form.Control
-                              as="textarea"
-                              aria-label="With textarea"
-                              value={response.value}
-                              onChange={(e) =>
-                                setResponse((prev) => ({
-                                  ...prev,
-                                  animalCommentContent: e.target.value,
-                                }))
-                              }
+                          </div>
+                          <div>{comment.animalCommentContent}</div>
+                          <div className="comment-date">
+                            {moment(comment.animalBoardDate).format(
+                              "YYYY.MM.DD HH:mm"
+                            )}
+                            <ViewMoreReply
+                              comment={comment}
+                              receiveComments={() => animalBoardCommentAPI()}
+                              boardAuthor={detailInfo.user.userId}
+                              currentUser={user.userId}
                             />
-                            <Button
-                              variant="secondary"
-                              onClick={() =>
-                                addReply(comment.animalCommentCode)
-                              }
-                            >
-                              대댓글추가!
-                            </Button>
-                            <Button
-                              variant="light"
-                              onClick={() => setBoolean(false)}
-                            >
-                              취소
-                            </Button>
-                          </InputGroup>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </>
-                )}
-                <ViewMoreReply
-                  comment={comment}
-                  receiveComments={() => animalBoardCommentAPI()}
-                  boardAuthor={detailInfo.user.userId}
-                  currentUser={user.userId}
-                  // countCommentAPI={() => countCommentAPI()}
-                  // commentCounts={commentCounts}
-                />
-              </div>
-            ))}
-          </>
-        )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="response-to-comment">
+                        {boolean &&
+                        comment.animalCommentCode ===
+                          response.animalCommentCode ? (
+                          <>
+                            <InputGroup>
+                              <InputGroup.Text>
+                                @{comment.user.userNickname}
+                              </InputGroup.Text>
+                              <Form.Control
+                                as="textarea"
+                                aria-label="With textarea"
+                                value={response.value}
+                                onChange={(e) =>
+                                  setResponse((prev) => ({
+                                    ...prev,
+                                    animalCommentContent: e.target.value,
+                                  }))
+                                }
+                              />
+                              <Button
+                                variant="secondary"
+                                onClick={() =>
+                                  addReply(comment.animalCommentCode)
+                                }
+                              >
+                                대댓글추가!
+                              </Button>
+                              <Button
+                                variant="light"
+                                onClick={() => setBoolean(false)}
+                              >
+                                취소
+                              </Button>
+                            </InputGroup>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              {comments.map((comment) => (
+                <div
+                  className="contents-container"
+                  key={comment.animalCommentCode}
+                >
+                  {edit.animalCommentCode === comment.animalCommentCode ? (
+                    <>
+                      <div className="animal-board-comment ">
+                        <label>
+                          <img
+                            src={
+                              "http://192.168.10.28:8081/" +
+                              comment.user.userImg
+                            }
+                          />
+                        </label>
+                        <div className="user-action-container">
+                          <div className="animal-board-comment-userability">
+                            <p>
+                              {edit.user.userNickname}
+                              {moment(edit.animalBoardDate).format(
+                                "YYYY.MM.DD HH:mm"
+                              )}
+                            </p>
+
+                            <FaReply />
+                          </div>
+                          <textarea
+                            className="update-comment-content"
+                            value={edit.animalCommentContent}
+                            onChange={(e) =>
+                              setEdit((prev) => ({
+                                ...prev,
+                                animalCommentContent: e.target.value,
+                              }))
+                            }
+                          ></textarea>
+                        </div>
+                        <div className="btn-container">
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              updateCommentC(edit);
+                            }}
+                          >
+                            완료
+                          </Button>
+                          <Button variant="info" onClick={onCancel}>
+                            취소
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="animal-board-comment ">
+                        <label>
+                          <img
+                            src={
+                              "http://192.168.10.28:8081/" +
+                              comment.user.userImg
+                            }
+                          />
+                        </label>
+                        <div className="user-action-container">
+                          <div className="animal-board-comment-userability">
+                            <p>
+                              {comment.user.userNickname}
+                              {detailInfo.user.userId ===
+                              comment.user.userId ? (
+                                <>
+                                  <Writer />
+                                </>
+                              ) : (
+                                <></>
+                              )}{" "}
+                              {moment(comment.animalBoardDate).format(
+                                "MM.DD HH:mm"
+                              )}
+                            </p>
+                            <FaReply
+                              className="response"
+                              onClick={() => accessReply(comment)}
+                            />
+                            {user.userId === comment.user.userId ? (
+                              <>
+                                <Dropdown>
+                                  <Dropdown.Toggle
+                                    as={CustomToggle}
+                                    id="dropdown-custom-components"
+                                  ></Dropdown.Toggle>
+                                  <Dropdown.Menu className="dropdown-menu">
+                                    <Dropdown.Item
+                                      onClick={() => onUpdate(comment)}
+                                    >
+                                      수정하기
+                                    </Dropdown.Item>
+                                    <Dropdown.Item
+                                      onClick={() => onDelete(comment)}
+                                    >
+                                      삭제하기
+                                    </Dropdown.Item>
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </>
+                            ) : (
+                              <></>
+                            )}
+                          </div>
+                          <div>{comment.animalCommentContent}</div>
+                        </div>
+                      </div>
+                      <div className="response-to-comment">
+                        {boolean &&
+                        comment.animalCommentCode ===
+                          response.animalCommentCode ? (
+                          <>
+                            <InputGroup>
+                              <InputGroup.Text>
+                                @{comment.user.userNickname}
+                              </InputGroup.Text>
+                              <Form.Control
+                                as="textarea"
+                                aria-label="With textarea"
+                                value={response.value}
+                                onChange={(e) =>
+                                  setResponse((prev) => ({
+                                    ...prev,
+                                    animalCommentContent: e.target.value,
+                                  }))
+                                }
+                              />
+                              <Button
+                                variant="secondary"
+                                onClick={() =>
+                                  addReply(comment.animalCommentCode)
+                                }
+                              >
+                                대댓글추가!
+                              </Button>
+                              <Button
+                                variant="light"
+                                onClick={() => setBoolean(false)}
+                              >
+                                취소
+                              </Button>
+                            </InputGroup>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    </>
+                  )}
+                  <ViewMoreReply
+                    comment={comment}
+                    receiveComments={() => animalBoardCommentAPI()}
+                    boardAuthor={detailInfo.user.userId}
+                    currentUser={user.userId}
+                    // countCommentAPI={() => countCommentAPI()}
+                    // commentCounts={commentCounts}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </Comment>
     </>
   );
