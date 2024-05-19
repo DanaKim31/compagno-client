@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../assets/style.css";
-// import { useState, useEffect } from "react";
 
 // 이미지랑 폰트 관련 등장 JS
-
 const Section1 = () => {
   // 문서가 로드되면 실행하는 함수
   const [,] = useState();
@@ -26,7 +24,6 @@ const Section1 = () => {
         let container = entry.target;
 
         if (entry.isIntersecting) {
-          // console.log(container);
           container.classList.add("animating");
           return;
         }

@@ -52,17 +52,17 @@ const Header = () => {
         </a>
         <div className="menu">
           <div className="dropdown">
-            <div className="dropbtn">동물 등록</div>
+            <div className="dropbtn">동물등록</div>
             <div className="dropdown-content">
               <a href="/compagno/register-pet/insts">대행기관</a>
               <a href="/compagno/register-pet/faq">FAQ</a>
             </div>
           </div>
           <div className="dropdown">
-            <div className="dropbtn">구조 동물</div>
+            <div className="dropbtn">구조동물</div>
             <div className="dropdown-content">
-              <a href="/compagno/adoptionBoard/viewAll">입양 공고</a>
-              <a href="/compagno/lostBoard/viewAll">실종 공고</a>
+              <a href="/compagno/adoptionBoard/viewAll">입양공고</a>
+              <a href="/compagno/lostBoard/viewAll">실종공고</a>
             </div>
           </div>
           <div className="dropdown">
@@ -70,7 +70,7 @@ const Header = () => {
               게시판
             </div>
             <div className="dropdown-content">
-              <a href="/compagno/animal-board">자유게시판</a>
+              <a href="/compagno/animal-board">콘테스트</a>
               <a href="/compagno/product-board">제품정보 공유</a>
               <a href="/compagno/content">반려동물 동반</a>
               <a href="/compagno/neighborBoard">우리동네</a>
@@ -137,25 +137,25 @@ const Header = () => {
                 <p>Compagno</p>
                 <ul>
                   <li>
-                    <a href="#">입양공고</a>
+                    <a href="/compagno/adoptionBoard/viewAll">입양공고</a>
                   </li>
                   <li>
-                    <a href="#">실종신고</a>
+                    <a href="/compagno/lostBoard/viewAll">실종신고</a>
                   </li>
                   <li>
-                    <a href="#">콘테스트</a>
+                    <a href="/compagno/animal-board">콘테스트</a>
                   </li>
                   <li>
                     <a href="/compagno/product-board">제품정보 공유</a>
                   </li>
                   <li>
-                    <a href="#">반려동물 동반</a>
+                    <a href="/compagno/content">반려동물 동반</a>
                   </li>
                   <li>
-                    <a href="#">우리동네 게시판</a>
+                    <a href="/compagno/neighborBoard">우리동네 게시판</a>
                   </li>
                   <li>
-                    <a href="#">원데이클래스</a>
+                    <a href="/compagno/onedayClassBoard">원데이클래스</a>
                   </li>
                 </ul>
               </nav>
