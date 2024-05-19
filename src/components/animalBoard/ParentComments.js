@@ -9,6 +9,7 @@ import {
   writeComment,
   updateComment,
   delComment,
+  countComment,
 } from "../../api/animalBoard";
 import { InputGroup, Form, Button } from "react-bootstrap";
 import moment from "moment";
@@ -17,6 +18,7 @@ import styled from "styled-components";
 import MyToggleBar from "../note/MyToggleBar";
 import Writer from "./Writer";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
 const Comment = styled.div`
   /* background-color: red; */
   display: flex;
@@ -161,13 +163,20 @@ const ParentComments = ({
   // countCommentAPI,
 }) => {
   // 댓글 불러오기
-
+  const navigate = useNavigate();
   const [comments, setComments] = useState([]);
   const animalBoardCommentAPI = async () => {
     const response = await getComments(animalBoardCode);
     console.log(response.data);
     setComments(response.data);
   };
+  // 댓글수 불러오기
+  const [commentCounts, setCommentCounts] = useState(0);
+  const countAPI = async () => {
+    const response = await countComment(animalBoardCode);
+    setCommentCounts(response.data);
+  };
+  console.log(commentCounts);
   // const commentCounts = Object.keys(comments).length; // 댓글 수
   // 댓글쓰기
   const [comment, setComment] = useState({
@@ -190,7 +199,7 @@ const ParentComments = ({
       });
       setAnimalComment("");
       animalBoardCommentAPI();
-      // countCommentAPI();
+      countAPI();
     }
   };
   //댓글 수정버튼 - 기존 해당 댓글내용 가져오기
@@ -225,7 +234,7 @@ const ParentComments = ({
       animalParentCode: commentCodes.animalParentCode,
     });
     animalBoardCommentAPI();
-    // countCommentAPI();
+    countAPI();
   };
 
   // 대댓글 달기
@@ -256,7 +265,10 @@ const ParentComments = ({
     });
     setResponse({});
     animalBoardCommentAPI();
-    // countCommentAPI();
+    countAPI();
+  };
+  const backToDetail = () => {
+    navigate("/compagno/animal-board");
   };
 
   // 토글
@@ -276,6 +288,7 @@ const ParentComments = ({
   }, [commentsBoolean]);
   useEffect(() => {
     animalBoardCommentAPI();
+    countAPI();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
@@ -286,7 +299,7 @@ const ParentComments = ({
       <Comment className="animal-board-comment-contents">
         <div className="animal-board-write-comment ">
           <div className="additional-comment-info">
-            <button className="back-to-list">
+            <button className="back-to-list" onClick={backToDetail}>
               <RxHamburgerMenu /> 목록으로
             </button>
             <div className="inner-flexbox">
@@ -296,7 +309,7 @@ const ParentComments = ({
                 count={detailInfo.animalBoardFavoriteCount}
                 animalBoardAPI={() => animalBoardAPI()}
               />
-              <div className="comment-count">댓글 수 : </div>
+              <div className="comment-count">댓글 수 : {commentCounts}</div>
             </div>
           </div>
           <InputGroup>

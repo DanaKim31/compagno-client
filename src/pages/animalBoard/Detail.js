@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userSave } from "../../store/user";
-import { viewDetail } from "../../api/animalBoard";
+import { countComment, viewDetail } from "../../api/animalBoard";
 import styled from "styled-components";
 import React from "react";
 import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
@@ -106,7 +106,12 @@ const AnimalDetail = () => {
   const user = useSelector((state) => {
     return state.user;
   });
-
+  // 댓글수 불러오기
+  // const [commentCounts, setCommentCounts] = useState(0);
+  // const countAPI = async () => {
+  //   const response = await countComment(animalBoardCode);
+  //   setCommentCounts(response.data);
+  // };
   // console.log(user);
   // 현재 게시글 정보 불러오기
   const [detailInfo, setDetail] = useState({
@@ -235,6 +240,7 @@ const AnimalDetail = () => {
         detailInfo={detailInfo}
         animalBoardAPI={() => animalBoardAPI()}
         commentsBoolean={false}
+        // commentSum={}
       />
     </Div>
   );
