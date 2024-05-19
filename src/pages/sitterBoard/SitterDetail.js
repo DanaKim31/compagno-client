@@ -477,7 +477,8 @@ const SitterDetail = () => {
             {sitterBoard.images?.map((image) => (
               <img
                 key={image.sitterImgCode}
-                src={"http://localhost:8081" + image.sitterImg}
+                // src={"http://localhost:8081" + image.sitterImg}
+                src={"http://192.168.10.28:8081/" + image.sitterImg}
               ></img>
             ))}
           </div>

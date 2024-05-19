@@ -165,8 +165,18 @@ const MyPageUserQna = () => {
                   <td>{userQna.userQuestionBoardContent}</td>
                   <td>{userQna.userQuestionBoardStatus === "N" ? "X" : "O"}</td>
                   <td>
-                    {moment(userQna.userQuestionBoardDate).format(
-                      "YYYY-MM-DD hh:mm"
+                    {userQna.userQuestionBoardDate !== null ? (
+                      <>
+                        {moment(userQna.userQuestionBoardDate).format(
+                          "YYYY-MM-DD hh:mm"
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {moment(userQna.userQuestionBoardDateUpdate).format(
+                          "YYYY-MM-DD hh:mm"
+                        )}
+                      </>
                     )}
                   </td>
                 </tr>
