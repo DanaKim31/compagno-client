@@ -686,8 +686,6 @@ const ParentComments = ({
               animalBoardCode={animalBoardCode}
               detailInfo={detailInfo}
               animalBoardAPI={() => animalBoardAPI()}
-              // countInfo={commentCounts}
-              // countAPI={() => countAPI()}
             />
           </Div>
         </>
