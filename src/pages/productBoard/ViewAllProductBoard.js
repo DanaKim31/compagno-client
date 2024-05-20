@@ -843,7 +843,7 @@ const ViewAllProductBoard = () => {
       </div>
       <nav className="paging">
         {prev && (
-          <FaAnglesLeft onClick={() => setPage(Math.ceil(page / 5) * 5 - 9)} />
+          <FaAnglesLeft onClick={() => setPage(Math.ceil(page / 5) * 5 - 4)} />
           /* 가장 첫 페이지로 */
         )}
         {page !== 1 && (

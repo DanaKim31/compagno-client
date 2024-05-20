@@ -82,7 +82,7 @@ const Div = styled.div`
       display: flex;
       flex-direction: row;
       height: 65px;
-      
+
       img {
         width: 65px;
         height: 65px;
@@ -91,10 +91,10 @@ const Div = styled.div`
       }
     }
 
-    #status{
-      button{
+    #status {
+      button {
         font-family: "TAEBAEKmilkyway";
-      font-weight: bold;
+        font-weight: bold;
       }
     }
   }
@@ -141,16 +141,16 @@ const Div = styled.div`
     height: 350px;
     font-family: "TAEBAEKmilkyway";
     font-weight: bold;
-    #select{
+    #select {
       display: flex;
     }
-    select{
+    select {
       height: 30px;
       margin-left: 10px;
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
-    option{
+    option {
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
@@ -183,16 +183,15 @@ const Div = styled.div`
     }
   }
 
-  #editbuttons{
+  #editbuttons {
     display: flex;
-    justify-content: center;;
+    justify-content: center;
     margin-top: 100px;
-    button{
+    button {
       margin: 10px;
       font-family: "TAEBAEKmilkyway";
       font-weight: bold;
     }
-
   }
 
   #topbarr {
@@ -212,7 +211,7 @@ const Div = styled.div`
     }
   }
   // content
-  #content{
+  #content {
     padding: 30px;
     padding-left: 70px;
   }
@@ -223,7 +222,7 @@ const Div = styled.div`
 
   #desc {
     height: 80px;
-    button{
+    button {
       margin-right: 10px;
     }
   }
@@ -297,29 +296,37 @@ const UserQuestionDetail = () => {
 
   // 2-2. 수정 폼 제출
   const questionUpdate = async () => {
-    if(editQ.userQuestionBoardTitle === "" || editQ.userQuestionBoardTitle === undefined){
+    if (
+      editQ.userQuestionBoardTitle === "" ||
+      editQ.userQuestionBoardTitle === undefined
+    ) {
       alert("제목을 입력하세요!");
-    } else if(editQ.userQuestionBoardContent === "" || editQ.userQuestionBoardContent === undefined){
+    } else if (
+      editQ.userQuestionBoardContent === "" ||
+      editQ.userQuestionBoardContent === undefined
+    ) {
       alert("내용을 입력하세요!");
     } else {
       const formData = new FormData();
 
       formData.append("userId", user.userId);
       setUserId(user.userId);
-  
+
       formData.append("userNickname", user.userNickname);
       setUserNickname(user.userNickname);
-  
+
       formData.append("userImg", user.userImg);
       setUserImg(user.userImg);
-  
+
       formData.append("userQuestionBoardCode", editQ.userQuestionBoardCode);
       formData.append("userQuestionBoardTitle", editQ.userQuestionBoardTitle);
-      formData.append("userQuestionBoardContent", editQ.userQuestionBoardContent);
-
+      formData.append(
+        "userQuestionBoardContent",
+        editQ.userQuestionBoardContent
+      );
 
       formData.append("animalCategoryCode", editQ.animalCategoryCode);
-  
+
       if (editQ.images.length + images.length <= 3) {
         editQ.images?.forEach((image, index) => {
           formData.append(
@@ -335,12 +342,12 @@ const UserQuestionDetail = () => {
             editQ.userQuestionBoardCode
           );
         });
-  
+
         // 새로 추가된 이미지
         images.forEach((image, index) => {
           formData.append(`files[${index}]`, image);
         });
-  
+
         await updateUserQuestion(formData);
         setImages([]);
         setEditQ(null);
@@ -349,7 +356,6 @@ const UserQuestionDetail = () => {
         alert("파일 업로드는 최대 3개까지만 가능합니다!");
       }
     }
-    
   };
 
   // 2-3. 이미지 선택 시 이미지 삭제
@@ -392,7 +398,7 @@ const UserQuestionDetail = () => {
   // 4. DELETE ========================================================
   const onDeleteQuestion = (userQuestionBoardCode) => {
     deleteUserQuestion(userQuestionBoardCode);
-    questionAPI();
+    navigate("/compagno/userQna");
   };
 
   // 5.-1 좋아요 추가하기
@@ -470,7 +476,15 @@ const UserQuestionDetail = () => {
                     {/* 수정 폼 */}
                     <div id="select">
                       <p>동물</p>
-                      <select value={editQ.animalCategoryCode} onChange={(e) => setEditQ((prev) => ({...prev, animalCategoryCode: e.target.value}))}>
+                      <select
+                        value={editQ.animalCategoryCode}
+                        onChange={(e) =>
+                          setEditQ((prev) => ({
+                            ...prev,
+                            animalCategoryCode: e.target.value,
+                          }))
+                        }
+                      >
                         <option value={0}>전체</option>
                         <option value={1}>개</option>
                         <option value={2}>고양이</option>
@@ -565,23 +579,26 @@ const UserQuestionDetail = () => {
                             {/* 상태가 N: 수정, 삭제 버튼 */}
 
                             <div id="status">
-                              {question.userQuestionBoardCount !== 0 ? (<>
-                              </>) : (<>
-                                <button
-                                onClick={() => onUpdateQuestion(question)}
-                              >
-                                수정
-                              </button>
-                              <button
-                                onClick={() =>
-                                  onDeleteQuestion(
-                                    question.userQuestionBoardCode
-                                  )
-                                }
-                              >
-                                삭제
-                              </button></>)}
-                              
+                              {question.userQuestionBoardCount !== 0 ? (
+                                <></>
+                              ) : (
+                                <>
+                                  <button
+                                    onClick={() => onUpdateQuestion(question)}
+                                  >
+                                    수정
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      onDeleteQuestion(
+                                        question.userQuestionBoardCode
+                                      )
+                                    }
+                                  >
+                                    삭제
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </>
                         ) : (
@@ -659,25 +676,25 @@ const UserQuestionDetail = () => {
                   </div>
                 </div>
 
-                <hr/>
+                <hr />
                 <div id="content">
                   <p>{question.userQuestionBoardContent}</p>
                 </div>
                 {/* 상세 정보 */}
                 <div id="images">
-                {question.images?.map((image) => (
-                  <img
-                    alt=""
-                    key={image.userQuestionImgCode}
-                    // src={"http://localhost:8081" + image.userQuestionImgUrl}
-                    src={
-                      "http://192.168.10.28:8081/userQuestion/" +
-                      image.userQuestionImgUrl
-                    }
-                  />
-                ))}
+                  {question.images?.map((image) => (
+                    <img
+                      alt=""
+                      key={image.userQuestionImgCode}
+                      // src={"http://localhost:8081" + image.userQuestionImgUrl}
+                      src={
+                        "http://192.168.10.28:8081/userQuestion/" +
+                        image.userQuestionImgUrl
+                      }
+                    />
+                  ))}
                 </div>
-                <hr/>
+                <hr />
                 <UserQnaAnswer question={question} />
               </>
             ) : (
