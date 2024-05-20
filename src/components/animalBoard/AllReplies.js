@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import styled from "styled-components";
 import ParentComments from "./ParentComments";
-import { countComment } from "../../api/animalBoard";
+import { countComment, getComments } from "../../api/animalBoard";
 const Div = styled.div`
-  margin-right: 500px;
   button {
     border: none;
     border-radius: 15px;
@@ -20,19 +19,11 @@ const AllReplies = ({
   animalBoardCode,
   detailInfo,
   animalBoardAPI,
-  // countCommentAPI
+  countInfo,
+  // countAPI,
 }) => {
   // 댓글 전체 보여주기
   const [all, setAll] = useState(false);
-  // 댓글 수
-  const [count, setCount] = useState(0);
-  const countCommentAPI = async () => {
-    const response = await countComment(animalBoardCode);
-    setCount(response.data);
-  };
-  useEffect(() => {
-    countCommentAPI();
-  }, []);
   return (
     <Div>
       <button onClick={() => setAll(true)}>댓글 전체 보기</button>
@@ -46,7 +37,7 @@ const AllReplies = ({
         style={{ "padding-top": "150px" }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>댓글 : {count}개</Modal.Title>
+          <Modal.Title>전체 댓글</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <ParentComments
@@ -55,7 +46,6 @@ const AllReplies = ({
             animalBoardCode={animalBoardCode}
             detailInfo={detailInfo}
             animalBoardAPI={() => animalBoardAPI()}
-            // countCommentAPI={() => countCommentAPI()}
           />
         </Modal.Body>
       </Modal>

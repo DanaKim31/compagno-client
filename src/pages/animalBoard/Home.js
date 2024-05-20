@@ -35,7 +35,7 @@ const HomeContainer = styled.div`
     font-size: 1.2rem;
     .category-container {
       .position-standard {
-        position: relative;
+        /* position: relative; */
         margin-left: 5px;
         margin-right: 5px;
         border-radius: 5px;
@@ -170,6 +170,18 @@ const Div = styled.div`
   .table-container {
     width: 600px;
   }
+  .view-more {
+    margin-top: 100px;
+    width: 100px;
+    border: none;
+    border-radius: 5px;
+    color: rgb(244, 245, 219);
+    background-color: rgb(70, 92, 88);
+    cursor: pointer;
+    &:hover {
+      background-color: lightgray;
+    }
+  }
 `;
 const SearchBarContainer = styled.div`
   padding: 15px 0px 15px 0px;
@@ -207,9 +219,9 @@ const AnimalHome = () => {
   const [sort, setSort] = useState("");
   const [category2, setCategory2] = useState("");
   const [sort2, setSort2] = useState("");
-  console.log(page);
-  console.log(category);
-  console.log(sort);
+  // console.log(page);
+  // console.log(category);
+  // console.log(sort);
   const animalBoardsAPI = async (check) => {
     if (check) {
       // 검색 클릭
@@ -426,7 +438,7 @@ const AnimalHome = () => {
             </>
           )}
 
-          <button onClick={() => setPage(page + 1)} variant="dark">
+          <button onClick={() => setPage(page + 1)} className="view-more">
             더 보기
           </button>
         </Div>

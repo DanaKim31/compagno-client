@@ -7,7 +7,6 @@ import styled from "styled-components";
 import React from "react";
 import DetailPageProfile from "../../components/animalBoard/DetailPageProfile";
 import { viewCount } from "../../api/animalBoard";
-import AllReplies from "../../components/animalBoard/AllReplies";
 import ParentComments from "../../components/animalBoard/ParentComments";
 import { fluctuationByDetailM, fluctuationByDetailP } from "../../api/AdLogic";
 import { getCurrentPoint } from "../../api/ad";
@@ -136,7 +135,7 @@ const AnimalDetail = () => {
   const currentPointAPI = async () => {
     const response = await getCurrentPoint(user.userId);
     setPoints(response.data); // 현재 포인트값 잘 담기는거 확인
-    console.log(response.data);
+    // console.log(response.data);
   };
   // 현재글의 카테고리가 아닌 카테고리들을 가져옴
   // const [exception, setException] = useState([]);
@@ -149,29 +148,29 @@ const AnimalDetail = () => {
         point.animalCategory.animalCategoryCode ===
         detailInfo.animalCategory.animalCategoryCode
     );
-    console.log(target);
+    // console.log(target);
     await fluctuationByDetailP(target);
     // console.log(target);
 
     // 감소시킬것
-    console.log(detailInfo.animalCategory.animalCategoryCode);
+    // console.log(detailInfo.animalCategory.animalCategoryCode);
     const exceptionList = points.filter(
       (point) =>
         point.animalCategory.animalCategoryCode !==
         detailInfo.animalCategory.animalCategoryCode
     );
-    console.log(exceptionList);
+    // console.log(exceptionList);
     // 가장 높은 totalScore 값을 가진 요소를 찾기
     const maxTotalScore = Math.max(
       ...exceptionList.map((point) => point.totalScore)
     );
-    console.log(maxTotalScore); // 값이 여러개?
+    // console.log(maxTotalScore); // 값이 여러개?
     if (maxTotalScore >= 0.05) {
       // 가장 높은 totalScore 값을 가진 요소를 가져오기
       const maxScoreInException = exceptionList.find(
         (point) => point.totalScore === maxTotalScore
       );
-      console.log(maxScoreInException);
+      // console.log(maxScoreInException);
       // setException(maxScoreInException);
       await fluctuationByDetailM(maxScoreInException);
     }
@@ -231,16 +230,6 @@ const AnimalDetail = () => {
         detailInfo={detailInfo}
         animalBoardAPI={() => animalBoardAPI()}
         commentsBoolean={true}
-      />
-
-      <AllReplies
-        user={user}
-        token={token}
-        animalBoardCode={animalBoardCode}
-        detailInfo={detailInfo}
-        animalBoardAPI={() => animalBoardAPI()}
-        commentsBoolean={false}
-        // commentSum={}
       />
     </Div>
   );

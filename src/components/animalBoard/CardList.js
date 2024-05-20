@@ -18,6 +18,7 @@ const Div = styled.div`
 
   .nice-card {
     cursor: pointer;
+    position: unset !important;
     border: 1px solid lightgrey;
     border-radius: 15px;
   }

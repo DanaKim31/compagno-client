@@ -38,7 +38,7 @@ const SearchOption = ({ getBoard }) => {
   const categoryAPI = async () => {
     const response = await viewCategory();
     setCategories(response.data);
-    console.log(response.data);
+    // console.log(response.data);
   };
 
   const [cateBoolean, setCateBoolean] = useState(false);
@@ -47,10 +47,10 @@ const SearchOption = ({ getBoard }) => {
   const [page, setPage] = useState(1);
   const [newData, setNewData] = useState({});
   const onSearch = async () => {
-    console.log({ page, category, sort });
+    // console.log({ page, category, sort });
     const response = await viewBoardList(page, category, sort);
     setNewData(response.data.content);
-    console.log(response.data.content);
+    // console.log(response.data.content);
   };
   useEffect(() => {
     categoryAPI();

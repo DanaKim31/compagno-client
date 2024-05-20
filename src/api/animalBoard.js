@@ -35,7 +35,7 @@ export const viewBoardList = async (page, category, sort) => {
   if (sort !== null || sort !== undefined) {
     url += sort;
   }
-  console.log(url);
+  // console.log(url);
   return await instance.get(url);
 };
 // 좋아요 랭킹/animalBoard/ 불러오기
@@ -80,19 +80,19 @@ export const getComments = async (animalBoardCode) => {
 
 // 게시글 댓글 쓰기
 export const writeComment = async (data) => {
-  console.log(data);
+  // console.log(data);
   return await authorize.post("animal-board/comment", data);
 };
 
 // 게시글 댓글 수정 // api 분리
 export const updateComment = async (data) => {
-  console.log(data);
+  // console.log(data);
   return await authorize.put("animal-board/comment", data);
 };
 
 // 게시글 댓글 삭제
 export const delComment = async (commentCode) => {
-  console.log(commentCode);
+  // console.log(commentCode);
   return await authorize.post("animal-board/deleteComment", commentCode);
 };
 // 특정 게시글 댓글 수 조회

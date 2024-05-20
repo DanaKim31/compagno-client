@@ -94,7 +94,7 @@ const AdCard = ({ adDetail }) => {
     nagivate("/compagno/product-board/" + code);
   };
   useEffect(() => {
-    console.log(adDetail);
+    // console.log(adDetail);
     setAd(adDetail);
   }, []);
   return (

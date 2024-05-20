@@ -49,7 +49,7 @@ const RankProfile = styled.div`
       }
     }
   }
-  img {
+  .rank-profile {
     width: 200px;
     height: 200px;
     object-fit: cover;
@@ -69,7 +69,7 @@ const WeeklyRank = () => {
     const response = await viewFavList();
     setFavList(response.data);
   };
-  console.log(favList);
+  // console.log(favList);
 
   // 중복 제거
   const [filteredRankers, setFilteredRanker] = useState([]);
@@ -98,16 +98,18 @@ const WeeklyRank = () => {
     setLatestCount(results);
   };
 
-  console.log(RankersWithlatestCount);
+  // console.log(RankersWithlatestCount);
   useEffect(() => {
     favRankAPI();
-    favListAPI();
   }, []);
   useDidMountEffect(() => {
-    uniqueTop3Members();
+    favListAPI();
   }, [rankers]);
   useDidMountEffect(() => {
-    favLatestCount();
+    uniqueTop3Members(); //1순위
+  }, [rankers]);
+  useDidMountEffect(() => {
+    favLatestCount(); //2순위
   }, [favList]);
 
   return (
@@ -115,6 +117,7 @@ const WeeklyRank = () => {
       {RankersWithlatestCount.map((item, index) => (
         <div key={index} className="ranker-image-container">
           <Image
+            className="rank-profile"
             src={`http://192.168.10.28:8081/${item.ranker.user?.userImg}`}
             roundedCircle
           />

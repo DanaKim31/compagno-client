@@ -23,42 +23,38 @@ const Section5 = () => {
     const response = await showProducts();
     // console.log(response.data);
     setAds(response.data);
-  }; // 여기에 다 담겨있음 부모댓글도 이것도
+  }; // 기존 productBoard 정보
 
   // 현재 카테고리 포인트 가져오기
   const [points, setPoints] = useState([]);
   const currentPointAPI = async () => {
     if (Object.keys(user).length !== 0) {
       const response = await getCurrentPoint(user.userId);
-      setPoints(response.data); // 현재 포인트값 잘 담기는거 확인
+      setPoints(response.data);
     }
-    // console.log(points);
   };
 
-  const [randomAds, setRandomAds] = useState([]); // 비로그인 광고
   const [newAds, setNewAds] = useState([]); // 로그인 광고
+  const [randomAds, setRandomAds] = useState([]); // 비로그인 광고
   // 로그인 안했을때
   const nonFilter = () => {
     if (Object.keys(user).length === 0) {
-      console.log(ads);
+      // console.log(ads);
       const shuffleArray = (array) => {
         return array.sort(() => Math.random() - 0.5);
       };
       const noneFilteredArr = shuffleArray(
         ads.filter((ad) => ad.productBoardGrade >= 3.5)
-      ).slice(0, 12);
+      ).slice(0, 15);
       setRandomAds(noneFilteredArr);
-      console.log(noneFilteredArr);
     }
   };
 
   // 로그인 했을때
   const adListFilter = () => {
-    console.log("로그인함");
+    // console.log("로그인함");
     //카테고리 포인트가 가장 높은 카테고리
     // 1. 가장 높은 점수
-    console.log(points);
-    // const filterCheck =
     const maxTotalScore = Math.max(...points.map((point) => point.totalScore));
     // =======================
     if (maxTotalScore === 0) {
@@ -83,7 +79,6 @@ const Section5 = () => {
       const exceptHighest = points.filter(
         (point) => point.totalScore !== maxTotalScore
       );
-      console.log(exceptHighest);
       // 그 중에서 다시 가장 큰 값 뽑기
       const secondMaxTotalScore = Math.max(
         ...exceptHighest.map((exception) => exception.totalScore)
@@ -106,7 +101,7 @@ const Section5 = () => {
         const secondHighestScoreCate = points.find(
           (point) => point.totalScore === secondMaxTotalScore
         );
-        console.log(secondHighestScoreCate);
+        // console.log(secondHighestScoreCate);
 
         // 세 번째로 큰 요소(두번째로 큰 요소가 있는 리스트에서 걔만 삭제) 리스트
         const exceptSecondHighest = exceptHighest.filter(
@@ -130,7 +125,7 @@ const Section5 = () => {
           .filter((ad) => ad.productBoardGrade >= 3.5)
           .slice(0, 7);
         // 포인트 두번째로 높음
-        console.log(secondHighestScoreCate);
+        // console.log(secondHighestScoreCate);
         const adsCate02 = ads
           .filter(
             (ad) =>
@@ -158,7 +153,6 @@ const Section5 = () => {
           return array.sort(() => Math.random() - 0.5);
         };
         const randomArr = shuffleArray(filteredArr);
-        console.log(randomArr);
         setNewAds(randomArr);
       }
     }
