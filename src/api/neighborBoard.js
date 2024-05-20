@@ -21,8 +21,38 @@ authorize.interceptors.request.use((config) => {
 });
 
 // 전체보기
-export const getNeighborBoards = async (page) => {
-  return await instance.get("neighbor?page=" + page);
+// export const getNeighborBoards = async (page) => {
+//   return await instance.get("neighbor?page=" + page);
+// };
+
+// 전체보기
+export const getNeighborBoards = async (
+  page,
+  searchProvince,
+  searchDistrict,
+  searchAnimal,
+  searchSelect,
+  searchKeyword,
+  sort
+) => {
+  let url = "neighbor?page=" + page;
+  if (searchProvince !== undefined && searchProvince !== 0) {
+    url += "&searchProvince=" + searchProvince;
+  }
+  if (searchDistrict !== undefined && searchDistrict !== 0) {
+    url += "&searchDistrict=" + searchDistrict;
+  }
+  if (searchAnimal !== undefined && searchAnimal !== 0) {
+    url += "&searchAnimal=" + searchAnimal;
+  }
+  if (searchSelect !== undefined && searchSelect !== 0) {
+    console.log(searchSelect);
+    url += "&" + searchSelect + "=" + searchKeyword;
+  }
+  if (sort !== undefined && sort !== 0) {
+    url += "&sort=" + sort;
+  }
+  return await instance.get(url);
 };
 
 // 등록

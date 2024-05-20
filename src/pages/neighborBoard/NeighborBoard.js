@@ -200,7 +200,7 @@ const NeighborBoard = () => {
   const [searchProvince, setSearchProvince] = useState("");
   const [searchDistrict, setSearchDistrict] = useState("");
   const [searchAnimal, setSearchAnimal] = useState(0);
-  const [searchSelect, setSearchSelect] = useState("");
+  const [searchSelect, setSearchSelect] = useState("title");
   const [searchKeyword, setSearchKeyword] = useState("");
 
   const [sort, setSort] = useState(1);
@@ -222,21 +222,35 @@ const NeighborBoard = () => {
     }
   }, []);
 
+  // const neighborBoardAPI = async () => {
+  //   const result = await getNeighborBoards(
+  //     page +
+  //       "&locationProvince=" +
+  //       searchProvince +
+  //       "&locationDistrict=" +
+  //       searchDistrict +
+  //       "&animalCategoryCode=" +
+  //       searchAnimal +
+  //       // "&searchSelect=" +
+  //       // searchSelect +
+  //       // "&searchKeyword=" +
+  //       // searchKeyword +
+  //       "&sortBy=" +
+  //       sort
+  //   );
+  //   setNeighborBoards(result.data);
+  //   setTotalPage(result.data.totalPages);
+  // };
+
   const neighborBoardAPI = async () => {
     const result = await getNeighborBoards(
-      page +
-        "&locationProvince=" +
-        searchProvince +
-        "&locationDistrict=" +
-        searchDistrict +
-        "&animalCategoryCode=" +
-        searchAnimal +
-        // "&searchSelect=" +
-        // searchSelect +
-        // "&searchKeyword=" +
-        // searchKeyword +
-        "&sortBy=" +
-        sort
+      page,
+      searchProvince,
+      searchDistrict,
+      searchAnimal,
+      searchSelect,
+      searchKeyword,
+      sort
     );
     setNeighborBoards(result.data);
     setTotalPage(result.data.totalPages);
@@ -377,7 +391,7 @@ const NeighborBoard = () => {
         <div id="animal-category">
           <span>반려동물</span>
           <select onChange={(e) => setSearchAnimal(e.target.value)}>
-            <option>전체</option>
+            <option value={0}>전체</option>
             {animalCategories.map((animalCategory) => (
               <option
                 key={animalCategory.animalCategoryCode}
@@ -390,10 +404,10 @@ const NeighborBoard = () => {
         </div>
 
         <div className="keyword">
-          <span onChange={(e) => setSearchSelect(e.target.value)}>검색어</span>
-          <select>
-            <option value="제목">제목</option>
-            <option value="작성자">작성자</option>
+          <span>검색어</span>
+          <select onChange={(e) => setSearchSelect(e.target.value)}>
+            <option value={"title"}>제목</option>
+            <option value={"id"}>작성자</option>
           </select>
           <input
             type="text"
