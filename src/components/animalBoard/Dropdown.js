@@ -15,9 +15,9 @@ const DropdownToggle = ({ comment }) => {
 
   const [edit, setEdit] = useState({});
   const onUpdate = async (comment) => {
-    console.log(comment);
+    // console.log(comment);
     setEdit(comment);
-    console.log(edit);
+    // console.log(edit);
   };
   return (
     <Dropdown>

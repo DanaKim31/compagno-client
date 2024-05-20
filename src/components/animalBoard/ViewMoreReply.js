@@ -25,9 +25,9 @@ const ViewMoreReply = ({
   const [responseReply, setResponseReply] = useState({ comment });
   //   const [prevReply, setprevReply] = useState({});
   //   setResponseReply(comment);
-  console.log(replToggle);
+  // console.log(replToggle);
   const onRepl = async (comment) => {
-    console.log(comment.animalCommentCode);
+    // console.log(comment.animalCommentCode);
     setResponseReply(comment);
     if (replToggle) {
       setReplToggle(false);

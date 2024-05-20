@@ -69,7 +69,7 @@ const WeeklyRank = () => {
     const response = await viewFavList();
     setFavList(response.data);
   };
-  console.log(favList);
+  // console.log(favList);
 
   // 중복 제거
   const [filteredRankers, setFilteredRanker] = useState([]);
@@ -98,7 +98,7 @@ const WeeklyRank = () => {
     setLatestCount(results);
   };
 
-  console.log(RankersWithlatestCount);
+  // console.log(RankersWithlatestCount);
   useEffect(() => {
     favRankAPI();
   }, []);

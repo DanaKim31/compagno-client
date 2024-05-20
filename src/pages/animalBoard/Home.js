@@ -219,9 +219,9 @@ const AnimalHome = () => {
   const [sort, setSort] = useState("");
   const [category2, setCategory2] = useState("");
   const [sort2, setSort2] = useState("");
-  console.log(page);
-  console.log(category);
-  console.log(sort);
+  // console.log(page);
+  // console.log(category);
+  // console.log(sort);
   const animalBoardsAPI = async (check) => {
     if (check) {
       // 검색 클릭

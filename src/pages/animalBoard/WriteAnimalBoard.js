@@ -85,7 +85,7 @@ const WriteAnimalBoard = () => {
   }); // quill 제외 부분
 
   const addWrite = async () => {
-    console.log(boardInfo.animalCategoryCode);
+    // console.log(boardInfo.animalCategoryCode);
     if (
       boardInfo.animalCategoryCode === "0" ||
       boardInfo.animalCategoryCode === undefined

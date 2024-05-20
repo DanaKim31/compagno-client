@@ -86,14 +86,14 @@ const EditAnimalBoard = () => {
   });
   const animalBoardAPI = async () => {
     const response = await viewDetail(animalBoardCode);
-    console.log(response.data);
+    // console.log(response.data);
     setDetail(response.data);
   };
   // 기존 글 이미지 정보
   const [prevImages, setPrevImages] = useState([]);
   const prevImageAPI = async () => {
     const response = await getPrevImages(animalBoardCode);
-    console.log(response.data);
+    // console.log(response.data);
     setPrevImages(response.data);
   };
 
@@ -117,7 +117,7 @@ const EditAnimalBoard = () => {
   */
 
   const addEdit = async () => {
-    console.log(detailInfo.animalCategoryCode);
+    // console.log(detailInfo.animalCategoryCode);
     if (
       detailInfo.animalCategoryCode === "0" ||
       detailInfo.animalCategoryCode === undefined
@@ -134,7 +134,7 @@ const EditAnimalBoard = () => {
     ) {
       alert("내용을 작성해주세요");
     } else {
-      console.log(detailInfo);
+      // console.log(detailInfo);
       await updateBoard(detailInfo);
       // console.log(boardInfo.animalBoardContent);
       navigate("/compagno/animal-board");

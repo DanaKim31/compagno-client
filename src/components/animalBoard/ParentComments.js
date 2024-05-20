@@ -173,7 +173,7 @@ const ParentComments = ({
   const [comments, setComments] = useState([]);
   const animalBoardCommentAPI = async () => {
     const response = await getComments(animalBoardCode);
-    console.log(response.data);
+    // console.log(response.data);
     setComments(response.data);
   };
   // 댓글수 불러오기
@@ -182,7 +182,7 @@ const ParentComments = ({
     const response = await countComment(animalBoardCode);
     setCommentCounts(response.data);
   };
-  console.log(commentCounts);
+  // console.log(commentCounts);
   // const commentCounts = Object.keys(comments).length; // 댓글 수
   // 댓글쓰기
   const [comment, setComment] = useState({
@@ -192,7 +192,7 @@ const ParentComments = ({
   });
   const [animalComment, setAnimalComment] = useState("");
   const addComment = async () => {
-    console.log(animalComment);
+    // console.log(animalComment);
     if (token === null) {
       alert("로그인해주세요");
     } else {
@@ -211,7 +211,7 @@ const ParentComments = ({
   //댓글 수정버튼 - 기존 해당 댓글내용 가져오기
   const [edit, setEdit] = useState({});
   const onUpdate = async (comment) => {
-    console.log(comment);
+    // console.log(comment);
     setEdit({
       animalCommentCode: comment.animalCommentCode,
       animalCommentContent: comment.animalCommentContent,
@@ -252,7 +252,7 @@ const ParentComments = ({
       return alert("로그인이 필요합니다.");
     }
     setResponse(comment); // 현재 클릭한 아이의 댓글정보
-    console.log(comment);
+    // console.log(comment);
     if (boolean) {
       setBoolean(false);
     } else {

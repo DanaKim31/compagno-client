@@ -106,7 +106,7 @@ const ReplyComment = ({
       },
       animalCommentTag: prevReply.animalCommentTag,
     });
-    console.log(prevReply);
+    // console.log(prevReply);
   };
   // 대댓글 수정하기
   const onUpdateR = async () => {

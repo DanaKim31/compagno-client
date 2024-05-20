@@ -20,12 +20,9 @@ export const fluctuationByDetailP = async (target) => {
   // 배열에 감싸져있기에 첫번째 배열에서 꺼내오기
   if (target.length !== 0) {
     let x_value = target[0].inputValue + hitPoint;
-    // x_value => new inputValue
-    // console.log(x_value);
     const response = reciprocalFunction(x_value);
-    // console.log(target, response);
     let data = { target: target[0], response: response, inputValue: x_value };
-    console.log(data);
+    // console.log(data);
     await instance.put(`logic-point/positive`, data);
   }
 };
@@ -33,16 +30,14 @@ export const fluctuationByDetailP = async (target) => {
 // 특정 글에 들어갔을때 받는 값 감소 : animalCategoryCode userId
 export const fluctuationByDetailM = async (exception) => {
   if (exception.length !== 0) {
-    console.log(exception);
+    // console.log(exception);
     let x_value = exception.inputValue + hitLostPoint;
     const response = reciprocalFunction(x_value);
-    // console.log(response);
     let data = {
       exception: exception,
       response: response,
       inputValue: x_value,
     };
-    console.log(data);
     await instance.put("logic-point/negative", data);
   }
 };
