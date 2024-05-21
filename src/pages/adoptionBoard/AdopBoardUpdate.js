@@ -566,13 +566,9 @@ const UpdateAdopBoard = () => {
                         <img
                           alt=""
                           key={image.adopImageCode}
-                          // src={image.adopImage?.replace(
-                          //   "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
-                          //   "http://192.168.10.28:8081/adoptionBoard/"
-                          // )}
                           src={image.adopImage?.replace(
-                            "C:",
-                            "http://192.168.0.29:8081"
+                            "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
+                            "http://192.168.10.28:8081/adoptionBoard/"
                           )}
                           onClick={() => deleteImage(image.adopImageCode)}
                         />
