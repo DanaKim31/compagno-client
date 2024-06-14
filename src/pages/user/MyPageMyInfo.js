@@ -448,8 +448,8 @@ const MyPageMyInfo = () => {
             <div className="info-content">
               <img
                 className="info-image"
-                src={"http://192.168.10.28:8081/" + info.userImg}
-                // src={"C:/upload/" + user.userImg}
+                src={"http://192.168.50.108:8081/upload/" + info.userImg}
+                // src={"C:/upload/" + info.userImg}
               />
               <div className="info-text">
                 <p>이름 : {info.userPersonName}</p>

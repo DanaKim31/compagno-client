@@ -149,6 +149,10 @@ const MyPageAdoption = () => {
                     href={`/compagno/adoptionBoard/view/` + adop.adopBoardCode}
                   >
                     <img
+                      // src={adop.adopAnimalImage?.replace(
+                      //   "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
+                      //   "http://192.168.10.28:8081/adoptionBoard/"
+                      // )}
                       src={adop.adopAnimalImage?.replace(
                         "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
                         "http://192.168.10.28:8081/adoptionBoard/"
