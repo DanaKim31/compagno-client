@@ -209,8 +209,9 @@ const ViewAdopBoard = () => {
               <img
                 alt=""
                 key={image.adopImageCode}
-                src={image.adopImage?.replace("C:", "http://192.168.0.29:8081")}
-
+                // src={image.adopImage?.replace("C:", "http://192.168.0.29:8081")}
+                // 노트북ver
+                src={image.adopImage?.replace("C:", "http://localhost:8081")}
                 // src={image.adopImage?.replace(
                 //   "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
                 //   "http://192.168.10.28:8081/adoptionBoard/"
@@ -249,7 +250,9 @@ const ViewAdopBoard = () => {
                         marginRight: "10px",
                         alignContent: "center",
                       }}
-                      src={"http://192.168.10.28:8081/" + adop.userImg}
+                      // src={"http://192.168.10.28:8081/" + adop.userImg}
+                      // 노트북ver
+                      src={"http://localhost:8081/upload/" + adop.userImg}
                       // src={adop.adopAnimalImage?.replace(
                       //   "\\\\DESKTOP-U0CNG13\\upload\\adoptionBoard",
                       //   "http://192.168.10.28:8081/adoptionBoard/"

@@ -238,8 +238,9 @@ const Comments = () => {
               }}
             >
               <img
-                // src={"http://localhost:8081/upload/" + user.userImg}
-                src={"http://192.168.10.28:8081/" + user.userImg}
+                //노트북ver
+                src={"http://localhost:8081/upload/" + user.userImg}
+                // src={"http://192.168.10.28:8081/" + user.userImg}
                 id="userImg"
                 style={{
                   width: "35px",
@@ -341,10 +342,11 @@ const Comments = () => {
                         marginRight: "10px",
                         alignContent: "center",
                       }}
-                      // src={
-                      //   "http://localhost:8081/upload/" + comment.user.userImg
-                      // }
-                      src={"http://192.168.10.28:8081/" + comment.user.userImg}
+                      // 노트북ver
+                      src={
+                        "http://localhost:8081/upload/" + comment.user.userImg
+                      }
+                      // src={"http://192.168.10.28:8081/" + comment.user.userImg}
                     />
                   </div>
                   <div
@@ -555,14 +557,15 @@ const Comments = () => {
                                     height: "25px",
                                     borderRadius: "50%",
                                   }}
-                                  // src={
-                                  //   "http://localhost:8081/upload/" +
-                                  //   bottom.user.userImg
-                                  // }
+                                  // 노트북ver
                                   src={
-                                    "http://192.168.10.28:8081/" +
+                                    "http://localhost:8081/upload/" +
                                     bottom.user.userImg
                                   }
+                                  // src={
+                                  //   "http://192.168.10.28:8081/" +
+                                  //   bottom.user.userImg
+                                  // }
                                 />
                               </div>
                               <div
@@ -818,10 +821,9 @@ const Comments = () => {
                               border: "0.3px solid black",
                               marginRight: "10px",
                             }}
-                            // src={
-                            //   "http://localhost:8081/upload/" + user.userImg
-                            // }
-                            src={"http://192.168.10.28:8081/" + user.userImg}
+                            //노트북ver
+                            src={"http://localhost:8081/upload/" + user.userImg}
+                            // src={"http://192.168.10.28:8081/" + user.userImg}
                             id="userImg"
                           />
                           <MyToggleBar
