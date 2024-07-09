@@ -18,7 +18,7 @@ const Header = () => {
   });
   // ===========================================================================
   useEffect(() => {
-    // #toggle 요소에 클릭 이벤트를 추가합니다.  // 여기부분 햄버거 메뉴  관련
+    // #toggle 요소에 클릭 이벤트를 추가합니다.  // 여기부분 햄버거 메뉴 관련
     document.getElementById("toggle").addEventListener("click", function () {
       // #toggle .bar 요소에 animate 클래스를 토글합니다.
       document.querySelector("#toggle .bar").classList.toggle("animate");
