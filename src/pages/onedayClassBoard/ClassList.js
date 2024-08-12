@@ -128,7 +128,9 @@ const ClassList = () => {
   const user = useSelector((state) => {
     return state.user;
   });
-  const [onedayClasses, setOnedayClasses] = useState([]); // 내가 가저올 원데이 클래스 리스트들 관련 변수랑 함수
+
+  const [onedayClasses, setOnedayClasses] = useState([]);
+  // 내가 가저올 원데이 클래스 리스트들 관련 변수랑 함수
 
   const onedayClassAPI = async () => {
     const result = await viewAllClass();
@@ -169,6 +171,7 @@ const ClassList = () => {
           <button onClick={create}>원데이 클래스 나도 추가</button>
         </div>
         <div className="viewAll">
+          {/* onedayClasses관련 List들을 하나씩 가져오겠다 */}
           {onedayClasses.map((onedayClass) => (
             <div
               className="oneClass"

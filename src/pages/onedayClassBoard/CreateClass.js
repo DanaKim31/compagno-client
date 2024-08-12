@@ -164,7 +164,7 @@ const CreateClass = () => {
     }
   }, []);
 
-  //
+  // 여기부분 중복되는 부분이 많아서 하나의 state로 관리하자 !!
   const [odcTitle, setOdcTitle] = useState("");
   const [odcContent, setContent] = useState("");
   const [odcAccompaying, setOdcAccompaying] = useState("");
@@ -205,7 +205,7 @@ const CreateClass = () => {
   const onBack = () => {
     navigate("/compagno/onedayClassBoard");
   };
-  console.log(user);
+
   return (
     <div>
       <StyledDiv>
