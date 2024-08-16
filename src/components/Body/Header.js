@@ -1,9 +1,9 @@
 import "../../assets/style.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { userSave, userLogout } from "../../store/user";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useDidMountEffect from "../../components/user/useDidMountEffect";
+// import useDidMountEffect from "../../components/user/useDidMountEffect";
 
 // 헤더 색변환 / 햄버거 메뉴바 js
 
@@ -17,6 +17,7 @@ const Header = () => {
     return state.user;
   });
   // ===========================================================================
+
   useEffect(() => {
     // #toggle 요소에 클릭 이벤트를 추가합니다.  // 여기부분 햄버거 메뉴 관련
     document.getElementById("toggle").addEventListener("click", function () {
